@@ -5,7 +5,7 @@
         <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="9049"/>
     </dependencies>
     <scenes>
-        <!--活动介绍-->
+        <!--活动详情-->
         <scene sceneID="sia-Mr-Lpa">
             <objects>
                 <tableViewController id="JEC-xh-td3" customClass="ActivityInfoViewController" sceneMemberID="viewController">
@@ -18,7 +18,7 @@
                             <outlet property="delegate" destination="JEC-xh-td3" id="jFh-zZ-mlO"/>
                         </connections>
                     </tableView>
-                    <navigationItem key="navigationItem" title="活动介绍" id="qUG-px-zpE"/>
+                    <navigationItem key="navigationItem" title="活动详情" id="qUG-px-zpE"/>
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Znc-A7-oLG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

@@ -30,10 +30,13 @@
     // 对item设置相应地图片
     item0.selectedImage = [[UIImage imageNamed:@"shopping"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];;
     item0.image = [[UIImage imageNamed:@"shopping"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
     item1.selectedImage = [[UIImage imageNamed:@"shopping"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];;
     item1.image = [[UIImage imageNamed:@"shopping"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
-    item2.selectedImage = [[UIImage imageNamed:@"shopping"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];;
+    
+    item2.selectedImage = [[UIImage imageNamed:@"shopping"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     item2.image = [[UIImage imageNamed:@"shopping"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
+    
     item3.selectedImage = [[UIImage imageNamed:@"shopping"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];;
     item3.image = [[UIImage imageNamed:@"shopping"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     //设置item字体颜色
