@@ -9,10 +9,10 @@
         <scene sceneID="sia-Mr-Lpa">
             <objects>
                 <tableViewController id="JEC-xh-td3" customClass="ActivityInfoViewController" sceneMemberID="viewController">
-                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="44" sectionHeaderHeight="28" sectionFooterHeight="28" id="h9O-AG-4rS">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="h9O-AG-4rS">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                        <color key="backgroundColor" cocoaTouchSystemColor="groupTableViewBackgroundColor"/>
                         <connections>
                             <outlet property="dataSource" destination="JEC-xh-td3" id="DJN-6a-dEy"/>
                             <outlet property="delegate" destination="JEC-xh-td3" id="jFh-zZ-mlO"/>
@@ -24,10 +24,10 @@
             </objects>
             <point key="canvasLocation" x="1590" y="333.75"/>
         </scene>
-        <!--Navigation Controller-->
+        <!--Navigation View Controller-->
         <scene sceneID="B65-Vw-qcq">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="8gN-y7-9XO" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="8gN-y7-9XO" customClass="CZNavigationViewController" sceneMemberID="viewController">
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="taM-EW-f9o">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
