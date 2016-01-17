@@ -14,9 +14,6 @@
 + (instancetype) activity
 {
     Activity *activity = [[Activity alloc]init];
-    
-   //模拟懒加载
-    [activity setSubViewsContent];
 
     return activity;
 }

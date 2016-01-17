@@ -39,7 +39,7 @@
 + (instancetype)activitycellWithTableView:(UITableView*)tableView
 {
     static NSString *reuseId = @"activityCell";
-    Activitycell * cell = (Activitycell*)[tableView dequeueReusableHeaderFooterViewWithIdentifier:reuseId];
+    Activitycell * cell = (Activitycell*)[tableView dequeueReusableCellWithIdentifier:reuseId];
     if (!cell) {
         cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
     }
