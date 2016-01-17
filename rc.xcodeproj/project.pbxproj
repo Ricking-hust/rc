@@ -89,6 +89,9 @@
 		56DF01F01C4915CD00E80DFA /* CZNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56DF01EF1C4915CD00E80DFA /* CZNavigationViewController.m */; };
 		56DF02321C49356100E80DFA /* CZActivityInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56DF02311C49356100E80DFA /* CZActivityInfoViewController.m */; };
 		56E842781C4B88BC00D1D198 /* ActivityIntroduction.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E842771C4B88BC00D1D198 /* ActivityIntroduction.m */; };
+		56E8427B1C4BA74C00D1D198 /* CZTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8427A1C4BA74C00D1D198 /* CZTimeCell.m */; };
+		56E8427E1C4BB8E500D1D198 /* CZActivityInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8427D1C4BB8E500D1D198 /* CZActivityInfoCell.m */; };
+		56E842811C4BD21500D1D198 /* CZActivityDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E842801C4BD21500D1D198 /* CZActivityDetailCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -266,6 +269,12 @@
 		56DF02311C49356100E80DFA /* CZActivityInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZActivityInfoViewController.m; sourceTree = "<group>"; };
 		56E842761C4B88BC00D1D198 /* ActivityIntroduction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityIntroduction.h; sourceTree = "<group>"; };
 		56E842771C4B88BC00D1D198 /* ActivityIntroduction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityIntroduction.m; sourceTree = "<group>"; };
+		56E842791C4BA74C00D1D198 /* CZTimeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTimeCell.h; sourceTree = "<group>"; };
+		56E8427A1C4BA74C00D1D198 /* CZTimeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTimeCell.m; sourceTree = "<group>"; };
+		56E8427C1C4BB8E500D1D198 /* CZActivityInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZActivityInfoCell.h; sourceTree = "<group>"; };
+		56E8427D1C4BB8E500D1D198 /* CZActivityInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZActivityInfoCell.m; sourceTree = "<group>"; };
+		56E8427F1C4BD21500D1D198 /* CZActivityDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZActivityDetailCell.h; sourceTree = "<group>"; };
+		56E842801C4BD21500D1D198 /* CZActivityDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZActivityDetailCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -568,6 +577,12 @@
 				565EF5FC1C48EAA80067C032 /* HomeHeaderView.m */,
 				565EF5F61C48EA520067C032 /* Activitycell.h */,
 				565EF5F71C48EA520067C032 /* Activitycell.m */,
+				56E842791C4BA74C00D1D198 /* CZTimeCell.h */,
+				56E8427A1C4BA74C00D1D198 /* CZTimeCell.m */,
+				56E8427C1C4BB8E500D1D198 /* CZActivityInfoCell.h */,
+				56E8427D1C4BB8E500D1D198 /* CZActivityInfoCell.m */,
+				56E8427F1C4BD21500D1D198 /* CZActivityDetailCell.h */,
+				56E842801C4BD21500D1D198 /* CZActivityDetailCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -861,6 +876,7 @@
 				56DF01F01C4915CD00E80DFA /* CZNavigationViewController.m in Sources */,
 				565EF6221C48EBA20067C032 /* DataManager.m in Sources */,
 				561D020E1C47DA5600E4E013 /* NSArray+MASAdditions.m in Sources */,
+				56E8427E1C4BB8E500D1D198 /* CZActivityInfoCell.m in Sources */,
 				565EF6271C48EBA20067C032 /* BaseModel.m in Sources */,
 				565EF6531C48EC410067C032 /* AboutUsInfoViewController.m in Sources */,
 				561D01F81C47DA5600E4E013 /* AFSecurityPolicy.m in Sources */,
@@ -887,7 +903,9 @@
 				565EF6681C48EC410067C032 /* UserInfoCell.m in Sources */,
 				561D01FB1C47DA5600E4E013 /* AFURLSessionManager.m in Sources */,
 				561D02011C47DA5600E4E013 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
+				56E842811C4BD21500D1D198 /* CZActivityDetailCell.m in Sources */,
 				561D01FD1C47DA5600E4E013 /* README.md in Sources */,
+				56E8427B1C4BA74C00D1D198 /* CZTimeCell.m in Sources */,
 				561D020A1C47DA5600E4E013 /* MASConstraintMaker.m in Sources */,
 				565EF6661C48EC410067C032 /* UserDetailInfo.m in Sources */,
 				561D01F61C47DA5600E4E013 /* AFHTTPSessionManager.m in Sources */,
