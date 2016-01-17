@@ -128,42 +128,6 @@
         make.left.equalTo(self.ac_imageTag.mas_right).with.offset(14.0/2);
         make.size.mas_equalTo(tagSize);
     }];
-    //3.添加子控件的约束
-    
-    
-    
-    
-//    
-//    CGSize textSize;
-//    
-//    //活动主题标签的最大长度
-//    CGFloat width = [[UIScreen mainScreen]bounds].size.width * 0.48;
-//    CGSize maxSize = CGSizeMake(width, MAXFLOAT);
-//    
-//    //设置frame
-//    UIEdgeInsets padding = UIEdgeInsetsMake(10, 10, 20, 10);
-//    
-//    [self setFrame:CGRectMake(0, 0, [[UIScreen mainScreen] bounds].size.width, 120 + padding.top + padding.bottom)];
-//    [self.ac_poster setFrame:CGRectMake(0, 0, POSTERIMAGE_WIDTH, POSTERIMAGE_HEIGHT)];
-//    
-//    //add ac_poster constraints
-//    [self.ac_poster mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(self).with.offset(padding.left);
-//        make.top.equalTo(self).with.offset(padding.top);
-//        make.bottom.equalTo(self).with.offset(-padding.bottom);
-//    }];
-//    
-//    //add ac_title constraint
-//    NSLog(@"maxwidth is %f, maxheigth is %f", maxSize.width, maxSize.height);
-//    NSLog(@"screen width is %f", [[UIScreen mainScreen]bounds].size.width);
-//    NSLog(@"the rest of width is %f",[[UIScreen mainScreen]bounds].size.width - self.ac_poster.frame.size.width - 35);
-//    
-//    textSize = [self sizeWithText:self.ac_title.text maxSize:maxSize fontSize:TITLE_FONTSIZE];
-//    [self.ac_title mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(self.ac_poster.mas_right).with.offset(10);
-//        make.top.equalTo(self).with.offset(46.0f/2);
-//        make.size.mas_equalTo(textSize);
-//    }];
     
 }
 
