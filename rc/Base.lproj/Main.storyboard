@@ -25,7 +25,7 @@
                 </tableViewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="NSO-Ib-VjG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1806" y="-268"/>
+            <point key="canvasLocation" x="1966.5" y="-92.25"/>
         </scene>
         <!--专栏-->
         <scene sceneID="wg7-f3-ORb">
@@ -82,7 +82,7 @@
                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="calibratedWhite"/>
                     </tabBar>
                     <connections>
-                        <segue destination="xqF-Ia-bl4" kind="relationship" relationship="viewControllers" id="8R3-Y4-ClA"/>
+                        <segue destination="Ojm-7A-avr" kind="relationship" relationship="viewControllers" id="xAd-7K-di6"/>
                         <segue destination="yaG-Qj-rfs" kind="relationship" relationship="viewControllers" id="lzU-1b-eKA"/>
                         <segue destination="ZuC-o0-OeN" kind="relationship" relationship="viewControllers" id="A2h-r7-eff"/>
                         <segue destination="8VB-Tn-rJp" kind="relationship" relationship="viewControllers" id="bxs-Ua-sbF"/>
@@ -203,25 +203,6 @@
             </objects>
             <point key="canvasLocation" x="-42" y="1125"/>
         </scene>
-        <!--日常-->
-        <scene sceneID="ljK-s6-giP">
-            <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="xqF-Ia-bl4" customClass="CZNavigationViewController" sceneMemberID="viewController">
-                    <tabBarItem key="tabBarItem" title="日常" image="first" id="FVo-u5-c47"/>
-                    <toolbarItems/>
-                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="hWR-Sd-8TN">
-                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
-                        <autoresizingMask key="autoresizingMask"/>
-                    </navigationBar>
-                    <nil name="viewControllers"/>
-                    <connections>
-                        <segue destination="Pwu-DI-w3C" kind="relationship" relationship="rootViewController" id="ZRA-WG-qWi"/>
-                    </connections>
-                </navigationController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="qzq-08-PGR" userLabel="First Responder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="994" y="-268"/>
-        </scene>
         <!--日程-->
         <scene sceneID="XFS-Ql-XeV">
             <objects>
@@ -240,6 +221,25 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="jgx-f8-A0A" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="3186" y="1216.5"/>
+        </scene>
+        <!--Item-->
+        <scene sceneID="yjK-Bu-hWB">
+            <objects>
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="Ojm-7A-avr" customClass="CZNavigationViewController" sceneMemberID="viewController">
+                    <tabBarItem key="tabBarItem" title="Item" id="GbA-yC-uiY"/>
+                    <toolbarItems/>
+                    <navigationBar key="navigationBar" contentMode="scaleToFill" id="Y6H-YK-pcR">
+                        <rect key="frame" x="0.0" y="0.0" width="320" height="44"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                    </navigationBar>
+                    <nil name="viewControllers"/>
+                    <connections>
+                        <segue destination="Pwu-DI-w3C" kind="relationship" relationship="rootViewController" id="Ifc-cp-Y7p"/>
+                    </connections>
+                </navigationController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="aPe-Xr-KCP" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="1048.5" y="-92.25"/>
         </scene>
     </scenes>
     <resources>

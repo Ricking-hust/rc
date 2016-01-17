@@ -42,7 +42,6 @@
 		561D02101C47DA5600E4E013 /* View+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 561D01C01C47DA5600E4E013 /* View+MASAdditions.m */; };
 		561D02111C47DA5600E4E013 /* ViewController+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 561D01C31C47DA5600E4E013 /* ViewController+MASAdditions.m */; };
 		561D02121C47DA5600E4E013 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 561D01C41C47DA5600E4E013 /* README.md */; };
-		561D02131C47DA5600E4E013 /* ActivityInfo.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 561D01C61C47DA5600E4E013 /* ActivityInfo.storyboard */; };
 		561D02141C47DA5600E4E013 /* ShowUserInfo.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 561D01C71C47DA5600E4E013 /* ShowUserInfo.storyboard */; };
 		561D02151C47DA5600E4E013 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 561D01CA1C47DA5600E4E013 /* AppDelegate.m */; };
 		561D02161C47DA5600E4E013 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 561D01CC1C47DA5600E4E013 /* 1.png */; };
@@ -52,7 +51,6 @@
 		565EF5F81C48EA520067C032 /* Activitycell.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF5F71C48EA520067C032 /* Activitycell.m */; };
 		565EF5FD1C48EAA80067C032 /* ActivityInfoHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF5FA1C48EAA80067C032 /* ActivityInfoHeaderView.m */; };
 		565EF5FE1C48EAA80067C032 /* HomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF5FC1C48EAA80067C032 /* HomeHeaderView.m */; };
-		565EF6031C48EACA0067C032 /* ActivityInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6001C48EACA0067C032 /* ActivityInfoViewController.m */; };
 		565EF6041C48EACA0067C032 /* HomePageViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6021C48EACA0067C032 /* HomePageViewController.m */; };
 		565EF60C1C48EB3B0067C032 /* ColumnViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF60A1C48EB3B0067C032 /* ColumnViewController.m */; };
 		565EF6111C48EB440067C032 /* ScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF60F1C48EB440067C032 /* ScheduleViewController.m */; };
@@ -89,6 +87,8 @@
 		565EF66C1C48ED1E0067C032 /* CZTabbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF66B1C48ED1E0067C032 /* CZTabbarController.m */; };
 		565EF66F1C48ED590067C032 /* CZTabbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF66E1C48ED590067C032 /* CZTabbar.m */; };
 		56DF01F01C4915CD00E80DFA /* CZNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56DF01EF1C4915CD00E80DFA /* CZNavigationViewController.m */; };
+		56DF02321C49356100E80DFA /* CZActivityInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56DF02311C49356100E80DFA /* CZActivityInfoViewController.m */; };
+		56E842781C4B88BC00D1D198 /* ActivityIntroduction.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E842771C4B88BC00D1D198 /* ActivityIntroduction.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -183,7 +183,6 @@
 		561D01C21C47DA5600E4E013 /* ViewController+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+MASAdditions.h"; sourceTree = "<group>"; };
 		561D01C31C47DA5600E4E013 /* ViewController+MASAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+MASAdditions.m"; sourceTree = "<group>"; };
 		561D01C41C47DA5600E4E013 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		561D01C61C47DA5600E4E013 /* ActivityInfo.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ActivityInfo.storyboard; sourceTree = "<group>"; };
 		561D01C71C47DA5600E4E013 /* ShowUserInfo.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = ShowUserInfo.storyboard; sourceTree = "<group>"; };
 		561D01C91C47DA5600E4E013 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		561D01CA1C47DA5600E4E013 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
@@ -197,8 +196,6 @@
 		565EF5FA1C48EAA80067C032 /* ActivityInfoHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityInfoHeaderView.m; sourceTree = "<group>"; };
 		565EF5FB1C48EAA80067C032 /* HomeHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeHeaderView.h; sourceTree = "<group>"; };
 		565EF5FC1C48EAA80067C032 /* HomeHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeHeaderView.m; sourceTree = "<group>"; };
-		565EF5FF1C48EACA0067C032 /* ActivityInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityInfoViewController.h; sourceTree = "<group>"; };
-		565EF6001C48EACA0067C032 /* ActivityInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityInfoViewController.m; sourceTree = "<group>"; };
 		565EF6011C48EACA0067C032 /* HomePageViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomePageViewController.h; sourceTree = "<group>"; };
 		565EF6021C48EACA0067C032 /* HomePageViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomePageViewController.m; sourceTree = "<group>"; };
 		565EF6091C48EB3B0067C032 /* ColumnViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnViewController.h; sourceTree = "<group>"; };
@@ -265,6 +262,10 @@
 		565EF66E1C48ED590067C032 /* CZTabbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTabbar.m; sourceTree = "<group>"; };
 		56DF01EE1C4915CD00E80DFA /* CZNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZNavigationViewController.h; sourceTree = "<group>"; };
 		56DF01EF1C4915CD00E80DFA /* CZNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZNavigationViewController.m; sourceTree = "<group>"; };
+		56DF02301C49356100E80DFA /* CZActivityInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZActivityInfoViewController.h; sourceTree = "<group>"; };
+		56DF02311C49356100E80DFA /* CZActivityInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZActivityInfoViewController.m; sourceTree = "<group>"; };
+		56E842761C4B88BC00D1D198 /* ActivityIntroduction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityIntroduction.h; sourceTree = "<group>"; };
+		56E842771C4B88BC00D1D198 /* ActivityIntroduction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityIntroduction.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -516,7 +517,6 @@
 			children = (
 				561D010B1C47D94C00E4E013 /* Main.storyboard */,
 				561D01101C47D94C00E4E013 /* LaunchScreen.storyboard */,
-				561D01C61C47DA5600E4E013 /* ActivityInfo.storyboard */,
 				561D01C71C47DA5600E4E013 /* ShowUserInfo.storyboard */,
 			);
 			path = Main;
@@ -547,12 +547,12 @@
 			children = (
 				56DF01EE1C4915CD00E80DFA /* CZNavigationViewController.h */,
 				56DF01EF1C4915CD00E80DFA /* CZNavigationViewController.m */,
-				565EF5FF1C48EACA0067C032 /* ActivityInfoViewController.h */,
-				565EF6001C48EACA0067C032 /* ActivityInfoViewController.m */,
 				565EF6011C48EACA0067C032 /* HomePageViewController.h */,
 				565EF6021C48EACA0067C032 /* HomePageViewController.m */,
 				565EF66A1C48ED1E0067C032 /* CZTabbarController.h */,
 				565EF66B1C48ED1E0067C032 /* CZTabbarController.m */,
+				56DF02301C49356100E80DFA /* CZActivityInfoViewController.h */,
+				56DF02311C49356100E80DFA /* CZActivityInfoViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -628,6 +628,8 @@
 				565EF61F1C48EBA20067C032 /* BaseModel.m */,
 				565EF6201C48EBA20067C032 /* CityModel.h */,
 				565EF6211C48EBA20067C032 /* CityModel.m */,
+				56E842761C4B88BC00D1D198 /* ActivityIntroduction.h */,
+				56E842771C4B88BC00D1D198 /* ActivityIntroduction.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -800,7 +802,6 @@
 				561D02181C47DA5600E4E013 /* Argentina.png in Resources */,
 				565EF6691C48EC410067C032 /* UserInfoCell.xib in Resources */,
 				565EF6641C48EC410067C032 /* MyRelease.xib in Resources */,
-				561D02131C47DA5600E4E013 /* ActivityInfo.storyboard in Resources */,
 				565EF6621C48EC410067C032 /* MyCollect.xib in Resources */,
 				561D02191C47DA5600E4E013 /* Chile.png in Resources */,
 				565EF65D1C48EC410067C032 /* ActivitiesInfo.xib in Resources */,
@@ -831,6 +832,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				56E842781C4B88BC00D1D198 /* ActivityIntroduction.m in Sources */,
 				561D01FF1C47DA5600E4E013 /* AFImageDownloader.m in Sources */,
 				565EF6281C48EBA20067C032 /* CityModel.m in Sources */,
 				565EF65F1C48EC410067C032 /* LoginOutCell.m in Sources */,
@@ -868,7 +870,6 @@
 				565EF65E1C48EC410067C032 /* CustomCellForUserInfo.m in Sources */,
 				561D02041C47DA5600E4E013 /* UIProgressView+AFNetworking.m in Sources */,
 				561D02001C47DA5600E4E013 /* AFNetworkActivityIndicatorManager.m in Sources */,
-				565EF6031C48EACA0067C032 /* ActivityInfoViewController.m in Sources */,
 				561D020B1C47DA5600E4E013 /* MASLayoutConstraint.m in Sources */,
 				565EF65C1C48EC410067C032 /* ActivitiesInfo.m in Sources */,
 				561D02101C47DA5600E4E013 /* View+MASAdditions.m in Sources */,
@@ -879,6 +880,7 @@
 				565EF6261C48EBA20067C032 /* ActivityModel.m in Sources */,
 				565EF6611C48EC410067C032 /* MyCollect.m in Sources */,
 				561D01F91C47DA5600E4E013 /* AFURLRequestSerialization.m in Sources */,
+				56DF02321C49356100E80DFA /* CZActivityInfoViewController.m in Sources */,
 				565EF65A1C48EC410067C032 /* ShowUserInfoViewController.m in Sources */,
 				565EF6591C48EC410067C032 /* SettingViewController.m in Sources */,
 				565EF66C1C48ED1E0067C032 /* CZTabbarController.m in Sources */,

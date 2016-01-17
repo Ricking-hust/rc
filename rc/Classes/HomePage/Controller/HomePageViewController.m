@@ -5,11 +5,16 @@
 //  Created by AlanZhang on 16/1/7.
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
-#import "ActivityInfoViewController.h"
+#import "CZActivityInfoViewController.h"
+
 #import "HomePageViewController.h"
+
 #import "HomeHeaderView.h"
+
 #import "Activitycell.h"
+
 #import "Activity.h"
+
 
 @interface HomePageViewController ()
 
@@ -143,8 +148,10 @@
 //选中单元格的点击事件
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ActivityInfoViewController *activityViewController = [[ActivityInfoViewController alloc]init];
-    [self.navigationController pushViewController:activityViewController animated:YES];
+
+    CZActivityInfoViewController *activityInfoViewController = [[CZActivityInfoViewController alloc]init];
+    activityInfoViewController.title = @"活动介绍";
+    [self.navigationController pushViewController:activityInfoViewController animated:YES];
     
 }
 
