@@ -1,13 +1,14 @@
 //
-//  HomePageViewController.m
-//  日常
+//  CZHomeViewController.m
+//  rc
 //
-//  Created by AlanZhang on 16/1/7.
+//  Created by AlanZhang on 16/1/20.
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
-#import "CZActivityInfoViewController.h"
 
-#import "HomePageViewController.h"
+#import "CZHomeViewController.h"
+
+#import "CZActivityInfoViewController.h"
 
 #import "HomeHeaderView.h"
 
@@ -15,14 +16,15 @@
 
 #import "Activity.h"
 
+#import "Masonry.h"
 
-@interface HomePageViewController ()
 
+@interface CZHomeViewController ()
 @property(nonatomic, strong) NSMutableArray *activity;
 
 @end
 
-@implementation HomePageViewController
+@implementation CZHomeViewController
 
 /**
  *  对象方法,模拟从服务器取得数据
@@ -61,8 +63,10 @@
     activity3.ac_praise_num = 22222;
     activity3.ac_read_num = 33333;
     [self.activity addObject:activity3];
-
+    
 }
+
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -70,19 +74,16 @@
     //模拟从服务器取得数据
     [self getActivityFromServer];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-
 }
 - (void)viewDidLoad {
     [super viewDidLoad];
+    
+    [self createSubViews];
     
     //设置tableHeaderView
     HomeHeaderView *headerView = [HomeHeaderView headerView];
     [headerView setView];
     self.tableView.tableHeaderView = headerView;
-    
-//    NSString *doc = [NSSearchPathForDirectoriesInDomains(NSDocumentDirectory, NSUserDomainMask, YES) lastObject];
-//    NSLog(@"%@", doc);
-    
 }
 
 - (void)didReceiveMemoryWarning {
@@ -93,12 +94,12 @@
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-
+    
     return self.activity.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-
+    
     return 1;
 }
 
@@ -148,10 +149,40 @@
 //选中单元格的点击事件
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    
     CZActivityInfoViewController *activityInfoViewController = [[CZActivityInfoViewController alloc]init];
     activityInfoViewController.title = @"活动介绍";
     [self.navigationController pushViewController:activityInfoViewController animated:YES];
+    
+}
+/**
+ *  创建一个tableView和一个搜索框
+ *
+ */
+- (void)createSubViews
+{
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectZero];
+    self.searchView = [[UIView alloc]initWithFrame:CGRectZero];
+    self.searchView.backgroundColor = [UIColor redColor];
+    [self.view addSubview:self.tableView];
+    [self.view addSubview:self.searchView];
+    
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    
+    [self.searchView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_top).with.offset(64);
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        make.height.mas_equalTo(70.0 / 2);
+    }];
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_top).with.offset(35);
+        make.left.equalTo(self.searchView.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        make.bottom.equalTo(self.view.mas_bottom);
+    }];
+    
     
 }
 
