@@ -48,7 +48,8 @@
     [self.addToSchedule setTitle:@"加入日程" forState:UIControlStateNormal];
     [self.addToSchedule setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:130.0/255.0  blue:5.0/255.0  alpha:1.0]];
     
-    [self.collectionBtn setImage:[UIImage imageNamed:@"shopping"] forState:UIControlStateNormal];
+    [self.collectionBtn setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateNormal];
+    [self.collectionBtn setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateHighlighted];
     [self.collectionBtn setTitle:@"收藏" forState:UIControlStateNormal];
     [self.collectionBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
@@ -138,6 +139,7 @@
         {
             CZTimeCell *cell = [CZTimeCell timeCellWithTableView:tableView];
             cell.acIntroduction = self.activity;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
             return cell;
         }
             break;
@@ -145,12 +147,14 @@
         {
             CZActivityInfoCell *cell = [CZActivityInfoCell activityCellWithTableView:tableView];
             cell.acIntroduction = self.activity;
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
             return cell;
         }
             break;
         default:
         {
             CZActivityDetailCell *cell = [CZActivityDetailCell detailCellWithTableView:tableView];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
             return cell;
         }
             break;

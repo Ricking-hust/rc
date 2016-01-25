@@ -44,7 +44,7 @@
         cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
     }
     
-    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;//去掉Cell之间的分割线
     return cell;
 }
 

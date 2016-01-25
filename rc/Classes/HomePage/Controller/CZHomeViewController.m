@@ -7,17 +7,12 @@
 //
 
 #import "CZHomeViewController.h"
-
-#import "CZActivityInfoViewController.h"
-
 #import "HomeHeaderView.h"
-
 #import "Activitycell.h"
-
 #import "Activity.h"
-
 #import "Masonry.h"
-
+#import "CZActivityInfoViewController.h"
+#import "CZTagSelectViewController.h"
 
 @interface CZHomeViewController ()
 @property(nonatomic, strong) NSMutableArray *activity;
@@ -73,6 +68,7 @@
     
     //模拟从服务器取得数据
     [self getActivityFromServer];
+    
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
 }
 - (void)viewDidLoad {
@@ -149,7 +145,8 @@
 //选中单元格的点击事件
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HomeActivityInfo" bundle:nil];
+//    CZActivityInfoViewController *activityInfoViewController = [storyboard instantiateViewControllerWithIdentifier:@"HomeActivityInfo"];
     CZActivityInfoViewController *activityInfoViewController = [[CZActivityInfoViewController alloc]init];
     activityInfoViewController.title = @"活动介绍";
     [self.navigationController pushViewController:activityInfoViewController animated:YES];
@@ -184,6 +181,13 @@
     }];
     
     
+}
+#pragma mark - 首页导航栏右侧标签选择按钮点击事件
+//首页右侧标签选择器的点击事件
+- (IBAction)tagSelectBtn:(UIButton *)sender {
+    CZTagSelectViewController *tagSelector = [[CZTagSelectViewController alloc]init];
+    tagSelector.title = @"标签选择";
+    [self.navigationController pushViewController:tagSelector animated:YES];
 }
 
 @end

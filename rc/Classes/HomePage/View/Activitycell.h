@@ -34,7 +34,7 @@
  *
  *  @return 返回实例对象本身
  */
-- (instancetype) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifie;
+- (instancetype) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 
 ///**
 // *  实例方法 设置子控件显示的内容

@@ -91,13 +91,11 @@
 {
     CGSize screenSize = [[UIScreen mainScreen]bounds].size;
     UIEdgeInsets padding = UIEdgeInsetsMake(10, 10, 10, 10);
-#pragma mark  - 测试数据
-    NSLog(@"left %f, top %f, rigth %f, bottom %f", padding.left, padding.top, padding.right, padding.bottom);
+
     //1.设置view的尺寸
     self.backgroundColor = [UIColor clearColor];
     [self setFrame:CGRectMake(0, 0, screenSize.width, screenSize.height * 0.25)];
-#pragma mark  - 测试数据
-    NSLog(@"view frame is %f,%f",self.frame.size.width, self.frame.size.height);
+
     //2.设置子控件的尺寸
     //添加图片约束
     [self.ac_poster mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -107,8 +105,7 @@
     }];
     //添加标题约束
     CGSize title = CGSizeMake(screenSize.width * 0.5, MAXFLOAT);
-#pragma mark  - 测试数据
-    NSLog(@"max size is %f,%f",title.width , title.height);
+
     CGSize titleSize = [self sizeWithText:self.ac_title.text maxSize:title fontSize:TITLE_FONTSIZE];
     [self.ac_title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top).with.offset(46.0/2);
@@ -144,8 +141,6 @@
 {
     //计算文本的大小
     CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
-    
-    NSLog(@"width is %f, heigth is %f", nameSize.width, nameSize.height);
     return nameSize;
 }
 

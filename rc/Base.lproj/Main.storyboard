@@ -43,6 +43,7 @@
                             <constraint firstItem="Btv-YY-WNr" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leading" id="ejA-Y9-d6M"/>
                         </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="Item" id="Eq7-Qh-PhM"/>
                     <navigationItem key="navigationItem" title="专栏" id="2e5-6v-Us9"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
@@ -70,6 +71,36 @@
             </objects>
             <point key="canvasLocation" x="0.0" y="0.0"/>
         </scene>
+        <!--城市选择-->
+        <scene sceneID="9Op-mZ-Nc8">
+            <objects>
+                <viewController id="qzR-b3-fz0" customClass="CZCityViewController" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="SHA-mm-0k3"/>
+                        <viewControllerLayoutGuide type="bottom" id="8y2-sW-2LE"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="cVA-wY-hWv">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
+                    </view>
+                    <navigationItem key="navigationItem" title="城市选择" id="urp-uV-f3M">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="d3V-kL-jIw">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="4Se-Ma-Vh0">
+                                <rect key="frame" x="-23" y="-15" width="46" height="30"/>
+                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <state key="normal" image="close"/>
+                                <connections>
+                                    <action selector="cancelSelect:" destination="qzR-b3-fz0" eventType="touchUpInside" id="GlV-Ux-R8h"/>
+                                </connections>
+                            </button>
+                        </barButtonItem>
+                    </navigationItem>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="zI0-Hl-20G" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2323.5" y="-951.75"/>
+        </scene>
         <!--日常-->
         <scene sceneID="H80-Db-G7g">
             <objects>
@@ -85,24 +116,64 @@
                     </view>
                     <navigationItem key="navigationItem" title="日常" id="EVZ-g9-G01">
                         <barButtonItem key="leftBarButtonItem" style="plain" id="tW4-Pq-oNf">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="KxV-rr-Hen">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="KxV-rr-Hen">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                                <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="5" maxY="0.0"/>
+                                <state key="normal" title="武汉" image="more"/>
+                                <connections>
+                                    <segue destination="qzR-b3-fz0" kind="show" id="nNV-AX-FCs"/>
+                                </connections>
                             </button>
                         </barButtonItem>
                         <barButtonItem key="rightBarButtonItem" style="plain" id="7lH-UV-GIH">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="091-lW-zZg">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="091-lW-zZg">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="标签"/>
+                                <connections>
+                                    <segue destination="kIb-w0-ghS" kind="show" id="aHi-Ea-w9h"/>
+                                </connections>
                             </button>
                         </barButtonItem>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1rb-eh-veG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="2347.5" y="-279"/>
+            <point key="canvasLocation" x="2323.5" y="-279"/>
+        </scene>
+        <!--标签选择-->
+        <scene sceneID="3NU-uk-ueY">
+            <objects>
+                <tableViewController id="kIb-w0-ghS" customClass="CZTagSelectViewController" sceneMemberID="viewController">
+                    <tableView key="view" clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="grouped" separatorStyle="default" rowHeight="44" sectionHeaderHeight="18" sectionFooterHeight="18" id="mJY-Yu-BXC">
+                        <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" red="0.93725490199999995" green="0.93725490199999995" blue="0.95686274510000002" alpha="1" colorSpace="calibratedRGB"/>
+                        <connections>
+                            <outlet property="dataSource" destination="kIb-w0-ghS" id="EGe-Ue-DDY"/>
+                            <outlet property="delegate" destination="kIb-w0-ghS" id="r08-Ui-1Xh"/>
+                        </connections>
+                    </tableView>
+                    <toolbarItems/>
+                    <navigationItem key="navigationItem" title="标签选择" id="zT1-m7-06d">
+                        <barButtonItem key="leftBarButtonItem" title="取消" id="Ryj-XK-62j">
+                            <connections>
+                                <action selector="onClickCancel:" destination="kIb-w0-ghS" id="PET-A2-7EV"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" title="确定" id="eGE-rq-fsR">
+                            <connections>
+                                <action selector="onClickConfirm:" destination="kIb-w0-ghS" id="CAx-GH-2Au"/>
+                            </connections>
+                        </barButtonItem>
+                    </navigationItem>
+                    <simulatedToolbarMetrics key="simulatedBottomBarMetrics"/>
+                </tableViewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Sbl-lr-pPh" userLabel="First Responder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="3036" y="-279"/>
         </scene>
         <!--Schedule View Controller-->
         <scene sceneID="MmR-ZB-41h">
@@ -237,7 +308,7 @@
         <!--日常-->
         <scene sceneID="q1J-LC-fLg">
             <objects>
-                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="HWs-MH-9yb" sceneMemberID="viewController">
+                <navigationController automaticallyAdjustsScrollViewInsets="NO" id="HWs-MH-9yb" customClass="CZNavigationViewController" sceneMemberID="viewController">
                     <tabBarItem key="tabBarItem" title="日常" image="shopping" id="mDI-A3-9pY"/>
                     <toolbarItems/>
                     <navigationBar key="navigationBar" contentMode="scaleToFill" id="pbt-lk-yyU">
@@ -255,8 +326,10 @@
         </scene>
     </scenes>
     <resources>
+        <image name="close" width="18" height="18"/>
         <image name="first" width="30" height="30"/>
         <image name="meeting" width="34" height="31"/>
+        <image name="more" width="14" height="8"/>
         <image name="shopping" width="25" height="23"/>
     </resources>
 </document>
