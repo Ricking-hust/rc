@@ -6,19 +6,18 @@
 //  Copyright © 2015年 AlanZhang. All rights reserved.
 //
 
-#import "ColumnViewController.h"
+#import "CZColumnViewController.h"
 
-@interface ColumnViewController ()
-@property (weak, nonatomic) IBOutlet UIImageView *img;
+@interface CZColumnViewController ()
 
 @end
 
-@implementation ColumnViewController
+@implementation CZColumnViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view, typically from a nib.
-    _img.image = [UIImage imageNamed:@"test.jpg"];
+
 }
 
 - (void)didReceiveMemoryWarning {

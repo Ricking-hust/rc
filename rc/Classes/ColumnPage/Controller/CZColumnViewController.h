@@ -1,5 +1,5 @@
 //
-//  SecondViewController.h
+//  CZColumnViewController.h
 //  日常
 //
 //  Created by AlanZhang on 15/12/17.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ColumnViewController : UIViewController
+@interface CZColumnViewController : UIViewController
 
 
 @end

@@ -56,7 +56,7 @@
 		565EF5F81C48EA520067C032 /* Activitycell.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF5F71C48EA520067C032 /* Activitycell.m */; };
 		565EF5FD1C48EAA80067C032 /* ActivityInfoHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF5FA1C48EAA80067C032 /* ActivityInfoHeaderView.m */; };
 		565EF5FE1C48EAA80067C032 /* HomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF5FC1C48EAA80067C032 /* HomeHeaderView.m */; };
-		565EF60C1C48EB3B0067C032 /* ColumnViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF60A1C48EB3B0067C032 /* ColumnViewController.m */; };
+		565EF60C1C48EB3B0067C032 /* CZColumnViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF60A1C48EB3B0067C032 /* CZColumnViewController.m */; };
 		565EF6111C48EB440067C032 /* ScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF60F1C48EB440067C032 /* ScheduleViewController.m */; };
 		565EF6221C48EBA20067C032 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6141C48EBA20067C032 /* DataManager.m */; };
 		565EF6231C48EBA20067C032 /* NSNumber+Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6161C48EBA20067C032 /* NSNumber+Message.m */; };
@@ -216,8 +216,8 @@
 		565EF5FA1C48EAA80067C032 /* ActivityInfoHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityInfoHeaderView.m; sourceTree = "<group>"; };
 		565EF5FB1C48EAA80067C032 /* HomeHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeHeaderView.h; sourceTree = "<group>"; };
 		565EF5FC1C48EAA80067C032 /* HomeHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeHeaderView.m; sourceTree = "<group>"; };
-		565EF6091C48EB3B0067C032 /* ColumnViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ColumnViewController.h; sourceTree = "<group>"; };
-		565EF60A1C48EB3B0067C032 /* ColumnViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ColumnViewController.m; sourceTree = "<group>"; };
+		565EF6091C48EB3B0067C032 /* CZColumnViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZColumnViewController.h; sourceTree = "<group>"; };
+		565EF60A1C48EB3B0067C032 /* CZColumnViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZColumnViewController.m; sourceTree = "<group>"; };
 		565EF60E1C48EB440067C032 /* ScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleViewController.h; sourceTree = "<group>"; };
 		565EF60F1C48EB440067C032 /* ScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleViewController.m; sourceTree = "<group>"; };
 		565EF6131C48EBA20067C032 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
@@ -624,8 +624,8 @@
 		565EF6081C48EB3B0067C032 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				565EF6091C48EB3B0067C032 /* ColumnViewController.h */,
-				565EF60A1C48EB3B0067C032 /* ColumnViewController.m */,
+				565EF6091C48EB3B0067C032 /* CZColumnViewController.h */,
+				565EF60A1C48EB3B0067C032 /* CZColumnViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -899,7 +899,7 @@
 				565EF6651C48EC410067C032 /* SettingTableViewCell.m in Sources */,
 				565EF6551C48EC410067C032 /* MyActivitiesInfoViewController.m in Sources */,
 				561D01FE1C47DA5600E4E013 /* AFAutoPurgingImageCache.m in Sources */,
-				565EF60C1C48EB3B0067C032 /* ColumnViewController.m in Sources */,
+				565EF60C1C48EB3B0067C032 /* CZColumnViewController.m in Sources */,
 				565EF5FE1C48EAA80067C032 /* HomeHeaderView.m in Sources */,
 				561D02061C47DA5600E4E013 /* UIWebView+AFNetworking.m in Sources */,
 				561D020F1C47DA5600E4E013 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
