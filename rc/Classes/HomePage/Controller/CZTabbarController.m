@@ -40,34 +40,119 @@
     item3.selectedImage = [[UIImage imageNamed:@"MyIconSelected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];;
     item3.image = [[UIImage imageNamed:@"MyIconNormal"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     //设置item字体颜色
-    self.tabBar.tintColor = [UIColor colorWithRed:255.0/255.0 green:129.0/255.0 blue:3.0/255.0 alpha:1.0];
-
-//#warning 系统的tabbarbutton 里面小图片 30x30
-//    //自己写一个tabbar 替换 系统Tabbar
-//    //自定义一个tabbar
-//    CZTabbar *mTabbar = [[CZTabbar alloc] initWithFrame:self.tabBar.bounds];
-//    //mTabbar.backgroundColor = [UIColor redColor];
-//    
-//    
-//    //设置代理
-//    mTabbar.delegate = self;
-//    
-//    //把自定义的tabbar添加到 系统的tabbar上
-//    [self.tabBar addSubview:mTabbar];
-//    
-//    UIButton *btn = [[UIButton alloc]init];
-    
-    
+    self.tabBar.tintColor = [UIColor colorWithRed:255.0/255.0 green:129.0/255.0 blue:3.0/255.0 alpha:1.0];    
 }
+/*
+ *自定义控件
+ 1.在initWithFrame初始化的方法，添加子控件
+ 2.layoutSubviews 布局子控件frm
+ */
 
-#pragma mark 自定义Tabbar的代理
--(void)tabbar:(CZTabbar *)tabbar didSelectedFrom:(NSInteger)from to:(NSInteger)to{
-    //切换tabbar控制器的子控件器
-    self.selectedIndex = to;
-    
-}
+/*
+ //调用控件的init方法【[[UIView alloc] init]】 的时候被调用  接着还会调用initWithFrame
+ //-(instancetype)init
+ 
+ 
+ //调用控件的init方法【[[UIView alloc] initWithFrame]】 的时候被调用
+ //-(instancetype)initWithFrame:(CGRect)frame
+ 
+ 
+ //调用控件的创建从xib/storybaord 的时候被调用
+ -(id)initWithCoder:(NSCoder *)aDecoder
+ */
+
+//-(instancetype)initWithFrame:(CGRect)frame{
+//    if (self = [super initWithFrame:frame]) {
+//        //初始化按钮
+//        [self setupBtns];
+//    }
+//
+//    return self;
+//}
 
 
+//#pragma mark 初始化按钮
+//-(void)setupBtns{
+//
+//    //自定义的tabbar添加5个按钮
+//    for (NSInteger i = 0; i < 4; i++) {
+////        // 获取普通状态的图片名称
+////        NSString *normalImg = [NSString stringWithFormat:@"TabBar%ld", i+1];
+////
+////        // 获取选中的图片
+////        NSString *selImg = [NSString stringWithFormat:@"TabBar%ldSel", i + 1];
+//
+//        // 获取普通状态的图片名称
+//        NSString *normalImg = [NSString stringWithFormat:@"shopping"];
+//
+//        // 获取选中的图片
+//        NSString *selImg = [NSString stringWithFormat:@"shopping"];
+//
+//
+//        UIButton *btn = [UIButton buttonWithType:UIButtonTypeCustom];
+//        [btn setBackgroundImage:[UIImage imageNamed:normalImg] forState:UIControlStateNormal];
+//        [btn setBackgroundImage:[UIImage imageNamed:selImg] forState:UIControlStateSelected];
+//
+//
+//        //监听事件
+//        [btn addTarget:self action:@selector(btnClick:) forControlEvents:UIControlEventTouchUpInside];
+//        //绑定tag
+//        btn.tag = i;
+//        [self addSubview:btn];
+//
+//        //默认选中第一个按钮为选中
+//        if (i == 0) {
+//            btn.selected = YES;
+//            self.selectedBtn = btn;
+//        }
+//
+//    }
+//
+//
+//}
+//
+//-(void)layoutSubviews{
+//    [super layoutSubviews];
+//
+//    //布局子控件
+//    //按钮宽度与高度
+////    CGFloat btnW = self.bounds.size.width / 4;
+////    CGFloat btnH = self.bounds.size.height;
+//    CGFloat btnW = 30;
+//    CGFloat btnH = 30;
+//
+//    //自定义的tabbar添加5个按钮
+//    for (NSInteger i = 0; i < 4; i++) {
+//
+//        //获取btn
+//        UIButton *btn = self.subviews[i];
+//
+//        //设置按钮的frm
+//        btn.frame = CGRectMake(btnW * i, 0, btnW, btnH);
+//
+//    }
+//
+//}
+//
+//-(void)btnClick:(UIButton *)btn{
+//
+//    //一点击通知代理
+//    if ([self.delegate respondsToSelector:@selector(tabbar:didSelectedFrom:to:)]) {
+//        [self.delegate tabbar:self didSelectedFrom:self.selectedBtn.tag to:btn.tag];
+//    }
+//
+//#warning 开发过程，首先针对64位开发，苹果开发的应用上架，必需支持64位
+//    NSLog(@"%ld",btn.tag);
+//
+//    //取消之前选中
+//    self.selectedBtn.selected = NO;
+//
+//    //设置当前选中
+//    btn.selected = YES;
+//    self.selectedBtn = btn;
+//
+//
+//}
 
 
 @end

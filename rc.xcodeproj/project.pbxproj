@@ -88,7 +88,6 @@
 		565EF6681C48EC410067C032 /* UserInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6511C48EC410067C032 /* UserInfoCell.m */; };
 		565EF6691C48EC410067C032 /* UserInfoCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 565EF6521C48EC410067C032 /* UserInfoCell.xib */; };
 		565EF66C1C48ED1E0067C032 /* CZTabbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF66B1C48ED1E0067C032 /* CZTabbarController.m */; };
-		565EF66F1C48ED590067C032 /* CZTabbar.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF66E1C48ED590067C032 /* CZTabbar.m */; };
 		56637D6A1C55C4D90000BF46 /* CZTagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56637D691C55C4D90000BF46 /* CZTagCell.xib */; };
 		56637D721C560DA10000BF46 /* CZCityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56637D711C560DA10000BF46 /* CZCityViewController.m */; };
 		56637D751C5611230000BF46 /* CZCityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56637D741C5611230000BF46 /* CZCityView.m */; };
@@ -290,8 +289,6 @@
 		565EF6521C48EC410067C032 /* UserInfoCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = UserInfoCell.xib; sourceTree = "<group>"; };
 		565EF66A1C48ED1E0067C032 /* CZTabbarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTabbarController.h; sourceTree = "<group>"; };
 		565EF66B1C48ED1E0067C032 /* CZTabbarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTabbarController.m; sourceTree = "<group>"; };
-		565EF66D1C48ED590067C032 /* CZTabbar.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTabbar.h; sourceTree = "<group>"; };
-		565EF66E1C48ED590067C032 /* CZTabbar.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTabbar.m; sourceTree = "<group>"; };
 		56637D691C55C4D90000BF46 /* CZTagCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CZTagCell.xib; sourceTree = "<group>"; };
 		56637D701C560DA10000BF46 /* CZCityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCityViewController.h; sourceTree = "<group>"; };
 		56637D711C560DA10000BF46 /* CZCityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCityViewController.m; sourceTree = "<group>"; };
@@ -645,8 +642,6 @@
 		565EF5F51C48E9DB0067C032 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				565EF66D1C48ED590067C032 /* CZTabbar.h */,
-				565EF66E1C48ED590067C032 /* CZTabbar.m */,
 				565EF5F91C48EAA80067C032 /* ActivityInfoHeaderView.h */,
 				565EF5FA1C48EAA80067C032 /* ActivityInfoHeaderView.m */,
 				565EF5FB1C48EAA80067C032 /* HomeHeaderView.h */,
@@ -1007,7 +1002,6 @@
 				561D02061C47DA5600E4E013 /* UIWebView+AFNetworking.m in Sources */,
 				561D020F1C47DA5600E4E013 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				565EF6231C48EBA20067C032 /* NSNumber+Message.m in Sources */,
-				565EF66F1C48ED590067C032 /* CZTabbar.m in Sources */,
 				561D02121C47DA5600E4E013 /* README.md in Sources */,
 				565EF6631C48EC410067C032 /* MyRelease.m in Sources */,
 				561D02051C47DA5600E4E013 /* UIRefreshControl+AFNetworking.m in Sources */,
