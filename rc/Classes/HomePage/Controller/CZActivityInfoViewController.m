@@ -13,6 +13,10 @@
 #import "CZTimeCell.h"
 #import "CZActivityInfoCell.h"
 #import "CZActivityDetailCell.h"
+#import "CZRemindMeView.h"
+#import "UIViewController+LewPopupViewController.h"
+#import "LewPopupViewAnimationSlide.h"
+
 
 @interface CZActivityInfoViewController ()
 
@@ -99,9 +103,10 @@
     [super viewDidLoad];
     
     [self createSubViews];
-    self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
+    //self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
 #pragma mark -  测试数据
-
+    //self.tableView.backgroundColor = [UIColor clearColor];
+    
     self.activity = [ActivityIntroduction acIntroduction];
     [_activity setSubViewsContent];
     
@@ -109,7 +114,6 @@
     ActivityInfoHeaderView *header = [ActivityInfoHeaderView headerView];
     [header setView:_activity];
     self.tableView.tableHeaderView = header;
-    
 }
 
 //左侧按钮的点击事件
@@ -138,6 +142,7 @@
         case 0:
         {
             CZTimeCell *cell = [CZTimeCell timeCellWithTableView:tableView];
+            [cell.remindMeBtn addTarget:self action:@selector(onClickRemindMe:) forControlEvents:UIControlEventTouchUpInside];
             cell.acIntroduction = self.activity;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
             return cell;
@@ -217,7 +222,26 @@
     return view;
 }
 
-
+//弹出提醒视图
+- (void)onClickRemindMe:(UIButton *)btn
+{
+    CZRemindMeView *remindMeView = [CZRemindMeView remindMeView];
+    remindMeView.parentVC = self;
+    [remindMeView setSubView];
+    
+    LewPopupViewAnimationSlide *animation = [[LewPopupViewAnimationSlide alloc]init];
+    animation.type = LewPopupViewAnimationSlideTypeBottomBottom;
+    [self lew_presentPopupView:remindMeView animation:animation dismissed:^{
+        NSLog(@"动画结束");
+    }];
+    [remindMeView.remindBeforeOneDay addTarget:self action:@selector(click) forControlEvents:UIControlEventTouchUpInside];
+    
+    
+}
+- (void)click
+{
+    //[self lew_dismissPopupView];
+}
 
 
 @end

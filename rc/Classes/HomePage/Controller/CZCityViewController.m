@@ -20,152 +20,114 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
+
     [self createCityView];
+#pragma mark - 测试语句
+    NSLog(@"%@",self);
 }
 
 - (void)createCityView
 {
     NSString *str;
     UIImage *img;
-    CGFloat top = 200/2;
-    CGFloat left = 58/2;
-    CGFloat paddingW = 76/2;
-    CGFloat paddingH = 70/2;
-    CGSize size = CGSizeMake(80, 110);
-    
+
+    _bgView = [[UIView alloc]init];
+    _bgView.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:_bgView];
+    [_bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_top).with.offset(74);
+        make.left.and.right.bottom.equalTo(self.view);
+    }];
     //city -- 北京
-    CZCityView *beijing = [CZCityView cityView];
+    _beijing = [CZCityView cityView];
     str = [NSString stringWithFormat:@"city_%d",1];
     img = [UIImage imageNamed:str];
-    beijing.locationImage.image = [UIImage imageNamed:@"location"];
-    [beijing.cityBtn setBackgroundImage:img forState:UIControlStateNormal];
-    [beijing.cityBtn setBackgroundImage:img forState:UIControlStateHighlighted];
-    beijing.cityNameLabel.text = @"北京";
-    [self.view addSubview:beijing];
-
+    _beijing.locationImage.image = [UIImage imageNamed:@"location"];
+    [_beijing.cityBtn setBackgroundImage:img forState:UIControlStateNormal];
+    //[_beijing.cityBtn setBackgroundImage:img forState:UIControlStateHighlighted];
+    [self.beijing.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
+    _beijing.cityNameLabel.text = @"北京";
+    [_beijing setConstraints];
+    [_bgView addSubview:_beijing];
     
     //city -- 广州
-    CZCityView *gangzhou = [CZCityView cityView];
+    _guangzhou = [CZCityView cityView];
     str = [NSString stringWithFormat:@"city_%d",2];
     img = [UIImage imageNamed:str];
-    gangzhou.locationImage.image = [UIImage imageNamed:@"location"];
-    [gangzhou.cityBtn setBackgroundImage:img forState:UIControlStateNormal];
-    [gangzhou.cityBtn setBackgroundImage:img forState:UIControlStateHighlighted];
-    gangzhou.cityNameLabel.text = @"广州";
-    [self.view addSubview:gangzhou];
+    _guangzhou.locationImage.image = [UIImage imageNamed:@"location"];
+    [_guangzhou.cityBtn setBackgroundImage:img forState:UIControlStateNormal];
+    //[_guangzhou.cityBtn setBackgroundImage:img forState:UIControlStateHighlighted];
+    _guangzhou.cityNameLabel.text = @"广州";
+    [_guangzhou setConstraints];
+    [_bgView addSubview:_guangzhou];
+    [self.guangzhou.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
 
-    
     //city -- 上海
-    CZCityView *shanghai = [CZCityView cityView];
+    _shanghai = [CZCityView cityView];
     str = [NSString stringWithFormat:@"city_%d",3];
     img = [UIImage imageNamed:str];
-    shanghai.locationImage.image = [UIImage imageNamed:@"location"];
-    [shanghai.cityBtn setBackgroundImage:img forState:UIControlStateNormal];
-    [shanghai.cityBtn setBackgroundImage:img forState:UIControlStateHighlighted];
-    shanghai.cityNameLabel.text = @"上海";
-    [self.view addSubview:shanghai];
-
+    _shanghai.locationImage.image = [UIImage imageNamed:@"location"];
+    [_shanghai.cityBtn setBackgroundImage:img forState:UIControlStateNormal];
+    //[_shanghai.cityBtn setBackgroundImage:img forState:UIControlStateHighlighted];
+    _shanghai.cityNameLabel.text = @"上海";
+    [_shanghai setConstraints];
+    [_bgView addSubview:_shanghai];
+    [self.shanghai.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
     
     //city -- 武汉
-    CZCityView *wuhan = [CZCityView cityView];
+    _wuhan = [CZCityView cityView];
     str = [NSString stringWithFormat:@"city_%d",4];
     img = [UIImage imageNamed:str];
-    wuhan.locationImage.image = [UIImage imageNamed:@"location"];
-    [wuhan.cityBtn setBackgroundImage:img forState:UIControlStateNormal];
-    [wuhan.cityBtn setBackgroundImage:img forState:UIControlStateHighlighted];
-    wuhan.cityNameLabel.text = @"武汉";
-    [self.view addSubview:wuhan];
+    _wuhan.locationImage.image = [UIImage imageNamed:@"location"];
+    [_wuhan.cityBtn setBackgroundImage:img forState:UIControlStateNormal];
+    //[_wuhan.cityBtn setBackgroundImage:img forState:UIControlStateHighlighted];
+    _wuhan.cityNameLabel.text = @"武汉";
+    [_wuhan setConstraints];
+    [_bgView addSubview:_wuhan];
+    [self.wuhan.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
 
-    if ([[self getCurrentDeviceModel:self]isEqualToString:@"iPhone 4"] ||[[self getCurrentDeviceModel:self] isEqualToString:@"iPhone 5"] || [[self getCurrentDeviceModel:self]isEqualToString:@"iPhone Simulator"])
-    {
-        [beijing mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.view.mas_left).with.offset(left - 15);
-            make.top.equalTo(self.view.mas_top).with.offset(top);
-            make.size.mas_equalTo(size);
-        }];
-        [gangzhou mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(beijing.mas_right).with.offset(paddingW - 15);
-            make.top.equalTo(beijing.mas_top);
-            make.size.mas_equalTo(size);
-        }];
-        [shanghai mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(gangzhou.mas_right).with.offset(paddingW - 15);
-            make.top.equalTo(beijing.mas_top);
-            make.size.mas_equalTo(size);
-        }];
-        [wuhan mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.view.mas_left).with.offset(left - 15);
-            make.top.equalTo(beijing.mas_bottom).with.offset(paddingH);
-            make.size.mas_equalTo(size);
-        }];
-    }else
-    {
-        [beijing mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.view.mas_left).with.offset(left);
-            make.top.equalTo(self.view.mas_top).with.offset(top);
-            make.size.mas_equalTo(size);
-        }];
-        [gangzhou mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(beijing.mas_right).with.offset(paddingW);
-            make.top.equalTo(beijing.mas_top);
-            make.size.mas_equalTo(size);
-        }];
-        [shanghai mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(gangzhou.mas_right).with.offset(paddingW);
-            make.top.equalTo(beijing.mas_top);
-            make.size.mas_equalTo(size);
-        }];
-        [wuhan mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.view.mas_left).with.offset(left);
-            make.top.equalTo(beijing.mas_bottom).with.offset(paddingH);
-            make.size.mas_equalTo(size);
-        }];
-
-    }
+    CGSize screenSize = [[UIScreen mainScreen]bounds].size;
+    CGFloat leftPaddig = 58.0/2.0;
+    CGFloat topPadding = 56.0/2.0 + 64;
+    CGFloat paddingX = screenSize.width * 0.10;
+    CGFloat paddingY = screenSize.width * 0.09;
+    CGFloat cityViewW = screenSize.width * 0.21;
+    CGFloat cityViewH = cityViewW + cityViewW * 0.5;
+    CGSize size = CGSizeMake(cityViewW, cityViewH);
+    
+    [_beijing mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_bgView.mas_left).with.offset(leftPaddig);
+        make.top.equalTo(_bgView.mas_top).with.offset(topPadding-64);
+        make.size.mas_equalTo(size);
+    }];
+    [_guangzhou mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_beijing.mas_right).with.offset(paddingX);
+        make.top.equalTo(_beijing.mas_top);
+        make.size.mas_equalTo(size);
+    }];
+    [_shanghai mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_guangzhou.mas_right).with.offset(paddingX);
+        make.top.equalTo(_beijing.mas_top);
+        make.size.mas_equalTo(size);
+    }];
+    [_wuhan mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(_beijing.mas_left);
+        make.top.equalTo(_beijing.mas_bottom).with.offset(paddingY);
+        make.size.mas_equalTo(size);
+    }];
 }
-
-//获得设备型号
-- (NSString *)getCurrentDeviceModel:(UIViewController *)controller
-{
-    int mib[2];
-    size_t len;
-    char *machine;
-    
-    mib[0] = CTL_HW;
-    mib[1] = HW_MACHINE;
-    sysctl(mib, 2, NULL, &len, NULL, 0);
-    machine = malloc(len);
-    sysctl(mib, 2, machine, &len, NULL, 0);
-    
-    NSString *platform = [NSString stringWithCString:machine encoding:NSASCIIStringEncoding];
-    free(machine);
-    
-    if ([platform isEqualToString:@"iPhone1,1"]) return @"iPhone 2G (A1203)";
-    if ([platform isEqualToString:@"iPhone1,2"]) return @"iPhone 3G (A1241/A1324)";
-    if ([platform isEqualToString:@"iPhone2,1"]) return @"iPhone 3GS (A1303/A1325)";
-    if ([platform isEqualToString:@"iPhone3,1"]) return @"iPhone 4";
-    if ([platform isEqualToString:@"iPhone3,2"]) return @"iPhone 4";
-    if ([platform isEqualToString:@"iPhone3,3"]) return @"iPhone 4";
-    if ([platform isEqualToString:@"iPhone4,1"]) return @"iPhone 4";
-    if ([platform isEqualToString:@"iPhone5,1"]) return @"iPhone 5";
-    if ([platform isEqualToString:@"iPhone5,2"]) return @"iPhone 5";
-    if ([platform isEqualToString:@"iPhone5,3"]) return @"iPhone 5";
-    if ([platform isEqualToString:@"iPhone5,4"]) return @"iPhone 5";
-    if ([platform isEqualToString:@"iPhone6,1"]) return @"iPhone 5";
-    if ([platform isEqualToString:@"iPhone6,2"]) return @"iPhone 5";
-    if ([platform isEqualToString:@"iPhone7,1"]) return @"iPhone 6 Plus";
-    if ([platform isEqualToString:@"iPhone7,2"]) return @"iPhone 6";
-    
-    if ([platform isEqualToString:@"i386"])      return @"iPhone Simulator";
-    if ([platform isEqualToString:@"x86_64"])    return @"iPhone Simulator";
-    return platform;
-}
+#pragma mark - 左侧取消按钮点击事件
 - (IBAction)cancelSelect:(id)sender {
-//    NSString *strModel  = [UIDevice currentDevice].model;
-//    NSLog(@"%@", strModel);
-    NSString *str = [self getCurrentDeviceModel:self];
-    NSLog(@"%@", str);
+
     [self.navigationController popViewControllerAnimated:YES];
+}
+#pragma mark - 城市选择按钮点击事件
+- (void)onClickCity:(UIButton *)btn
+{
+#pragma mark - 测试语句
+    UILabel *label = [btn.superview viewWithTag:10];
+    NSLog(@"%@",label.text);
 }
 
 

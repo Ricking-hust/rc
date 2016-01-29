@@ -13,6 +13,7 @@
 #import "Masonry.h"
 #import "CZActivityInfoViewController.h"
 #import "CZTagSelectViewController.h"
+#import "CZSearchViewController.h"
 
 @interface CZHomeViewController ()
 @property(nonatomic, strong) NSMutableArray *activity;
@@ -71,6 +72,7 @@
     
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
 }
+#pragma mark - viewDidLoad 
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -87,7 +89,7 @@
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark - Table view data source
+#pragma mark - Tableview 数据源
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
     
@@ -126,7 +128,7 @@
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
     UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 10)];
-    view.backgroundColor = [UIColor clearColor];
+    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];;
     return view;
 }
 //section底部间距
@@ -142,7 +144,7 @@
     return view;
 }
 
-//选中单元格的点击事件
+#pragma mark - 单元格的点击事件
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 //    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HomeActivityInfo" bundle:nil];
@@ -152,6 +154,7 @@
     [self.navigationController pushViewController:activityInfoViewController animated:YES];
     
 }
+#pragma mark - 创建首页子控件
 /**
  *  创建一个tableView和一个搜索框
  *
@@ -159,13 +162,56 @@
 - (void)createSubViews
 {
     self.tableView = [[UITableView alloc]initWithFrame:CGRectZero];
-    self.searchView = [[UIView alloc]initWithFrame:CGRectZero];
-    self.searchView.backgroundColor = [UIColor redColor];
+    self.searchView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 70/2)];
+    self.searchView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
     [self.view addSubview:self.searchView];
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
+    
+    //创建搜索框
+    UIView *view = [[UIView alloc]init];
+    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
+    [view.layer setMasksToBounds:YES];//设置按钮的圆角半径不会被遮挡
+    [view.layer setCornerRadius:13];
+    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickSearch:)];
+    [view addGestureRecognizer:tapGesture];
+    
+
+    [self.searchView addSubview:view];
+    
+    UIImageView *img = [[UIImageView alloc]init];
+    img.image = [UIImage imageNamed:@"searchIcon"];
+    [view addSubview:img];
+    
+    CGFloat labelFont = 12;
+    UILabel *label = [[UILabel alloc]init];
+    label.font = [UIFont systemFontOfSize:labelFont];
+    label.tintColor = [UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.5];
+    label.text = @"搜索科技、媒体、互联网";
+    CGSize labelSize = [label.text boundingRectWithSize:CGSizeMake(MAXFLOAT, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:labelFont]} context:nil].size;
+    [view addSubview:label];
+    
+    CGFloat leftPadding = [[UIScreen mainScreen]bounds].size.width *0.08 /2;
+    CGFloat topPadding = self.searchView.frame.size.height * 0.2 / 2;
+    CGSize viewSize = CGSizeMake([[UIScreen mainScreen]bounds].size.width * 0.92, self.searchView.frame.size.height * 0.8);
+
+    [view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.searchView.mas_left).with.offset(leftPadding);
+        make.top.equalTo(self.searchView.mas_top).with.offset(topPadding);
+        make.size.mas_equalTo(viewSize);
+    }];
+    [label mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(view);
+        make.centerX.equalTo(view).with.offset(15);
+        make.size.mas_equalTo(labelSize);
+    }];
+    [img mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(label.mas_top);
+        make.right.equalTo(label.mas_left).with.offset(-6);
+        make.size.mas_equalTo(CGSizeMake(15, 15));
+    }];
     
     [self.searchView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view.mas_top).with.offset(64);
@@ -179,15 +225,14 @@
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
-    
-    
 }
-#pragma mark - 首页导航栏右侧标签选择按钮点击事件
-//首页右侧标签选择器的点击事件
-- (IBAction)tagSelectBtn:(UIButton *)sender {
-    CZTagSelectViewController *tagSelector = [[CZTagSelectViewController alloc]init];
-    tagSelector.title = @"标签选择";
-    [self.navigationController pushViewController:tagSelector animated:YES];
+#pragma mark - 首页搜索框点击事件
+- (void) onClickSearch:(UIView *)view
+{
+    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HomeSearch" bundle:nil];
+    CZSearchViewController *searchViewController = [storyboard instantiateViewControllerWithIdentifier:@"CZSearchViewController"];
+    [self.navigationController pushViewController:searchViewController animated:YES];
 }
+
 
 @end

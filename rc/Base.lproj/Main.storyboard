@@ -13,62 +13,11 @@
                         <viewControllerLayoutGuide type="top" id="L7p-HK-0SC"/>
                         <viewControllerLayoutGuide type="bottom" id="Djb-ko-YwX"/>
                     </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="QS5-Rx-YEW">
+                    <view key="view" tag="33333" contentMode="scaleToFill" id="QS5-Rx-YEW">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <view contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="T5N-jp-HGy">
-                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                            </view>
-                            <scrollView clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="scaleToFill" translatesAutoresizingMaskIntoConstraints="NO" id="rnC-da-usy">
-                                <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                            </scrollView>
-                        </subviews>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="calibratedWhite"/>
-                        <constraints>
-                            <constraint firstItem="rnC-da-usy" firstAttribute="leading" secondItem="T5N-jp-HGy" secondAttribute="leading" id="0u9-Dn-3rl"/>
-                            <constraint firstItem="T5N-jp-HGy" firstAttribute="top" secondItem="L7p-HK-0SC" secondAttribute="bottom" id="A4J-fG-HsS"/>
-                            <constraint firstItem="rnC-da-usy" firstAttribute="top" secondItem="QS5-Rx-YEW" secondAttribute="top" constant="99" id="D7X-KH-sTg"/>
-                            <constraint firstItem="rnC-da-usy" firstAttribute="trailing" secondItem="T5N-jp-HGy" secondAttribute="trailing" id="Vpg-pi-PXw"/>
-                            <constraint firstAttribute="trailing" secondItem="rnC-da-usy" secondAttribute="trailing" id="cKX-Ix-zOI"/>
-                            <constraint firstItem="rnC-da-usy" firstAttribute="top" secondItem="T5N-jp-HGy" secondAttribute="bottom" id="fh5-aG-kIF"/>
-                            <constraint firstItem="rnC-da-usy" firstAttribute="leading" secondItem="QS5-Rx-YEW" secondAttribute="leading" id="hQN-q5-ElV"/>
-                            <constraint firstItem="rnC-da-usy" firstAttribute="bottom" secondItem="Djb-ko-YwX" secondAttribute="top" id="n7p-Tz-Cmh"/>
-                        </constraints>
-                        <variation key="default">
-                            <mask key="subviews">
-                                <exclude reference="T5N-jp-HGy"/>
-                                <exclude reference="rnC-da-usy"/>
-                            </mask>
-                            <mask key="constraints">
-                                <exclude reference="A4J-fG-HsS"/>
-                                <exclude reference="0u9-Dn-3rl"/>
-                                <exclude reference="D7X-KH-sTg"/>
-                                <exclude reference="Vpg-pi-PXw"/>
-                                <exclude reference="cKX-Ix-zOI"/>
-                                <exclude reference="fh5-aG-kIF"/>
-                                <exclude reference="hQN-q5-ElV"/>
-                                <exclude reference="n7p-Tz-Cmh"/>
-                            </mask>
-                        </variation>
-                        <variation key="heightClass=regular-widthClass=compact">
-                            <mask key="subviews">
-                                <include reference="T5N-jp-HGy"/>
-                                <include reference="rnC-da-usy"/>
-                            </mask>
-                            <mask key="constraints">
-                                <include reference="A4J-fG-HsS"/>
-                                <include reference="0u9-Dn-3rl"/>
-                                <include reference="D7X-KH-sTg"/>
-                                <include reference="Vpg-pi-PXw"/>
-                                <include reference="cKX-Ix-zOI"/>
-                                <include reference="fh5-aG-kIF"/>
-                                <include reference="hQN-q5-ElV"/>
-                                <include reference="n7p-Tz-Cmh"/>
-                            </mask>
-                        </variation>
                     </view>
-                    <tabBarItem key="tabBarItem" title="Item" id="Eq7-Qh-PhM"/>
+                    <tabBarItem key="tabBarItem" tag="44444" title="Item" id="Eq7-Qh-PhM"/>
                     <navigationItem key="navigationItem" title="专栏" id="2e5-6v-Us9"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="4Nw-L8-lE0" sceneMemberID="firstResponder"/>
@@ -140,15 +89,16 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="日常" id="EVZ-g9-G01">
-                        <barButtonItem key="leftBarButtonItem" style="plain" id="tW4-Pq-oNf">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="KxV-rr-Hen">
+                        <barButtonItem key="leftBarButtonItem" style="plain" id="1OR-4H-lKd">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="gfJ-bJ-XM9" customClass="CZCityButton">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <inset key="titleEdgeInsets" minX="5" minY="0.0" maxX="0.0" maxY="0.0"/>
-                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="5" maxY="0.0"/>
-                                <state key="normal" title="武汉" image="more"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
+                                <state key="normal" title="武汉" image="morCity">
+                                    <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
+                                </state>
                                 <connections>
-                                    <segue destination="qzR-b3-fz0" kind="show" id="nNV-AX-FCs"/>
+                                    <segue destination="qzR-b3-fz0" kind="show" id="18z-bX-v9z"/>
                                 </connections>
                             </button>
                         </barButtonItem>
@@ -156,6 +106,7 @@
                             <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="right" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" id="091-lW-zZg">
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="14"/>
                                 <state key="normal" title="标签"/>
                                 <connections>
                                     <segue destination="kIb-w0-ghS" kind="show" id="aHi-Ea-w9h"/>
@@ -354,7 +305,7 @@
         <image name="close" width="18" height="18"/>
         <image name="first" width="21" height="21"/>
         <image name="meeting" width="34" height="31"/>
-        <image name="more" width="14" height="8"/>
+        <image name="morCity" width="14" height="8"/>
         <image name="shopping" width="25" height="23"/>
     </resources>
 </document>

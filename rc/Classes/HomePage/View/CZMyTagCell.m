@@ -21,7 +21,7 @@
     }
     
     //设置行高
-    cell.rowHeight = 200;
+    cell.rowHeight = 50;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
 
     return cell;

@@ -7,6 +7,7 @@
 //
 
 #import "CZNavigationViewController.h"
+#import "UINavigationBar+Awesome.h"
 
 @interface CZNavigationViewController ()
 
@@ -18,11 +19,16 @@
     [super viewDidLoad];
     NSLog(@"%s",__func__);
     
+//    [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
+//    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+    
 }
 
 #pragma mark 类第一次使用的时候被调用
 +(void)initialize{
     NSLog(@"%s",__func__);
+    
+
     
     // 设置主题
     
@@ -42,6 +48,8 @@
     UINavigationBar *navBar = [UINavigationBar appearance];
     //[navBar setBackgroundImage:[UIImage imageNamed:@"NavBar64"] forBarMetrics:UIBarMetricsDefault];
     
+        [navBar lt_setBackgroundColor:[UIColor whiteColor]];
+        [navBar setShadowImage:[UIImage new]];
     // 2.UIApplication设置状态栏的样式
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     

@@ -86,9 +86,9 @@
 - (void) setSubView
 {
     CGSize size = CGSizeMake(140/2, 60/2);
-    if ([[self getCurrentDeviceModel:self]isEqualToString:@"iPhone 4"] ||
-        [[self getCurrentDeviceModel:self]isEqualToString:@"iPhone 5"] ||
-        [[self getCurrentDeviceModel:self]isEqualToString:@"iPhone Simulator"])
+    if ([[self getCurrentDeviceModel]isEqualToString:@"iPhone 4"] ||
+        [[self getCurrentDeviceModel]isEqualToString:@"iPhone 5"] ||
+        [[self getCurrentDeviceModel]isEqualToString:@"iPhone Simulator"])
     {
         [self.bStartupBtn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).with.offset(15);
@@ -214,7 +214,7 @@
     btn.titleLabel.font = [UIFont systemFontOfSize:13];
 }
 //获得设备型号
-- (NSString *)getCurrentDeviceModel:(CZTagCell *)cell
+- (NSString *)getCurrentDeviceModel
 {
     int mib[2];
     size_t len;

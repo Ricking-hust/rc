@@ -59,9 +59,15 @@
 - (void) setView:(Activity*) activity
 {
     //设置背景色透明
-    self.backgroundColor = [UIColor clearColor];
+    //self.backgroundColor = [UIColor clearColor];
+
+#pragma mark - 测试函数
+
     UIImage *image= [UIImage imageNamed:activity.ac_poster];
-    self.ac_poster.image = image;
+#pragma mark - 测试语句
+    //self.ac_poster.image = image;
+    self.ac_poster.image = [UIImage imageNamed:@"img_1"];
+   
     
     self.ac_title.text = activity.ac_title;
     self.ac_title.font = [UIFont systemFontOfSize:TITLE_FONTSIZE];

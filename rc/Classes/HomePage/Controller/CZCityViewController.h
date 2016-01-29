@@ -8,9 +8,14 @@
 
 #import <UIKit/UIKit.h>
 
+@class CZCityView;
 @interface CZCityViewController : UIViewController
-//<UITableViewDelegate, UITableViewDataSource>
-//@property (nonatomic, strong) UITableView *tableView;
-//@property (nonatomic, strong) UIView *searchView;
+
+@property (nonatomic, strong) CZCityView *beijing;
+@property (nonatomic, strong) CZCityView *shanghai;
+@property (nonatomic, strong) CZCityView *guangzhou;
+@property (nonatomic, strong) CZCityView *wuhan;
+@property (nonatomic, strong) UIView *bgView;
+
 
 @end
