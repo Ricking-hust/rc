@@ -107,7 +107,6 @@
 		56E2AAAD1C59E229009371F7 /* CZSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E2AAAC1C59E229009371F7 /* CZSearchViewController.m */; };
 		56E470041C5721210056BE17 /* CZToolButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E470031C5721210056BE17 /* CZToolButton.m */; };
 		56E470071C5735900056BE17 /* CZCityButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E470061C5735900056BE17 /* CZCityButton.m */; };
-		56E470091C57492C0056BE17 /* CZActivityOfColumn.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56E470081C57492C0056BE17 /* CZActivityOfColumn.xib */; };
 		56E4700C1C5749450056BE17 /* CZActivityOfColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E4700B1C5749450056BE17 /* CZActivityOfColumn.m */; };
 		56E470131C5750720056BE17 /* CZAcitivityModelOfColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E470121C5750720056BE17 /* CZAcitivityModelOfColumn.m */; };
 		56E842781C4B88BC00D1D198 /* ActivityIntroduction.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E842771C4B88BC00D1D198 /* ActivityIntroduction.m */; };
@@ -325,7 +324,6 @@
 		56E470031C5721210056BE17 /* CZToolButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZToolButton.m; sourceTree = "<group>"; };
 		56E470051C5735900056BE17 /* CZCityButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCityButton.h; sourceTree = "<group>"; };
 		56E470061C5735900056BE17 /* CZCityButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCityButton.m; sourceTree = "<group>"; };
-		56E470081C57492C0056BE17 /* CZActivityOfColumn.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CZActivityOfColumn.xib; sourceTree = "<group>"; };
 		56E4700A1C5749450056BE17 /* CZActivityOfColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZActivityOfColumn.h; sourceTree = "<group>"; };
 		56E4700B1C5749450056BE17 /* CZActivityOfColumn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZActivityOfColumn.m; sourceTree = "<group>"; };
 		56E470111C5750720056BE17 /* CZAcitivityModelOfColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZAcitivityModelOfColumn.h; sourceTree = "<group>"; };
@@ -815,7 +813,6 @@
 			children = (
 				56E470021C5721210056BE17 /* CZToolButton.h */,
 				56E470031C5721210056BE17 /* CZToolButton.m */,
-				56E470081C57492C0056BE17 /* CZActivityOfColumn.xib */,
 				56E4700A1C5749450056BE17 /* CZActivityOfColumn.h */,
 				56E4700B1C5749450056BE17 /* CZActivityOfColumn.m */,
 			);
@@ -947,7 +944,6 @@
 				565EF6691C48EC410067C032 /* UserInfoCell.xib in Resources */,
 				565EF6641C48EC410067C032 /* MyRelease.xib in Resources */,
 				565EF6621C48EC410067C032 /* MyCollect.xib in Resources */,
-				56E470091C57492C0056BE17 /* CZActivityOfColumn.xib in Resources */,
 				561D02191C47DA5600E4E013 /* Chile.png in Resources */,
 				56637D6A1C55C4D90000BF46 /* CZTagCell.xib in Resources */,
 				565EF65D1C48EC410067C032 /* ActivitiesInfo.xib in Resources */,

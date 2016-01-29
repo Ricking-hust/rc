@@ -32,14 +32,12 @@
     [super viewDidLoad];
     
     self.activities = [[NSMutableArray alloc]init];
-    self.view.backgroundColor = [UIColor colorWithRed:229.0/255.0 green:229.0/255.0  blue:229.0/255.0  alpha:1.0];
+    self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
 #pragma mark - 测试数据
     [self getData];
     
     //创建子控件
-    //[self createSubView];
-    
-    [self createToolButtons];
+    [self createSubView];
     
 
 }
@@ -61,11 +59,11 @@
         _toolScrollView.showsHorizontalScrollIndicator = NO;
         _toolScrollView.showsVerticalScrollIndicator = NO;
         [self.view addSubview:_toolScrollView ];
-//        [_toolScrollView  mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.left.equalTo(self.view);
-//            make.top.equalTo(self.view.mas_top).offset(68);
-//            make.size.mas_equalTo(CGSizeMake([[UIScreen mainScreen]bounds].size.width, 100));
-//        }];
+        [_toolScrollView  mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.view);
+            make.top.equalTo(self.view.mas_top).offset(68);
+            make.size.mas_equalTo(CGSizeMake([[UIScreen mainScreen]bounds].size.width, 100));
+        }];
     }
     return _toolScrollView;
 }
@@ -102,14 +100,14 @@
 - (void) createSubView
 {
     //创建工具条按钮
-    [self createToolButtons];
+    [self showToolButtons];
 
     //将活动添加到滚动条中
-    [self createActivityView];
+    [self showActivityView];
 
 }
 //创建工具条按钮
-- (void)createToolButtons
+- (void)showToolButtons
 {
     
     CGRect rect = [[UIScreen mainScreen]bounds];
@@ -117,11 +115,6 @@
     CGFloat topPadding = 5;
     CGFloat padding = rect.size.width * 0.07;
     
-    [self.toolScrollView  mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view);
-        make.top.equalTo(self.view.mas_top).offset(68);
-        make.size.mas_equalTo(CGSizeMake([[UIScreen mainScreen]bounds].size.width, 100));
-    }];
     //设置工具条的水平滚动范围
     CGFloat horizontalContentSize = self.array.count*30 + (self.array.count - 1)*padding + leftPadding;
     self.toolScrollView.contentSize = CGSizeMake(horizontalContentSize, 0);
@@ -137,37 +130,6 @@
         }];
 
     }
- 
-
-    
-//    //根据设备设置按钮
-//    if ([[self getCurrentDeviceModel]isEqualToString:@"iPhone 4"] ||
-//        [[self getCurrentDeviceModel]isEqualToString:@"iPhone 5"] )
-//    {//设备为iphone4与iphone 5时，工具条有5个按钮
-//        
-//        for (int i = 0; i<self.array.count; i++)
-//        {
-//            if (i < 5)
-//            {
-//                CZToolButton *btn = [[CZToolButton alloc]initWithTittle:self.array[i]];
-//                [btn addTarget:self action:@selector(onClickTooBtn:) forControlEvents:UIControlEventTouchUpInside];
-//                [self.toolView addSubview:btn];
-//                [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-//                    make.left.equalTo(self.toolView.mas_left).with.offset(leftPadding + i *padding);
-//                    make.top.equalTo(self.toolView.mas_top).with.offset(topPadding);
-//                }];
-//            }
-//
-//        }
-//        
-//    }else if([[self getCurrentDeviceModel]isEqualToString:@"iPhone 6"] ||
-//             [[self getCurrentDeviceModel]isEqualToString:@"iPhone Simulator"])
-//    {//设备为iphone 6时，工具条有6个按钮
-//        
-//    }else
-//    {//设备为iphone 6 plus时，工具条有6个按钮
-//        
-//    }
 }
 #pragma mark - 模拟取得数据
 - (void)getData
@@ -194,8 +156,8 @@
     [self.navigationController pushViewController:tagViewController animated:YES];
 }
 
-//显示活动
-- (void) createActivityView
+#pragma mark -
+- (void) showActivityView
 {
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickAcView:)];
     UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickAcView:)];

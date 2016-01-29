@@ -20,17 +20,15 @@
 
 + (instancetype)activityView
 {
-    //从xib中加载subview
-    NSBundle *bundle = [NSBundle mainBundle];
-    //加载xib中得view
-    CZActivityOfColumn *acView = [[bundle loadNibNamed:@"CZActivityOfColumn" owner:nil options:nil] lastObject];
-    
+    CZActivityOfColumn *acView = [[CZActivityOfColumn alloc]init];
+    acView.backgroundColor = [UIColor whiteColor];
+    [acView createSubViews];
     //添加四个边阴影
     CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
-    CGColorRef color = CGColorCreate(colorSpaceRef, (CGFloat[]){200/255 ,199/255,204/255,0.8});
+    CGColorRef color = CGColorCreate(colorSpaceRef, (CGFloat[]){191.0/255.0 ,191.0/255.0,191.0/255.0,1.0});
     acView.layer.shadowColor = color;//阴影颜色
-    acView.layer.shadowOffset = CGSizeMake(0, 0);//偏移距离
-    acView.layer.shadowOpacity = 0.5;//不透明度
+    acView.layer.shadowOffset = CGSizeMake(1, 0);//偏移距离
+    acView.layer.shadowOpacity = 0.8;//不透明度
     acView.layer.shadowRadius = 1.0;//半径
     
     return acView;
@@ -55,8 +53,10 @@
     const CGFloat IMAGE_W  = rect.size.width * 0.44;
     const CGFloat IMAGE_H = IMAGE_W * 0.75;
     
-    CGFloat leftPadding = 20/2;
-    CGFloat topPadding = 20/2;
+
+    CGFloat labelMaxWidth = IMAGE_W * 0.88;
+    CGFloat leftPadding = labelMaxWidth * 0.12/2;
+    CGFloat topPadding = leftPadding;
     CGFloat paddingOfNameAndTime = 5;
     CGFloat paddingOfPlaceAndTagImage = 10;
 
@@ -69,11 +69,11 @@
     //添加Name约束
     self.acName.font = [UIFont systemFontOfSize:TITTLE_FONTSIZE];
     self.acName.numberOfLines = 0;
-    CGSize nameSize = [self sizeWithText:self.acName.text maxSize:CGSizeMake(IMAGE_W-20, MAXFLOAT) fontSize:TITTLE_FONTSIZE];
+    CGSize nameSize = [self sizeWithText:self.acName.text maxSize:CGSizeMake(labelMaxWidth, MAXFLOAT) fontSize:TITTLE_FONTSIZE];
     [self.acName mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).with.offset(leftPadding);
         make.top.equalTo(self.acImage.mas_bottom).with.offset(topPadding);
-        make.size.mas_equalTo(CGSizeMake(144, 34));
+        make.size.mas_equalTo(CGSizeMake(nameSize.width, nameSize.height+2));
     }];
     
     //添加time约束
@@ -83,7 +83,7 @@
     [self.acTime mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.acName.mas_left);
         make.top.equalTo(self.acName.mas_bottom).with.offset(paddingOfNameAndTime);
-        make.size.mas_equalTo(timeSize);
+        make.size.mas_equalTo(CGSizeMake(timeSize.width, timeSize.height+2));
     }];
     //添加place约束
     self.acPlace.font = [UIFont systemFontOfSize:PLACE_FONTSIZE];
@@ -92,7 +92,7 @@
     [self.acPlace mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.acName.mas_left);
         make.top.equalTo(self.acTime.mas_bottom);
-        make.size.mas_equalTo(placeSize);
+        make.size.mas_equalTo(CGSizeMake(placeSize.width, placeSize.height+2));
     }];
     //添加tagImage约束
     [self.acTagImage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -107,14 +107,14 @@
     [self.acTag mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.acTagImage.mas_right).with.offset(10);
         make.top.equalTo(self.acTagImage.mas_top).with.offset(2);
-        make.size.mas_equalTo(tagSize);
+        make.size.mas_equalTo(CGSizeMake(tagSize.width, tagSize.height+2));
     }];
-    self.heigth = IMAGE_H + nameSize.height + timeSize.height + placeSize.height + tagSize.height + 60;
+    self.heigth = IMAGE_H + nameSize.height + timeSize.height + placeSize.height + tagSize.height + self.acTagImage.image.size.height + 30;
     self.width = IMAGE_W;
 }
 
-//从nib中加载完后创建子控件
-- (void) awakeFromNib
+//创建子控件
+- (void) createSubViews
 {
     self.acImage = [[UIImageView alloc]initWithFrame:CGRectZero];
     [self addSubview:self.acImage];

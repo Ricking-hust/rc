@@ -22,7 +22,7 @@
 {
     self.ac_id = 1111;
     self.ac_poster = @"activityImage";
-    self.ac_title = @"2015年苹果开发都大会";
+    self.ac_title = @"2015年苹果开发都大会苹果开发都大会果开发都大会苹";
     self.ac_time = @"时间：2015.1.1 14:00 AM";
     self.ac_place = @"地点：光谷体育馆";
     self.ac_tags = @"相亲 单身";
