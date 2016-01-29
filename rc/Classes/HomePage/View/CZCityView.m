@@ -13,11 +13,6 @@
 
 + (instancetype)cityView
 {
-//    //从xib中加载subview
-//    NSBundle *bundle = [NSBundle mainBundle];
-//    //加载xib中得view
-//    CZCityView *cityView = [[bundle loadNibNamed:@"CZCityView" owner:nil options:nil] lastObject];
-
     CZCityView *cityView = [[CZCityView alloc]init];
     cityView.cityBtn = [[UIButton alloc]init];
     cityView.locationImage = [[UIImageView alloc]init];

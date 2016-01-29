@@ -92,7 +92,6 @@
 		56637D6A1C55C4D90000BF46 /* CZTagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56637D691C55C4D90000BF46 /* CZTagCell.xib */; };
 		56637D721C560DA10000BF46 /* CZCityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56637D711C560DA10000BF46 /* CZCityViewController.m */; };
 		56637D751C5611230000BF46 /* CZCityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56637D741C5611230000BF46 /* CZCityView.m */; };
-		56637D771C5611360000BF46 /* CZCityView.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56637D761C5611360000BF46 /* CZCityView.xib */; };
 		56814C131C58963200CB60D6 /* CZTagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56814C121C58963200CB60D6 /* CZTagViewController.m */; };
 		56814C161C58A64600CB60D6 /* CZRemindMeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56814C151C58A64600CB60D6 /* CZRemindMeView.m */; };
 		56814C241C58A76E00CB60D6 /* LewPopupBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56814C191C58A76E00CB60D6 /* LewPopupBackgroundView.m */; };
@@ -298,7 +297,6 @@
 		56637D711C560DA10000BF46 /* CZCityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCityViewController.m; sourceTree = "<group>"; };
 		56637D731C5611230000BF46 /* CZCityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCityView.h; sourceTree = "<group>"; };
 		56637D741C5611230000BF46 /* CZCityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCityView.m; sourceTree = "<group>"; };
-		56637D761C5611360000BF46 /* CZCityView.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CZCityView.xib; sourceTree = "<group>"; };
 		56814C111C58963200CB60D6 /* CZTagViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTagViewController.h; sourceTree = "<group>"; };
 		56814C121C58963200CB60D6 /* CZTagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTagViewController.m; sourceTree = "<group>"; };
 		56814C141C58A64600CB60D6 /* CZRemindMeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZRemindMeView.h; sourceTree = "<group>"; };
@@ -668,7 +666,6 @@
 				56637D691C55C4D90000BF46 /* CZTagCell.xib */,
 				56637D731C5611230000BF46 /* CZCityView.h */,
 				56637D741C5611230000BF46 /* CZCityView.m */,
-				56637D761C5611360000BF46 /* CZCityView.xib */,
 				56E470051C5735900056BE17 /* CZCityButton.h */,
 				56E470061C5735900056BE17 /* CZCityButton.m */,
 				56814C141C58A64600CB60D6 /* CZRemindMeView.h */,
@@ -962,7 +959,6 @@
 				561D01D01C47DA5600E4E013 /* Assets.xcassets in Resources */,
 				561D010D1C47D94C00E4E013 /* Main.storyboard in Resources */,
 				561D02161C47DA5600E4E013 /* 1.png in Resources */,
-				56637D771C5611360000BF46 /* CZCityView.xib in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

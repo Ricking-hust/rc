@@ -9,9 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface CZCityView : UIView
-//@property (weak, nonatomic) IBOutlet UIButton *cityBtn;
-//@property (weak, nonatomic) IBOutlet UIImageView *locationImage;
-//@property (weak, nonatomic) IBOutlet UILabel *cityNameLabel;
+
 @property (strong, nonatomic)  UIButton *cityBtn;
 @property (strong, nonatomic)  UIImageView *locationImage;
 @property (strong, nonatomic)  UILabel *cityNameLabel;

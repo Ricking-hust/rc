@@ -167,7 +167,7 @@
                                 <rect key="frame" x="-23" y="-15" width="46" height="30"/>
                                 <state key="normal" title="Button"/>
                                 <variation key="heightClass=regular-widthClass=compact" fixedFrame="YES">
-                                    <rect key="frame" x="98" y="152" width="46" height="30"/>
+                                    <rect key="frame" x="163" y="160" width="46" height="30"/>
                                 </variation>
                             </button>
                         </subviews>
