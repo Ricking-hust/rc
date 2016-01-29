@@ -7,7 +7,6 @@
 //
 
 #import "CZTabbarController.h"
-#import "CZTabbar.h"
 
 @interface CZTabbarController ()
 
