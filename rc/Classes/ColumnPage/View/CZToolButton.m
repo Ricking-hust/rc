@@ -26,7 +26,7 @@
     btn.titleLabel.font = [UIFont systemFontOfSize:TITTLEFONTSIZE];
     UIColor *color = [UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.8];
     [btn setTitleColor:color forState:UIControlStateNormal];
-    [btn setFrame:CGRectMake(0, 0, 30, 30)];
+    //[btn setFrame:CGRectMake(0,0, 30, 30)];
     btn.titleLabel.textAlignment = NSTextAlignmentCenter;
 
     //设置图片

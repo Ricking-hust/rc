@@ -31,6 +31,8 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
+    UIView *temp = [[UIView alloc]init];
+    [self.view addSubview:temp];
     self.activities = [[NSMutableArray alloc]init];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
 #pragma mark - 测试数据
@@ -53,17 +55,13 @@
 - (UIScrollView *)toolScrollView
 {
     if (!_toolScrollView) {
-        _toolScrollView = [[UIScrollView alloc]init];
+         CGRect rect = [[UIScreen mainScreen]bounds];
+        _toolScrollView  = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 68, rect.size.width, 35)];
         _toolScrollView.backgroundColor = [UIColor whiteColor];
         //设置分布滚动，去掉水平和垂直滚动条
         _toolScrollView.showsHorizontalScrollIndicator = NO;
         _toolScrollView.showsVerticalScrollIndicator = NO;
         [self.view addSubview:_toolScrollView ];
-        [_toolScrollView  mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.view);
-            make.top.equalTo(self.view.mas_top).offset(68);
-            make.size.mas_equalTo(CGSizeMake([[UIScreen mainScreen]bounds].size.width, 100));
-        }];
     }
     return _toolScrollView;
 }
@@ -92,11 +90,11 @@
 - (NSArray *)array
 {
     if (!_array) {
-        _array = [NSArray arrayWithObjects:@"创业", @"讲座", @"金融",@"设计",@"资讯",@"联网", nil];
+        _array = [NSArray arrayWithObjects:@"创业", @"讲座", @"金融",@"设计",@"资讯",@"联网",@"设计",@"资讯",@"联网" ,nil];
     }
     return  _array;
 }
- //创建子控件
+#pragma mark - 创建子控件，显示数据
 - (void) createSubView
 {
     //创建工具条按钮
@@ -112,18 +110,20 @@
     
     CGRect rect = [[UIScreen mainScreen]bounds];
     CGFloat leftPadding = 10;
-    CGFloat topPadding = 5;
+    CGFloat topPadding = (self.toolScrollView.frame.size.height - 30)/2;
     CGFloat padding = rect.size.width * 0.07;
     
     //设置工具条的水平滚动范围
-    CGFloat horizontalContentSize = self.array.count*30 + (self.array.count - 1)*padding + leftPadding;
+    CGFloat horizontalContentSize = self.array.count*30 + (self.array.count - 1)*padding + leftPadding + 10;
     self.toolScrollView.contentSize = CGSizeMake(horizontalContentSize, 0);
     for (int i = 0; i<self.array.count; i++)
     {
         CZToolButton *btn = [[CZToolButton alloc]initWithTittle:self.array[i]];
+        [btn setFrame:CGRectMake(0, 5, 30, 30)];
         CGFloat ofButtonPadding = i * (padding+btn.frame.size.width) + leftPadding;
         [btn addTarget:self action:@selector(onClickTooBtn:) forControlEvents:UIControlEventTouchUpInside];
         [self.toolScrollView addSubview:btn];
+
         [btn mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.toolScrollView.mas_left).with.offset(ofButtonPadding);
             make.top.equalTo(self.toolScrollView.mas_top).with.offset(topPadding);

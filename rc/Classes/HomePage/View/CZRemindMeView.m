@@ -10,7 +10,7 @@
 #import "UIViewController+LewPopupViewController.h"
 #import "LewPopupViewAnimationSlide.h"
 #import "Masonry.h"
-#import "CZRemindTimeButtom.h"
+#import "CZRemindTimeButton.h"
 
 
 @implementation CZRemindMeView
@@ -25,12 +25,17 @@
     [remindMe addSubview:remindMe.label];
     
     //创建提醒按钮
-    remindMe.remindBeforeOneDay = [[CZRemindTimeButtom alloc]init];
+    remindMe.remindBeforeOneDay = [[CZRemindTimeButton alloc]init];
     remindMe.remindBeforeOneDay.highlighted = YES;      //默认选中
+    [remindMe.remindBeforeOneDay setTag:11];
+    
     [remindMe addSubview:remindMe.remindBeforeOneDay];
-    remindMe.remindBeforeTwoDay = [[CZRemindTimeButtom alloc]init];
+    remindMe.remindBeforeTwoDay = [[CZRemindTimeButton alloc]init];
+    [remindMe.remindBeforeTwoDay setTag:12];
+    
     [remindMe addSubview:remindMe.remindBeforeTwoDay];
-    remindMe.remindBeforeThreeDay = [[CZRemindTimeButtom alloc]init];
+    remindMe.remindBeforeThreeDay = [[CZRemindTimeButton alloc]init];
+    [remindMe.remindBeforeThreeDay setTag:13];
     [remindMe addSubview:remindMe.remindBeforeThreeDay];
     
     //创建上分割线
@@ -44,6 +49,7 @@
     //创建确定按钮
     remindMe.OKbtn = [[UIButton alloc]init];
     [remindMe addSubview:remindMe.OKbtn];
+    [remindMe.OKbtn setTag:14];
     
     return remindMe;
 }
@@ -88,12 +94,6 @@
     [self.OKbtn setTitle:@"确定" forState:UIControlStateNormal];
     self.OKbtn.titleLabel.font = [UIFont systemFontOfSize:18];
     [self.OKbtn setTitleColor:[UIColor colorWithRed:255.0/255.0 green:129.0/255.0 blue:3.0/255.0 alpha:1.0] forState:UIControlStateNormal];
-    
-    [self.remindBeforeOneDay addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [self.remindBeforeTwoDay addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.remindBeforeThreeDay addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
-    [self.OKbtn addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
     
     //设置子控件的约束
     [self setConstraints];
@@ -155,12 +155,6 @@
         make.height.mas_equalTo(OKHeigth);
         make.width.mas_equalTo([[UIScreen mainScreen]bounds].size.width);
     }];
-    
-    
-}
-- (void)onClick:(UIButton *)btn
-{
-    
 }
 
 @end

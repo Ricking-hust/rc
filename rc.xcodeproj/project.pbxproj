@@ -99,10 +99,12 @@
 		56814C271C58A76E00CB60D6 /* LewPopupViewAnimationSlide.m in Sources */ = {isa = PBXBuildFile; fileRef = 56814C1F1C58A76E00CB60D6 /* LewPopupViewAnimationSlide.m */; };
 		56814C281C58A76E00CB60D6 /* LewPopupViewAnimationSpring.m in Sources */ = {isa = PBXBuildFile; fileRef = 56814C211C58A76E00CB60D6 /* LewPopupViewAnimationSpring.m */; };
 		56814C291C58A76E00CB60D6 /* UIViewController+LewPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56814C231C58A76E00CB60D6 /* UIViewController+LewPopupViewController.m */; };
+		56B83C191C608D0C005FF427 /* CZTimeCourseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B83C171C608D0C005FF427 /* CZTimeCourseCell.m */; };
+		56B83C1D1C609C2D005FF427 /* CZData.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B83C1C1C609C2D005FF427 /* CZData.m */; };
 		56D7FB2C1C579511003247AF /* UINavigationBar+Awesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 56D7FB2B1C579511003247AF /* UINavigationBar+Awesome.m */; };
 		56DF01F01C4915CD00E80DFA /* CZNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56DF01EF1C4915CD00E80DFA /* CZNavigationViewController.m */; };
 		56DF02321C49356100E80DFA /* CZActivityInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56DF02311C49356100E80DFA /* CZActivityInfoViewController.m */; };
-		56E2AAA81C59A964009371F7 /* CZRemindTimeButtom.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E2AAA71C59A964009371F7 /* CZRemindTimeButtom.m */; };
+		56E2AAA81C59A964009371F7 /* CZRemindTimeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E2AAA71C59A964009371F7 /* CZRemindTimeButton.m */; };
 		56E2AAAA1C59DEA1009371F7 /* HomeSearch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56E2AAA91C59DEA1009371F7 /* HomeSearch.storyboard */; };
 		56E2AAAD1C59E229009371F7 /* CZSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E2AAAC1C59E229009371F7 /* CZSearchViewController.m */; };
 		56E470041C5721210056BE17 /* CZToolButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E470031C5721210056BE17 /* CZToolButton.m */; };
@@ -309,14 +311,18 @@
 		56814C211C58A76E00CB60D6 /* LewPopupViewAnimationSpring.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LewPopupViewAnimationSpring.m; sourceTree = "<group>"; };
 		56814C221C58A76E00CB60D6 /* UIViewController+LewPopupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIViewController+LewPopupViewController.h"; sourceTree = "<group>"; };
 		56814C231C58A76E00CB60D6 /* UIViewController+LewPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+LewPopupViewController.m"; sourceTree = "<group>"; };
+		56B83C161C608D0C005FF427 /* CZTimeCourseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTimeCourseCell.h; sourceTree = "<group>"; };
+		56B83C171C608D0C005FF427 /* CZTimeCourseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTimeCourseCell.m; sourceTree = "<group>"; };
+		56B83C1B1C609C2D005FF427 /* CZData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZData.h; sourceTree = "<group>"; };
+		56B83C1C1C609C2D005FF427 /* CZData.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZData.m; sourceTree = "<group>"; };
 		56D7FB2A1C579511003247AF /* UINavigationBar+Awesome.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UINavigationBar+Awesome.h"; sourceTree = "<group>"; };
 		56D7FB2B1C579511003247AF /* UINavigationBar+Awesome.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UINavigationBar+Awesome.m"; sourceTree = "<group>"; };
 		56DF01EE1C4915CD00E80DFA /* CZNavigationViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZNavigationViewController.h; sourceTree = "<group>"; };
 		56DF01EF1C4915CD00E80DFA /* CZNavigationViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZNavigationViewController.m; sourceTree = "<group>"; };
 		56DF02301C49356100E80DFA /* CZActivityInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZActivityInfoViewController.h; sourceTree = "<group>"; };
 		56DF02311C49356100E80DFA /* CZActivityInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZActivityInfoViewController.m; sourceTree = "<group>"; };
-		56E2AAA61C59A964009371F7 /* CZRemindTimeButtom.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZRemindTimeButtom.h; sourceTree = "<group>"; };
-		56E2AAA71C59A964009371F7 /* CZRemindTimeButtom.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZRemindTimeButtom.m; sourceTree = "<group>"; };
+		56E2AAA61C59A964009371F7 /* CZRemindTimeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZRemindTimeButton.h; sourceTree = "<group>"; };
+		56E2AAA71C59A964009371F7 /* CZRemindTimeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZRemindTimeButton.m; sourceTree = "<group>"; };
 		56E2AAA91C59DEA1009371F7 /* HomeSearch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = HomeSearch.storyboard; sourceTree = "<group>"; };
 		56E2AAAB1C59E229009371F7 /* CZSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZSearchViewController.h; sourceTree = "<group>"; };
 		56E2AAAC1C59E229009371F7 /* CZSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZSearchViewController.m; sourceTree = "<group>"; };
@@ -462,7 +468,7 @@
 			isa = PBXGroup;
 			children = (
 				565EF60D1C48EB440067C032 /* Controller */,
-				565EF6101C48EB440067C032 /* View */,
+				56B83C101C608CD6005FF427 /* View */,
 			);
 			path = SchedulePage;
 			sourceTree = "<group>";
@@ -663,8 +669,8 @@
 				56E470061C5735900056BE17 /* CZCityButton.m */,
 				56814C141C58A64600CB60D6 /* CZRemindMeView.h */,
 				56814C151C58A64600CB60D6 /* CZRemindMeView.m */,
-				56E2AAA61C59A964009371F7 /* CZRemindTimeButtom.h */,
-				56E2AAA71C59A964009371F7 /* CZRemindTimeButtom.m */,
+				56E2AAA61C59A964009371F7 /* CZRemindTimeButton.h */,
+				56E2AAA71C59A964009371F7 /* CZRemindTimeButton.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -687,13 +693,6 @@
 				565EF60F1C48EB440067C032 /* ScheduleViewController.m */,
 			);
 			path = Controller;
-			sourceTree = "<group>";
-		};
-		565EF6101C48EB440067C032 /* View */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = View;
 			sourceTree = "<group>";
 		};
 		565EF6121C48EBA20067C032 /* Managers */ = {
@@ -797,6 +796,17 @@
 				56814C231C58A76E00CB60D6 /* UIViewController+LewPopupViewController.m */,
 			);
 			path = popupViewController;
+			sourceTree = "<group>";
+		};
+		56B83C101C608CD6005FF427 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				56B83C161C608D0C005FF427 /* CZTimeCourseCell.h */,
+				56B83C171C608D0C005FF427 /* CZTimeCourseCell.m */,
+				56B83C1B1C609C2D005FF427 /* CZData.h */,
+				56B83C1C1C609C2D005FF427 /* CZData.m */,
+			);
+			path = View;
 			sourceTree = "<group>";
 		};
 		56D7FB291C5794F6003247AF /* lib */ = {
@@ -984,6 +994,7 @@
 				561D020D1C47DA5600E4E013 /* MASViewConstraint.m in Sources */,
 				565EF5F81C48EA520067C032 /* Activitycell.m in Sources */,
 				561D01FA1C47DA5600E4E013 /* AFURLResponseSerialization.m in Sources */,
+				56B83C1D1C609C2D005FF427 /* CZData.m in Sources */,
 				561D02081C47DA5600E4E013 /* MASCompositeConstraint.m in Sources */,
 				565EF65B1C48EC410067C032 /* AboutUsCell.m in Sources */,
 				561D02031C47DA5600E4E013 /* UIImageView+AFNetworking.m in Sources */,
@@ -995,6 +1006,7 @@
 				56E2AAAD1C59E229009371F7 /* CZSearchViewController.m in Sources */,
 				565EF5FE1C48EAA80067C032 /* HomeHeaderView.m in Sources */,
 				56814C261C58A76E00CB60D6 /* LewPopupViewAnimationFade.m in Sources */,
+				56B83C191C608D0C005FF427 /* CZTimeCourseCell.m in Sources */,
 				561D02061C47DA5600E4E013 /* UIWebView+AFNetworking.m in Sources */,
 				561D020F1C47DA5600E4E013 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				565EF6231C48EBA20067C032 /* NSNumber+Message.m in Sources */,
@@ -1039,7 +1051,7 @@
 				56814C271C58A76E00CB60D6 /* LewPopupViewAnimationSlide.m in Sources */,
 				561D01F91C47DA5600E4E013 /* AFURLRequestSerialization.m in Sources */,
 				56DF02321C49356100E80DFA /* CZActivityInfoViewController.m in Sources */,
-				56E2AAA81C59A964009371F7 /* CZRemindTimeButtom.m in Sources */,
+				56E2AAA81C59A964009371F7 /* CZRemindTimeButton.m in Sources */,
 				565EF65A1C48EC410067C032 /* ShowUserInfoViewController.m in Sources */,
 				565EF6591C48EC410067C032 /* SettingViewController.m in Sources */,
 				565EF66C1C48ED1E0067C032 /* CZTabbarController.m in Sources */,

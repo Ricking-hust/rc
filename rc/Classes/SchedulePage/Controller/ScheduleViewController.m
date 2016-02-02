@@ -7,8 +7,15 @@
 //
 
 #import "ScheduleViewController.h"
+#import "Masonry.h"
+#import "CZTimeCourseCell.h"
+#import "CZData.h"
 
-@interface ScheduleViewController ()
+@interface ScheduleViewController ()<UITableViewDelegate, UITableViewDelegate>
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) UIImageView *moreImg;
+
+@property (nonatomic, strong) CZData *data;
 
 @end
 
@@ -17,41 +24,84 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    // Uncomment the following line to preserve selection between presentations.
-    // self.clearsSelectionOnViewWillAppear = NO;
-    
-    // Uncomment the following line to display an Edit button in the navigation bar for this view controller.
-    // self.navigationItem.rightBarButtonItem = self.editButtonItem;
+    self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
+    [self.moreImg setImage:[UIImage imageNamed:@"more"]];
 
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
     
 }
 
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
+#pragma mark - 懒加载创建tableView, moreImg
+- (CZData *)data
+{
+    if (!_data) {
+        _data = [CZData data];
+    }
+    return _data;
+}
+- (UITableView *)tableView
+{
+    if (!_tableView) {
+        _tableView = [[UITableView alloc]init];
+        _tableView.backgroundColor = [UIColor clearColor];
+        CGRect rect = [[UIScreen mainScreen]bounds];
+        [self.view addSubview:_tableView];
+        CGSize size = CGSizeMake(rect.size.width, rect.size.height - 64 - self.moreImg.image.size.height);
+        [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.view.mas_left).with.offset(0);
+            make.top.equalTo(self.moreImg.mas_bottom);
+            make.size.mas_equalTo(size);
+        }];
+        
+    }
+    return _tableView;
+}
+- (UIImageView *)moreImg
+{
+    if (!_moreImg) {
+        _moreImg = [[UIImageView alloc]init];
+        _moreImg.image = [UIImage imageNamed:@"more"];
+        [self.view addSubview:_moreImg];
+        CGRect rect = [[UIScreen mainScreen]bounds];
+        CGFloat leftPadding = rect.size.width * 0.17 - _moreImg.image.size.width / 2;
+        [_moreImg mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.view.mas_left).with.offset(leftPadding);
+            make.top.equalTo(self.view.mas_top).with.offset(64);
+            make.size.mas_equalTo(_moreImg.image.size);
+        }];
+    }
+    return _moreImg;
 }
 
 #pragma mark - Table view data source
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
-#warning Incomplete implementation, return the number of sections
-    return 0;
+
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-#warning Incomplete implementation, return the number of rows
-    return 0;
+
+    return 1;
 }
 
-/*
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:<#@"reuseIdentifier"#> forIndexPath:indexPath];
+    CZTimeCourseCell *cell = [CZTimeCourseCell cellWithTableView:tableView];
     
-    // Configure the cell...
+    cell.data = self.data;
+//    // Configure the cell...
+//    UITableViewCell *cell = [[UITableViewCell alloc]init];
+//    cell.textLabel.text = @"haha";
     
     return cell;
 }
-*/
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CZTimeCourseCell *cell = (CZTimeCourseCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+    return cell.cellSize.height;
+}
 
 /*
 // Override to support conditional editing of the table view.

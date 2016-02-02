@@ -103,10 +103,7 @@
     [super viewDidLoad];
     
     [self createSubViews];
-    //self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-#pragma mark -  测试数据
-    //self.tableView.backgroundColor = [UIColor clearColor];
-    
+
     self.activity = [ActivityIntroduction acIntroduction];
     [_activity setSubViewsContent];
     
@@ -142,6 +139,7 @@
         case 0:
         {
             CZTimeCell *cell = [CZTimeCell timeCellWithTableView:tableView];
+#pragma mark - 提醒按钮
             [cell.remindMeBtn addTarget:self action:@selector(onClickRemindMe:) forControlEvents:UIControlEventTouchUpInside];
             cell.acIntroduction = self.activity;
             cell.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
@@ -226,21 +224,87 @@
 - (void)onClickRemindMe:(UIButton *)btn
 {
     CZRemindMeView *remindMeView = [CZRemindMeView remindMeView];
+    remindMeView.remindBeforeOneDay.selected = YES;
+    
+    [remindMeView.remindBeforeOneDay addTarget:self action:@selector(onClickTimeRemind:) forControlEvents:UIControlEventTouchUpInside];
+    
+    [remindMeView.remindBeforeTwoDay addTarget:self action:@selector(onClickTimeRemind:) forControlEvents:UIControlEventTouchUpInside];
+    [remindMeView.remindBeforeThreeDay addTarget:self action:@selector(onClickTimeRemind:) forControlEvents:UIControlEventTouchUpInside];
+    [remindMeView.OKbtn addTarget:self action:@selector(onClickOK:) forControlEvents:UIControlEventTouchUpInside];
     remindMeView.parentVC = self;
     [remindMeView setSubView];
     
     LewPopupViewAnimationSlide *animation = [[LewPopupViewAnimationSlide alloc]init];
     animation.type = LewPopupViewAnimationSlideTypeBottomBottom;
     [self lew_presentPopupView:remindMeView animation:animation dismissed:^{
-        NSLog(@"动画结束");
+        NSLog(@"提醒视图已弹出");
     }];
-    [remindMeView.remindBeforeOneDay addTarget:self action:@selector(click) forControlEvents:UIControlEventTouchUpInside];
+
+}
+/**
+ *  设置提醒时间,获取按钮父视图
+ *  按钮对应的tag依次为
+ *  提前一天----->11
+ *  提前二天----->12
+ *  提前三天----->13
+ *  确定-------->14
+ */
+- (void)onClickTimeRemind:(UIButton *)btn
+{
+    UIView *superView = btn.superview;
+    NSMutableArray *btnArray = [[NSMutableArray alloc]init];
+    [btnArray addObject:[superView viewWithTag:11]];
+    [btnArray addObject:[superView viewWithTag:12]];
+    [btnArray addObject:[superView viewWithTag:13]];
     
+    [self isSelected:btnArray WithButton:btn];
+#pragma mark - 测试语句
+    NSLog(@"%@",btn.titleLabel.text);
+#pragma mark - 结束
     
 }
-- (void)click
+
+- (UIButton *)isSelected:(NSMutableArray *)btnArray WithButton:(UIButton *)btn
 {
-    //[self lew_dismissPopupView];
+    for (int i = 0; i <btnArray.count; i++)
+    {
+        UIButton *btnTemp = (UIButton *)btnArray[i];
+        btnTemp.selected = NO;
+    }
+    btn.selected = YES;
+    return btn;
+}
+
+//确定提醒时间按钮点击事件
+- (void)onClickOK:(UIButton *)btn
+{
+    UIView *superView = btn.superview;
+    NSMutableArray *btnArray = [[NSMutableArray alloc]init];
+    [btnArray addObject:[superView viewWithTag:11]];
+    [btnArray addObject:[superView viewWithTag:12]];
+    [btnArray addObject:[superView viewWithTag:13]];
+    
+    UIButton *selectedBtn = [self whichButtonSelected:btnArray];
+#pragma mark - 测试语句
+    NSLog(@"选中了%@按钮",selectedBtn.titleLabel.text);
+#pragma mark - 结束
+    
+    [self lew_dismissPopupView];
+}
+
+//判断哪个按钮选中
+- (UIButton *)whichButtonSelected:(NSMutableArray *)btnArray
+{
+    UIButton *selectedBtn ;
+    for (int i = 0; i <btnArray.count; i++)
+    {
+        selectedBtn = (UIButton *)btnArray[i];
+        if (selectedBtn.selected)
+        {
+            break;
+        }
+    }
+    return selectedBtn;
 }
 
 
