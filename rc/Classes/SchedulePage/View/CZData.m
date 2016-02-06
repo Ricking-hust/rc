@@ -18,10 +18,10 @@
 + (instancetype)data
 {
     CZData *data = [[CZData alloc]init];
-    data.imgStr = @"business samll_icon";
+    data.imgStr = @"currentPoint";
     data.timeStr = @"08:20";
-    data.tagStr = @"运动";
-    data.contentStr = @"老夫聊发少年狂，治肾亏，不含糖.不含糖.";
+    data.tagStr = @"sportIcon";
+    data.contentStr = @"老夫聊发少年狂,治肾亏,不含糖.";
     data.bgimgStr = @"bg_background1";
     return data;
 }

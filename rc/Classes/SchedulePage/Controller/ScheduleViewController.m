@@ -10,12 +10,15 @@
 #import "Masonry.h"
 #import "CZTimeCourseCell.h"
 #import "CZData.h"
+#import "CZScheduleInfoViewController.h"
 
 @interface ScheduleViewController ()<UITableViewDelegate, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIImageView *moreImg;
 
 @property (nonatomic, strong) CZData *data;
+@property (weak, nonatomic) IBOutlet UIView *testView;
+
 
 @end
 
@@ -30,6 +33,10 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
+    
+    UIImage *image = [UIImage imageNamed:@"bg_background2"];
+    self.testView.layer.contents = (id) image.CGImage;    // 如果需要背景透明加上下面这句
+    self.testView.layer.backgroundColor = [UIColor clearColor].CGColor;
 }
 
 #pragma mark - 懒加载创建tableView, moreImg
@@ -64,7 +71,7 @@
         _moreImg.image = [UIImage imageNamed:@"more"];
         [self.view addSubview:_moreImg];
         CGRect rect = [[UIScreen mainScreen]bounds];
-        CGFloat leftPadding = rect.size.width * 0.17 - _moreImg.image.size.width / 2;
+        CGFloat leftPadding = rect.size.width * 0.21 - _moreImg.image.size.width / 2;
         [_moreImg mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.view.mas_left).with.offset(leftPadding);
             make.top.equalTo(self.view.mas_top).with.offset(64);
@@ -76,31 +83,46 @@
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
 
     return 1;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
 
-    return 1;
+    return 2;
 }
 
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    CZTimeCourseCell *cell = [CZTimeCourseCell cellWithTableView:tableView];
-    
-    cell.data = self.data;
-//    // Configure the cell...
-//    UITableViewCell *cell = [[UITableViewCell alloc]init];
-//    cell.textLabel.text = @"haha";
-    
-    return cell;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.row == 1)
+    {//当日的cell
+        CZTimeCourseCell *cell = [CZTimeCourseCell cellWithTableView:tableView];
+        cell.isLastCell = YES;
+        cell.data = self.data;
+
+        return cell;
+    }else
+    {
+        CZTimeCourseCell *cell = [CZTimeCourseCell cellWithTableView:tableView];
+        cell.data = self.data;
+        return cell;
+    }
+
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CZTimeCourseCell *cell = (CZTimeCourseCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
     return cell.cellSize.height;
+}
+
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CZScheduleInfoViewController *scheduleInfoViewController = [[CZScheduleInfoViewController alloc]init];
+    [self.navigationController pushViewController:scheduleInfoViewController animated:YES];
 }
 
 /*

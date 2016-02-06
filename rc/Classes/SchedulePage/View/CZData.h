@@ -16,5 +16,6 @@
 @property (nonatomic, strong) NSString *contentStr;
 @property (nonatomic, strong) NSString *bgimgStr;
 
+
 + (instancetype)data;
 @end

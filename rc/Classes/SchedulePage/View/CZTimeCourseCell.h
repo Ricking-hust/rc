@@ -13,15 +13,26 @@
 
 @property (strong, nonatomic) CZData *data;
 
+@property (strong, nonatomic) UILabel *timepUpLine;
+@property (strong, nonatomic) UILabel *timepDownLine;
+
 @property (strong, nonatomic) UILabel *timeLine;
+@property (strong, nonatomic) UIView *pointView;
 @property (strong, nonatomic) UIImageView *currentPoint;
 @property (strong, nonatomic) UIImageView *tagImg;
 @property (strong, nonatomic) UILabel *tagLabel;
 @property (strong, nonatomic) UILabel *acTime;
 @property (strong, nonatomic) UILabel *acContent;
-@property (strong, nonatomic) UIImageView *bgImage;
+@property (strong, nonatomic) UIView *bgImage;
+
+@property (strong, nonatomic) UILabel *timeLabel;
+@property (strong, nonatomic) UILabel *weekLabel;
+
+@property (strong, nonatomic) UIButton *deleteBtn;
 
 @property (assign, nonatomic) CGSize cellSize;
+
+@property (assign, nonatomic) BOOL isLastCell;
 
 /**
  *  类方法， 创建自定义的cell
@@ -42,4 +53,5 @@
  *  @return 返回实例对象本身
  */
 - (instancetype) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
+
 @end
