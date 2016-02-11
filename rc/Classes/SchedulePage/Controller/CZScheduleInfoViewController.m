@@ -11,6 +11,7 @@
 #import "CZUpdateScheduleViewController.h"
 
 #define FONTSIZE    14  //字体大小
+#define PADDING     5
 
 @interface CZScheduleInfoViewController ()
 
@@ -159,7 +160,7 @@
     CGSize size = [self setLabelStyle:self.scTimeLabel WithContent:@"提醒时间:"];
     
     [self.scTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.scThemeLabel.mas_bottom).with.offset(12);
+        make.top.equalTo(self.scThemeLabel.mas_bottom).with.offset(PADDING);
         make.left.equalTo(self.scThemeLabel.mas_left);
         make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
     }];
@@ -184,7 +185,7 @@
 
     CGSize size = [self setLabelStyle:self.scContentLabel WithContent:@"行程内容:"];
     [self.scContentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.scTimeLabel.mas_bottom).with.offset(12);
+        make.top.equalTo(self.scTimeLabel.mas_bottom).with.offset(PADDING);
         make.left.equalTo(self.scThemeLabel.mas_left);
         make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
     }];
@@ -210,7 +211,7 @@
     CGSize size = [self setLabelStyle:self.scRemindTimeLabel WithContent:@"提醒时间:"];
     [self.scRemindTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.scThemeLabel.mas_left);
-        make.top.equalTo(self.scContent.mas_bottom).with.offset(12);
+        make.top.equalTo(self.scContent.mas_bottom).with.offset(PADDING);
         make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
     }];
 

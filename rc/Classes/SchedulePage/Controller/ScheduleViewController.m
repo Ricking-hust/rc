@@ -17,7 +17,6 @@
 @property (nonatomic, strong) UIImageView *moreImg;
 
 @property (nonatomic, strong) CZData *data;
-@property (weak, nonatomic) IBOutlet UIView *testView;
 
 
 @end
@@ -33,10 +32,15 @@
     self.tableView.dataSource = self;
     self.tableView.delegate = self;
     
+    NSDate *  senddate=[NSDate date];
     
-    UIImage *image = [UIImage imageNamed:@"bg_background2"];
-    self.testView.layer.contents = (id) image.CGImage;    // 如果需要背景透明加上下面这句
-    self.testView.layer.backgroundColor = [UIColor clearColor].CGColor;
+    NSDateFormatter  *dateformatter=[[NSDateFormatter alloc] init];
+    
+    [dateformatter setDateFormat:@"MM月dd日"];
+    
+    NSString *  locationString=[dateformatter stringFromDate:senddate];
+    
+    self.title = locationString;
 }
 
 #pragma mark - 懒加载创建tableView, moreImg
