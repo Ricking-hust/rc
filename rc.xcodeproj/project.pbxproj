@@ -54,6 +54,8 @@
 		565BCFB41C51CE580031ABBD /* CZTagSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565BCFB31C51CE580031ABBD /* CZTagSelectViewController.m */; };
 		565BCFB71C51E4E30031ABBD /* CZMyTagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 565BCFB61C51E4E30031ABBD /* CZMyTagCell.m */; };
 		565BCFBA1C51E4FD0031ABBD /* CZTagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 565BCFB91C51E4FD0031ABBD /* CZTagCell.m */; };
+		565CBFA61C6F098500635EA4 /* CZTagSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565CBFA51C6F098500635EA4 /* CZTagSelectView.m */; };
+		565CBFA91C6F0ED500635EA4 /* CZTagWithLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565CBFA81C6F0ED500635EA4 /* CZTagWithLabelView.m */; };
 		565EF5F81C48EA520067C032 /* Activitycell.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF5F71C48EA520067C032 /* Activitycell.m */; };
 		565EF5FD1C48EAA80067C032 /* ActivityInfoHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF5FA1C48EAA80067C032 /* ActivityInfoHeaderView.m */; };
 		565EF5FE1C48EAA80067C032 /* HomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF5FC1C48EAA80067C032 /* HomeHeaderView.m */; };
@@ -102,6 +104,9 @@
 		56814C281C58A76E00CB60D6 /* LewPopupViewAnimationSpring.m in Sources */ = {isa = PBXBuildFile; fileRef = 56814C211C58A76E00CB60D6 /* LewPopupViewAnimationSpring.m */; };
 		56814C291C58A76E00CB60D6 /* UIViewController+LewPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56814C231C58A76E00CB60D6 /* UIViewController+LewPopupViewController.m */; };
 		5686763B1C65E9820099726A /* CZScheduleInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5686763A1C65E9820099726A /* CZScheduleInfoViewController.m */; };
+		569E58DD1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 569E58DC1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.m */; };
+		569E58E01C6ECA840060DCA6 /* CZMoreTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 569E58DF1C6ECA840060DCA6 /* CZMoreTimeCell.m */; };
+		569E58E31C6ECAA60060DCA6 /* CZRemindTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 569E58E21C6ECAA60060DCA6 /* CZRemindTimeCell.m */; };
 		56B83C191C608D0C005FF427 /* CZTimeCourseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B83C171C608D0C005FF427 /* CZTimeCourseCell.m */; };
 		56B83C1D1C609C2D005FF427 /* CZData.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B83C1C1C609C2D005FF427 /* CZData.m */; };
 		56D7FB2C1C579511003247AF /* UINavigationBar+Awesome.m in Sources */ = {isa = PBXBuildFile; fileRef = 56D7FB2B1C579511003247AF /* UINavigationBar+Awesome.m */; };
@@ -231,6 +236,10 @@
 		565BCFB61C51E4E30031ABBD /* CZMyTagCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZMyTagCell.m; sourceTree = "<group>"; };
 		565BCFB81C51E4FD0031ABBD /* CZTagCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTagCell.h; sourceTree = "<group>"; };
 		565BCFB91C51E4FD0031ABBD /* CZTagCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTagCell.m; sourceTree = "<group>"; };
+		565CBFA41C6F098500635EA4 /* CZTagSelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTagSelectView.h; sourceTree = "<group>"; };
+		565CBFA51C6F098500635EA4 /* CZTagSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTagSelectView.m; sourceTree = "<group>"; };
+		565CBFA71C6F0ED500635EA4 /* CZTagWithLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTagWithLabelView.h; sourceTree = "<group>"; };
+		565CBFA81C6F0ED500635EA4 /* CZTagWithLabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTagWithLabelView.m; sourceTree = "<group>"; };
 		565EF5F61C48EA520067C032 /* Activitycell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activitycell.h; sourceTree = "<group>"; };
 		565EF5F71C48EA520067C032 /* Activitycell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activitycell.m; sourceTree = "<group>"; };
 		565EF5F91C48EAA80067C032 /* ActivityInfoHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityInfoHeaderView.h; sourceTree = "<group>"; };
@@ -320,6 +329,12 @@
 		56814C231C58A76E00CB60D6 /* UIViewController+LewPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+LewPopupViewController.m"; sourceTree = "<group>"; };
 		568676391C65E9820099726A /* CZScheduleInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZScheduleInfoViewController.h; sourceTree = "<group>"; };
 		5686763A1C65E9820099726A /* CZScheduleInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZScheduleInfoViewController.m; sourceTree = "<group>"; };
+		569E58DB1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZMoreRemindTimeViewController.h; sourceTree = "<group>"; };
+		569E58DC1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZMoreRemindTimeViewController.m; sourceTree = "<group>"; };
+		569E58DE1C6ECA840060DCA6 /* CZMoreTimeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZMoreTimeCell.h; sourceTree = "<group>"; };
+		569E58DF1C6ECA840060DCA6 /* CZMoreTimeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZMoreTimeCell.m; sourceTree = "<group>"; };
+		569E58E11C6ECAA60060DCA6 /* CZRemindTimeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZRemindTimeCell.h; sourceTree = "<group>"; };
+		569E58E21C6ECAA60060DCA6 /* CZRemindTimeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZRemindTimeCell.m; sourceTree = "<group>"; };
 		56B83C161C608D0C005FF427 /* CZTimeCourseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTimeCourseCell.h; sourceTree = "<group>"; };
 		56B83C171C608D0C005FF427 /* CZTimeCourseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTimeCourseCell.m; sourceTree = "<group>"; };
 		56B83C1B1C609C2D005FF427 /* CZData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZData.h; sourceTree = "<group>"; };
@@ -704,6 +719,8 @@
 				5686763A1C65E9820099726A /* CZScheduleInfoViewController.m */,
 				564EF4681C662F81006DFACE /* CZUpdateScheduleViewController.h */,
 				564EF4691C662F81006DFACE /* CZUpdateScheduleViewController.m */,
+				569E58DB1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.h */,
+				569E58DC1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -820,6 +837,14 @@
 				56B83C1C1C609C2D005FF427 /* CZData.m */,
 				562CC4441C6C962100774C22 /* CZTimeSelectView.h */,
 				562CC4451C6C962100774C22 /* CZTimeSelectView.m */,
+				569E58DE1C6ECA840060DCA6 /* CZMoreTimeCell.h */,
+				569E58DF1C6ECA840060DCA6 /* CZMoreTimeCell.m */,
+				569E58E11C6ECAA60060DCA6 /* CZRemindTimeCell.h */,
+				569E58E21C6ECAA60060DCA6 /* CZRemindTimeCell.m */,
+				565CBFA41C6F098500635EA4 /* CZTagSelectView.h */,
+				565CBFA51C6F098500635EA4 /* CZTagSelectView.m */,
+				565CBFA71C6F0ED500635EA4 /* CZTagWithLabelView.h */,
+				565CBFA81C6F0ED500635EA4 /* CZTagWithLabelView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1030,6 +1055,7 @@
 				561D02121C47DA5600E4E013 /* README.md in Sources */,
 				565EF6631C48EC410067C032 /* MyRelease.m in Sources */,
 				561D02051C47DA5600E4E013 /* UIRefreshControl+AFNetworking.m in Sources */,
+				569E58E01C6ECA840060DCA6 /* CZMoreTimeCell.m in Sources */,
 				56814C161C58A64600CB60D6 /* CZRemindMeView.m in Sources */,
 				56814C241C58A76E00CB60D6 /* LewPopupBackgroundView.m in Sources */,
 				5686763B1C65E9820099726A /* CZScheduleInfoViewController.m in Sources */,
@@ -1061,6 +1087,7 @@
 				56E470041C5721210056BE17 /* CZToolButton.m in Sources */,
 				565EF6571C48EC410067C032 /* MyInfoViewController.m in Sources */,
 				565EF6561C48EC410067C032 /* MyCollectInfoViewController.m in Sources */,
+				565CBFA91C6F0ED500635EA4 /* CZTagWithLabelView.m in Sources */,
 				56637D751C5611230000BF46 /* CZCityView.m in Sources */,
 				56814C281C58A76E00CB60D6 /* LewPopupViewAnimationSpring.m in Sources */,
 				565EF6261C48EBA20067C032 /* ActivityModel.m in Sources */,
@@ -1074,7 +1101,10 @@
 				565EF6591C48EC410067C032 /* SettingViewController.m in Sources */,
 				565EF66C1C48ED1E0067C032 /* CZTabbarController.m in Sources */,
 				565EF6681C48EC410067C032 /* UserInfoCell.m in Sources */,
+				569E58E31C6ECAA60060DCA6 /* CZRemindTimeCell.m in Sources */,
 				561D01FB1C47DA5600E4E013 /* AFURLSessionManager.m in Sources */,
+				569E58DD1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.m in Sources */,
+				565CBFA61C6F098500635EA4 /* CZTagSelectView.m in Sources */,
 				565BCFBA1C51E4FD0031ABBD /* CZTagCell.m in Sources */,
 				561D02011C47DA5600E4E013 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				56E842811C4BD21500D1D198 /* CZActivityDetailCell.m in Sources */,

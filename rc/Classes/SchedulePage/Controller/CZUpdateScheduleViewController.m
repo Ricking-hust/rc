@@ -11,7 +11,12 @@
 #import "UIViewController+LewPopupViewController.h"
 #import "LewPopupViewAnimationSlide.h"
 #import "CZTimeSelectView.h"
+#import "CZMoreRemindTimeViewController.h"
+#import "CZTagSelectView.h"
+#import "CZTagWithLabelView.h"
+
 #define FONTSIZE    14  //字体大小
+#define MAXLENGTH   90  //contentTextView的最在字数
 
 @interface CZUpdateScheduleViewController ()<UITextViewDelegate,UIPickerViewDelegate, UIPickerViewDataSource>
 
@@ -60,6 +65,14 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    //注册通知,确定contentTextView的text的字数
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewEditChanged:) name:UITextViewTextDidChangeNotification object:self.contentTextView];
+#pragma mark - 测试输入键盘
+    NSArray *array = [UITextInputMode activeInputModes] ;
+    NSLog(@"%@",array);
+    
+    NSLog(@"%@",[[UITextInputMode currentInputMode] primaryLanguage] );
+    
 #pragma mar - 测试数据
     self.strThemelabel = @"出差";
     self.strContent = @"你是我的小呀小苹果，怎么爱你都不嫌多，啊啊啊啊啊你你欠工工工工";
@@ -71,6 +84,7 @@
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     //设置导航栏的左右按钮
     [self setNavigationBarItem];
+    
     [self createSubViews];
     
 }
@@ -166,7 +180,7 @@
     self.themeView = [[UIView alloc]init];
     self.themeView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.themeView];
-    CGFloat themeViewH = screenRect.size.width * 0.12;            //themeView的高度
+    CGFloat themeViewH = screenRect.size.width * 0.13;            //themeView的高度
     [self.themeView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view.mas_top).with.offset(64+10);
         make.left.equalTo(self.view.mas_left).with.offset(0);
@@ -245,7 +259,7 @@
     self.contentView.backgroundColor = [UIColor whiteColor];
     
     CGFloat topPaddingRelativeToThemeView = 10;
-    CGFloat contentViewH = screenRect.size.width * 0.12 *2 + screenRect.size.width * 0.32 + topPaddingRelativeToThemeView * 4;
+    CGFloat contentViewH = screenRect.size.width * 0.1 *2 + screenRect.size.width * 0.32 + topPaddingRelativeToThemeView * 4;
     [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.top.equalTo(self.themeView.mas_bottom).with.offset(topPaddingRelativeToThemeView);
@@ -265,12 +279,13 @@
 {
     CGRect screenRect = [[UIScreen mainScreen]bounds];
     
-    self.contentTextView = [[UITextView alloc]init];
+    self.contentTextView = [[UITextView alloc]initWithFrame:CGRectMake(0, 0, 300, 30)];
     [self.contentView addSubview:self.contentTextView];
-#pragma mark - test field
     self.contentTextView.backgroundColor = [UIColor whiteColor];
     
-    self.contentTextView.scrollEnabled = NO;    //当文字超过视图的边框时是否允许滑动，默认为“YES”
+    self.contentTextView.userInteractionEnabled = YES;
+    
+    self.contentTextView.scrollEnabled = YES;    //当文字超过视图的边框时是否允许滑动，默认为“YES”
     self.contentTextView.editable = YES;        //是否允许编辑内容，默认为“YES”
     self.contentTextView.delegate = self;       //设置代理方法的实现类
     self.contentTextView.font=[UIFont fontWithName:@"Arial" size:14.0]; //设置字体名字和字体大小;
@@ -280,10 +295,7 @@
     self.contentTextView.textColor = [UIColor blackColor];
     self.contentTextView.text = @"请输入行程地点+内容(40字以内)";//设置显示的文本内容
     self.contentTextView.alpha = 0.5;
-    
-    
-    //self.contentTextView.placeholder = @"请输入行程地点+内容(40字以内)";
-    
+    self.automaticallyAdjustsScrollViewInsets = NO;
     CGFloat padding = 10;
     CGFloat contentTextFieldH = screenRect.size.width * 0.23;
     [self.contentTextView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -408,7 +420,8 @@
     //创建moreRemindButton,remindInfo
     self.moreRemindButton = [[UIButton alloc]init];
     [self.remindView addSubview:self.moreRemindButton];
-    [self.moreRemindButton setImage:[UIImage imageNamed:@"moreTagbuttonIcon"] forState:UIControlStateNormal];
+    [self.moreRemindButton setImage:[UIImage imageNamed:@"nextIcon"] forState:UIControlStateNormal];
+    [self.moreRemindButton addTarget:self action:@selector(onClickMoreRemindTime) forControlEvents:UIControlEventTouchUpInside];
     CGFloat padding = 10;
     [self.moreRemindButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.remindView.mas_right).with.offset(-padding);
@@ -440,7 +453,7 @@
     CGFloat paddingRelativeToContentView = 20;
     [self.deleteScheduleButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.view);
-        make.top.equalTo(self.contentView.mas_bottom).with.offset(paddingRelativeToContentView);
+        make.top.equalTo(self.contentView.mas_bottom).with.offset(paddingRelativeToContentView + 10);
         make.size.mas_equalTo(CGSizeMake(buttonW, buttonH));
     }];
 }
@@ -465,30 +478,97 @@
     
 }
 
-//更多标签按钮点击事件
+#pragma mark - 进入时间选择视图控制器
+- (void)onClickMoreRemindTime
+{
+    //收起键盘
+    [self.contentTextView resignFirstResponder];
+    
+    CZMoreRemindTimeViewController *moreRemindTimeViewController = [[CZMoreRemindTimeViewController alloc]init];
+    moreRemindTimeViewController.title = @"提醒时间";
+    [self.navigationController pushViewController:moreRemindTimeViewController animated:YES];
+}
+#pragma mark - 弹出主题选择视图
 - (void)onClickMoreTagButton
 {
+    //收起键盘
+    [self.contentTextView resignFirstResponder];
+    
+    CZTagSelectView *tagSelectView = [CZTagSelectView tagSelectView];
 
+    [tagSelectView.meetingTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+    [tagSelectView.appointmentTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+    [tagSelectView.businessTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+    [tagSelectView.sportTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+    [tagSelectView.shoppingTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+    [tagSelectView.entertainmentTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+    [tagSelectView.partTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+    [tagSelectView.otherTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+    
+    LewPopupViewAnimationSlide *animation = [[LewPopupViewAnimationSlide alloc]init];
+    animation.type = LewPopupViewAnimationSlideTypeBottomBottom;
+    [self lew_presentPopupView:tagSelectView animation:animation dismissed:^{
+        NSLog(@"主题选择视图已弹出");
+    }];
+}
+//选择弹出的主题事件
+- (void)selectTheme:(UIButton *)btn
+{
+    UIView *view = btn.superview;
+    
+    UILabel *label = [view viewWithTag:10]; //10表示主题标签在其父视图中的Tag
+    //UIButton *button = [view viewWithTag:9];//9表示主题按钮在其父视图中的Tag
+    
+    self.tagLabel.text = label.text;
+    if ([label.text isEqualToString:@"运动"])
+    {
+        self.tagimageView.image = [UIImage imageNamed:@"sportSmallIcon"];
+    }else if ([label.text isEqualToString:@"约会"])
+    {
+        self.tagimageView.image = [UIImage imageNamed:@"appointmentSmallIcon"];
+    }else if ([label.text isEqualToString:@"出差"])
+    {
+        self.tagimageView.image = [UIImage imageNamed:@"businessSmallIcon"];
+    }else if ([label.text isEqualToString:@"会议"])
+    {
+        self.tagimageView.image = [UIImage imageNamed:@"meetingSmallIcon"];
+    }else if ([label.text isEqualToString:@"购物"])
+    {
+        self.tagimageView.image = [UIImage imageNamed:@"shoppingSmallIcon"];
+    }else if ([label.text isEqualToString:@"娱乐"])
+    {
+        self.tagimageView.image = [UIImage imageNamed:@"entertainmentSmallIcon"];
+    }else if ([label.text isEqualToString:@"聚会"])
+    {
+        self.tagimageView.image = [UIImage imageNamed:@"partSmallIcon"];
+    }else
+    {
+        self.tagimageView.image = [UIImage imageNamed:@"otherSmallIcon"];
+    }
+
+    [self lew_dismissPopupView];
 }
 
-//提醒时间按钮点击事件
+#pragma mark - 选择提醒时间
 - (void)onClickMoreTimeButton
 {
+    //收起键盘
+    [self.contentTextView resignFirstResponder];
+    
     CZTimeSelectView *selectView = [CZTimeSelectView selectView];
     selectView.pickView.dataSource = self;
     selectView.pickView.delegate = self;
     [selectView.OKbtn addTarget:self action:@selector(didSelectedTime:) forControlEvents:UIControlEventTouchUpInside];
+    
     LewPopupViewAnimationSlide *animation = [[LewPopupViewAnimationSlide alloc]init];
     animation.type = LewPopupViewAnimationSlideTypeBottomBottom;
     [self lew_presentPopupView:selectView animation:animation dismissed:^{
-        NSLog(@"提醒视图已弹出");
+        NSLog(@"时间选择视图已弹出");
     }];
 }
 - (void)didSelectedTime:(UIButton *)btn
 {
     UIView *view = btn.superview;
-    
-    NSLog(@"%@",view);
     
     UIPickerView *pickView = [view viewWithTag:10];
 
@@ -501,21 +581,74 @@
     long int rowTime = [pickView selectedRowInComponent:3];
     NSString *time = self.times[rowTime];
     
-    NSString *detailTime = [NSString stringWithFormat:@"%@年%@月%@日%@", year, month, day, time];
-    NSLog(@"%@",detailTime);
+    self.timeInfo.text = [NSString stringWithFormat:@"%@年%@月%@日 %@", year, month, day, time];
+    CGSize timeInfoSize = [self setLabelStyle:self.timeInfo WithContent:self.timeInfo.text];
+    [self.timeInfo mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.timeView);
+        make.right.equalTo(self.moreTimeButton.mas_left).with.offset(-5);
+        make.size.mas_equalTo(CGSizeMake(timeInfoSize.width+1, timeInfoSize.height+1));
+    }];
+    [self lew_dismissPopupView];
 }
-//设置标签的样式
-- (CGSize)setLabelStyle:(UILabel *)label WithContent:(NSString *)content
-{
-    CGRect rect = [[UIScreen mainScreen]bounds];
-    label.font = [UIFont systemFontOfSize:FONTSIZE];
-    label.numberOfLines = 0;
-    label.text = content;
-    CGSize size = [self sizeWithText:content maxSize:CGSizeMake(rect.size.width * 0.55, MAXFLOAT) fontSize:FONTSIZE];
-    
-    return size;
-}
+
 #pragma mark - TextView在的代理方法
+- (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
+{
+    
+    if ([text isEqualToString:@"\n"]) {
+        
+        [textView resignFirstResponder];
+        NSLog(@"%@",textView.text);
+
+        return NO;
+    }
+    
+    return YES;
+}
+// 监听文本改变
+- (void)textViewEditChanged:(NSNotification *)obj{
+    
+    UITextView *textView = self.contentTextView;
+    
+    NSString *toBeString = textView.text;
+    NSString *lang = self.textInputMode.primaryLanguage;
+    if ([lang isEqualToString:@"zh-Hans"])
+    {
+        UITextRange *selectedRange = [textView markedTextRange];
+        if (!selectedRange)
+        {
+            if (toBeString.length > MAXLENGTH)
+            {
+                textView.text = [toBeString substringToIndex:MAXLENGTH];
+            }
+        }else
+        {
+            
+        }
+    }else
+    {
+        if (toBeString.length > MAXLENGTH)
+        {
+            textView.text = [toBeString substringToIndex:MAXLENGTH];
+        }
+    }
+    CGRect rect = [[UIScreen mainScreen]bounds];
+    CGFloat heigth = [self heightForString:self.contentTextView andWidth:rect.size.width - 8];
+    self.contentTextView.contentSize = CGSizeMake(0, heigth+8);
+    NSRange range = NSMakeRange([self.contentTextView.text length]- 1, 1);
+    [self.contentTextView scrollRangeToVisible:range];
+}
+/**
+ * @method 获取指定宽度width的字符串在UITextView上的高度
+ * @param textView 待计算的UITextView
+ * @param Width 限制字符串显示区域的宽度
+ * @result float 返回的高度
+ */
+- (CGFloat) heightForString:(UITextView *)textView andWidth:(float)width{
+    CGSize sizeToFit = [textView sizeThatFits:CGSizeMake(width, MAXFLOAT)];
+    return sizeToFit.height;
+}
+
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
     if ([self.contentTextView.text isEqualToString:@"请输入行程地点+内容(40字以内)"]) {
@@ -523,6 +656,16 @@
         self.contentTextView.alpha = 1.0;
     }
 }
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    if ([textView.text isEqualToString:@""])
+    {
+        textView.text = @"请输入行程地点+内容(40字以内)";
+        textView.alpha = 0.5;
+    }
+}
+
 #pragma mark - PickView代理
 
 // UIPickerViewDataSource中定义的方法，该方法的返回值决定该控件包含多少列
@@ -612,7 +755,19 @@
         make.center.equalTo(view);
         make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
     }];
+    
     return view;
+}
+//设置标签的样式
+- (CGSize)setLabelStyle:(UILabel *)label WithContent:(NSString *)content
+{
+    CGRect rect = [[UIScreen mainScreen]bounds];
+    label.font = [UIFont systemFontOfSize:FONTSIZE];
+    label.numberOfLines = 0;
+    label.text = content;
+    CGSize size = [self sizeWithText:content maxSize:CGSizeMake(rect.size.width * 0.55, MAXFLOAT) fontSize:FONTSIZE];
+    
+    return size;
 }
 /**
  *  计算字体的长和宽
