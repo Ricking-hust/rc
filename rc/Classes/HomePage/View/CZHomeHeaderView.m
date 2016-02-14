@@ -1,12 +1,12 @@
 //
-//  HomeHeaderView.m
+//  CZHomeHeaderView.m
 //  日常
 //
 //  Created by AlanZhang on 16/1/5.
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
 
-#import "HomeHeaderView.h"
+#import "CZHomeHeaderView.h"
 #import "Masonry.h"
 
 #define SCROLLVIEW_HEIGHT 150   //scrollView的宽度
@@ -14,12 +14,12 @@
 #define PAGECONTROL_HEIGHT  37  //pageControl的高度
 #define FONTSIZE    15          //label字体大小
 
-@interface HomeHeaderView ()<UIScrollViewDelegate>
+@interface CZHomeHeaderView ()<UIScrollViewDelegate>
 @property (strong, nonatomic) NSTimer *timer;
 
 @end
 
-@implementation HomeHeaderView
+@implementation CZHomeHeaderView
 
 
 #pragma mark - 类方法
@@ -27,7 +27,7 @@
 + (instancetype) headerView
 {
     
-    HomeHeaderView *headerView = [HomeHeaderView new];
+    CZHomeHeaderView *headerView = [CZHomeHeaderView new];
     headerView.backgroundColor = [UIColor whiteColor];
    
     //创建scrollView

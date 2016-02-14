@@ -7,15 +7,16 @@
 //
 
 #import "CZHomeViewController.h"
-#import "HomeHeaderView.h"
-#import "Activitycell.h"
+#import "CZHomeHeaderView.h"
 #import "Activity.h"
 #import "Masonry.h"
 #import "CZActivityInfoViewController.h"
 #import "CZTagSelectViewController.h"
 #import "CZSearchViewController.h"
+#import "CZActivitycell.h"
 
 @interface CZHomeViewController ()
+
 @property(nonatomic, strong) NSMutableArray *activity;
 
 @end
@@ -62,8 +63,6 @@
     
 }
 
-
-
 - (void)viewWillAppear:(BOOL)animated
 {
     
@@ -72,40 +71,45 @@
     
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
 }
-#pragma mark - viewDidLoad 
-- (void)viewDidLoad {
+#pragma mark - viewDidLoad
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     [self createSubViews];
     
     //设置tableHeaderView
-    HomeHeaderView *headerView = [HomeHeaderView headerView];
+    CZHomeHeaderView *headerView = [CZHomeHeaderView headerView];
     [headerView setView];
     self.tableView.tableHeaderView = headerView;
 }
 
-- (void)didReceiveMemoryWarning {
+- (void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
 
 #pragma mark - Tableview 数据源
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
     
     return self.activity.count;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
     
     return 1;
 }
 
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
     
     //1 创建可重用的自定义cell
-    Activitycell *cell = (Activitycell*)[Activitycell activitycellWithTableView:tableView];
+    CZActivitycell *cell = (CZActivitycell*)[CZActivitycell activitycellWithTableView:tableView];
     
     cell.activity = (Activity*)self.activity[indexPath.section];
     
@@ -115,7 +119,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    Activitycell *cell = (Activitycell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+    CZActivitycell *cell = (CZActivitycell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
     return cell.cellHeight;
 }
 
@@ -147,8 +151,8 @@
 #pragma mark - 单元格的点击事件
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HomeActivityInfo" bundle:nil];
-//    CZActivityInfoViewController *activityInfoViewController = [storyboard instantiateViewControllerWithIdentifier:@"HomeActivityInfo"];
+    //    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HomeActivityInfo" bundle:nil];
+    //    CZActivityInfoViewController *activityInfoViewController = [storyboard instantiateViewControllerWithIdentifier:@"HomeActivityInfo"];
     CZActivityInfoViewController *activityInfoViewController = [[CZActivityInfoViewController alloc]init];
     activityInfoViewController.title = @"活动介绍";
     [self.navigationController pushViewController:activityInfoViewController animated:YES];
@@ -178,7 +182,7 @@
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickSearch:)];
     [view addGestureRecognizer:tapGesture];
     
-
+    
     [self.searchView addSubview:view];
     
     UIImageView *img = [[UIImageView alloc]init];
@@ -196,7 +200,7 @@
     CGFloat leftPadding = [[UIScreen mainScreen]bounds].size.width *0.08 /2;
     CGFloat topPadding = self.searchView.frame.size.height * 0.2 / 2;
     CGSize viewSize = CGSizeMake([[UIScreen mainScreen]bounds].size.width * 0.92, self.searchView.frame.size.height * 0.8);
-
+    
     [view mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.searchView.mas_left).with.offset(leftPadding);
         make.top.equalTo(self.searchView.mas_top).with.offset(topPadding);

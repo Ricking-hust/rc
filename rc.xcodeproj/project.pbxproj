@@ -56,11 +56,10 @@
 		565BCFBA1C51E4FD0031ABBD /* CZTagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 565BCFB91C51E4FD0031ABBD /* CZTagCell.m */; };
 		565CBFA61C6F098500635EA4 /* CZTagSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565CBFA51C6F098500635EA4 /* CZTagSelectView.m */; };
 		565CBFA91C6F0ED500635EA4 /* CZTagWithLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565CBFA81C6F0ED500635EA4 /* CZTagWithLabelView.m */; };
-		565EF5F81C48EA520067C032 /* Activitycell.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF5F71C48EA520067C032 /* Activitycell.m */; };
 		565EF5FD1C48EAA80067C032 /* ActivityInfoHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF5FA1C48EAA80067C032 /* ActivityInfoHeaderView.m */; };
-		565EF5FE1C48EAA80067C032 /* HomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF5FC1C48EAA80067C032 /* HomeHeaderView.m */; };
+		565EF5FE1C48EAA80067C032 /* CZHomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF5FC1C48EAA80067C032 /* CZHomeHeaderView.m */; };
 		565EF60C1C48EB3B0067C032 /* CZColumnViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF60A1C48EB3B0067C032 /* CZColumnViewController.m */; };
-		565EF6111C48EB440067C032 /* ScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF60F1C48EB440067C032 /* ScheduleViewController.m */; };
+		565EF6111C48EB440067C032 /* CZScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF60F1C48EB440067C032 /* CZScheduleViewController.m */; };
 		565EF6221C48EBA20067C032 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6141C48EBA20067C032 /* DataManager.m */; };
 		565EF6231C48EBA20067C032 /* NSNumber+Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6161C48EBA20067C032 /* NSNumber+Message.m */; };
 		565EF6241C48EBA20067C032 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6181C48EBA20067C032 /* UserModel.m */; };
@@ -95,6 +94,7 @@
 		56637D6A1C55C4D90000BF46 /* CZTagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56637D691C55C4D90000BF46 /* CZTagCell.xib */; };
 		56637D721C560DA10000BF46 /* CZCityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56637D711C560DA10000BF46 /* CZCityViewController.m */; };
 		56637D751C5611230000BF46 /* CZCityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56637D741C5611230000BF46 /* CZCityView.m */; };
+		5674AF991C70B99100184A31 /* CZActivityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5674AF981C70B99100184A31 /* CZActivityCell.m */; };
 		56814C131C58963200CB60D6 /* CZTagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56814C121C58963200CB60D6 /* CZTagViewController.m */; };
 		56814C161C58A64600CB60D6 /* CZRemindMeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56814C151C58A64600CB60D6 /* CZRemindMeView.m */; };
 		56814C241C58A76E00CB60D6 /* LewPopupBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56814C191C58A76E00CB60D6 /* LewPopupBackgroundView.m */; };
@@ -115,10 +115,11 @@
 		56E2AAA81C59A964009371F7 /* CZRemindTimeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E2AAA71C59A964009371F7 /* CZRemindTimeButton.m */; };
 		56E2AAAA1C59DEA1009371F7 /* HomeSearch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56E2AAA91C59DEA1009371F7 /* HomeSearch.storyboard */; };
 		56E2AAAD1C59E229009371F7 /* CZSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E2AAAC1C59E229009371F7 /* CZSearchViewController.m */; };
-		56E470041C5721210056BE17 /* CZToolButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E470031C5721210056BE17 /* CZToolButton.m */; };
 		56E470071C5735900056BE17 /* CZCityButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E470061C5735900056BE17 /* CZCityButton.m */; };
 		56E4700C1C5749450056BE17 /* CZActivityOfColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E4700B1C5749450056BE17 /* CZActivityOfColumn.m */; };
 		56E470131C5750720056BE17 /* CZAcitivityModelOfColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E470121C5750720056BE17 /* CZAcitivityModelOfColumn.m */; };
+		56E7AE741C706A77004593E6 /* CZAddScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E7AE731C706A77004593E6 /* CZAddScheduleViewController.m */; };
+		56E7AE771C709C8C004593E6 /* CZButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E7AE761C709C8C004593E6 /* CZButtonView.m */; };
 		56E842781C4B88BC00D1D198 /* ActivityIntroduction.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E842771C4B88BC00D1D198 /* ActivityIntroduction.m */; };
 		56E8427B1C4BA74C00D1D198 /* CZTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8427A1C4BA74C00D1D198 /* CZTimeCell.m */; };
 		56E8427E1C4BB8E500D1D198 /* CZActivityInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8427D1C4BB8E500D1D198 /* CZActivityInfoCell.m */; };
@@ -240,16 +241,14 @@
 		565CBFA51C6F098500635EA4 /* CZTagSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTagSelectView.m; sourceTree = "<group>"; };
 		565CBFA71C6F0ED500635EA4 /* CZTagWithLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTagWithLabelView.h; sourceTree = "<group>"; };
 		565CBFA81C6F0ED500635EA4 /* CZTagWithLabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTagWithLabelView.m; sourceTree = "<group>"; };
-		565EF5F61C48EA520067C032 /* Activitycell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activitycell.h; sourceTree = "<group>"; };
-		565EF5F71C48EA520067C032 /* Activitycell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activitycell.m; sourceTree = "<group>"; };
 		565EF5F91C48EAA80067C032 /* ActivityInfoHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityInfoHeaderView.h; sourceTree = "<group>"; };
 		565EF5FA1C48EAA80067C032 /* ActivityInfoHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityInfoHeaderView.m; sourceTree = "<group>"; };
-		565EF5FB1C48EAA80067C032 /* HomeHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = HomeHeaderView.h; sourceTree = "<group>"; };
-		565EF5FC1C48EAA80067C032 /* HomeHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = HomeHeaderView.m; sourceTree = "<group>"; };
+		565EF5FB1C48EAA80067C032 /* CZHomeHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZHomeHeaderView.h; sourceTree = "<group>"; };
+		565EF5FC1C48EAA80067C032 /* CZHomeHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZHomeHeaderView.m; sourceTree = "<group>"; };
 		565EF6091C48EB3B0067C032 /* CZColumnViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZColumnViewController.h; sourceTree = "<group>"; };
 		565EF60A1C48EB3B0067C032 /* CZColumnViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZColumnViewController.m; sourceTree = "<group>"; };
-		565EF60E1C48EB440067C032 /* ScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScheduleViewController.h; sourceTree = "<group>"; };
-		565EF60F1C48EB440067C032 /* ScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScheduleViewController.m; sourceTree = "<group>"; };
+		565EF60E1C48EB440067C032 /* CZScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZScheduleViewController.h; sourceTree = "<group>"; };
+		565EF60F1C48EB440067C032 /* CZScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZScheduleViewController.m; sourceTree = "<group>"; };
 		565EF6131C48EBA20067C032 /* DataManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = DataManager.h; sourceTree = "<group>"; };
 		565EF6141C48EBA20067C032 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		565EF6151C48EBA20067C032 /* NSNumber+Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Message.h"; sourceTree = "<group>"; };
@@ -311,6 +310,8 @@
 		56637D711C560DA10000BF46 /* CZCityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCityViewController.m; sourceTree = "<group>"; };
 		56637D731C5611230000BF46 /* CZCityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCityView.h; sourceTree = "<group>"; };
 		56637D741C5611230000BF46 /* CZCityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCityView.m; sourceTree = "<group>"; };
+		5674AF971C70B99100184A31 /* CZActivityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZActivityCell.h; sourceTree = "<group>"; };
+		5674AF981C70B99100184A31 /* CZActivityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZActivityCell.m; sourceTree = "<group>"; };
 		56814C111C58963200CB60D6 /* CZTagViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTagViewController.h; sourceTree = "<group>"; };
 		56814C121C58963200CB60D6 /* CZTagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTagViewController.m; sourceTree = "<group>"; };
 		56814C141C58A64600CB60D6 /* CZRemindMeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZRemindMeView.h; sourceTree = "<group>"; };
@@ -350,14 +351,16 @@
 		56E2AAA91C59DEA1009371F7 /* HomeSearch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = HomeSearch.storyboard; sourceTree = "<group>"; };
 		56E2AAAB1C59E229009371F7 /* CZSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZSearchViewController.h; sourceTree = "<group>"; };
 		56E2AAAC1C59E229009371F7 /* CZSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZSearchViewController.m; sourceTree = "<group>"; };
-		56E470021C5721210056BE17 /* CZToolButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZToolButton.h; sourceTree = "<group>"; };
-		56E470031C5721210056BE17 /* CZToolButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZToolButton.m; sourceTree = "<group>"; };
 		56E470051C5735900056BE17 /* CZCityButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCityButton.h; sourceTree = "<group>"; };
 		56E470061C5735900056BE17 /* CZCityButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCityButton.m; sourceTree = "<group>"; };
 		56E4700A1C5749450056BE17 /* CZActivityOfColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZActivityOfColumn.h; sourceTree = "<group>"; };
 		56E4700B1C5749450056BE17 /* CZActivityOfColumn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZActivityOfColumn.m; sourceTree = "<group>"; };
 		56E470111C5750720056BE17 /* CZAcitivityModelOfColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZAcitivityModelOfColumn.h; sourceTree = "<group>"; };
 		56E470121C5750720056BE17 /* CZAcitivityModelOfColumn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZAcitivityModelOfColumn.m; sourceTree = "<group>"; };
+		56E7AE721C706A77004593E6 /* CZAddScheduleViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZAddScheduleViewController.h; sourceTree = "<group>"; };
+		56E7AE731C706A77004593E6 /* CZAddScheduleViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZAddScheduleViewController.m; sourceTree = "<group>"; };
+		56E7AE751C709C8C004593E6 /* CZButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZButtonView.h; sourceTree = "<group>"; };
+		56E7AE761C709C8C004593E6 /* CZButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZButtonView.m; sourceTree = "<group>"; };
 		56E842761C4B88BC00D1D198 /* ActivityIntroduction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityIntroduction.h; sourceTree = "<group>"; };
 		56E842771C4B88BC00D1D198 /* ActivityIntroduction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityIntroduction.m; sourceTree = "<group>"; };
 		56E842791C4BA74C00D1D198 /* CZTimeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTimeCell.h; sourceTree = "<group>"; };
@@ -672,10 +675,8 @@
 			children = (
 				565EF5F91C48EAA80067C032 /* ActivityInfoHeaderView.h */,
 				565EF5FA1C48EAA80067C032 /* ActivityInfoHeaderView.m */,
-				565EF5FB1C48EAA80067C032 /* HomeHeaderView.h */,
-				565EF5FC1C48EAA80067C032 /* HomeHeaderView.m */,
-				565EF5F61C48EA520067C032 /* Activitycell.h */,
-				565EF5F71C48EA520067C032 /* Activitycell.m */,
+				565EF5FB1C48EAA80067C032 /* CZHomeHeaderView.h */,
+				565EF5FC1C48EAA80067C032 /* CZHomeHeaderView.m */,
 				56E842791C4BA74C00D1D198 /* CZTimeCell.h */,
 				56E8427A1C4BA74C00D1D198 /* CZTimeCell.m */,
 				56E8427C1C4BB8E500D1D198 /* CZActivityInfoCell.h */,
@@ -695,6 +696,8 @@
 				56814C151C58A64600CB60D6 /* CZRemindMeView.m */,
 				56E2AAA61C59A964009371F7 /* CZRemindTimeButton.h */,
 				56E2AAA71C59A964009371F7 /* CZRemindTimeButton.m */,
+				5674AF971C70B99100184A31 /* CZActivityCell.h */,
+				5674AF981C70B99100184A31 /* CZActivityCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -713,14 +716,16 @@
 		565EF60D1C48EB440067C032 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				565EF60E1C48EB440067C032 /* ScheduleViewController.h */,
-				565EF60F1C48EB440067C032 /* ScheduleViewController.m */,
+				565EF60E1C48EB440067C032 /* CZScheduleViewController.h */,
+				565EF60F1C48EB440067C032 /* CZScheduleViewController.m */,
 				568676391C65E9820099726A /* CZScheduleInfoViewController.h */,
 				5686763A1C65E9820099726A /* CZScheduleInfoViewController.m */,
 				564EF4681C662F81006DFACE /* CZUpdateScheduleViewController.h */,
 				564EF4691C662F81006DFACE /* CZUpdateScheduleViewController.m */,
 				569E58DB1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.h */,
 				569E58DC1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.m */,
+				56E7AE721C706A77004593E6 /* CZAddScheduleViewController.h */,
+				56E7AE731C706A77004593E6 /* CZAddScheduleViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -861,10 +866,10 @@
 		56E46FFC1C57088B0056BE17 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				56E470021C5721210056BE17 /* CZToolButton.h */,
-				56E470031C5721210056BE17 /* CZToolButton.m */,
 				56E4700A1C5749450056BE17 /* CZActivityOfColumn.h */,
 				56E4700B1C5749450056BE17 /* CZActivityOfColumn.m */,
+				56E7AE751C709C8C004593E6 /* CZButtonView.h */,
+				56E7AE761C709C8C004593E6 /* CZButtonView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1030,9 +1035,8 @@
 				56423F4B1C4FB4710072CCC3 /* CZHomeViewController.m in Sources */,
 				565EF6281C48EBA20067C032 /* CityModel.m in Sources */,
 				565EF65F1C48EC410067C032 /* LoginOutCell.m in Sources */,
-				565EF6111C48EB440067C032 /* ScheduleViewController.m in Sources */,
+				565EF6111C48EB440067C032 /* CZScheduleViewController.m in Sources */,
 				561D020D1C47DA5600E4E013 /* MASViewConstraint.m in Sources */,
-				565EF5F81C48EA520067C032 /* Activitycell.m in Sources */,
 				561D01FA1C47DA5600E4E013 /* AFURLResponseSerialization.m in Sources */,
 				56B83C1D1C609C2D005FF427 /* CZData.m in Sources */,
 				561D02081C47DA5600E4E013 /* MASCompositeConstraint.m in Sources */,
@@ -1044,7 +1048,7 @@
 				561D01FE1C47DA5600E4E013 /* AFAutoPurgingImageCache.m in Sources */,
 				565EF60C1C48EB3B0067C032 /* CZColumnViewController.m in Sources */,
 				56E2AAAD1C59E229009371F7 /* CZSearchViewController.m in Sources */,
-				565EF5FE1C48EAA80067C032 /* HomeHeaderView.m in Sources */,
+				565EF5FE1C48EAA80067C032 /* CZHomeHeaderView.m in Sources */,
 				56814C261C58A76E00CB60D6 /* LewPopupViewAnimationFade.m in Sources */,
 				564EF46A1C662F81006DFACE /* CZUpdateScheduleViewController.m in Sources */,
 				56B83C191C608D0C005FF427 /* CZTimeCourseCell.m in Sources */,
@@ -1075,16 +1079,17 @@
 				565EF6251C48EBA20067C032 /* Activity.m in Sources */,
 				565EF65E1C48EC410067C032 /* CustomCellForUserInfo.m in Sources */,
 				561D02041C47DA5600E4E013 /* UIProgressView+AFNetworking.m in Sources */,
+				5674AF991C70B99100184A31 /* CZActivityCell.m in Sources */,
 				565BCFB41C51CE580031ABBD /* CZTagSelectViewController.m in Sources */,
 				56E4700C1C5749450056BE17 /* CZActivityOfColumn.m in Sources */,
 				561D02001C47DA5600E4E013 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				561D020B1C47DA5600E4E013 /* MASLayoutConstraint.m in Sources */,
 				565EF65C1C48EC410067C032 /* ActivitiesInfo.m in Sources */,
 				561D02101C47DA5600E4E013 /* View+MASAdditions.m in Sources */,
+				56E7AE771C709C8C004593E6 /* CZButtonView.m in Sources */,
 				561D02091C47DA5600E4E013 /* MASConstraint.m in Sources */,
 				565BCFB71C51E4E30031ABBD /* CZMyTagCell.m in Sources */,
 				561D02151C47DA5600E4E013 /* AppDelegate.m in Sources */,
-				56E470041C5721210056BE17 /* CZToolButton.m in Sources */,
 				565EF6571C48EC410067C032 /* MyInfoViewController.m in Sources */,
 				565EF6561C48EC410067C032 /* MyCollectInfoViewController.m in Sources */,
 				565CBFA91C6F0ED500635EA4 /* CZTagWithLabelView.m in Sources */,
@@ -1119,6 +1124,7 @@
 				561D02021C47DA5600E4E013 /* UIButton+AFNetworking.m in Sources */,
 				561D01041C47D94C00E4E013 /* main.m in Sources */,
 				565EF5FD1C48EAA80067C032 /* ActivityInfoHeaderView.m in Sources */,
+				56E7AE741C706A77004593E6 /* CZAddScheduleViewController.m in Sources */,
 				561D02111C47DA5600E4E013 /* ViewController+MASAdditions.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;

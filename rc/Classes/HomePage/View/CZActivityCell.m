@@ -1,12 +1,12 @@
 //
-//  DisplayActivitycell.m
-//  日常
+//  CZActivityCell.m
+//  rc
 //
-//  Created by AlanZhang on 16/1/5.
+//  Created by AlanZhang on 16/2/14.
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
 
-#import "Activitycell.h"
+#import "CZActivitycell.h"
 #import "Masonry.h"
 #import "Activity.h"
 
@@ -17,8 +17,7 @@
 #define POSTERIMAGE_WIDTH      120 //Poster的宽度
 #define POSTERIMAGE_HEIGHT     120 //poster的高度
 
-@interface Activitycell()
-
+@interface CZActivitycell()
 @property (nonatomic, weak) UIImageView *ac_poster;
 @property (nonatomic, assign) CGSize posterSize;  //存储活动海报的大小
 @property (nonatomic, weak) UILabel *ac_title;
@@ -31,15 +30,15 @@
 //目前不实现浏览量
 //@property (nonatomic, weak) UIImageView *ac_viewImage_num;
 //@property (nonatomic, weak) UILabel *ac_views_num;
-
 @end
 
-@implementation Activitycell
+@implementation CZActivitycell
+
 
 + (instancetype)activitycellWithTableView:(UITableView*)tableView
 {
     static NSString *reuseId = @"activityCell";
-    Activitycell * cell = (Activitycell*)[tableView dequeueReusableCellWithIdentifier:reuseId];
+    CZActivitycell * cell = (CZActivitycell*)[tableView dequeueReusableCellWithIdentifier:reuseId];
     if (!cell) {
         cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
     }
@@ -60,7 +59,7 @@
         UILabel *nameLabel = [[UILabel alloc]init];
         self.ac_title = nameLabel;
         [self.contentView addSubview:self.ac_title];
-
+        
         
         //3.创建ac_time(UILable)
         UILabel *timeLabel = [[UILabel alloc]init];
@@ -69,7 +68,7 @@
         
         //4.创建ac_place(UILable)
         UILabel *placeLabel = [[UILabel alloc]init];
-
+        
         self.ac_place = placeLabel;
         [self.contentView addSubview:self.ac_place];
         
@@ -126,7 +125,7 @@
     self.ac_tags.text = self.activity.ac_tags;
     self.ac_tags.numberOfLines = 0;
     self.ac_tags.font = [UIFont systemFontOfSize:TAG_FONTSIZE];
-
+    
     
 }
 //设置子控件的Constraint
@@ -149,7 +148,7 @@
     }];
     
     //add ac_titile constraints
-
+    
     //计算文本的大小
     textSize = [self sizeWithText:self.activity.ac_title maxSize:maxSize fontSize:TITLE_FONTSIZE];
     [self.ac_title mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -160,7 +159,7 @@
     
     //add ac_time constraints
     textSize = [self sizeWithText:self.activity.ac_time maxSize:maxSize fontSize:TIME_FONTSIZE];
-//    [self.ac_time setFrame:CGRectMake(0, 0, self.ac_poster.frame.size.width, textSize.height)];
+    //    [self.ac_time setFrame:CGRectMake(0, 0, self.ac_poster.frame.size.width, textSize.height)];
     [self.ac_time mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.ac_poster.mas_right).with.offset(50.0f/2);
         make.top.equalTo(self.ac_title.mas_bottom).with.offset(30.0f/2);
@@ -192,8 +191,8 @@
         make.left.equalTo(self.ac_imageTag.mas_right).with.offset(14.0f/2);
         make.top.equalTo(self.ac_place.mas_bottom).with.offset(35.0f/2);
     }];
-
-
+    
+    
 }
 
 /**
@@ -214,7 +213,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 

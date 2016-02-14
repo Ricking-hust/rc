@@ -1,8 +1,8 @@
 //
-//  Activitycell.h
-//  日常
+//  CZActivityCell.h
+//  rc
 //
-//  Created by AlanZhang on 16/1/5.
+//  Created by AlanZhang on 16/2/14.
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
 
@@ -10,7 +10,7 @@
 
 @class Activity;
 
-@interface Activitycell : UITableViewCell
+@interface CZActivitycell : UITableViewCell
 
 @property (nonatomic, strong) Activity *activity;
 @property (nonatomic, assign) CGFloat cellHeight;

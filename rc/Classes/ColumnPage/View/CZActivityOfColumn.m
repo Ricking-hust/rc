@@ -58,7 +58,7 @@
     CGFloat leftPadding = labelMaxWidth * 0.12/2;
     CGFloat topPadding = leftPadding;
     CGFloat paddingOfNameAndTime = 5;
-    CGFloat paddingOfPlaceAndTagImage = 10;
+    CGFloat paddingOfPlaceAndTagImage = IMAGE_W * 0.06;
 
     //添加imageView约束
     [self.acImage mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -109,7 +109,7 @@
         make.top.equalTo(self.acTagImage.mas_top).with.offset(2);
         make.size.mas_equalTo(CGSizeMake(tagSize.width, tagSize.height+2));
     }];
-    self.heigth = IMAGE_H + nameSize.height + timeSize.height + placeSize.height + tagSize.height + self.acTagImage.image.size.height + 30;
+    self.heigth = IMAGE_H + nameSize.height + timeSize.height + placeSize.height + tagSize.height + self.acTagImage.image.size.height + IMAGE_W * 0.15;
     self.width = IMAGE_W;
 }
 

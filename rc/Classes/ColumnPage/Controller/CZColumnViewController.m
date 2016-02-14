@@ -7,12 +7,12 @@
 //
 
 #import "CZColumnViewController.h"
-#import "CZToolButton.h"
 #import "Masonry.h"
 #import "CZAcitivityModelOfColumn.h"
 #import "CZActivityOfColumn.h"
 #import "CZTagViewController.h"
 #include <sys/sysctl.h>
+#import "CZButtonView.h"
 
 @interface CZColumnViewController ()
 
@@ -20,6 +20,7 @@
 
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIScrollView *toolScrollView;
+@property (nonatomic, strong) NSMutableArray *toolButtonArray;
 
 #pragma mark - 测试数据
 @property (nonatomic, strong) NSArray *array;
@@ -44,6 +45,7 @@
 
 }
 #pragma mark - 懒加载，创建主题色
+
 - (UIColor *)selectedColor
 {
     if (!_selectedColor) {
@@ -85,7 +87,15 @@
     }
     return _scrollView;
 }
-
+#pragma mark - 懒加载，创建toolbuttonarray
+- (NSMutableArray *)toolButtonArray
+{
+    if (!_toolButtonArray)
+    {
+        _toolButtonArray = [[NSMutableArray alloc]init];
+    }
+    return _toolButtonArray;
+}
 #pragma mark - 懒加载，测试数据
 - (NSArray *)array
 {
@@ -107,7 +117,7 @@
 //创建工具条按钮
 - (void)showToolButtons
 {
-    
+    UIColor *selectedColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0] ;
     CGRect rect = [[UIScreen mainScreen]bounds];
     CGFloat leftPadding = 10;
     CGFloat topPadding = (self.toolScrollView.frame.size.height - 30)/2;
@@ -118,19 +128,31 @@
     self.toolScrollView.contentSize = CGSizeMake(horizontalContentSize, 0);
     for (int i = 0; i<self.array.count; i++)
     {
-        CZToolButton *btn = [[CZToolButton alloc]initWithTittle:self.array[i]];
-        [btn setFrame:CGRectMake(0, 5, 30, 30)];
-        CGFloat ofButtonPadding = i * (padding+btn.frame.size.width) + leftPadding;
-        [btn addTarget:self action:@selector(onClickTooBtn:) forControlEvents:UIControlEventTouchUpInside];
-        [self.toolScrollView addSubview:btn];
+        CZButtonView *btnView = [[CZButtonView alloc]initWithTittle:self.array[i]];
+        //添加tagButton的观察者
+        //[self addObserver:btnView.tagButton forKeyPath:@"tagButton" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
+        if (i == 0)
+        {
+            btnView.tagButton.selected = YES;
+            btnView.line.hidden = NO;
+        }else
+        {
+            btnView.line.hidden = YES;
+        }
+        [self.toolButtonArray addObject:btnView.tagButton];
+        btnView.tagButton.tag = i;
+        CGFloat ofButtonPadding = i * (padding + 30) + leftPadding;
+        [btnView.tagButton addTarget:self action:@selector(onClickTooBtn:) forControlEvents:UIControlEventTouchUpInside];
+        [self.toolScrollView addSubview:btnView];
 
-        [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+        [btnView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.toolScrollView.mas_left).with.offset(ofButtonPadding);
             make.top.equalTo(self.toolScrollView.mas_top).with.offset(topPadding);
         }];
 
     }
 }
+
 #pragma mark - 模拟取得数据
 - (void)getData
 {
@@ -144,9 +166,40 @@
     [self.activities addObject:activity3];
     
 }
+//处理tagButton收到的更改通知
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+//    if ([keyPath isEqualToString:@"tagButton"])
+//    {
+////        UIView *view = ((UIView *)object).superview;
+////        
+////        UIView *line = [view viewWithTag:12];
+//        ((UIView *)object).hidden = YES;
+//    }
+
+}
 - (void)onClickTooBtn:(UIButton *)btn
 {
-    NSLog(@"%@", btn.titleLabel.text);
+    
+    [self isToolButtonSelected:btn];
+    //此处添加按钮点击事件的处理代码---------------
+    
+
+}
+- (void)isToolButtonSelected:(UIButton *)btn
+{
+    for (int i = 0; i < self.toolButtonArray.count; ++i)
+    {
+        UIButton *button = self.toolButtonArray[i];
+        UIView *view = button.superview;
+        UIView *line = [view viewWithTag:12];
+        line.hidden = YES;
+        button.selected = NO;
+    }
+    btn.selected = YES;
+    UIView *view = btn.superview;
+    UIView *line = [view viewWithTag:12];
+    line.hidden = NO;
 }
 
 - (void)onClickAcView:(UIView *)view
@@ -161,18 +214,26 @@
 {
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickAcView:)];
     UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickAcView:)];
+    
+    CZAcitivityModelOfColumn *av = self.activities[0];
+    av.ac_title = @"你是铁小基一工在十七";
+    
     CZActivityOfColumn *acView = [CZActivityOfColumn activityView];
-    acView.activity = self.activities[0];
+    acView.activity = av;
     [self.scrollView addSubview:acView];
     [acView addGestureRecognizer:tapGesture];
 
     CZActivityOfColumn *acView2 = [CZActivityOfColumn activityView];
-    acView2.activity = self.activities[0];
+    
+
+    av.ac_title = @"你是铁小基一工在十七你是铁小基一工在十七你是铁小基一工在十七";
+    acView2.activity = av;
     [self.scrollView addSubview:acView2];
     [acView2 addGestureRecognizer:tapGesture2];
     
+
     CZActivityOfColumn *acView3 = [CZActivityOfColumn activityView];
-    acView3.activity = self.activities[0];
+    acView3.activity = av;
     [self.scrollView addSubview:acView3];
     
     //CGFloat letfPadding = 15;

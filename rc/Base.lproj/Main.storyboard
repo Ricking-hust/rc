@@ -154,7 +154,7 @@
         <!--Title-->
         <scene sceneID="MmR-ZB-41h">
             <objects>
-                <viewController id="0ED-vl-k5j" customClass="ScheduleViewController" sceneMemberID="viewController">
+                <viewController id="0ED-vl-k5j" customClass="CZScheduleViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="n7W-XU-qpR"/>
                         <viewControllerLayoutGuide type="bottom" id="oy2-W9-jCH"/>
@@ -165,7 +165,11 @@
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="Title" id="OKz-JJ-HLh">
-                        <barButtonItem key="rightBarButtonItem" image="addIcon" id="Z1C-ic-UNB"/>
+                        <barButtonItem key="rightBarButtonItem" image="addIcon" id="Z1C-ic-UNB">
+                            <connections>
+                                <action selector="addSchedule:" destination="0ED-vl-k5j" id="UXx-Qa-YUQ"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dXd-hM-a85" userLabel="First Responder" sceneMemberID="firstResponder"/>

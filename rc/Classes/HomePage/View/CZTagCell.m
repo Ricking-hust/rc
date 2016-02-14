@@ -252,6 +252,7 @@
 
 - (void)onClick:(UIButton *)btn
 {
+    
     NSLog(@"%ld", btn.tag);
 }
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {

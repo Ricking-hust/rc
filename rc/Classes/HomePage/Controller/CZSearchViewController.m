@@ -54,12 +54,11 @@
         _searchBar = [[UISearchBar alloc]init];
         _searchBar.placeholder = @"请输入搜索内容";
         
-        [_searchBar setBackgroundImage:[UIImage new]];
+        _searchBar.searchBarStyle = UISearchBarStyleMinimal;
         [_searchBar setTranslucent:YES];
         _searchBar.layer.masksToBounds = YES;
-        _searchBar.backgroundColor = [UIColor colorWithRed:238.0/255.0 green:238.0/255.0 blue:238.0/255.0 alpha:1.0];
+        
         _searchBar.layer.cornerRadius = 13.0;
-        [_searchBar.layer setBorderColor:[UIColor whiteColor].CGColor];  //设置边框为白色
         
         [_bgView addSubview:_searchBar];
     }
@@ -114,6 +113,11 @@
     
     
 }
+#pragma mark - 点击空白处收起键盘
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.searchBar resignFirstResponder];
+}
 #pragma mark - 热闹搜索约束
 - (void) addHotSearchConstraint
 {
@@ -167,8 +171,7 @@
 #pragma mark - 根据设备大小添加标签按钮
 - (void)addTagButton:(UIView *)view
 {
-    CGRect rect = [[UIScreen mainScreen]bounds];
-    int count = self.array.count;
+    long int count = self.array.count;
     for (int i = 0; i < count; i++)
     {
         UIButton *btn = [[UIButton alloc]init];
@@ -251,6 +254,7 @@
 }
 - (void)onClick:(UIButton *)btn {
     
+    [self.searchBar resignFirstResponder];
     [self.navigationController popToRootViewControllerAnimated:YES];
     self.navigationController.navigationBarHidden = NO;
 

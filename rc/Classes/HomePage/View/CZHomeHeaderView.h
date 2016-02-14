@@ -1,5 +1,5 @@
 //
-//  HomeHeaderView.h
+//  CZHomeHeaderView.h
 //  日常
 //
 //  Created by AlanZhang on 16/1/5.
@@ -8,9 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface HomeHeaderView : UIView
-
-
+@interface CZHomeHeaderView : UIView
 
 @property(nonatomic, weak)UIScrollView *scrollView;
 @property(nonatomic, weak)UIPageControl *pageControl;

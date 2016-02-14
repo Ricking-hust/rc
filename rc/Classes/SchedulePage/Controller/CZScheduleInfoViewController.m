@@ -64,6 +64,7 @@
 - (void)edit
 {
     CZUpdateScheduleViewController *updateScheduleViewController = [[CZUpdateScheduleViewController alloc]init];
+    updateScheduleViewController.title = @"修改行程";
     [self.navigationController pushViewController:updateScheduleViewController animated:YES];
 }
 - (void)back

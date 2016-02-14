@@ -1,5 +1,5 @@
 //
-//  ScheduleViewController.h
+//  CZScheduleViewController.h
 //  日常
 //
 //  Created by AlanZhang on 15/12/22.
@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface ScheduleViewController : UIViewController
+@interface CZScheduleViewController : UIViewController
 
 
 @end

@@ -79,8 +79,7 @@
     self.strTime = @"2012年12月12日22日 22:22";
     self.strRemind = @"提前一天";
     self.strTagImg = @"businessSmallIcon";
-    
-    self.title = @"修改行程";
+
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     //设置导航栏的左右按钮
     [self setNavigationBarItem];
@@ -117,7 +116,6 @@
                 temp = [NSString stringWithFormat:@"%d",i+1];
                 [_months addObject:temp];
             }
-
         }
 
     }
@@ -145,25 +143,62 @@
     }
     return _days;
 }
-- (NSArray *)times
+- (NSMutableArray *)times
 {
     if (!_times)
     {
         _times = [[NSMutableArray alloc]init];
-        NSString *temp;
-        for (int i = 0; i < 12; ++i)
-        {
-            if (i < 9)
-            {
-                temp = [NSString stringWithFormat:@"12:0%d", i+1];
-                [_times addObject:temp];
-            }else
-            {
-                temp = [NSString stringWithFormat:@"12:%d",i+1];
-                [_times addObject:temp];          
-            }
-
-        }
+        [_times addObject:@"00:00"];
+        [_times addObject:@"00:30"];
+        [_times addObject:@"01:00"];
+        [_times addObject:@"01:30"];
+        [_times addObject:@"02:00"];
+        [_times addObject:@"02:30"];
+        [_times addObject:@"03:00"];
+        [_times addObject:@"03:40"];
+        [_times addObject:@"04:00"];
+        [_times addObject:@"04:30"];
+        
+        [_times addObject:@"05:00"];
+        [_times addObject:@"05:30"];
+        [_times addObject:@"06:00"];
+        [_times addObject:@"06:30"];
+        [_times addObject:@"07:00"];
+        [_times addObject:@"07:30"];
+        [_times addObject:@"08:00"];
+        [_times addObject:@"08:30"];
+        [_times addObject:@"09:00"];
+        [_times addObject:@"09:30"];
+        [_times addObject:@"10:00"];
+        [_times addObject:@"10:30"];
+        [_times addObject:@"11:00"];
+        [_times addObject:@"11:30"];
+        [_times addObject:@"12:00"];
+        [_times addObject:@"12:30"];
+        
+        [_times addObject:@"13:00"];
+        [_times addObject:@"13:30"];
+        [_times addObject:@"14:00"];
+        [_times addObject:@"14:30"];
+        [_times addObject:@"15:00"];
+        [_times addObject:@"15:30"];
+        [_times addObject:@"16:00"];
+        [_times addObject:@"16:30"];
+        [_times addObject:@"17:00"];
+        [_times addObject:@"17:30"];
+        [_times addObject:@"18:00"];
+        [_times addObject:@"18:30"];
+        [_times addObject:@"19:00"];
+        [_times addObject:@"19:30"];
+        [_times addObject:@"20:00"];
+        [_times addObject:@"20:30"];
+        
+        [_times addObject:@"21:00"];
+        [_times addObject:@"21:30"];
+        [_times addObject:@"22:00"];
+        [_times addObject:@"22:30"];
+        [_times addObject:@"23:00"];
+        [_times addObject:@"23:30"];
     }
     return _times;
 }
@@ -712,6 +747,100 @@
     }
 }
 
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    
+    self.days = [self isLeapyear:pickerView WithRow:row inComponent:component];
+    
+    [pickerView reloadAllComponents];
+}
+
+- (NSMutableArray *)isLeapyear:(UIPickerView *)pickerView WithRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    NSMutableArray *days = [[NSMutableArray alloc]init];
+    long int month = [pickerView selectedRowInComponent:1];
+    NSString *currentMonth = self.months[month];
+    if (component == 1)
+    {
+        if ([currentMonth isEqualToString:@"01"] ||
+            [currentMonth isEqualToString:@"03"] ||
+            [currentMonth isEqualToString:@"05"] ||
+            [currentMonth isEqualToString:@"07"] ||
+            [currentMonth isEqualToString:@"08"] ||
+            [currentMonth isEqualToString:@"10"] ||
+            [currentMonth isEqualToString:@"12"])
+        {
+            self.days = nil;
+            self.days = [[NSMutableArray alloc]init];
+            NSString *temp;
+            for (int i = 0; i < 31; ++i)
+            {
+                if (i < 9)
+                {
+                    temp = [NSString stringWithFormat:@"0%d", i+1];
+                    [self.days addObject:temp];
+                }else
+                {
+                    temp = [NSString stringWithFormat:@"%d",i+1];
+                    [self.days addObject:temp];
+                }
+                
+            }
+
+            
+        }else if ([currentMonth isEqualToString:@"02"])
+        {
+            
+            long int currentYear = [pickerView selectedRowInComponent:0];
+            int year = [self.years[currentYear] intValue];
+            if ((year % 4 == 0 && year % 100 != 0 ) || year % 400 == 0 )
+            {//闰年
+                for (int i = 0; i < 29; i++)
+                {
+                    [days addObject:self.days[i]];
+                }
+                self.days = days;
+            }else
+            {//平年
+                for (int i = 0; i < 28; i++)
+                {
+                    [days addObject:self.days[i]];
+                }
+                self.days = days;
+            }
+        }else
+        {
+            for (int i = 0; i < 30; i++)
+            {
+                [days addObject:self.days[i]];
+            }
+            self.days = days;
+        }
+    }
+    if (component == 0 && [currentMonth isEqualToString:@"02"])
+    {
+        long int currentYear = [pickerView selectedRowInComponent:0];
+        int year = [self.years[currentYear] intValue];
+        if ((year % 4 == 0 && year % 100 != 0 ) || year % 400 == 0 )
+        {//闰年
+            for (int i = 0; i < 29; i++)
+            {
+                [days addObject:self.days[i]];
+            }
+            self.days = days;
+        }else
+        {//平年
+            for (int i = 0; i < 28; i++)
+            {
+                [days addObject:self.days[i]];
+            }
+            self.days = days;
+        }
+
+    }
+
+    return self.days;
+}
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component
 {
     CGRect rect = [[UIScreen mainScreen]bounds];

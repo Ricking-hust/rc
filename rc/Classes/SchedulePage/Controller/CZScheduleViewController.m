@@ -1,27 +1,28 @@
 //
-//  ScheduleViewController.m
+//  CZScheduleViewController.m
 //  日常
 //
 //  Created by AlanZhang on 15/12/22.
 //  Copyright © 2015年 AlanZhang. All rights reserved.
 //
 
-#import "ScheduleViewController.h"
+#import "CZScheduleViewController.h"
 #import "Masonry.h"
 #import "CZTimeCourseCell.h"
 #import "CZData.h"
 #import "CZScheduleInfoViewController.h"
+#import "CZAddScheduleViewController.h"
 
-@interface ScheduleViewController ()<UITableViewDelegate, UITableViewDelegate>
+@interface CZScheduleViewController ()<UITableViewDelegate, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UIImageView *moreImg;
 
 @property (nonatomic, strong) CZData *data;
 
-
 @end
 
-@implementation ScheduleViewController
+
+@implementation CZScheduleViewController
 
 - (void)viewDidLoad {
     [super viewDidLoad];
@@ -41,6 +42,16 @@
     NSString *  locationString=[dateformatter stringFromDate:senddate];
     
     self.title = locationString;
+}
+//添加行程
+- (IBAction)addSchedule:(id)sender {
+    
+    CZAddScheduleViewController *addScheduleViewController = [[CZAddScheduleViewController alloc]init];
+    
+    addScheduleViewController.title = @"添加行程";
+    
+    [self.navigationController pushViewController:addScheduleViewController animated:YES];
+    
 }
 
 #pragma mark - 懒加载创建tableView, moreImg
@@ -128,49 +139,5 @@
     CZScheduleInfoViewController *scheduleInfoViewController = [[CZScheduleInfoViewController alloc]init];
     [self.navigationController pushViewController:scheduleInfoViewController animated:YES];
 }
-
-/*
-// Override to support conditional editing of the table view.
-- (BOOL)tableView:(UITableView *)tableView canEditRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the specified item to be editable.
-    return YES;
-}
-*/
-
-/*
-// Override to support editing the table view.
-- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath {
-    if (editingStyle == UITableViewCellEditingStyleDelete) {
-        // Delete the row from the data source
-        [tableView deleteRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationFade];
-    } else if (editingStyle == UITableViewCellEditingStyleInsert) {
-        // Create a new instance of the appropriate class, insert it into the array, and add a new row to the table view
-    }   
-}
-*/
-
-/*
-// Override to support rearranging the table view.
-- (void)tableView:(UITableView *)tableView moveRowAtIndexPath:(NSIndexPath *)fromIndexPath toIndexPath:(NSIndexPath *)toIndexPath {
-}
-*/
-
-/*
-// Override to support conditional rearranging of the table view.
-- (BOOL)tableView:(UITableView *)tableView canMoveRowAtIndexPath:(NSIndexPath *)indexPath {
-    // Return NO if you do not want the item to be re-orderable.
-    return YES;
-}
-*/
-
-/*
-#pragma mark - Navigation
-
-// In a storyboard-based application, you will often want to do a little preparation before navigation
-- (void)prepareForSegue:(UIStoryboardSegue *)segue sender:(id)sender {
-    // Get the new view controller using [segue destinationViewController].
-    // Pass the selected object to the new view controller.
-}
-*/
 
 @end
