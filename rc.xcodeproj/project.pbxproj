@@ -56,7 +56,7 @@
 		565BCFBA1C51E4FD0031ABBD /* CZTagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 565BCFB91C51E4FD0031ABBD /* CZTagCell.m */; };
 		565CBFA61C6F098500635EA4 /* CZTagSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565CBFA51C6F098500635EA4 /* CZTagSelectView.m */; };
 		565CBFA91C6F0ED500635EA4 /* CZTagWithLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565CBFA81C6F0ED500635EA4 /* CZTagWithLabelView.m */; };
-		565EF5FD1C48EAA80067C032 /* ActivityInfoHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF5FA1C48EAA80067C032 /* ActivityInfoHeaderView.m */; };
+		565EF5FD1C48EAA80067C032 /* CZActivityInfoHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF5FA1C48EAA80067C032 /* CZActivityInfoHeaderView.m */; };
 		565EF5FE1C48EAA80067C032 /* CZHomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF5FC1C48EAA80067C032 /* CZHomeHeaderView.m */; };
 		565EF60C1C48EB3B0067C032 /* CZColumnViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF60A1C48EB3B0067C032 /* CZColumnViewController.m */; };
 		565EF6111C48EB440067C032 /* CZScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF60F1C48EB440067C032 /* CZScheduleViewController.m */; };
@@ -241,8 +241,8 @@
 		565CBFA51C6F098500635EA4 /* CZTagSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTagSelectView.m; sourceTree = "<group>"; };
 		565CBFA71C6F0ED500635EA4 /* CZTagWithLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTagWithLabelView.h; sourceTree = "<group>"; };
 		565CBFA81C6F0ED500635EA4 /* CZTagWithLabelView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTagWithLabelView.m; sourceTree = "<group>"; };
-		565EF5F91C48EAA80067C032 /* ActivityInfoHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityInfoHeaderView.h; sourceTree = "<group>"; };
-		565EF5FA1C48EAA80067C032 /* ActivityInfoHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityInfoHeaderView.m; sourceTree = "<group>"; };
+		565EF5F91C48EAA80067C032 /* CZActivityInfoHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZActivityInfoHeaderView.h; sourceTree = "<group>"; };
+		565EF5FA1C48EAA80067C032 /* CZActivityInfoHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZActivityInfoHeaderView.m; sourceTree = "<group>"; };
 		565EF5FB1C48EAA80067C032 /* CZHomeHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZHomeHeaderView.h; sourceTree = "<group>"; };
 		565EF5FC1C48EAA80067C032 /* CZHomeHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZHomeHeaderView.m; sourceTree = "<group>"; };
 		565EF6091C48EB3B0067C032 /* CZColumnViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZColumnViewController.h; sourceTree = "<group>"; };
@@ -673,8 +673,8 @@
 		565EF5F51C48E9DB0067C032 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				565EF5F91C48EAA80067C032 /* ActivityInfoHeaderView.h */,
-				565EF5FA1C48EAA80067C032 /* ActivityInfoHeaderView.m */,
+				565EF5F91C48EAA80067C032 /* CZActivityInfoHeaderView.h */,
+				565EF5FA1C48EAA80067C032 /* CZActivityInfoHeaderView.m */,
 				565EF5FB1C48EAA80067C032 /* CZHomeHeaderView.h */,
 				565EF5FC1C48EAA80067C032 /* CZHomeHeaderView.m */,
 				56E842791C4BA74C00D1D198 /* CZTimeCell.h */,
@@ -1123,7 +1123,7 @@
 				561D01F71C47DA5600E4E013 /* AFNetworkReachabilityManager.m in Sources */,
 				561D02021C47DA5600E4E013 /* UIButton+AFNetworking.m in Sources */,
 				561D01041C47D94C00E4E013 /* main.m in Sources */,
-				565EF5FD1C48EAA80067C032 /* ActivityInfoHeaderView.m in Sources */,
+				565EF5FD1C48EAA80067C032 /* CZActivityInfoHeaderView.m in Sources */,
 				56E7AE741C706A77004593E6 /* CZAddScheduleViewController.m in Sources */,
 				561D02111C47DA5600E4E013 /* ViewController+MASAdditions.m in Sources */,
 			);

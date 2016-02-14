@@ -1,5 +1,5 @@
 //
-//  ActivityInfoHeaderView.h
+//  CZActivityInfoHeaderView.h
 //  日常
 //
 //  Created by AlanZhang on 16/1/12.
@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 @class Activity;
 
-@interface ActivityInfoHeaderView : UIView
+@interface CZActivityInfoHeaderView : UIView
 
 @property (nonatomic, weak) UIImageView *ac_poster;
 @property (nonatomic, assign) CGSize posterSize;  //存储活动海报的大小
@@ -37,4 +37,5 @@
 
 //设置字控件的值
 - (void) setView:(Activity*) activity;
+
 @end

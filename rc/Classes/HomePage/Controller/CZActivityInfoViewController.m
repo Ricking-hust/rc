@@ -7,7 +7,7 @@
 //
 
 #import "CZActivityInfoViewController.h"
-#import "ActivityInfoHeaderView.h"
+#import "CZActivityInfoHeaderView.h"
 #import "ActivityIntroduction.h"
 #import "Masonry.h"
 #import "CZTimeCell.h"
@@ -108,7 +108,7 @@
     [_activity setSubViewsContent];
     
     //设置tableVie头
-    ActivityInfoHeaderView *header = [ActivityInfoHeaderView headerView];
+    CZActivityInfoHeaderView *header = [CZActivityInfoHeaderView headerView];
     [header setView:_activity];
     self.tableView.tableHeaderView = header;
 }

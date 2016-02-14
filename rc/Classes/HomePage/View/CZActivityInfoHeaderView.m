@@ -1,12 +1,12 @@
 //
-//  ActivityInfoHeaderView.m
+//  CZActivityInfoHeaderView.m
 //  日常
 //
 //  Created by AlanZhang on 16/1/12.
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
 
-#import "ActivityInfoHeaderView.h"
+#import "CZActivityInfoHeaderView.h"
 #import "Activity.h"
 #import "Masonry.h"
 
@@ -17,11 +17,11 @@
 #define POSTERIMAGE_WIDTH      120 //Poster的宽度
 #define POSTERIMAGE_HEIGHT     120 //poster的高度
 
-@implementation ActivityInfoHeaderView
+@implementation CZActivityInfoHeaderView
 
 + (instancetype)headerView
 {
-    ActivityInfoHeaderView *headerView = [[ActivityInfoHeaderView alloc]init];
+    CZActivityInfoHeaderView *headerView = [[CZActivityInfoHeaderView alloc]init];
     
     //1.创建ac_poster(UIImageView)
     UIImageView *imageView = [[UIImageView alloc]init];
