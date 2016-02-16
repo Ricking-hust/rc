@@ -756,91 +756,89 @@
 }
 
 - (NSMutableArray *)isLeapyear:(UIPickerView *)pickerView WithRow:(NSInteger)row inComponent:(NSInteger)component
-{
-    NSMutableArray *days = [[NSMutableArray alloc]init];
+{NSMutableArray *days = [[NSMutableArray alloc]init];
     long int month = [pickerView selectedRowInComponent:1];
     NSString *currentMonth = self.months[month];
-    if (component == 1)
+    long int currentYear = [pickerView selectedRowInComponent:0];
+    int year = [self.years[currentYear] intValue];
+    NSString *temp;
+    
+    if ((component == 0 || component == 1 || component == 2) && [currentMonth isEqualToString:@"02"])
     {
-        if ([currentMonth isEqualToString:@"01"] ||
-            [currentMonth isEqualToString:@"03"] ||
-            [currentMonth isEqualToString:@"05"] ||
-            [currentMonth isEqualToString:@"07"] ||
-            [currentMonth isEqualToString:@"08"] ||
-            [currentMonth isEqualToString:@"10"] ||
-            [currentMonth isEqualToString:@"12"])
-        {
-            self.days = nil;
-            self.days = [[NSMutableArray alloc]init];
-            NSString *temp;
-            for (int i = 0; i < 31; ++i)
+        if ((year % 4 == 0 && year % 100 != 0 ) || year % 400 == 0 )
+        {//闰年
+            
+            for (int i = 0; i < 29; i++)
             {
                 if (i < 9)
                 {
                     temp = [NSString stringWithFormat:@"0%d", i+1];
-                    [self.days addObject:temp];
+                    [days addObject:temp];
                 }else
                 {
                     temp = [NSString stringWithFormat:@"%d",i+1];
-                    [self.days addObject:temp];
+                    [days addObject:temp];
                 }
-                
             }
-
-            
-        }else if ([currentMonth isEqualToString:@"02"])
-        {
-            
-            long int currentYear = [pickerView selectedRowInComponent:0];
-            int year = [self.years[currentYear] intValue];
-            if ((year % 4 == 0 && year % 100 != 0 ) || year % 400 == 0 )
-            {//闰年
-                for (int i = 0; i < 29; i++)
-                {
-                    [days addObject:self.days[i]];
-                }
-                self.days = days;
-            }else
-            {//平年
-                for (int i = 0; i < 28; i++)
-                {
-                    [days addObject:self.days[i]];
-                }
-                self.days = days;
-            }
-        }else
-        {
-            for (int i = 0; i < 30; i++)
-            {
-                [days addObject:self.days[i]];
-            }
-            self.days = days;
         }
-    }
-    if (component == 0 && [currentMonth isEqualToString:@"02"])
-    {
-        long int currentYear = [pickerView selectedRowInComponent:0];
-        int year = [self.years[currentYear] intValue];
-        if ((year % 4 == 0 && year % 100 != 0 ) || year % 400 == 0 )
-        {//闰年
-            for (int i = 0; i < 29; i++)
-            {
-                [days addObject:self.days[i]];
-            }
-            self.days = days;
-        }else
+        else
         {//平年
+            
             for (int i = 0; i < 28; i++)
             {
-                [days addObject:self.days[i]];
+                if (i < 9)
+                {
+                    temp = [NSString stringWithFormat:@"0%d", i+1];
+                    [days addObject:temp];
+                }else
+                {
+                    temp = [NSString stringWithFormat:@"%d",i+1];
+                    [days addObject:temp];
+                }
             }
-            self.days = days;
         }
-
+    }else if ((component == 0 || component == 1 || component == 2) &&
+              ([currentMonth isEqualToString:@"01"] ||
+               [currentMonth isEqualToString:@"03"] ||
+               [currentMonth isEqualToString:@"05"] ||
+               [currentMonth isEqualToString:@"07"] ||
+               [currentMonth isEqualToString:@"08"] ||
+               [currentMonth isEqualToString:@"10"] ||
+               [currentMonth isEqualToString:@"12"]))
+    {
+        for (int i = 0; i < 31; ++i)
+        {
+            if (i < 9)
+            {
+                temp = [NSString stringWithFormat:@"0%d", i+1];
+                [days addObject:temp];
+            }else
+            {
+                temp = [NSString stringWithFormat:@"%d",i+1];
+                [days addObject:temp];
+            }
+            
+        }
+    }else
+    {
+        
+        for (int i = 0; i < 30; i++)
+        {
+            if (i < 9)
+            {
+                temp = [NSString stringWithFormat:@"0%d", i+1];
+                [days addObject:temp];
+            }else
+            {
+                temp = [NSString stringWithFormat:@"%d",i+1];
+                [days addObject:temp];
+            }
+        }
+        
     }
-
-    return self.days;
-}
+    
+    self.days = days;
+    return self.days;}
 - (CGFloat)pickerView:(UIPickerView *)pickerView widthForComponent:(NSInteger)component
 {
     CGRect rect = [[UIScreen mainScreen]bounds];

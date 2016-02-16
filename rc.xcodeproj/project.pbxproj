@@ -462,11 +462,11 @@
 		561D01361C47DA5600E4E013 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				564596A81C732A84006D8493 /* popupViewController */,
 				561D013A1C47DA5600E4E013 /* HomePage */,
 				561D01371C47DA5600E4E013 /* ColumnPage */,
 				561D01551C47DA5600E4E013 /* SchedulePage */,
 				561D01581C47DA5600E4E013 /* UserInfoPage */,
+				564596A81C732A84006D8493 /* popupViewController */,
 				56D7FB291C5794F6003247AF /* lib */,
 			);
 			path = Classes;
