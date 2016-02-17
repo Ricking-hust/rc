@@ -8,6 +8,6 @@
 
 #import "CZUpdateScheduleViewController.h"
 
-@interface CZAddScheduleViewController : CZUpdateScheduleViewController
+@interface CZAddScheduleViewController : CZUpdateScheduleViewController 
 
 @end

@@ -39,7 +39,7 @@
     item3.selectedImage = [[UIImage imageNamed:@"MyIconSelected"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];;
     item3.image = [[UIImage imageNamed:@"MyIconNormal"] imageWithRenderingMode:UIImageRenderingModeAlwaysOriginal];
     //设置item字体颜色
-    self.tabBar.tintColor = [UIColor colorWithRed:255.0/255.0 green:129.0/255.0 blue:3.0/255.0 alpha:1.0];    
+    self.tabBar.tintColor = [UIColor colorWithRed:255.0/255.0 green:129.0/255.0 blue:3.0/255.0 alpha:1.0];
 }
 /*
  *自定义控件

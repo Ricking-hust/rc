@@ -19,15 +19,16 @@
 + (instancetype)cellWithTableView:(UITableView *)tableView
 {
     static NSString *reuseId = @"TimeCourseCell";
-    CZTimeCourseCell * cell = (CZTimeCourseCell*)[tableView dequeueReusableCellWithIdentifier:reuseId];
+    CZTimeCourseCell * cell = (CZTimeCourseCell*)[tableView dequeueReusableCellWithIdentifier:nil];
     if (!cell) {
-        cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
+        cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     }
-    
+    cell.isShowDeleteButton = NO;
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;//去掉分割线
     cell.backgroundColor = [UIColor clearColor];
     cell.selectionStyle = UITableViewCellSelectionStyleNone;    //设置cell点击时无状态
 //    cell.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
+    
 #pragma mark - 测试语句
     //cell.backgroundColor = [UIColor grayColor];
     
@@ -38,7 +39,7 @@
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         //创建子控件
-        self.bgImage = [[UIImageView alloc]init];
+        self.bgImage = [[UIView alloc]init];
         [self.contentView addSubview:self.bgImage];
         
         self.timepUpLine = [[UILabel alloc]init];   //时间上线
@@ -78,8 +79,8 @@
         self.acContent.font = [UIFont systemFontOfSize:16];
         [self.bgImage addSubview:self.acContent];
         
-        self.deleteBtn = [[UIButton alloc]init];
-        [self.contentView addSubview:self.deleteBtn];
+        self.deleteButton = [[UIButton alloc]init];
+        [self.contentView addSubview:self.deleteButton];
         
     }
     return self;
@@ -103,26 +104,27 @@
     
     self.timeLabel.font = [UIFont systemFontOfSize:TIMELABEL_SIZE];
     self.timeLabel.textColor = THEMECOLOR;
-    self.timeLabel.text = @"12.28";
+    self.timeLabel.text = self.data.dayStr;
     
     self.weekLabel.font = [UIFont systemFontOfSize:WEEKLABEL_SIZE];
     self.weekLabel.textColor = THEMECOLOR;
-    self.weekLabel.text = @"星期一";
+    self.weekLabel.text = self.data.weekStr;
     
-    self.currentPoint.image = [UIImage imageNamed:self.data.imgStr];
+    self.currentPoint.image = [UIImage imageNamed:@"currentPoint"];
     self.tagImg.image = [UIImage imageNamed:self.data.tagStr];
-    self.tagLabel.text = @"运行";
+    self.tagLabel.text = self.data.taglabel;
+    
     self.acTime.text = self.data.timeStr;
     self.acContent.text = self.data.contentStr;
     
-    UIImage *image = [UIImage imageNamed:self.data.bgimgStr];
+    UIImage *image = [UIImage imageNamed:@"bg_background1"];
     self.bgImage.layer.contents = (id) image.CGImage;    // 如果需要背景透明加上下面这句
     self.bgImage.layer.backgroundColor = [UIColor clearColor].CGColor;
     
-    [self.deleteBtn setImage:[UIImage imageNamed:@"deleteIcon"] forState:UIControlStateNormal];
+    [self.deleteButton setImage:[UIImage imageNamed:@"deleteIcon"] forState:UIControlStateNormal];
     
 #pragma mark - 隐藏currentPoint,默认隐藏删除按钮
-    self.deleteBtn.hidden = YES;
+    self.deleteButton.hidden = YES;
     self.currentPoint.hidden = YES;
     if (self.isLastCell)
     {
@@ -159,14 +161,6 @@
     }];
     
 
-    //添加当前结节约束
-    CGFloat leftPaddingOfCurrentPoint = leftPadding - self.currentPoint.image.size.width / 2 + 2; //当前时间结点的到父视图的左边距
-    [self.currentPoint mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView.mas_left).with.offset(leftPaddingOfCurrentPoint);
-        make.top.equalTo(self.bgImage.mas_top).with.offset(25);
-        make.size.mas_equalTo(CGSizeMake(self.currentPoint.image.size.width, self.currentPoint.image.size.height));
-    }];
-    
     //时间上线约束
     [self.timepUpLine mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_left).with.offset(leftPadding-2);
@@ -212,18 +206,34 @@
     }];
     
     //添加背景约束
-    CGFloat bgWidth = acContentSize.width + acTimeSize.width + tagImgLeftPadding + leftPaddingOfTagAndTime + 10;
+    //CGFloat bgWidth = acContentSize.width + acTimeSize.width + tagImgLeftPadding + leftPaddingOfTagAndTime ;
+    CGFloat bgWidth = rect.size.width *0.69;
     CGFloat bgHeight = acTimeSize.height + acContentSize.height + topPadding + paddingBetweenTimeAndContent+ 20;
+    
+    if (bgHeight < 98)
+    {
+        bgHeight = 100;
+    }
     [self.bgImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.timeLine.mas_right).with.offset(20);
         make.top.equalTo(self.timeLine.mas_top).with.offset(0);
+   
         make.size.mas_equalTo(CGSizeMake(bgWidth, bgHeight));
+
+    }];
+    //添加当前结节约束
+    CGFloat leftPaddingOfCurrentPoint = leftPadding - self.currentPoint.image.size.width / 2 + 2; //当前时间结点的到父视图的左边距
+    [self.currentPoint mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.contentView.mas_left).with.offset(leftPaddingOfCurrentPoint);
+        make.top.equalTo(self.bgImage.mas_top).with.offset(bgHeight * 0.4 - self.currentPoint.image.size.height/2 );
+        make.size.mas_equalTo(CGSizeMake(self.currentPoint.image.size.width, self.currentPoint.image.size.height));
     }];
     //添加时间点
-    CGFloat paddingWithbgImage = bgHeight * 0.33;
+    CGFloat leftPaddingToCurrentPoint = self.currentPoint.image.size.width * 0.24;
+    CGFloat topPaddingToCurrentPoint = self.currentPoint.image.size.height * 0.26;
     [self.pointView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.currentPoint.mas_left).with.offset(8);
-        make.top.equalTo(self.bgImage.mas_top).with.offset(paddingWithbgImage);
+        make.left.equalTo(self.currentPoint.mas_left).with.offset(leftPaddingToCurrentPoint);
+        make.top.equalTo(self.currentPoint.mas_top).with.offset(topPaddingToCurrentPoint);
         make.size.mas_equalTo(CGSizeMake(14, 14));
     }];
     
@@ -243,10 +253,11 @@
     }];
     
     //添加删除按钮约束
-    [self.deleteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    CGSize deleteButtonSize = self.deleteButton.imageView.image.size;
+    [self.deleteButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.bgImage.mas_top).with.offset(0);
         make.right.equalTo(self.bgImage.mas_right).with.offset(0);
-        make.size.mas_equalTo(self.deleteBtn.imageView.image.size);
+        make.size.mas_equalTo(CGSizeMake(deleteButtonSize.width+4, deleteButtonSize.height+4));
     }];
 
 }

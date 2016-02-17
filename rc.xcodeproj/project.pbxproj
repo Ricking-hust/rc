@@ -336,6 +336,7 @@
 		569E58DF1C6ECA840060DCA6 /* CZMoreTimeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZMoreTimeCell.m; sourceTree = "<group>"; };
 		569E58E11C6ECAA60060DCA6 /* CZRemindTimeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZRemindTimeCell.h; sourceTree = "<group>"; };
 		569E58E21C6ECAA60060DCA6 /* CZRemindTimeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZRemindTimeCell.m; sourceTree = "<group>"; };
+		56AF88C61C743646006191E2 /* CZAddScheduleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZAddScheduleDelegate.h; sourceTree = "<group>"; };
 		56B83C161C608D0C005FF427 /* CZTimeCourseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTimeCourseCell.h; sourceTree = "<group>"; };
 		56B83C171C608D0C005FF427 /* CZTimeCourseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTimeCourseCell.m; sourceTree = "<group>"; };
 		56B83C1B1C609C2D005FF427 /* CZData.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZData.h; sourceTree = "<group>"; };
@@ -496,6 +497,7 @@
 			children = (
 				565EF60D1C48EB440067C032 /* Controller */,
 				56B83C101C608CD6005FF427 /* View */,
+				56AF88C41C743428006191E2 /* Protocol */,
 			);
 			path = SchedulePage;
 			sourceTree = "<group>";
@@ -831,6 +833,14 @@
 				565EF6521C48EC410067C032 /* UserInfoCell.xib */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		56AF88C41C743428006191E2 /* Protocol */ = {
+			isa = PBXGroup;
+			children = (
+				56AF88C61C743646006191E2 /* CZAddScheduleDelegate.h */,
+			);
+			path = Protocol;
 			sourceTree = "<group>";
 		};
 		56B83C101C608CD6005FF427 /* View */ = {

@@ -9,6 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface CZScheduleViewController : UIViewController
-
+@property (nonatomic, strong) NSMutableArray *datas;
 
 @end

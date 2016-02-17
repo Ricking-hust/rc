@@ -22,6 +22,20 @@
 //    [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
 //    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     
+//    UIViewController *currentViewController = self.selectedViewController;
+//    if ([currentViewController isKindOfClass:[CZScheduleViewController class]])
+//    {
+//        NSDate *  senddate=[NSDate date];
+//        
+//        NSDateFormatter  *dateformatter=[[NSDateFormatter alloc] init];
+//        
+//        [dateformatter setDateFormat:@"MM月dd日"];
+//        
+//        NSString *  locationString=[dateformatter stringFromDate:senddate];
+//        
+//        currentViewController.title = locationString;
+//    }
+
 }
 
 #pragma mark 类第一次使用的时候被调用

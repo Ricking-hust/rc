@@ -28,11 +28,13 @@
 @property (strong, nonatomic) UILabel *timeLabel;
 @property (strong, nonatomic) UILabel *weekLabel;
 
-@property (strong, nonatomic) UIButton *deleteBtn;
+@property (strong, nonatomic) UIButton *deleteButton;
 
 @property (assign, nonatomic) CGSize cellSize;
 
 @property (assign, nonatomic) BOOL isLastCell;
+
+@property (assign, nonatomic) BOOL isShowDeleteButton;
 
 /**
  *  类方法， 创建自定义的cell

@@ -167,7 +167,7 @@
                     <navigationItem key="navigationItem" title="Title" id="OKz-JJ-HLh">
                         <barButtonItem key="rightBarButtonItem" image="addIcon" id="Z1C-ic-UNB">
                             <connections>
-                                <action selector="addSchedule:" destination="0ED-vl-k5j" id="UXx-Qa-YUQ"/>
+                                <action selector="toAddSchedule:" destination="0ED-vl-k5j" id="LfT-Ak-hcV"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

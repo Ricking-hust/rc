@@ -20,45 +20,6 @@
 
 @interface CZUpdateScheduleViewController ()<UITextViewDelegate,UIPickerViewDelegate, UIPickerViewDataSource>
 
-@property (strong, nonatomic) UIView *themeView;
-@property (strong, nonatomic) UILabel *themeLabel;
-@property (strong, nonatomic) UIImageView *tagimageView;
-@property (strong, nonatomic) UILabel *tagLabel;
-@property (strong, nonatomic) UIButton *moreTagButton;
-
-@property (strong, nonatomic) UIView *contentView;
-@property (strong, nonatomic) UITextView *contentTextView;
-@property (strong, nonatomic) UILabel *limitedLabel;
-@property (strong, nonatomic) UIView *segmentView;
-
-@property (strong, nonatomic) UIView *timeView;
-@property (strong, nonatomic) UILabel *timeLabel;
-@property (strong, nonatomic) UILabel *timeInfo;
-@property (strong, nonatomic) UIButton *moreTimeButton;
-@property (strong, nonatomic) UIView *segmentViewReletiveToRv;
-
-@property (strong, nonatomic) UIView *remindView;
-@property (strong, nonatomic) UILabel *remindLabel;
-@property (strong, nonatomic) UILabel *remindInfo;
-@property (strong, nonatomic) UIButton *moreRemindButton;
-
-@property (strong, nonatomic) UIButton *deleteScheduleButton;
-
-@property (strong, nonatomic) UIView *timeSelectView;
-
-#pragma mark - 测试数据
-@property (copy, nonatomic) NSString *strThemelabel;
-@property (copy, nonatomic) NSString *strContent;
-@property (copy, nonatomic) NSString *strTime;
-@property (copy, nonatomic) NSString *strRemind;
-@property (copy, nonatomic) NSString *strTagImg;
-
-#pragma mark - 选择器数据
-@property (strong, nonatomic) NSMutableArray *years;
-@property (strong, nonatomic) NSMutableArray *months;
-@property (strong, nonatomic) NSMutableArray *days;
-@property (strong, nonatomic) NSMutableArray *times;
-
 @end
 
 @implementation CZUpdateScheduleViewController
@@ -67,12 +28,7 @@
     [super viewDidLoad];
     //注册通知,确定contentTextView的text的字数
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewEditChanged:) name:UITextViewTextDidChangeNotification object:self.contentTextView];
-#pragma mark - 测试输入键盘
-    NSArray *array = [UITextInputMode activeInputModes] ;
-    NSLog(@"%@",array);
-    
-    NSLog(@"%@",[[UITextInputMode currentInputMode] primaryLanguage] );
-    
+
 #pragma mar - 测试数据
     self.strThemelabel = @"出差";
     self.strContent = @"你是我的小呀小苹果，怎么爱你都不嫌多，啊啊啊啊啊你你欠工工工工";
@@ -265,7 +221,7 @@
     self.tagLabel = [[UILabel alloc]init];
     [self.themeView addSubview:self.tagLabel];
 #pragma mark - 行程标签测试语句
-    self.tagLabel.text = self.strThemelabel;
+    self.tagLabel.text = @"出差";
     CGSize tagLabelSize = [self setLabelStyle:self.tagLabel WithContent:self.tagLabel.text];
     [self.tagLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.themeView);
@@ -411,7 +367,17 @@
     
     self.timeInfo = [[UILabel alloc]init];
     [self.timeView addSubview:self.timeInfo];
-    CGSize timeInfoSize = [self setLabelStyle:self.timeInfo WithContent:self.strTime];
+    //默认显示当前系统时间
+    NSDate *senddate=[NSDate date];
+    NSDateFormatter  *dateformatter=[[NSDateFormatter alloc] init];
+    [dateformatter setDateFormat:@"YYYY年MM月dd日 HH:mm"];
+    
+    NSString *locationString=[dateformatter stringFromDate:senddate];
+    NSRange range = NSMakeRange(15, 2);
+    NSString *defaultDate = [locationString stringByReplacingCharactersInRange:range withString:@"00"];
+    
+
+    CGSize timeInfoSize = [self setLabelStyle:self.timeInfo WithContent:defaultDate];
     
     [self.timeInfo mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.timeView);
@@ -499,7 +465,7 @@
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(back)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
     
-    UIBarButtonItem *rigthButton = [[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(OK)];
+    UIBarButtonItem *rigthButton = [[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(commintModify)];
     [self.navigationItem setRightBarButtonItem:rigthButton];
     
 }
@@ -507,8 +473,8 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
-//确定修改按钮
-- (void)OK
+//提交修改
+- (void)commintModify
 {
     
 }
@@ -589,7 +555,7 @@
 {
     //收起键盘
     [self.contentTextView resignFirstResponder];
-    
+
     CZTimeSelectView *selectView = [CZTimeSelectView selectView];
     selectView.pickView.dataSource = self;
     selectView.pickView.delegate = self;
