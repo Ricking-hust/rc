@@ -7,15 +7,15 @@
 //
 
 #import "CZMyInfoViewController.h"
-#import "UserInfoCell.h"
-#import "ShowUserInfoViewController.h"
-#import "MyActivitiesInfoViewController.h"
-#import "MyReleaseInforViewController.h"
-#import "MyCollectInfoViewController.h"
-#import "AboutUsInfoViewController.h"
-#import "FeedbackViewController.h"
-#import "SettingViewController.h"
-
+#import "CZMyInfoCell.h"
+#import "Masonry.h"
+#import "CZPersonInfoViewController.h"
+#import "CZMyActivityViewContoller.h"
+#import "CZMyReleseViewController.h"
+#import "CZMyCollectionViewController.h"
+#import "CZAboutUsViewController.h"
+#import "CZFeedbackViewController.h"
+#import "CZSettingViewController.h"
 
 @interface CZMyInfoViewController ()
 
@@ -23,211 +23,220 @@
 
 @implementation CZMyInfoViewController
 
-- (void)viewWillAppear:(BOOL)animated{
-
-}
-
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     self.tableView.dataSource = self;
-    
-    
+    self.tableView.scrollEnabled = NO;
 }
 - (void)back
 {
     
     NSLog(@"back button");
 }
-//单元格的点击事件
-- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-    long int section = [indexPath section];
 
-    switch (section) {
-        case 0:{
-            
-            //从故事板中初始化控制界面
-            UIStoryboard *showUserInfo = [UIStoryboard storyboardWithName:@"ShowUserInfo" bundle:nil];
-            
-            ShowUserInfoViewController *showUserInfoViewController = [showUserInfo instantiateViewControllerWithIdentifier:@"ShowUserInfo"];
-            
-            //设置界面的标题
-            showUserInfoViewController.title = @"个人资料";
-            
-            //定义二级视图的导航栏返回按钮
-
-            UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"返回" style:UIBarButtonItemStylePlain target:self action:@selector(showBar)];
-            [self.navigationItem setBackBarButtonItem:backItem];
-            [self.navigationController pushViewController:showUserInfoViewController animated:YES];
-            
-        }
-            break;
-            
-        case 1:{
-            if (indexPath.row == 0) {
-                UIStoryboard *myActivitiesInfo = [UIStoryboard storyboardWithName:@"ShowUserInfo"bundle:nil];
-                MyActivitiesInfoViewController *myActivitiesInfoViewController = [myActivitiesInfo instantiateViewControllerWithIdentifier:@"ActivitiesInfo"];
-                myActivitiesInfoViewController.title = @"我的活动";
-                
-                UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"back" style:UIBarButtonItemStylePlain target:nil action:"showBar"];
-                
-                [self.navigationItem setBackBarButtonItem:backItem];
-                [self.navigationController pushViewController:myActivitiesInfoViewController animated:YES];
-            }else if (indexPath.row == 1){
-                UIStoryboard *myRelease = [UIStoryboard storyboardWithName:@"ShowUserInfo"bundle:nil];
-                MyReleaseInforViewController *myReleaseInforViewController = [myRelease instantiateViewControllerWithIdentifier:@"MyReleaseInfo"];
-                myReleaseInforViewController.title = @"我的发布";
-
-                UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"back" style:UIBarButtonItemStylePlain target:nil action:"showBar"];
-                
-                [self.navigationItem setBackBarButtonItem:backItem];
-                [self.navigationController pushViewController:myReleaseInforViewController animated:YES];
-
-            }else{
-                UIStoryboard *myCollection = [UIStoryboard storyboardWithName:@"ShowUserInfo"bundle:nil];
-                MyCollectInfoViewController *myCollectInfoViewController = [myCollection instantiateViewControllerWithIdentifier:@"MyCollectInfo"];
-                myCollectInfoViewController.title = @"我的收藏";
-                
-                UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"back" style:UIBarButtonItemStylePlain target:nil action:"showBar"];
-                
-                [self.navigationItem setBackBarButtonItem:backItem];
-                [self.navigationController pushViewController:myCollectInfoViewController animated:YES];
-
-            }
-            
-        }
-            break;
-            
-        case 2:
-            if (indexPath.row == 0) {
-                UIStoryboard *aboutUs = [UIStoryboard storyboardWithName:@"ShowUserInfo"bundle:nil];
-                
-                AboutUsInfoViewController *aboutUsInfoViewController = [aboutUs instantiateViewControllerWithIdentifier:@"AboutUsViewController"];
-                aboutUsInfoViewController.title = @"关于我们";
-                
-                UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"back" style:UIBarButtonItemStylePlain target:nil action:"showBar"];
-                
-                [self.navigationItem setBackBarButtonItem:backItem];
-                [self.navigationController pushViewController:aboutUsInfoViewController animated:YES];
-
-            }else{
-                UIStoryboard *feedBack = [UIStoryboard storyboardWithName:@"ShowUserInfo"bundle:nil];
-                
-                FeedbackViewController *feedbackViewController = [feedBack instantiateViewControllerWithIdentifier:@"Feedback"];
-                feedbackViewController.view.backgroundColor = [UIColor whiteColor];
-                feedbackViewController.title = @"关于我们";
-
-                UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"back" style:UIBarButtonItemStylePlain target:nil action:"showBar"];
-                
-                [self.navigationItem setBackBarButtonItem:backItem];
-                [self.navigationController pushViewController:feedbackViewController animated:YES];
-            }
-            break;
-        default:
-            NSLog(@"erro");
-            break;
-    }
-
-}
 
 - (void)showBar
 {
-    UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"提示" message:@"你点击了导航栏右按钮" delegate:self  cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
-    [alter show];
-    NSLog(@"click tabBarItem");
+    
 }
 //设置按钮点击事件
-- (IBAction)settingBtn:(id)sender {
+- (IBAction)settingBtn:(id)sender
+{
     
-    //找到故事板
-    UIStoryboard *setting = [UIStoryboard storyboardWithName:@"ShowUserInfo"bundle:nil];
-    //从故事板实例化视图控制器
-    SettingViewController *settingViewController = [setting instantiateViewControllerWithIdentifier:@"SettingStoryboard"];
-    settingViewController.title = @"设置";
-    //跳转视图
-    
-    UIBarButtonItem *backItem = [[UIBarButtonItem alloc] initWithTitle:@"back" style:UIBarButtonItemStylePlain target:self action:"showBar"];
-    
-    [self.navigationItem setBackBarButtonItem:backItem];
+    CZSettingViewController *settingViewController = [[CZSettingViewController alloc]init];
     [self.navigationController pushViewController:settingViewController animated:YES];
     
 }
 
 #pragma mark - Table view data source
 
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView {
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
 
     return 3;
 }
 
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
 
    
-    if (section == 0) {
+    if (section == 0)
+    {
         return 1;
-    }else if (section == 1){
+    }else if (section == 1)
+    {
         return 3;
-    }else{
+    }else
+    {
          return 2;
     }
 }
 
 
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
-    
-    
-    NSInteger section = [indexPath section];
-    
-    if (section == 0) {
-        static NSString *cellIndentifier = @"UserInfoCell";//这里的cellID就是cell的xib对应的名称
-
-        UserInfoCell *cell = (UserInfoCell *)[tableView dequeueReusableCellWithIdentifier:cellIndentifier];
-
-        if(nil == cell) {
-            NSArray *nib = [[NSBundle mainBundle] loadNibNamed:cellIndentifier owner:self options:nil];
-            cell = [nib objectAtIndex:0];
-        }
-        
-        self.tableView.rowHeight = cell.frame.size.height;//注意，这里我们要把table的rowHeight设为和cell的高度一样
-
-        cell.userImage.image = [UIImage imageNamed:@"1.png"];
-        cell.userName.text = @"Username";
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-
-        return cell;
-        
-    }else if (section == 1){
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
-        NSInteger *row = [indexPath row];
-        if (row == 0) {
-            cell.textLabel.text = @"my activity";
-        }else if (row == 1){
-            cell.textLabel.text = @"my release";
-        }else{
-            cell.textLabel.text = @"my love";
-        }
-        cell.imageView.image = [UIImage imageNamed:@"Chile.png"];
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        
-        self.tableView.rowHeight = 44;
-
-        return cell;
-    }else{
-        UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:@"CellIdentifier" forIndexPath:indexPath];
-        NSInteger *row = [indexPath row];
-        if (row == 0) {
-            cell.textLabel.text = @"about us";
-        }else {
-            cell.textLabel.text = @"feedback";
-        }
-        self.tableView.rowHeight = 44;
-        cell.imageView.image = [UIImage imageNamed:@"Argentina.png"];
-        
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
-        return cell;
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CZMyInfoCell *cell = [CZMyInfoCell myInfoCellWithTableView:tableView];
+    [self setCell:cell WithIndexPath:indexPath];
+    return cell;
+   
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0)
+    {
+        return [[UIScreen mainScreen]bounds].size.width * 0.21;
+    }else
+    {
+        return 44;
     }
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 1;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 1)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 10;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 10)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
+
+#pragma mark - 单元格的点击事件
+
+- (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    [self didSelectCellAtIndexPath:indexPath];
 
 }
+- (void)didSelectCellAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section)
+    {
+        case 0:
+        {
+            CZPersonInfoViewController *personInfoViewController = [[CZPersonInfoViewController alloc]init];
+            [self.navigationController pushViewController:personInfoViewController animated:YES];
+        }
+        break;
+            
+        case 1:
+        {
+            if (indexPath.row == 0)
+            {
+                CZMyActivityViewContoller *myActivityViewController = [[CZMyActivityViewContoller alloc]init];
+                [self.navigationController pushViewController:myActivityViewController animated:YES];
+            }else if (indexPath.row == 1)
+            {
+                CZMyReleseViewController *myReleseViewController = [[CZMyReleseViewController alloc]init];
+                [self.navigationController pushViewController:myReleseViewController animated:YES];
+            }else
+            {
+                CZMyCollectionViewController *myCollectionViewController = [[CZMyCollectionViewController alloc]init];
+                [self.navigationController pushViewController:myCollectionViewController animated:YES];
+            }
+        }
+        break;
+        default:
+        {
+            if (indexPath.row == 0)
+            {
+                CZAboutUsViewController *aboutUsViewController = [[CZAboutUsViewController alloc]init];
+                [self.navigationController pushViewController:aboutUsViewController animated:YES];
+            }else
+            {
+                CZFeedbackViewController *feedbackViewController = [[CZFeedbackViewController alloc]init];
+                [self.navigationController pushViewController:feedbackViewController animated:YES];
+            }
+        }
+        break;
+    }
+}
+- (void)setCell:(CZMyInfoCell *)cell WithIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0)
+    {
+        cell.imgIcon.image = [UIImage imageNamed:@"city_1"];
+        cell.contentLable.text = @"完美文筱";
+
+    }else if (indexPath.section == 1)
+    {
+        if (indexPath.row == 0)
+        {
+            cell.imgIcon.image = [UIImage imageNamed:@"addIcon"];
+            cell.contentLable.text = @"我的活动";
+        }else if (indexPath.row == 1)
+        {
+            cell.imgIcon.image = [UIImage imageNamed:@"addIcon"];
+            cell.contentLable.text = @"我的发布";
+        }else
+        {
+            cell.imgIcon.image = [UIImage imageNamed:@"addIcon"];
+            cell.contentLable.text = @"我的收藏";
+        }
+
+    }else
+    {
+        if (indexPath.row == 0)
+        {
+            cell.imgIcon.image = [UIImage imageNamed:@"addIcon"];
+            cell.contentLable.text = @"关于我们";
+        }else
+        {
+            cell.imgIcon.image = [UIImage imageNamed:@"addIcon"];
+            cell.contentLable.text = @"建议反馈";
+        }
+        
+    }
+    cell.indicatorImageView.image = [UIImage imageNamed:@"nextIcon"];
+    [self setCellConstraints:cell];
+}
+
+- (void)setCellConstraints:(CZMyInfoCell *)cell
+{
+    [cell.imgIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(cell.contentView.mas_left).with.offset(10);
+        make.centerY.equalTo(cell.contentView);
+        make.size.mas_equalTo(CGSizeMake(50, 50));
+    }];
+    CGSize contentLableSize = [self sizeWithText:cell.contentLable.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:14];
+    [cell.contentLable mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(cell.imgIcon.mas_right).with.offset(15);
+        make.centerY.equalTo(cell.contentView);
+        make.size.mas_equalTo(CGSizeMake(contentLableSize.width+1, contentLableSize.height+1));
+    }];
+    [cell.indicatorImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(cell.contentView);
+        make.right.equalTo(cell.contentView.mas_right).with.offset(-10);
+        make.size.mas_equalTo(cell.indicatorImageView.image.size);
+    }];
+}
+/**
+ *  计算字体的长和宽
+ *
+ *  @param text 待计算大小的字符串
+ *
+ *  @param fontSize 指定绘制字符串所用的字体大小
+ *
+ *  @return 字符串的大小
+ */
+- (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize
+{
+    //计算文本的大小
+    CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
+    return nameSize;
+}
+
 
 @end

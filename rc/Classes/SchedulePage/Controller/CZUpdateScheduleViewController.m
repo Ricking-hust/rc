@@ -599,13 +599,29 @@
     if ([text isEqualToString:@"\n"]) {
         
         [textView resignFirstResponder];
-        NSLog(@"%@",textView.text);
 
         return NO;
     }
     
     return YES;
 }
+- (void)textViewDidBeginEditing:(UITextView *)textView
+{
+    if ([self.contentTextView.text isEqualToString:@"请输入行程地点+内容(40字以内)"]) {
+        self.contentTextView.text = @"";
+        self.contentTextView.alpha = 1.0;
+    }
+}
+
+- (void)textViewDidEndEditing:(UITextView *)textView
+{
+    if ([textView.text isEqualToString:@""])
+    {
+        textView.text = @"请输入行程地点+内容(40字以内)";
+        textView.alpha = 0.5;
+    }
+}
+
 // 监听文本改变
 - (void)textViewEditChanged:(NSNotification *)obj{
     
@@ -650,22 +666,6 @@
     return sizeToFit.height;
 }
 
-- (void)textViewDidBeginEditing:(UITextView *)textView
-{
-    if ([self.contentTextView.text isEqualToString:@"请输入行程地点+内容(40字以内)"]) {
-        self.contentTextView.text = @"";
-        self.contentTextView.alpha = 1.0;
-    }
-}
-
-- (void)textViewDidEndEditing:(UITextView *)textView
-{
-    if ([textView.text isEqualToString:@""])
-    {
-        textView.text = @"请输入行程地点+内容(40字以内)";
-        textView.alpha = 0.5;
-    }
-}
 
 #pragma mark - PickView代理
 
