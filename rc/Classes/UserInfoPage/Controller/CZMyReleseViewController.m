@@ -111,6 +111,7 @@
     [self.willCheckButton setTitle:@"待审核" forState:UIControlStateNormal];
     [self.willCheckButton setTitleColor:nonSelectedColor forState:UIControlStateNormal];
     [self.willCheckButton setTitleColor:selecteColor forState:UIControlStateSelected];
+    self.willCheckButton.selected = YES;
     
     self.checkedButton = [[UIButton alloc]init];
     self.checkedButton.titleLabel.font = self.willCheckButton.titleLabel.font;
@@ -122,6 +123,10 @@
     self.lineDownOfWillCheckButton = [[UIView alloc]init];
     self.lineDownOfWillCheckButton.backgroundColor = selecteColor;
     self.lineDownOfCheckButton.backgroundColor = selecteColor;
+    self.lineDownOfCheckButton.hidden = YES;
+    
+    [self.willCheckButton addTarget:self action:@selector(checkButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self.checkedButton addTarget:self action:@selector(checkButton:) forControlEvents:UIControlEventTouchUpInside];
     
     [self.view addSubview:self.superOfButtons];
     [self.superOfButtons addSubview:self.checkedButton];
@@ -172,6 +177,27 @@
         make.left.right.bottom.equalTo(self.view);
         make.top.equalTo(self.superOfButtons.mas_bottom);
     }];
+}
+#pragma mark - 待审核与已审核按钮点击事件
+- (void)checkButton:(UIButton *)btn
+{
+    self.willCheckButton.selected = NO;
+    self.checkedButton.selected = NO;
+
+    if ([btn.titleLabel.text isEqualToString:@"待审核"])
+    {
+
+        self.lineDownOfWillCheckButton.hidden = NO;
+        self.lineDownOfCheckButton.hidden = YES;
+    }else
+    {
+        self.lineDownOfCheckButton.hidden = NO;
+        self.lineDownOfWillCheckButton.hidden = YES;
+    }
+    btn.selected = YES;
+    
+    //to do here--------------
+    
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {

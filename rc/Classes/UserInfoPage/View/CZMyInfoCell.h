@@ -12,6 +12,7 @@
 @property (nonatomic, strong) UIImageView *imgIcon;
 @property (nonatomic, strong) UILabel *contentLable;
 @property (nonatomic, strong) UIImageView *indicatorImageView;
+@property (nonatomic, strong) UIView *separator;
 
 + (instancetype) myInfoCellWithTableView :(UITableView *)tableView;
 - (instancetype) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;

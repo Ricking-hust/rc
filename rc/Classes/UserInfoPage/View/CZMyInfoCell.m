@@ -33,10 +33,12 @@
         self.contentLable.font = [UIFont systemFontOfSize:14];
         self.contentLable.alpha = 0.8;
         self.indicatorImageView = [[UIImageView alloc]init];
+        self.separator = [[UIView alloc]init];
         
         [self.contentView addSubview:self.imgIcon];
         [self.contentView addSubview:self.contentLable];
         [self.contentView addSubview:self.indicatorImageView];
+        [self.contentView addSubview:self.separator];
         
     }
     return self;

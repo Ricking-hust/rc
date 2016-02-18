@@ -29,6 +29,8 @@
     
     self.tableView.dataSource = self;
     self.tableView.scrollEnabled = NO;
+    self.tableView.separatorInset = UIEdgeInsetsMake(10, 10, 10, 10);
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 - (void)back
 {
@@ -78,6 +80,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CZMyInfoCell *cell = [CZMyInfoCell myInfoCellWithTableView:tableView];
+
     [self setCell:cell WithIndexPath:indexPath];
     return cell;
    
@@ -200,10 +203,10 @@
         
     }
     cell.indicatorImageView.image = [UIImage imageNamed:@"nextIcon"];
-    [self setCellConstraints:cell];
+    [self setCellConstraints:cell WithIndexPath:indexPath];
 }
 
-- (void)setCellConstraints:(CZMyInfoCell *)cell
+- (void)setCellConstraints:(CZMyInfoCell *)cell WithIndexPath:(NSIndexPath *)indexPath
 {
     [cell.imgIcon mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(cell.contentView.mas_left).with.offset(10);
@@ -221,6 +224,35 @@
         make.right.equalTo(cell.contentView.mas_right).with.offset(-10);
         make.size.mas_equalTo(cell.indicatorImageView.image.size);
     }];
+    if (indexPath.section == 0)
+    {
+
+    }else if (indexPath.section == 1)
+    {
+        if (indexPath.row == 0 || indexPath.row == 1)
+        {
+            cell.separator.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
+
+            [cell.separator mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(cell.imgIcon.mas_left);
+                make.right.equalTo(cell.indicatorImageView.mas_right);
+                make.bottom.equalTo(cell.contentView.mas_bottom);
+                make.height.mas_equalTo(0.5);
+            }];
+        }
+    }else
+    {
+        if (indexPath.row == 0)
+        {
+            cell.separator.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
+            [cell.separator mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(cell.imgIcon.mas_left);
+                make.right.equalTo(cell.indicatorImageView.mas_right);
+                make.bottom.equalTo(cell.contentView.mas_bottom);
+                make.height.mas_equalTo(0.5);
+            }];
+        }
+    }
 }
 /**
  *  计算字体的长和宽

@@ -30,7 +30,7 @@
     
     [self createHeaderView];
     self.tableView.tableHeaderView = self.headerView;
-    
+    self.tableView.separatorInset = UIEdgeInsetsMake(10, 10, 10, 10);
 }
 - (void)backToForwardViewController
 {
@@ -44,6 +44,26 @@
 {
     
     return 1;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    return 1;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 11)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 2;
+}
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 2)];
+    view.backgroundColor = [UIColor clearColor];
+    return view;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {

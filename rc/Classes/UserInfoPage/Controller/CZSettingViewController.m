@@ -21,7 +21,7 @@
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(backToForwardViewController)];
     
     [self.navigationItem setLeftBarButtonItem:leftButton];
-    
+    self.tableView.separatorInset = UIEdgeInsetsMake(10, 10, 10, 10);
 }
 - (void)backToForwardViewController
 {
