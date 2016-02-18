@@ -1,5 +1,5 @@
 //
-//  MyInfoViewController.h
+//  CZMyInfoViewController.h
 //  日常
 //
 //  Created by AlanZhang on 15/12/19.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MyInfoViewController : UITableViewController
+@interface CZMyInfoViewController : UITableViewController
 
 @end

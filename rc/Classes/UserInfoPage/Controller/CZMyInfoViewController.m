@@ -6,7 +6,7 @@
 //  Copyright © 2015年 AlanZhang. All rights reserved.
 //
 
-#import "MyInfoViewController.h"
+#import "CZMyInfoViewController.h"
 #import "UserInfoCell.h"
 #import "ShowUserInfoViewController.h"
 #import "MyActivitiesInfoViewController.h"
@@ -17,11 +17,11 @@
 #import "SettingViewController.h"
 
 
-@interface MyInfoViewController ()
+@interface CZMyInfoViewController ()
 
 @end
 
-@implementation MyInfoViewController
+@implementation CZMyInfoViewController
 
 - (void)viewWillAppear:(BOOL)animated{
 
@@ -131,7 +131,8 @@
 
 }
 
-- (void)showBar{
+- (void)showBar
+{
     UIAlertView *alter = [[UIAlertView alloc] initWithTitle:@"提示" message:@"你点击了导航栏右按钮" delegate:self  cancelButtonTitle:@"确定" otherButtonTitles:nil, nil];
     [alter show];
     NSLog(@"click tabBarItem");

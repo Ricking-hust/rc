@@ -77,7 +77,7 @@
 		565EF6541C48EC410067C032 /* FeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF62D1C48EC410067C032 /* FeedbackViewController.m */; };
 		565EF6551C48EC410067C032 /* MyActivitiesInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF62F1C48EC410067C032 /* MyActivitiesInfoViewController.m */; };
 		565EF6561C48EC410067C032 /* MyCollectInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6311C48EC410067C032 /* MyCollectInfoViewController.m */; };
-		565EF6571C48EC410067C032 /* MyInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6331C48EC410067C032 /* MyInfoViewController.m */; };
+		565EF6571C48EC410067C032 /* CZMyInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6331C48EC410067C032 /* CZMyInfoViewController.m */; };
 		565EF6581C48EC410067C032 /* MyReleaseInforViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6351C48EC410067C032 /* MyReleaseInforViewController.m */; };
 		565EF6591C48EC410067C032 /* SettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6371C48EC410067C032 /* SettingViewController.m */; };
 		565EF65A1C48EC410067C032 /* ShowUserInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6391C48EC410067C032 /* ShowUserInfoViewController.m */; };
@@ -283,8 +283,8 @@
 		565EF62F1C48EC410067C032 /* MyActivitiesInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyActivitiesInfoViewController.m; sourceTree = "<group>"; };
 		565EF6301C48EC410067C032 /* MyCollectInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyCollectInfoViewController.h; sourceTree = "<group>"; };
 		565EF6311C48EC410067C032 /* MyCollectInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyCollectInfoViewController.m; sourceTree = "<group>"; };
-		565EF6321C48EC410067C032 /* MyInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyInfoViewController.h; sourceTree = "<group>"; };
-		565EF6331C48EC410067C032 /* MyInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyInfoViewController.m; sourceTree = "<group>"; };
+		565EF6321C48EC410067C032 /* CZMyInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZMyInfoViewController.h; sourceTree = "<group>"; };
+		565EF6331C48EC410067C032 /* CZMyInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZMyInfoViewController.m; sourceTree = "<group>"; };
 		565EF6341C48EC410067C032 /* MyReleaseInforViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyReleaseInforViewController.h; sourceTree = "<group>"; };
 		565EF6351C48EC410067C032 /* MyReleaseInforViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyReleaseInforViewController.m; sourceTree = "<group>"; };
 		565EF6361C48EC410067C032 /* SettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = SettingViewController.h; sourceTree = "<group>"; };
@@ -792,8 +792,8 @@
 				565EF62F1C48EC410067C032 /* MyActivitiesInfoViewController.m */,
 				565EF6301C48EC410067C032 /* MyCollectInfoViewController.h */,
 				565EF6311C48EC410067C032 /* MyCollectInfoViewController.m */,
-				565EF6321C48EC410067C032 /* MyInfoViewController.h */,
-				565EF6331C48EC410067C032 /* MyInfoViewController.m */,
+				565EF6321C48EC410067C032 /* CZMyInfoViewController.h */,
+				565EF6331C48EC410067C032 /* CZMyInfoViewController.m */,
 				565EF6341C48EC410067C032 /* MyReleaseInforViewController.h */,
 				565EF6351C48EC410067C032 /* MyReleaseInforViewController.m */,
 				565EF6361C48EC410067C032 /* SettingViewController.h */,
@@ -1102,7 +1102,7 @@
 				565BCFB71C51E4E30031ABBD /* CZMyTagCell.m in Sources */,
 				561D02151C47DA5600E4E013 /* AppDelegate.m in Sources */,
 				564596B61C732A84006D8493 /* LewPopupViewAnimationDrop.m in Sources */,
-				565EF6571C48EC410067C032 /* MyInfoViewController.m in Sources */,
+				565EF6571C48EC410067C032 /* CZMyInfoViewController.m in Sources */,
 				565EF6561C48EC410067C032 /* MyCollectInfoViewController.m in Sources */,
 				565CBFA91C6F0ED500635EA4 /* CZTagWithLabelView.m in Sources */,
 				56637D751C5611230000BF46 /* CZCityView.m in Sources */,
