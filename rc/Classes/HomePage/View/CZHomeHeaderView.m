@@ -87,7 +87,7 @@
     //计算文本的大小
     CGSize textSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:FONTSIZE]} context:nil].size;
     self.label.text = text;
-  
+    self.label.textColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
     [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self).with.offset(10);
         make.top.equalTo(self.scrollView.mas_bottom).with.offset(10);

@@ -111,10 +111,15 @@
     CZActivityInfoHeaderView *header = [CZActivityInfoHeaderView headerView];
     [header setView:_activity];
     self.tableView.tableHeaderView = header;
+    
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(backToForwardViewController)];
+    [self.navigationItem setLeftBarButtonItem:leftButton];
+    
+    
 }
 
 //左侧按钮的点击事件
-- (void) back
+- (void) backToForwardViewController
 {
     [self.navigationController popViewControllerAnimated:YES];
     
