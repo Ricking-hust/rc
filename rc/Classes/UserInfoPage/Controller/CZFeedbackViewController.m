@@ -8,7 +8,7 @@
 
 #import "CZFeedbackViewController.h"
 #import "Masonry.h"
-#define MAXLENGTH   5
+#define MAXLENGTH   200
 
 @interface CZFeedbackViewController() <UITextViewDelegate>
 @property (nonatomic, strong) UIView *textViewSuperView;
