@@ -12,7 +12,6 @@
 #import "CZData.h"
 #import "CZScheduleInfoViewController.h"
 #import "CZAddScheduleViewController.h"
-#import "CZAddScheduleDelegate.h"
 
 @interface CZScheduleViewController ()<UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate>
 @property (nonatomic, strong) UITableView *tableView;

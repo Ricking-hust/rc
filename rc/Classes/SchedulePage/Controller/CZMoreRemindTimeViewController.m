@@ -10,6 +10,9 @@
 #import "CZRemindTimeCell.h"
 #import "CZMoreTimeCell.h"
 #import "Masonry.h"
+#import "CZUpdateScheduleViewController.h"
+#import "CZMoreTimeCell.h"
+#import "CZRemindTimeCell.h"
 #define FONTSIZE    14
 
 @interface CZMoreRemindTimeViewController ()
@@ -141,6 +144,18 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     [self isSelectedCell:indexPath];
+    //to do here ----------------------
+    UITableViewCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+    CZUpdateScheduleViewController *updateViewController = self.navigationController.viewControllers[2];
+    if ([cell isKindOfClass:[CZMoreTimeCell class]])
+    {
+        
+        updateViewController.remindInfo.text = ((CZMoreTimeCell *)cell).timeLable.text;
+    }else
+    {
+        updateViewController.remindInfo.text = ((CZRemindTimeCell *)cell).time.text;
+    }
+    
 }
 - (void)isSelectedCell:(NSIndexPath *)indexPath
 {
