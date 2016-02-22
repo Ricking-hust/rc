@@ -39,7 +39,8 @@
 {
     static NSString *reuseId = @"activityCell";
     CZActivitycell * cell = (CZActivitycell*)[tableView dequeueReusableCellWithIdentifier:reuseId];
-    if (!cell) {
+    if (!cell)
+    {
         cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
     }
     
