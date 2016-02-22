@@ -11,7 +11,7 @@
 @interface CZHomeViewController : UIViewController <UITableViewDelegate, UITableViewDelegate>
 
 @property (strong, nonatomic)  UIView *searchView;
-//@property (nonatomic, strong) UITableView *tableView;
+
 @property (strong, nonatomic)  UITableView *tableView;
 
 @end
