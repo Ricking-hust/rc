@@ -90,7 +90,6 @@
 		56DF01F01C4915CD00E80DFA /* CZNavigationViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56DF01EF1C4915CD00E80DFA /* CZNavigationViewController.m */; };
 		56DF02321C49356100E80DFA /* CZActivityInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56DF02311C49356100E80DFA /* CZActivityInfoViewController.m */; };
 		56E2AAA81C59A964009371F7 /* CZRemindTimeButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E2AAA71C59A964009371F7 /* CZRemindTimeButton.m */; };
-		56E2AAAA1C59DEA1009371F7 /* HomeSearch.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 56E2AAA91C59DEA1009371F7 /* HomeSearch.storyboard */; };
 		56E2AAAD1C59E229009371F7 /* CZSearchViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E2AAAC1C59E229009371F7 /* CZSearchViewController.m */; };
 		56E470071C5735900056BE17 /* CZCityButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E470061C5735900056BE17 /* CZCityButton.m */; };
 		56E4700C1C5749450056BE17 /* CZActivityOfColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E4700B1C5749450056BE17 /* CZActivityOfColumn.m */; };
@@ -299,7 +298,6 @@
 		56DF02311C49356100E80DFA /* CZActivityInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZActivityInfoViewController.m; sourceTree = "<group>"; };
 		56E2AAA61C59A964009371F7 /* CZRemindTimeButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZRemindTimeButton.h; sourceTree = "<group>"; };
 		56E2AAA71C59A964009371F7 /* CZRemindTimeButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZRemindTimeButton.m; sourceTree = "<group>"; };
-		56E2AAA91C59DEA1009371F7 /* HomeSearch.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = HomeSearch.storyboard; sourceTree = "<group>"; };
 		56E2AAAB1C59E229009371F7 /* CZSearchViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZSearchViewController.h; sourceTree = "<group>"; };
 		56E2AAAC1C59E229009371F7 /* CZSearchViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZSearchViewController.m; sourceTree = "<group>"; };
 		56E470051C5735900056BE17 /* CZCityButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCityButton.h; sourceTree = "<group>"; };
@@ -598,7 +596,6 @@
 		561D01C51C47DA5600E4E013 /* Main */ = {
 			isa = PBXGroup;
 			children = (
-				56E2AAA91C59DEA1009371F7 /* HomeSearch.storyboard */,
 				561D010B1C47D94C00E4E013 /* Main.storyboard */,
 				561D01101C47D94C00E4E013 /* LaunchScreen.storyboard */,
 			);
@@ -953,7 +950,6 @@
 			files = (
 				561D02171C47DA5600E4E013 /* activityImage.png in Resources */,
 				561D01FC1C47DA5600E4E013 /* LICENSE in Resources */,
-				56E2AAAA1C59DEA1009371F7 /* HomeSearch.storyboard in Resources */,
 				561D02071C47DA5600E4E013 /* LICENSE in Resources */,
 				561D01121C47D94C00E4E013 /* LaunchScreen.storyboard in Resources */,
 				561D02181C47DA5600E4E013 /* Argentina.png in Resources */,

@@ -173,11 +173,43 @@
 #pragma mark - 单元格的点击事件
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    //    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HomeActivityInfo" bundle:nil];
-    //    CZActivityInfoViewController *activityInfoViewController = [storyboard instantiateViewControllerWithIdentifier:@"HomeActivityInfo"];
+
     CZActivityInfoViewController *activityInfoViewController = [[CZActivityInfoViewController alloc]init];
     activityInfoViewController.title = @"活动介绍";
     [self.navigationController pushViewController:activityInfoViewController animated:YES];
+    
+}
+//给单元格进行赋值
+//@property (nonatomic, weak) UIImageView *ac_poster;
+//@property (nonatomic, assign) CGSize posterSize;  //存储活动海报的大小
+//@property (nonatomic, weak) UILabel *ac_title;
+//@property (nonatomic, weak) UILabel *ac_time;
+//@property (nonatomic, weak) UILabel *ac_place;
+//@property (nonatomic, weak) UIImageView *ac_imageTag;
+//@property (nonatomic, assign) CGSize tagSize;   //存储活动标签图片的大小
+//@property (nonatomic, weak) UILabel *ac_tags;
+- (void) setCellValue:(CZActivitycell *)cell AtIndexPath:(NSIndexPath *)indexPath
+{
+//    Activity *activity = [Activity activity];
+//    activity.ac_id = 11111;
+//    activity.ac_poster = @"img_4";
+//    activity.ac_title = @"2015年沸雪北京世界单板滑雪赛与现场音乐会";
+//    activity.ac_time = @"时间：2015.1.1 14:00 AM";
+//    activity.ac_place = @"地点：光谷体育馆";
+//    activity.ac_tags = @"相亲 单身";
+//    activity.ac_collect_num = 11111;
+//    activity.ac_praise_num = 22222;
+//    activity.ac_read_num = 33333;
+//    [self.activity addObject:activity];
+    
+    Activity *ac = self.activity[0];
+    
+    cell.ac_poster.image = [UIImage imageNamed:ac.ac_poster];
+    cell.ac_title.text = ac.ac_title;
+    cell.ac_time.text = ac.ac_time;
+    cell.ac_place.text = ac.ac_place;
+    cell.ac_imageTag.image = [UIImage imageNamed:@"tagImage"];
+    cell.ac_tags.text = ac.ac_tags;
     
 }
 #pragma mark - 创建首页子控件
@@ -255,8 +287,7 @@
 #pragma mark - 首页搜索框点击事件
 - (void) onClickSearch:(UIView *)view
 {
-    UIStoryboard *storyboard = [UIStoryboard storyboardWithName:@"HomeSearch" bundle:nil];
-    CZSearchViewController *searchViewController = [storyboard instantiateViewControllerWithIdentifier:@"CZSearchViewController"];
+    CZSearchViewController *searchViewController = [[CZSearchViewController alloc]init];
     [self.navigationController pushViewController:searchViewController animated:YES];
 }
 

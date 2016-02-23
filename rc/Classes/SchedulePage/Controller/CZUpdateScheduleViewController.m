@@ -16,7 +16,7 @@
 #import "CZTagWithLabelView.h"
 
 #define FONTSIZE    14  //字体大小
-#define MAXLENGTH   90  //contentTextView的最在字数
+#define MAXLENGTH   90  //contentTextView的最大字数
 
 @interface CZUpdateScheduleViewController ()<UITextViewDelegate,UIPickerViewDelegate, UIPickerViewDataSource>
 

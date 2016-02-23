@@ -12,6 +12,18 @@
 @class ActivityModel;
 
 @interface CZActivitycell : UITableViewCell
+@property (nonatomic, weak) UIImageView *ac_poster;
+@property (nonatomic, assign) CGSize posterSize;  //存储活动海报的大小
+@property (nonatomic, weak) UILabel *ac_title;
+@property (nonatomic, weak) UILabel *ac_time;
+@property (nonatomic, weak) UILabel *ac_place;
+@property (nonatomic, weak) UIImageView *ac_imageTag;
+@property (nonatomic, assign) CGSize tagSize;   //存储活动标签图片的大小
+@property (nonatomic, weak) UILabel *ac_tags;
+
+//目前不实现浏览量
+//@property (nonatomic, weak) UIImageView *ac_viewImage_num;
+//@property (nonatomic, weak) UILabel *ac_views_num;
 
 @property (nonatomic, strong) Activity *activity;
 @property (nonatomic,strong) ActivityModel *activitymodel;
@@ -38,10 +50,9 @@
  */
 - (instancetype) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
 
-///**
-// *  实例方法 设置子控件显示的内容
-// *
-// */
-//- (void)setSubViewsContent;
+/**
+ *  对单元格内的控件进行布局
+ */
+- (void)setSubViewsConstraint;
 
 @end
