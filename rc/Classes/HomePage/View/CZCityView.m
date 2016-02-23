@@ -17,6 +17,7 @@
     cityView.cityBtn = [[UIButton alloc]init];
     cityView.locationImage = [[UIImageView alloc]init];
     cityView.locationImage.tag = 11;
+    cityView.locationImage.hidden = YES;
     cityView.cityNameLabel = [[UILabel alloc]init];
     [cityView.cityNameLabel setTag:10];
     [cityView addSubview:cityView.cityBtn];

@@ -18,8 +18,6 @@
 #import "DataManager.h"
 
 @interface CZHomeViewController ()
-
-@property(nonatomic, strong) NSMutableArray *activity;
 @property (nonatomic,strong) ActivityList *activityList;
 
 @property (nonatomic,strong) NSURLSessionDataTask *currentTask;
@@ -33,6 +31,20 @@
 {
     
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
+}
+- (void)configureBlocks{
+    self.currentTask = [[DataManager manager] getActivitySearchWithKeywords:@"讲座" startId:@"0" num:@"10" cityId:@"1" success:^(ActivityList *acList) {
+        self.activityList = acList;
+    } failure:^(NSError *error) {
+        NSLog(@"error:%@",error);
+    }];
+}
+
+- (void) setActivityList:(ActivityList *)activityList{
+    
+    _activityList = activityList;
+    
+    [self.tableView reloadData];
 }
 #pragma mark - viewDidLoad
 - (void)viewDidLoad
@@ -58,8 +70,6 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    
-    //return self.activity.count;
     return self.activityList.list.count;
 }
 
@@ -76,8 +86,10 @@
     //1 创建可重用的自定义cell
     CZActivitycell *cell = (CZActivitycell*)[CZActivitycell activitycellWithTableView:tableView];
     
+    //对cell内的控件进行赋值
     [self setCellValue:cell AtIndexPath:indexPath];
     
+    //对cell内的控件进行布局
     [cell setSubViewsConstraint];
     
     //2 返回cell
@@ -141,7 +153,6 @@
     }
     NSString *tags = [Artags componentsJoinedByString:@","];
     cell.ac_tags.text = tags;
-    NSLog(@"tags:%@",tags);
     
 }
 #pragma mark - 创建首页子控件
