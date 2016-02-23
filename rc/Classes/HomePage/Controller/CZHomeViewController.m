@@ -23,79 +23,10 @@
 
 @implementation CZHomeViewController
 
-/**
- *  对象方法,模拟从服务器取得数据
- *
- *  @return 返回实例对象
- */
-- (void) getActivityFromServer
-{
-    self.activity = [NSMutableArray array];
-    
-    Activity *activity = [Activity activity];
-    activity.ac_id = 11111;
-    activity.ac_poster = @"img_4";
-    activity.ac_title = @"2015年沸雪北京世界单板滑雪赛与现场音乐会";
-    activity.ac_time = @"时间：2015.1.1 14:00 AM";
-    activity.ac_place = @"地点：光谷体育馆";
-    activity.ac_tags = @"相亲 单身";
-    activity.ac_collect_num = 11111;
-    activity.ac_praise_num = 22222;
-    activity.ac_read_num = 33333;
-    [self.activity addObject:activity];
-    
-    Activity *activity2 = [Activity activity];
-    [activity2 setSubViewsContent];
-    [self.activity addObject:activity2];
-    
-    Activity *activity3 = [Activity activity];
-    activity3.ac_id = 11111;
-    
-    activity3.ac_poster = @"img_2";
-    activity3.ac_title = @"2015年沸雪北京世界单板滑雪赛与现场音乐会";
-    activity3.ac_time = @"时间：2015.1.1 14:00 AM";
-    activity3.ac_place = @"地点：光谷体育馆";
-    activity3.ac_tags = @"相亲 单身";
-    activity3.ac_collect_num = 11111;
-    activity3.ac_praise_num = 22222;
-    activity3.ac_read_num = 33333;
-    [self.activity addObject:activity3];
-    
-    
-    Activity *activity4 = [Activity activity];
-    activity4.ac_id = 11111;
-    
-    activity4.ac_poster = @"img_2";
-    activity4.ac_title = @"4 2015年沸雪北京世界单板滑雪赛与现场音乐会";
-    activity4.ac_time = @"时间：2015.1.1 14:00 AM";
-    activity4.ac_place = @"地点：光谷体育馆";
-    activity4.ac_tags = @"相亲 单身";
-    activity4.ac_collect_num = 11111;
-    activity4.ac_praise_num = 22222;
-    activity4.ac_read_num = 33333;
-    [self.activity addObject:activity4];
-    
-    
-    Activity *activity5 = [Activity activity];
-    activity5.ac_id = 11111;
-    
-    activity5.ac_poster = @"img_2";
-    activity5.ac_title = @"5 2015年沸雪北京世界单板滑雪赛与现场音乐会";
-    activity5.ac_time = @"时间：2015.1.1 14:00 AM";
-    activity5.ac_place = @"地点：光谷体育馆";
-    activity5.ac_tags = @"相亲 单身";
-    activity5.ac_collect_num = 11111;
-    activity5.ac_praise_num = 22222;
-    activity5.ac_read_num = 33333;
-    [self.activity addObject:activity5];
-    
-}
+
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    
-    //模拟从服务器取得数据
-    [self getActivityFromServer];
     
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
 }
