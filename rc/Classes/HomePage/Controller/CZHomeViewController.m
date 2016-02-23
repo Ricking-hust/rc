@@ -135,6 +135,7 @@
     [self setCellValue:cell AtIndexPath:indexPath];
     
     [cell setSubViewsConstraint];
+    
     //2 返回cell
     return cell;
 }
@@ -180,14 +181,7 @@
     
 }
 //给单元格进行赋值
-//@property (nonatomic, weak) UIImageView *ac_poster;
-//@property (nonatomic, assign) CGSize posterSize;  //存储活动海报的大小
-//@property (nonatomic, weak) UILabel *ac_title;
-//@property (nonatomic, weak) UILabel *ac_time;
-//@property (nonatomic, weak) UILabel *ac_place;
-//@property (nonatomic, weak) UIImageView *ac_imageTag;
-//@property (nonatomic, assign) CGSize tagSize;   //存储活动标签图片的大小
-//@property (nonatomic, weak) UILabel *ac_tags;
+
 - (void) setCellValue:(CZActivitycell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
     ActivityModel *ac = self.activityList.list[indexPath.section];

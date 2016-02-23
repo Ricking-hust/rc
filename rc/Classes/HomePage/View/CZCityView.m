@@ -16,6 +16,7 @@
     CZCityView *cityView = [[CZCityView alloc]init];
     cityView.cityBtn = [[UIButton alloc]init];
     cityView.locationImage = [[UIImageView alloc]init];
+    cityView.locationImage.tag = 11;
     cityView.cityNameLabel = [[UILabel alloc]init];
     [cityView.cityNameLabel setTag:10];
     [cityView addSubview:cityView.cityBtn];
@@ -26,9 +27,6 @@
     [cityView.cityBtn.layer setCornerRadius:10];
     cityView.cityNameLabel.font = [UIFont systemFontOfSize:15];
 
-    //[cityView setConstraints];
-#pragma mark - 测试语句
-    NSLog(@"%@",cityView);
     return cityView;
 }
 - (void)setConstraints

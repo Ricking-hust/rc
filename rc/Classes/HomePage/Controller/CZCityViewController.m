@@ -44,7 +44,7 @@
     img = [UIImage imageNamed:str];
     _beijing.locationImage.image = [UIImage imageNamed:@"location"];
     [_beijing.cityBtn setBackgroundImage:img forState:UIControlStateNormal];
-    //[_beijing.cityBtn setBackgroundImage:img forState:UIControlStateHighlighted];
+
     [self.beijing.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
     _beijing.cityNameLabel.text = @"北京";
     [_beijing setConstraints];
@@ -56,7 +56,7 @@
     img = [UIImage imageNamed:str];
     _guangzhou.locationImage.image = [UIImage imageNamed:@"location"];
     [_guangzhou.cityBtn setBackgroundImage:img forState:UIControlStateNormal];
-    //[_guangzhou.cityBtn setBackgroundImage:img forState:UIControlStateHighlighted];
+
     _guangzhou.cityNameLabel.text = @"广州";
     [_guangzhou setConstraints];
     [_bgView addSubview:_guangzhou];
@@ -68,7 +68,7 @@
     img = [UIImage imageNamed:str];
     _shanghai.locationImage.image = [UIImage imageNamed:@"location"];
     [_shanghai.cityBtn setBackgroundImage:img forState:UIControlStateNormal];
-    //[_shanghai.cityBtn setBackgroundImage:img forState:UIControlStateHighlighted];
+
     _shanghai.cityNameLabel.text = @"上海";
     [_shanghai setConstraints];
     [_bgView addSubview:_shanghai];
@@ -80,7 +80,7 @@
     img = [UIImage imageNamed:str];
     _wuhan.locationImage.image = [UIImage imageNamed:@"location"];
     [_wuhan.cityBtn setBackgroundImage:img forState:UIControlStateNormal];
-    //[_wuhan.cityBtn setBackgroundImage:img forState:UIControlStateHighlighted];
+
     _wuhan.cityNameLabel.text = @"武汉";
     [_wuhan setConstraints];
     [_bgView addSubview:_wuhan];
@@ -126,7 +126,14 @@
 {
 #pragma mark - 测试语句
     UILabel *label = [btn.superview viewWithTag:10];
-    NSLog(@"%@",label.text);
+    if ([label.text isEqualToString:@"北京"])
+    {
+        UIImageView *locationImageView = [btn.superview viewWithTag:11];
+        
+    }
+    
+    
+    
 }
 
 
