@@ -14,11 +14,15 @@
 #import "CZTagSelectViewController.h"
 #import "CZSearchViewController.h"
 #import "CZActivitycell.h"
+#import "ActivityModel.h"
+#import "DataManager.h"
 
 @interface CZHomeViewController ()
 
 @property(nonatomic, strong) NSMutableArray *activity;
+@property (nonatomic,strong) ActivityList *activityList;
 
+@property (nonatomic,strong) NSURLSessionDataTask *currentTask;
 @end
 
 @implementation CZHomeViewController
@@ -35,6 +39,7 @@
 {
     [super viewDidLoad];
     
+    [self configureBlocks];
     [self createSubViews];
     
     //设置tableHeaderView
@@ -54,7 +59,8 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
-    return self.activity.count;
+    //return self.activity.count;
+    return self.activityList.list.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -70,10 +76,8 @@
     //1 创建可重用的自定义cell
     CZActivitycell *cell = (CZActivitycell*)[CZActivitycell activitycellWithTableView:tableView];
     
-    //给cell进行赋值
     [self setCellValue:cell AtIndexPath:indexPath];
     
-    //对cell内的控件进行布局
     [cell setSubViewsConstraint];
     
     //2 返回cell
@@ -124,13 +128,20 @@
 
 - (void) setCellValue:(CZActivitycell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-    Activity *ac = self.activity[indexPath.section];
+    ActivityModel *ac = self.activityList.list[indexPath.section];
     
-    cell.ac_poster.image = [UIImage imageNamed:ac.ac_poster];
-    cell.ac_title.text = ac.ac_title;
-    cell.ac_time.text = ac.ac_time;
-    cell.ac_place.text = ac.ac_place;
-    cell.ac_tags.text = ac.ac_tags;
+    cell.ac_poster.image = [UIImage imageNamed:ac.acPoster];
+    cell.ac_title.text = ac.acTitle;
+    cell.ac_time.text = ac.acTime;
+    cell.ac_place.text = ac.acPlace;
+    NSMutableArray *Artags = [[NSMutableArray alloc]init];
+
+    for (TagModel *model in ac.tagsList.list) {
+        [Artags addObject:model.tagName];
+    }
+    NSString *tags = [Artags componentsJoinedByString:@","];
+    cell.ac_tags.text = tags;
+    NSLog(@"tags:%@",tags);
     
 }
 #pragma mark - 创建首页子控件

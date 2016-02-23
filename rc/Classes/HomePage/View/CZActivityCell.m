@@ -9,6 +9,7 @@
 #import "CZActivitycell.h"
 #import "Masonry.h"
 #import "Activity.h"
+#import "ActivityModel.h"
 
 #define TITLE_FONTSIZE  14  //活动主题字体大小
 #define TIME_FONTSIZE   10  //活动时间字体大小
@@ -87,8 +88,6 @@
     }
     return self;
 }
-
-#pragma mark - 模型
 
 //设置子控件的Constraint
 - (void)setSubViewsConstraint

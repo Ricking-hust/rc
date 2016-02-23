@@ -9,6 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @class Activity;
+@class ActivityModel;
 
 @interface CZActivitycell : UITableViewCell
 @property (nonatomic, weak) UIImageView *ac_poster;
@@ -25,6 +26,7 @@
 //@property (nonatomic, weak) UILabel *ac_views_num;
 
 @property (nonatomic, strong) Activity *activity;
+@property (nonatomic,strong) ActivityModel *activitymodel;
 @property (nonatomic, assign) CGFloat cellHeight;
 
 /**

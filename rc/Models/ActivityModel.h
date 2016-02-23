@@ -6,8 +6,8 @@
 //  Copyright © 2015年 AlanZhang. All rights reserved.
 //
 
-#import <Foundation/Foundation.h>
 #import "BaseModel.h"
+#import "TagModel.h"
 
 @interface ActivityModel : BaseModel
 
@@ -16,21 +16,28 @@
 @property (nonatomic,copy) NSString *acPosterTop;
 @property (nonatomic,copy) NSString *acTitle;
 @property (nonatomic,copy) NSString *acTime;
+@property (nonatomic,copy) NSString *acTheme;
 @property (nonatomic,copy) NSString *acPlace;
-@property (nonatomic,copy) NSString *acTags;
 @property (nonatomic,copy) NSString *acCollectNum;
+@property (nonatomic,copy) NSString *acSize;
+@property (nonatomic,copy) NSString *acPay;
+@property (nonatomic,copy) NSString *acDesc;
 @property (nonatomic,copy) NSString *acPraiseNum;
+@property (nonatomic,copy) NSString *acReadNum;
+@property (nonatomic,copy) NSString *acHtml;
+@property (nonatomic,copy) NSString *acCollect;
+@property (nonatomic,copy) NSString *plan;
+
+@property (nonatomic,strong) TagsList *tagsList;
 
 @end
 
-/*
- ac_id  活动的id
- ac_poster  活动海报的url
- ac_poster_top 活动在首页幻灯片的图片
- ac_title  活动标题
- ac_time 活动开始时间，数据库里的值精确到时分秒，这里只需返回年月日
- ac_place  活动地点
- ac_tags  活动具有的标签数组
- ac_collect_num 活动收藏人数
- ac_praise_num 活动点赞人数
-*/
+
+@interface ActivityList : NSObject
+
+@property (nonatomic, strong) NSArray *list;
+
+- (instancetype)initWithArray:(NSArray *)array;
+
+@end
+

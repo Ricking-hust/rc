@@ -67,7 +67,6 @@
 		565EF6111C48EB440067C032 /* CZScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF60F1C48EB440067C032 /* CZScheduleViewController.m */; };
 		565EF6221C48EBA20067C032 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6141C48EBA20067C032 /* DataManager.m */; };
 		565EF6231C48EBA20067C032 /* NSNumber+Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6161C48EBA20067C032 /* NSNumber+Message.m */; };
-		565EF6241C48EBA20067C032 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6181C48EBA20067C032 /* UserModel.m */; };
 		565EF6251C48EBA20067C032 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF61B1C48EBA20067C032 /* Activity.m */; };
 		565EF6261C48EBA20067C032 /* ActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF61D1C48EBA20067C032 /* ActivityModel.m */; };
 		565EF6271C48EBA20067C032 /* BaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF61F1C48EBA20067C032 /* BaseModel.m */; };
@@ -109,6 +108,11 @@
 		56E8427B1C4BA74C00D1D198 /* CZTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8427A1C4BA74C00D1D198 /* CZTimeCell.m */; };
 		56E8427E1C4BB8E500D1D198 /* CZActivityInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8427D1C4BB8E500D1D198 /* CZActivityInfoCell.m */; };
 		56E842811C4BD21500D1D198 /* CZActivityDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E842801C4BD21500D1D198 /* CZActivityDetailCell.m */; };
+		C4CAD1BB1C7B3943003FD0B0 /* IndustryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CAD1B41C7B3943003FD0B0 /* IndustryModel.m */; };
+		C4CAD1BC1C7B3943003FD0B0 /* PlanModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CAD1B61C7B3943003FD0B0 /* PlanModel.m */; };
+		C4CAD1BD1C7B3943003FD0B0 /* TagModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CAD1B81C7B3943003FD0B0 /* TagModel.m */; };
+		C4CAD1BE1C7B3943003FD0B0 /* ThemeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CAD1BA1C7B3943003FD0B0 /* ThemeModel.m */; };
+		C4CAD1C11C7B3975003FD0B0 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CAD1C01C7B3975003FD0B0 /* UserModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -249,8 +253,6 @@
 		565EF6141C48EBA20067C032 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		565EF6151C48EBA20067C032 /* NSNumber+Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Message.h"; sourceTree = "<group>"; };
 		565EF6161C48EBA20067C032 /* NSNumber+Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Message.m"; sourceTree = "<group>"; };
-		565EF6171C48EBA20067C032 /* UserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
-		565EF6181C48EBA20067C032 /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
 		565EF61A1C48EBA20067C032 /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
 		565EF61B1C48EBA20067C032 /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
 		565EF61C1C48EBA20067C032 /* ActivityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityModel.h; sourceTree = "<group>"; };
@@ -332,6 +334,16 @@
 		56E8427D1C4BB8E500D1D198 /* CZActivityInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZActivityInfoCell.m; sourceTree = "<group>"; };
 		56E8427F1C4BD21500D1D198 /* CZActivityDetailCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZActivityDetailCell.h; sourceTree = "<group>"; };
 		56E842801C4BD21500D1D198 /* CZActivityDetailCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZActivityDetailCell.m; sourceTree = "<group>"; };
+		C4CAD1B31C7B3943003FD0B0 /* IndustryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndustryModel.h; sourceTree = "<group>"; };
+		C4CAD1B41C7B3943003FD0B0 /* IndustryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndustryModel.m; sourceTree = "<group>"; };
+		C4CAD1B51C7B3943003FD0B0 /* PlanModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlanModel.h; sourceTree = "<group>"; };
+		C4CAD1B61C7B3943003FD0B0 /* PlanModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PlanModel.m; sourceTree = "<group>"; };
+		C4CAD1B71C7B3943003FD0B0 /* TagModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TagModel.h; sourceTree = "<group>"; };
+		C4CAD1B81C7B3943003FD0B0 /* TagModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TagModel.m; sourceTree = "<group>"; };
+		C4CAD1B91C7B3943003FD0B0 /* ThemeModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ThemeModel.h; sourceTree = "<group>"; };
+		C4CAD1BA1C7B3943003FD0B0 /* ThemeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeModel.m; sourceTree = "<group>"; };
+		C4CAD1BF1C7B3975003FD0B0 /* UserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
+		C4CAD1C01C7B3975003FD0B0 /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -717,8 +729,6 @@
 				565EF6141C48EBA20067C032 /* DataManager.m */,
 				565EF6151C48EBA20067C032 /* NSNumber+Message.h */,
 				565EF6161C48EBA20067C032 /* NSNumber+Message.m */,
-				565EF6171C48EBA20067C032 /* UserModel.h */,
-				565EF6181C48EBA20067C032 /* UserModel.m */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -726,16 +736,26 @@
 		565EF6191C48EBA20067C032 /* Models */ = {
 			isa = PBXGroup;
 			children = (
+				565EF61E1C48EBA20067C032 /* BaseModel.h */,
+				565EF61F1C48EBA20067C032 /* BaseModel.m */,
 				565EF61A1C48EBA20067C032 /* Activity.h */,
 				565EF61B1C48EBA20067C032 /* Activity.m */,
 				565EF61C1C48EBA20067C032 /* ActivityModel.h */,
 				565EF61D1C48EBA20067C032 /* ActivityModel.m */,
-				565EF61E1C48EBA20067C032 /* BaseModel.h */,
-				565EF61F1C48EBA20067C032 /* BaseModel.m */,
+				C4CAD1BF1C7B3975003FD0B0 /* UserModel.h */,
+				C4CAD1C01C7B3975003FD0B0 /* UserModel.m */,
 				565EF6201C48EBA20067C032 /* CityModel.h */,
 				565EF6211C48EBA20067C032 /* CityModel.m */,
 				56E842761C4B88BC00D1D198 /* ActivityIntroduction.h */,
 				56E842771C4B88BC00D1D198 /* ActivityIntroduction.m */,
+				C4CAD1B31C7B3943003FD0B0 /* IndustryModel.h */,
+				C4CAD1B41C7B3943003FD0B0 /* IndustryModel.m */,
+				C4CAD1B51C7B3943003FD0B0 /* PlanModel.h */,
+				C4CAD1B61C7B3943003FD0B0 /* PlanModel.m */,
+				C4CAD1B71C7B3943003FD0B0 /* TagModel.h */,
+				C4CAD1B81C7B3943003FD0B0 /* TagModel.m */,
+				C4CAD1B91C7B3943003FD0B0 /* ThemeModel.h */,
+				C4CAD1BA1C7B3943003FD0B0 /* ThemeModel.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -965,6 +985,8 @@
 				56E842781C4B88BC00D1D198 /* ActivityIntroduction.m in Sources */,
 				56E5235B1C759C1F00794B0E /* CZMyActivityViewContoller.m in Sources */,
 				561D01FF1C47DA5600E4E013 /* AFImageDownloader.m in Sources */,
+				C4CAD1BB1C7B3943003FD0B0 /* IndustryModel.m in Sources */,
+				C4CAD1C11C7B3975003FD0B0 /* UserModel.m in Sources */,
 				56423F4B1C4FB4710072CCC3 /* CZHomeViewController.m in Sources */,
 				565EF6281C48EBA20067C032 /* CityModel.m in Sources */,
 				565EF6111C48EB440067C032 /* CZScheduleViewController.m in Sources */,
@@ -976,6 +998,7 @@
 				56D7FB2C1C579511003247AF /* UINavigationBar+Awesome.m in Sources */,
 				561D01FE1C47DA5600E4E013 /* AFAutoPurgingImageCache.m in Sources */,
 				565EF60C1C48EB3B0067C032 /* CZColumnViewController.m in Sources */,
+				C4CAD1BE1C7B3943003FD0B0 /* ThemeModel.m in Sources */,
 				56E2AAAD1C59E229009371F7 /* CZSearchViewController.m in Sources */,
 				565EF5FE1C48EAA80067C032 /* CZHomeHeaderView.m in Sources */,
 				564EF46A1C662F81006DFACE /* CZUpdateScheduleViewController.m in Sources */,
@@ -984,6 +1007,7 @@
 				561D020F1C47DA5600E4E013 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				565EF6231C48EBA20067C032 /* NSNumber+Message.m in Sources */,
 				562CC4461C6C962100774C22 /* CZTimeSelectView.m in Sources */,
+				C4CAD1BC1C7B3943003FD0B0 /* PlanModel.m in Sources */,
 				561D02121C47DA5600E4E013 /* README.md in Sources */,
 				561D02051C47DA5600E4E013 /* UIRefreshControl+AFNetworking.m in Sources */,
 				569E58E01C6ECA840060DCA6 /* CZMoreTimeCell.m in Sources */,
@@ -1002,7 +1026,7 @@
 				565EF6271C48EBA20067C032 /* BaseModel.m in Sources */,
 				564596BA1C732A84006D8493 /* UIViewController+LewPopupViewController.m in Sources */,
 				561D01F81C47DA5600E4E013 /* AFSecurityPolicy.m in Sources */,
-				565EF6241C48EBA20067C032 /* UserModel.m in Sources */,
+				C4CAD1BD1C7B3943003FD0B0 /* TagModel.m in Sources */,
 				565EF6251C48EBA20067C032 /* Activity.m in Sources */,
 				561D02041C47DA5600E4E013 /* UIProgressView+AFNetworking.m in Sources */,
 				56E5235E1C75A05100794B0E /* CZMyReleseViewController.m in Sources */,

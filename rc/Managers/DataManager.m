@@ -1,23 +1,29 @@
 //
-//  DataParse.m
+//  DataManager.m
 //  日常
 //
 //  Created by 余笃 on 15/12/21.
 //  Copyright © 2015年 AlanZhang. All rights reserved.
 //
-//test yu-1
 
-#import <Foundation/Foundation.h>
-#import "DataManager.h"
+
 #import "AFNetworking.h"
+#import "DataManager.h"
+#import "CityModel.h"
 
-static NSString *const kUsername = @"username";
-static NSString *const kUserid = @"userid";
+static NSString *const kUsername = @"usr_name";
+static NSString *const kUserid = @"user_id";
 static NSString *const kUserIsLogin = @"userIsLogin";
+
+typedef NS_ENUM(NSInteger,RcRequestMethod){
+    RcRequestMethodJSONGET    = 1,
+    RcRequestMethodHTTPPOST   = 2,
+    RcRequestMethodHTTPGET    = 3
+};
 
 @interface DataManager ()
 
-@property (nonatomic, strong) AFHTTPSessionManager *manager;
+//@property (nonatomic, strong) AFHTTPSessionManager *manager;
 
 @end
 
@@ -37,21 +43,23 @@ static NSString *const kUserIsLogin = @"userIsLogin";
     return self;
 }
 
-- (void)setPreferHttps:(BOOL)preferHttps {
-    _preferHttps = preferHttps;
+
+- (void) setUser:(UserModel *)user{
+    _user = user;
     
-    NSURL *baseUrl;
-    
-    if (preferHttps) {
-        baseUrl = [NSURL URLWithString:@"https://www.v2ex.com"];
+    if (user) {
+        self.user.login = YES;
+        
+        [[NSUserDefaults standardUserDefaults] setObject:user.userName forKey:kUsername];
+        [[NSUserDefaults standardUserDefaults] setObject:user.userId forKey:kUserid];
+        [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:kUserIsLogin];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     } else {
-        baseUrl = [NSURL URLWithString:@"http://www.v2ex.com"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUsername];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserid];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserIsLogin];
+        [[NSUserDefaults standardUserDefaults] synchronize];
     }
-    
-    self.manager = [[AFHTTPSessionManager alloc] initWithBaseURL:baseUrl];
-    AFHTTPRequestSerializer* serializer = [AFHTTPRequestSerializer serializer];
-    self.manager.requestSerializer = serializer;
-    
 }
 
 +(instancetype)manager{
@@ -63,118 +71,458 @@ static NSString *const kUserIsLogin = @"userIsLogin";
     return manager;
 }
 
--(NSURLSessionDataTask*) requestWithURLString:(nonnull NSString *)URLString
-                                   parameters:(NSDictionary *)parameters
-                                      success:(void (^)(NSURLSessionDataTask *task,id responseObject))success
-                                      failure:(void (^) (NSError *error))failure{
+-(NSURLSessionDataTask*) requestWithMethod:(RcRequestMethod)method
+                                 URLString:(NSString *)URLString
+                                parameters:(NSDictionary *)parameters
+                                   success:(void (^)(NSURLSessionDataTask *task,id responseObject))success
+                                   failure:(void (^) (NSError *error))failure{
     //stateBar
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     //Handle Common Mission, Cache, Data Reading & etc.
-    void (^responseHandleBlock) (NSURLSessionDataTask *task,id responseObject) = ^
-    (NSURLSessionDataTask *task,id reponseObject){
+    void (^responseHandleBlock)(NSURLSessionDataTask *task,id responseObject) = ^(NSURLSessionDataTask *task,id reponseObject){
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+        NSLog(@"URL:\n%@", [task.currentRequest URL].absoluteString);
         success(task,reponseObject);
     };
     
     // Create HTTPSession
     NSURLSessionDataTask *task = nil;
     
-    [self.manager.requestSerializer setValue:@"IOS" forHTTPHeaderField:@"User-Agent"];
-    NSLog(@"%@",self.manager.requestSerializer.HTTPRequestHeaders);
+    if (method == RcRequestMethodJSONGET) {
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        NSURL *URL = [NSURL URLWithString:URLString];
+        AFHTTPResponseSerializer *responseSerializer = [AFJSONResponseSerializer serializer];
+        manager.responseSerializer = responseSerializer;
+        manager.responseSerializer.acceptableContentTypes =  [NSSet setWithObject:@"text/html"];
+        task = [manager GET:URL.absoluteString parameters:parameters progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            responseHandleBlock(task,responseObject);
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            NSLog(@"Error:\n%@",[error description]);
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            failure(error);
+        }];
+    }
     
-    
+    if (method == RcRequestMethodHTTPGET) {
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        NSURL *URL = [NSURL URLWithString:URLString];
         AFHTTPResponseSerializer *responseSerializer = [AFHTTPResponseSerializer serializer];
-        self.manager.responseSerializer = responseSerializer;
-        task = [self.manager POST:URLString parameters:parameters
-        success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+        manager.responseSerializer = responseSerializer;
+        manager.responseSerializer.acceptableContentTypes =  [NSSet setWithObject:@"text/html"];
+        task = [manager GET:URL.absoluteString parameters:parameters progress:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+            responseHandleBlock(task,responseObject);
+        } failure:^(NSURLSessionDataTask *task, NSError *error) {
+            [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
+            failure(error);
+        }];
+    }
+    
+    if (method == RcRequestMethodHTTPPOST) {
+        AFHTTPSessionManager *manager = [AFHTTPSessionManager manager];
+        NSURL *URL = [NSURL URLWithString:URLString];
+        AFHTTPResponseSerializer *responseSerializer = [AFJSONResponseSerializer serializer];
+        manager.responseSerializer = responseSerializer;
+        manager.responseSerializer.acceptableContentTypes =  [NSSet setWithObject:@"text/html"];
+        task = [manager POST:URL.absoluteString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
+            //NSDictionary *usrdic = [[NSDictionary alloc] initWithDictionary:[responseObject objectForKey:@"data"]];
             responseHandleBlock(task,responseObject);
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
             NSLog(@"Error:%@",error);
-            failure(error);
         }];
+        
+    }
     
     return task;
 }
 
 
-#pragma mark - Public Request Methods - Post
--(NSURLSessionDataTask *) getCityListSuccess:(void (^)(NSDictionary *cityList))success
+#pragma mark - Public Request Methods - HomePage
+-(NSURLSessionDataTask *) getCityListSuccess:(void (^)(CityList *ctList))success
                                      failure:(void (^)(NSError *error))failure{
-
-    return [self requestWithURLString:@"/api/nodes/all.json" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSDictionary *cityList = [[NSDictionary alloc] initWithDictionary:responseObject];
-        success(cityList);
+    
+    return [self requestWithMethod:RcRequestMethodJSONGET URLString:@"http://app-rc.dingdewen.com/Home/PersonalInfo/getCityList" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        CityList *ctList = [[CityList alloc] initWithArray:[responseObject objectForKey:@"data"]];
+        success(ctList);
     } failure:^(NSError *error) {
         failure(error);
     }];
 };
 
--(NSURLSessionDataTask *) setCityWithUserId:(NSString *)userid
-                                     cityId:(NSString *)cityid
+-(NSURLSessionDataTask *) setCityWithUserId:(NSString *)userId
+                                     cityId:(NSString *)cityId
                                     success:(void (^)(NSString *))success
                                     failure:(void (^)(NSError *))failure{
-    NSString *urlString = [NSString stringWithFormat:@"/Home/PersonalInfoController/SetCity/%@?cityid=%@",userid,cityid];
-    return [self requestWithURLString:urlString parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        success(@"setsuccess");
+    NSString *urlString = [NSString stringWithFormat:@"http://app-rc.dingdewen.com/Home/PersonalInfo/SetCity"];
+    NSDictionary *parameters = @{
+                                 @"usr_id":userId,
+                                 @"ct_id":cityId,
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:urlString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSString *msg = [[NSString alloc] initWithString:[responseObject objectForKey:@"msg"]];
+        success(msg);
     } failure:^(NSError *error) {
         failure(error);
     }];
 }
 
--(NSURLSessionDataTask *) getAllTagsSuccess:(void (^)(NSDictionary *Tags))success
+-(NSURLSessionDataTask *) getAllTagsSuccess:(void (^)(TagsList *tagList))success
                                     failure:(void (^)(NSError *error))failure{
     
-    return [self requestWithURLString:@"" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSDictionary *tags = [[NSDictionary alloc] initWithDictionary:responseObject];
-        success(tags);
+    return [self requestWithMethod:RcRequestMethodHTTPGET URLString:@"http://app-rc.dingdewen.com/Home/PersonalInfo/getAllTags" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        TagsList *tagsList = [[TagsList alloc] initWithArray:[responseObject objectForKey:@"data"]];
+        success(tagsList);
     } failure:^(NSError *error) {
         failure(error);
     }];
 }
 
--(NSURLSessionDataTask *) setTagsWithUserId:(NSString *)userid
+-(NSURLSessionDataTask *) setTagsWithUserId:(NSString *)userId
+                                   tagsList:(TagsList *)tagsList
                                     success:(void (^)(NSString *))success
                                     failure:(void (^)(NSError *))failure{
-    NSString *urlString = [NSString stringWithFormat:@"/Home/PersonalInfoController/setTags?userid=%@",userid];
-    return [self requestWithURLString:urlString parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        success(@"setTagssuccess");
-    } failure:^(NSError *error) {
-        failure(error);
-    }];
-}
-
--(NSURLSessionDataTask *) getPopularSearchSuccess:(void (^)(NSDictionary *PopularTags))success
-                                          failure:(void (^)(NSError *error))failure{
-    return [self requestWithURLString:@"/Home/ActivityController/getPopularSearchs" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSDictionary *popularTags = [[NSDictionary alloc] initWithDictionary:responseObject];
-        success(popularTags);
-    } failure:^(NSError *error) {
-        failure(error);
-    }];
-}
-
-#pragma mark - Public Request Methods - Login & Profile
-
--(NSURLSessionDataTask *)UserLoginWithUsername:(NSString *)username
-                                      password:(NSString *)password
-                                        optype:(NSString *)optype
-                                       success:(void (^)(NSString *message))success
-                                       failure:(void (^)(NSError *error))failure{
+    NSString *urlString = [NSString stringWithFormat:@"http://app-rc.dingdewen.com/Home/PersonalInfo/getAllTags"];
     NSDictionary *parameters = @{
-        @"p":password,
-        @"u":username,
-        @"o":optype,
-    };
-    
-    [self requestWithURLString:@"Home/Person/login" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSString *str = [[NSString alloc] initWithData:responseObject encoding:NSUTF8StringEncoding];
-        if ([str rangeOfString:@"200"].location != NSNotFound) {
-            success(username);
-        }else{
-            NSError *error = [[NSError alloc] initWithDomain:self.manager.baseURL.absoluteString code:ErrorTypeLoginFailure userInfo:nil];
-            failure(error);
+                                 @"usr_id":userId,
+                                 @"tag[]":tagsList,
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:urlString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSString *msg = [[NSString alloc] initWithString:[responseObject objectForKey:@"msg"]];
+        success(msg);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *) getUsrTagsWithUserId:(NSString *)userId
+                                       success:(void (^)(TagsList *,NSString *msg))success
+                                       failure:(void (^)(NSError *))failure{
+    NSDictionary *parameters = @{
+                                 @"usr_id":userId,
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/PersonalInfo/getUsrTags" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        TagsList *tagsList = [[TagsList alloc] initWithArray:[responseObject objectForKey:@"data"]];
+        NSString *msg = [[NSString alloc] initWithString:[responseObject objectForKey:@"msg"]];
+        success(tagsList,msg);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *) getPopularSearchSuccess:(void (^)(NSMutableArray *popSearchList))success
+                                          failure:(void (^)(NSError *error))failure{
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Activity/getPopularSearch" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSMutableArray *popSearchList = [[NSMutableArray alloc] init];
+        for (NSDictionary *popDic in [responseObject objectForKey:@"data"]) {
+            NSString *popSearch = [popDic objectForKey:@"keywords"];
+            [popSearchList addObject:popSearch];
+        }
+        success(popSearchList);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *) getActivitySearchWithKeywords:(NSString *)keywords
+                                                startId:(NSString *)startId
+                                                    num:(NSString *)num
+                                                 cityId:(NSString *)cityId
+                                                success:(void (^)(ActivityList *acList))success
+                                                failure:(void (^)(NSError *error))failure{
+    NSDictionary *parameters = @{
+                                 @"keywords":keywords,
+                                 @"start_id":startId,
+                                 @"num":num,
+                                 @"ct_id":cityId,
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Activity/getActivitySearch" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        ActivityList *acList = [[ActivityList alloc] initWithArray:[responseObject objectForKey:@"data"]];
+        success(acList);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *) getActivityRecommendWithCityId:(NSString *)cityId
+                                                 startId:(NSString *)startId
+                                                     num:(NSString *)num
+                                                  userId:(NSString *)userId
+                                                 success:(void (^)(ActivityList *acList))success
+                                                 failure:(void (^)(NSError *))failure{
+    NSDictionary *parameters = @{
+                                 @"ct_id":cityId,
+                                 @"start_id":startId,
+                                 @"num":num,
+                                 @"usr_id":userId,
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Activity/getActivityRecommend" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        ActivityList *acList = [[ActivityList alloc] initWithArray:[responseObject objectForKey:@"data"]];
+        success(acList);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *) getActivityContentWithAcId:(NSString *)acId
+                                              userId:(NSString *)userId
+                                             success:(void (^)(ActivityModel *activity))success
+                                             failure:(void (^)(NSError *error))failure{
+    NSDictionary *parameters = @{
+                                 @"ac_id":acId,
+                                 @"usr_id":userId,
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Activity/getActivityContent" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        ActivityModel *activity = [[ActivityModel alloc] initWithDictionary:[responseObject objectForKey:@"data"]];
+        success(activity);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *) setActivityCollectWithUserID:(NSString *)userId
+                                                  acId:(NSString *)acId
+                                                opType:(NSString *)opType
+                                               success:(void (^)(NSString *msg))success
+                                               failure:(void (^)(NSError *error))failure{
+    NSDictionary *parameters = @{
+                                 @"usr_id":userId,
+                                 @"ac_id":acId,
+                                 @"op_type":opType,
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Activity/setActivityCollect" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSString *msg = [[NSString alloc] initWithString:[responseObject objectForKey:@"msg"]];
+        success(msg);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *) joinTripWithUserId:(NSString *)userId
+                                        acId:(NSString *)acId
+                                      opType:(NSString *)opType
+                                     success:(void (^)(NSString *msg))success
+                                     failure:(void (^)(NSError *error))failure{
+    NSDictionary *parameters = @{
+                                 @"usr_id":userId,
+                                 @"ac_id":acId,
+                                 @"op_Type":opType
+                                 };
+    return [ self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Activity/joinTrip" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSString *msg = [[NSString alloc] initWithString:[responseObject objectForKey:@"msg"]];
+        success(msg);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *) getMoreActivityWithAcId:(NSString *)acId
+                                          success:(void (^)(ActivityList *acList))success
+                                          failure:(void (^)(NSError *error))failure{
+    NSDictionary *parameters = @{
+                                 @"ac_id":acId,
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Activity/getMoreActivity" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        ActivityList *acList = [[ActivityList alloc] initWithArray:[responseObject objectForKey:@"data"]];
+        success(acList);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+#pragma mark - Public Request Methods - Industry
+-(NSURLSessionDataTask *) getAllIndustriesWithSuccess:(void (^)(industryList *indList))success
+                                              failure:(void (^)(NSError *error))failure{
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Industry/getAllIndustries" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        industryList *indList = [[industryList alloc] initWithArray:[responseObject objectForKey:@"data"]];
+        success(indList);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *) checkIndustryWithCityId:(NSString *)cityId
+                                       industryId:(NSString *)industryId
+                                          startId:(NSString *)startId
+                                          success:(void (^)(ActivityList *acList))success
+                                          failure:(void (^)(NSError *))failure{
+    NSDictionary *parameters = @{
+                                 @"ct_id":cityId,
+                                 @"ind_id":industryId,
+                                 @"start_id":startId,
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Industry/checkIndustry" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        ActivityList *acList = [[ActivityList alloc] initWithArray:[responseObject objectForKey:@"data"]];
+        success(acList);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+#pragma mark - Public Request Methods - plan
+
+-(NSURLSessionDataTask *) getPlanWithUserId:(NSString *)userId
+                                  beginDate:(NSString *)beginDate
+                                    endDate:(NSString *)endDate
+                                    success:(void (^)(planList *plList))success
+                                    failure:(void (^)(NSError *error))failure{
+    NSDictionary *parameters = @{
+                                 @"usr_id":userId,
+                                 @"begin_date":beginDate,
+                                 @"end_date":endDate,
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Plan/getPlan" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        planList *plList = [[planList alloc] initWithArray:[responseObject objectForKey:@"data"]];
+        success(plList);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *) addPlanWithOpType:(NSString *)opType
+                                     planId:(NSString *)planId
+                                     userId:(NSString *)userId
+                                    themeId:(NSString *)themeId
+                                   planTime:(NSString *)planTime
+                                 plAlarmOne:(NSString *)plAlarmOne
+                                 plAlarmTwo:(NSString *)plAlarmTwo
+                               plAlarmThree:(NSString *)plAlarmThree
+                                planContent:(NSString *)planContent
+                                    acPlace:(NSString *)acPlace
+                                    success:(void (^)(NSString *msg))success
+                                    failure:(void (^)(NSError *error))failure{
+    NSDictionary *parameters = @{
+                                 @"op_type":opType,
+                                 @"pl_id":planId,
+                                 @"usr_id":userId,
+                                 @"theme_id":themeId,
+                                 @"pl_time":planTime,
+                                 @"pl_alarm_one":plAlarmOne,
+                                 @"pl_alarm_two":plAlarmTwo,
+                                 @"pl_alarm_three":plAlarmThree,
+                                 @"pl_content":planContent,
+                                 @"ac_place":acPlace,
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Plan/addPlan" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSString *msg = [[NSString alloc] initWithString:[responseObject objectForKey:@"msg"]];
+        success(msg);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *) delPlanWithUserId:(NSString *)userId
+                                     planId:(NSString *)planId
+                                    success:(void (^)(NSString *msg))success
+                                    failure:(void (^)(NSError *error))failure{
+    NSDictionary *parameters = @{
+                                 @"usr_id":userId,
+                                 @"pl_id":planId,
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Plan/delPlan" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSString *msg = [[NSString alloc] initWithString:[responseObject objectForKey:@"msg"]];
+        success(msg);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+
+#pragma mark - Public Request Methods - Account
+
+-(NSURLSessionDataTask *) modifyAccountWithUserId:(NSString *)userId
+                                           opType:(NSString *)opType
+                                         userPwdO:(NSString *)userPwdO
+                                         userPwdN:(NSString *)userPwdN
+                                         username:(NSString *)userName
+                                         userSign:(NSString *)userSign
+                                          userPic:(NSString *)userPic
+                                          userSex:(NSString *)userSex
+                                         userMail:(NSString *)userMail
+                                           cityId:(NSString *)cityID
+                                          success:(void (^)(NSString *msg))success
+                                          failure:(void (^)(NSError *error))failure{
+    NSDictionary *parameters = @{
+                                 @"usr_id":userId,
+                                 @"op_type":opType,
+                                 @"usr_passwd_old":userPwdO,
+                                 @"usr_passwd_new":userPwdN,
+                                 @"usr_name":userName,
+                                 @"usr_sign":userSign,
+                                 @"usr_pic":userPic,
+                                 @"usr_sex":userSex,
+                                 @"usr_mail":userMail,
+                                 @"ct_id":cityID,
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Person/modifyAccount" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSString *msg = [[NSString alloc] initWithString:[responseObject objectForKey:@"msg"]];
+        success(msg);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *) submitImgWithPhoto:(NSArray *)photo
+                                      userId:(NSString *)userId
+                                     success:(void (^)(NSDictionary *data))success
+                                     failure:(void (^)(NSError *error))failure{
+    NSDictionary *parameters = @{
+                                 @"photo":photo,
+                                 @"usr_id":userId
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Person/submitImg" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSDictionary *data = [[NSDictionary alloc] initWithDictionary:responseObject];
+        success(data);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *) getUserActivityWithUserId:(NSString *)userId
+                                             opType:(NSString *)opType
+                                            success:(void (^)(ActivityList *acList))success
+                                            failure:(void (^)(NSError *error))failure{
+    NSDictionary *parameters = @{
+                                 @"usr_id":userId,
+                                 @"op_type":opType,
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Person/getUserActivity" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        ActivityList *acList = [[ActivityList alloc] initWithArray:[responseObject objectForKey:@"data"]];
+        success(acList);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *) getUserPlanWithUserId:(NSString *)userId
+                                        success:(void (^)(planList *plList))success
+                                        failure:(void (^)(NSError *error))failure{
+    NSDictionary *parameters = @{
+                                 @"usr_id":userId,
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Person/getUserPlan" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        planList *plList = [[planList alloc] initWithArray:[responseObject objectForKey:@"data"]];
+        success(plList);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *)UserLoginOrRegisteWithUserphone:(NSString *)userphone
+                                                password:(NSString *)password
+                                                 op_type:(NSString *)op_type
+                                                 success:(void (^)(UserModel *user))success
+                                                 failure:(void (^)(NSError *))failure{
+    NSDictionary *parameters = @{
+                                 @"op_type":op_type,
+                                 @"usr_phone":userphone,
+                                 @"act_password":password,
+                                 };
+    [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Person/login" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+            UserModel *user = [[UserModel alloc] initWithDictionary:[responseObject objectForKey:@"data"]];
+            NSLog(@"phone:%@",user.userPhone);
+            success(user);
         }
     } failure:^(NSError *error) {
         failure(error);
@@ -182,78 +530,5 @@ static NSString *const kUserIsLogin = @"userIsLogin";
     
     return nil;
 }
-
-/*URLConnection方法
--(void) startRequest{
-    
-    NSString *strURL = @"https://maps.googleapis.com/maps/api/geocode";
-    strURL = [strURL stringByAddingPercentEncodingWithAllowedCharacters:[NSCharacterSet URLQueryAllowedCharacterSet]];
-    
-    NSURL *url = [NSURL URLWithString:strURL];
-    
-    NSString *post;
-    if (action == QUERY) {
-        //查询处理
-        post = [NSString stringWithFormat:@"userid=%@&type=%@&action=%@",@"userid",@"JSON",@"query"];
-    }else if (action == REMOVE){
-        //删除处理
-        NSMutableDictionary* dict = self.objects[deleteID];
-        post = [NSString stringWithFormat:@"userid=%@&type=%@&action=%@",@"userid",@"JSON",@"remove"];
-        [dict objectForKey:@"ID"];
-    }
-    
-    NSData *postData = [post dataUsingEncoding:NSUTF8StringEncoding];
-    
-    NSMutableURLRequest *request = [NSMutableURLRequest requestWithURL:url];
-    [request setHTTPMethod:@"POST"];
-    [request setHTTPBody:postData];
-    
-    NSURLConnection *connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
-    
-    if (connection) {
-        self.datas = [NSMutableData new];
-    }
-    
-}
-
-#pragma mark- NSURLConnection回调方法
--(void) connection:(NSURLConnection*)connection didReceiveData:(nonnull NSData *)data{
-    [self.datas appendData:data];
-}
-
--(void) connection:(NSURLConnection *)connection didFailWithError:(nonnull NSError *)error{
-    NSLog(@"%@",[error localizedDescription]);
-}
-
--(void) connectionDidFinishLoading:(NSURLConnection *)connection{
-    
-    NSLog(@"请求完成。。。");
-    
-    NSDictionary* dict = [NSJSONSerialization JSONObjectWithData:self.datas options:NSJSONReadingAllowFragments error:nil];
-    
-    if (action == QUERY) {
-        //查询处理
-        UserModel *user = [[UserModel alloc] init];
-        user.userId = [[NSUserDefaults standardUserDefaults] objectForKey:@"use_id"];
-        NSArray* arrayResult =[dict objectForKey:@"results"];
-        NSDictionary* resultDic = [arrayResult objectAtIndex:0];
-        NSDictionary* geometryDic = [resultDic objectForKey:@"geometry"];
-        NSLog(@"geometryDic: %@,  resultDic:%@",geometryDic,resultDic);
-    }else if (action == REMOVE){
-        //删除处理
-        NSString *message = @"操作成功";
-        
-        NSNumber *resultCodeObj = [dict objectForKey:@"ResultCode"];
-        
-        if ([resultCodeObj integerValue] < 0) {
-            message = [resultCodeObj errorMessage];
-        }
-    }
-    
-    //重新查询
-    action = QUERY;
-    [self startRequest];
-}
-*/
 
 @end
