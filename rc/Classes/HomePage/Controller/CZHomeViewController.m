@@ -61,6 +61,34 @@
     activity3.ac_read_num = 33333;
     [self.activity addObject:activity3];
     
+    
+    Activity *activity4 = [Activity activity];
+    activity4.ac_id = 11111;
+    
+    activity4.ac_poster = @"img_2";
+    activity4.ac_title = @"4 2015年沸雪北京世界单板滑雪赛与现场音乐会";
+    activity4.ac_time = @"时间：2015.1.1 14:00 AM";
+    activity4.ac_place = @"地点：光谷体育馆";
+    activity4.ac_tags = @"相亲 单身";
+    activity4.ac_collect_num = 11111;
+    activity4.ac_praise_num = 22222;
+    activity4.ac_read_num = 33333;
+    [self.activity addObject:activity4];
+    
+    
+    Activity *activity5 = [Activity activity];
+    activity5.ac_id = 11111;
+    
+    activity5.ac_poster = @"img_2";
+    activity5.ac_title = @"5 2015年沸雪北京世界单板滑雪赛与现场音乐会";
+    activity5.ac_time = @"时间：2015.1.1 14:00 AM";
+    activity5.ac_place = @"地点：光谷体育馆";
+    activity5.ac_tags = @"相亲 单身";
+    activity5.ac_collect_num = 11111;
+    activity5.ac_praise_num = 22222;
+    activity5.ac_read_num = 33333;
+    [self.activity addObject:activity5];
+    
 }
 
 - (void)viewWillAppear:(BOOL)animated
@@ -165,13 +193,12 @@
 
 - (void) setCellValue:(CZActivitycell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-    Activity *ac = self.activity[0];
+    Activity *ac = self.activity[indexPath.section];
     
     cell.ac_poster.image = [UIImage imageNamed:ac.ac_poster];
     cell.ac_title.text = ac.ac_title;
     cell.ac_time.text = ac.ac_time;
     cell.ac_place.text = ac.ac_place;
-    cell.ac_imageTag.image = [UIImage imageNamed:@"tagImage"];
     cell.ac_tags.text = ac.ac_tags;
     
 }

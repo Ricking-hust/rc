@@ -114,9 +114,9 @@
     //计算文本的大小
     textSize = [self sizeWithText:self.ac_title.text maxSize:maxSize fontSize:TITLE_FONTSIZE];
     [self.ac_title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(textSize.width, textSize.height));
+        make.size.mas_equalTo(CGSizeMake(textSize.width + 1, textSize.height+1));
         make.left.equalTo(self.ac_poster.mas_right).with.offset(50.0f/2);
-        make.top.equalTo(self.mas_top).with.offset(20.0f/2);
+        make.top.equalTo(self.mas_top).with.offset(10);
     }];
     
     //add ac_time constraints
@@ -124,17 +124,17 @@
     //    [self.ac_time setFrame:CGRectMake(0, 0, self.ac_poster.frame.size.width, textSize.height)];
     [self.ac_time mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.ac_poster.mas_right).with.offset(50.0f/2);
-        make.top.equalTo(self.ac_title.mas_bottom).with.offset(30.0f/2);
-        make.size.mas_equalTo(textSize);
+        make.top.equalTo(self.ac_title.mas_bottom).with.offset(0);
+        make.size.mas_equalTo(CGSizeMake(textSize.width + 1, textSize.height + 1));
     }];
     
     //add ac_place constraints
     textSize = [self sizeWithText:self.ac_place.text maxSize:maxSize fontSize:PLACE_FONTSIZE];
     [self.ac_place mas_makeConstraints:^(MASConstraintMaker *make) {
         
-        make.size.mas_equalTo(CGSizeMake(textSize.width, textSize.height));
+        make.size.mas_equalTo(CGSizeMake(textSize.width+1, textSize.height+1));
         make.left.equalTo(self.ac_poster.mas_right).with.offset(50.0f/2);
-        make.top.equalTo(self.ac_time.mas_bottom).with.offset(10.0f/2);
+        make.top.equalTo(self.ac_time.mas_bottom).with.offset(0);
     }];
     
     //add ac_imageTag constraints
@@ -142,18 +142,17 @@
         
         make.size.mas_equalTo(CGSizeMake(self.tagSize.width, self.tagSize.height));
         make.left.equalTo(self.ac_poster.mas_right).with.offset(50.0f/2);
-        make.top.equalTo(self.ac_place.mas_bottom).with.offset(30.0f/2);
+        make.top.equalTo(self.ac_place.mas_bottom).with.offset(10);
     }];
     
     //add ac_tags constraints
     textSize = [self sizeWithText:self.ac_tags.text maxSize:textSize fontSize:TAG_FONTSIZE];
     [self.ac_tags mas_makeConstraints:^(MASConstraintMaker *make) {
         
-        make.size.mas_equalTo(CGSizeMake(textSize.width, textSize.height));
+        make.size.mas_equalTo(CGSizeMake(textSize.width+1, textSize.height+1));
         make.left.equalTo(self.ac_imageTag.mas_right).with.offset(14.0f/2);
-        make.top.equalTo(self.ac_place.mas_bottom).with.offset(35.0f/2);
+        make.top.equalTo(self.ac_place.mas_bottom).with.offset(10);
     }];
-    
 }
 
 /**
