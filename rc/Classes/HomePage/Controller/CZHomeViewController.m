@@ -132,9 +132,9 @@
     //1 创建可重用的自定义cell
     CZActivitycell *cell = (CZActivitycell*)[CZActivitycell activitycellWithTableView:tableView];
     
-    //cell.activity = (Activity*)self.activity[indexPath.section];
+    [self setCellValue:cell AtIndexPath:indexPath];
     
-    cell.activitymodel = (ActivityModel *)self.activityList.list[indexPath.section];
+    [cell setSubViewsConstraint];
     //2 返回cell
     return cell;
 }
@@ -190,26 +190,20 @@
 //@property (nonatomic, weak) UILabel *ac_tags;
 - (void) setCellValue:(CZActivitycell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-//    Activity *activity = [Activity activity];
-//    activity.ac_id = 11111;
-//    activity.ac_poster = @"img_4";
-//    activity.ac_title = @"2015年沸雪北京世界单板滑雪赛与现场音乐会";
-//    activity.ac_time = @"时间：2015.1.1 14:00 AM";
-//    activity.ac_place = @"地点：光谷体育馆";
-//    activity.ac_tags = @"相亲 单身";
-//    activity.ac_collect_num = 11111;
-//    activity.ac_praise_num = 22222;
-//    activity.ac_read_num = 33333;
-//    [self.activity addObject:activity];
+    ActivityModel *ac = self.activityList.list[indexPath.section];
     
-    Activity *ac = self.activity[0];
-    
-    cell.ac_poster.image = [UIImage imageNamed:ac.ac_poster];
-    cell.ac_title.text = ac.ac_title;
-    cell.ac_time.text = ac.ac_time;
-    cell.ac_place.text = ac.ac_place;
-    cell.ac_imageTag.image = [UIImage imageNamed:@"tagImage"];
-    cell.ac_tags.text = ac.ac_tags;
+    cell.ac_poster.image = [UIImage imageNamed:ac.acPoster];
+    cell.ac_title.text = ac.acTitle;
+    cell.ac_time.text = ac.acTime;
+    cell.ac_place.text = ac.acPlace;
+    NSMutableArray *Artags = [[NSMutableArray alloc]init];
+
+    for (TagModel *model in ac.tagsList.list) {
+        [Artags addObject:model.tagName];
+    }
+    NSString *tags = [Artags componentsJoinedByString:@","];
+    cell.ac_tags.text = tags;
+    NSLog(@"tags:%@",tags);
     
 }
 #pragma mark - 创建首页子控件
