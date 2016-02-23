@@ -14,11 +14,15 @@
 #import "CZTagSelectViewController.h"
 #import "CZSearchViewController.h"
 #import "CZActivitycell.h"
+#import "ActivityModel.h"
+#import "DataManager.h"
 
 @interface CZHomeViewController ()
 
 @property(nonatomic, strong) NSMutableArray *activity;
+@property (nonatomic,strong) ActivityList *activityList;
 
+@property (nonatomic,strong) NSURLSessionDataTask *currentTask;
 @end
 
 @implementation CZHomeViewController
@@ -28,46 +32,61 @@
  *
  *  @return 返回实例对象
  */
-- (void) getActivityFromServer
-{
-    self.activity = [NSMutableArray array];
-    
-    Activity *activity = [Activity activity];
-    activity.ac_id = 11111;
-    activity.ac_poster = @"img_4";
-    activity.ac_title = @"2015年沸雪北京世界单板滑雪赛与现场音乐会";
-    activity.ac_time = @"时间：2015.1.1 14:00 AM";
-    activity.ac_place = @"地点：光谷体育馆";
-    activity.ac_tags = @"相亲 单身";
-    activity.ac_collect_num = 11111;
-    activity.ac_praise_num = 22222;
-    activity.ac_read_num = 33333;
-    [self.activity addObject:activity];
-    
-    Activity *activity2 = [Activity activity];
-    [activity2 setSubViewsContent];
-    [self.activity addObject:activity2];
-    
-    Activity *activity3 = [Activity activity];
-    activity3.ac_id = 11111;
-    
-    activity3.ac_poster = @"img_2";
-    activity3.ac_title = @"2015年沸雪北京世界单板滑雪赛与现场音乐会";
-    activity3.ac_time = @"时间：2015.1.1 14:00 AM";
-    activity3.ac_place = @"地点：光谷体育馆";
-    activity3.ac_tags = @"相亲 单身";
-    activity3.ac_collect_num = 11111;
-    activity3.ac_praise_num = 22222;
-    activity3.ac_read_num = 33333;
-    [self.activity addObject:activity3];
-    
+//- (void) getActivityFromServer
+//{
+//    self.activity = [NSMutableArray array];
+//    
+//    Activity *activity = [Activity activity];
+//    activity.ac_id = 11111;
+//    activity.ac_poster = @"img_4";
+//    activity.ac_title = @"2015年沸雪北京世界单板滑雪赛与现场音乐会";
+//    activity.ac_time = @"时间：2015.1.1 14:00 AM";
+//    activity.ac_place = @"地点：光谷体育馆";
+//    activity.ac_tags = @"相亲 单身";
+//    activity.ac_collect_num = 11111;
+//    activity.ac_praise_num = 22222;
+//    activity.ac_read_num = 33333;
+//    [self.activity addObject:activity];
+//    
+//    Activity *activity2 = [Activity activity];
+//    [activity2 setSubViewsContent];
+//    [self.activity addObject:activity2];
+//    
+//    Activity *activity3 = [Activity activity];
+//    activity3.ac_id = 11111;
+//    
+//    activity3.ac_poster = @"img_2";
+//    activity3.ac_title = @"2015年沸雪北京世界单板滑雪赛与现场音乐会";
+//    activity3.ac_time = @"时间：2015.1.1 14:00 AM";
+//    activity3.ac_place = @"地点：光谷体育馆";
+//    activity3.ac_tags = @"相亲 单身";
+//    activity3.ac_collect_num = 11111;
+//    activity3.ac_praise_num = 22222;
+//    activity3.ac_read_num = 33333;
+//    [self.activity addObject:activity3];
+//    
+//}
+
+
+- (void)configureBlocks{
+    self.currentTask = [[DataManager manager] getActivitySearchWithKeywords:@"讲座" startId:@"0" num:@"10" cityId:@"1" success:^(ActivityList *acList) {
+        self.activityList = acList;
+    } failure:^(NSError *error) {
+        NSLog(@"error:%@",error);
+    }];
 }
 
+- (void) setActivityList:(ActivityList *)activityList{
+    
+    _activityList = activityList;
+    
+    [self.tableView reloadData];
+}
 - (void)viewWillAppear:(BOOL)animated
 {
     
     //模拟从服务器取得数据
-    [self getActivityFromServer];
+    //[self getActivityFromServer];
     
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
 }
@@ -76,6 +95,7 @@
 {
     [super viewDidLoad];
     
+    [self configureBlocks];
     [self createSubViews];
     
     //设置tableHeaderView
@@ -95,7 +115,8 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
-    return self.activity.count;
+    //return self.activity.count;
+    return self.activityList.list.count;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -111,8 +132,9 @@
     //1 创建可重用的自定义cell
     CZActivitycell *cell = (CZActivitycell*)[CZActivitycell activitycellWithTableView:tableView];
     
-    cell.activity = (Activity*)self.activity[indexPath.section];
+    //cell.activity = (Activity*)self.activity[indexPath.section];
     
+    cell.activitymodel = (ActivityModel *)self.activityList.list[indexPath.section];
     //2 返回cell
     return cell;
 }

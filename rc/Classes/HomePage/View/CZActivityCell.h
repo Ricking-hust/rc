@@ -9,10 +9,12 @@
 #import <UIKit/UIKit.h>
 
 @class Activity;
+@class ActivityModel;
 
 @interface CZActivitycell : UITableViewCell
 
 @property (nonatomic, strong) Activity *activity;
+@property (nonatomic,strong) ActivityModel *activitymodel;
 @property (nonatomic, assign) CGFloat cellHeight;
 
 /**

@@ -21,10 +21,3 @@
 
 
 @end
-//usr_id 用户编号
-//usr_name 用户姓名
-//usr_sign 用户签名
-//usr_pic 用户头像
-//usr_sex 用户性别
-//usr_phone 用户电话
-//usr_mail 用户邮箱
