@@ -53,7 +53,8 @@
     [self.tableView reloadData];
 }
 //添加行程
-- (IBAction)toAddSchedule:(id)sender {
+- (IBAction)toAddSchedule:(id)sender
+{
     
     CZAddScheduleViewController *addScheduleViewController = [[CZAddScheduleViewController alloc]init];
     

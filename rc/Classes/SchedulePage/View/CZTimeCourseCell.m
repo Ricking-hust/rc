@@ -9,6 +9,7 @@
 #import "CZTimeCourseCell.h"
 #import "CZData.h"
 #import "Masonry.h"
+#include <sys/sysctl.h>
 
 #define WEEKLABEL_SIZE 10   //星期标签字体大小
 #define TIMELABEL_SIZE 16   ///时间标签字体大小
@@ -214,6 +215,11 @@
     {
         bgHeight = 100;
     }
+    if ([[self getCurrentDeviceModel]isEqualToString:@"iPhone 5"] ||
+        [[self getCurrentDeviceModel]isEqualToString:@"iPhone 4"])
+    {
+        
+    }
     [self.bgImage mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.timeLine.mas_right).with.offset(20);
         make.top.equalTo(self.timeLine.mas_top).with.offset(0);
@@ -232,7 +238,7 @@
     CGFloat leftPaddingToCurrentPoint = self.currentPoint.image.size.width * 0.24;
     CGFloat topPaddingToCurrentPoint = self.currentPoint.image.size.height * 0.26;
     [self.pointView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.currentPoint.mas_left).with.offset(leftPaddingToCurrentPoint);
+        make.left.equalTo(self.currentPoint.mas_left).with.offset(leftPaddingToCurrentPoint-1);
         make.top.equalTo(self.currentPoint.mas_top).with.offset(topPaddingToCurrentPoint);
         make.size.mas_equalTo(CGSizeMake(14, 14));
     }];
@@ -280,6 +286,42 @@
     //计算文本的大小
     CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
     return nameSize;
+}
+//获得设备型号
+- (NSString *)getCurrentDeviceModel
+{
+    int mib[2];
+    size_t len;
+    char *machine;
+    
+    mib[0] = CTL_HW;
+    mib[1] = HW_MACHINE;
+    sysctl(mib, 2, NULL, &len, NULL, 0);
+    machine = malloc(len);
+    sysctl(mib, 2, machine, &len, NULL, 0);
+    
+    NSString *platform = [NSString stringWithCString:machine encoding:NSASCIIStringEncoding];
+    free(machine);
+    
+    if ([platform isEqualToString:@"iPhone1,1"]) return @"iPhone 2G (A1203)";
+    if ([platform isEqualToString:@"iPhone1,2"]) return @"iPhone 3G (A1241/A1324)";
+    if ([platform isEqualToString:@"iPhone2,1"]) return @"iPhone 3GS (A1303/A1325)";
+    if ([platform isEqualToString:@"iPhone3,1"]) return @"iPhone 4";
+    if ([platform isEqualToString:@"iPhone3,2"]) return @"iPhone 4";
+    if ([platform isEqualToString:@"iPhone3,3"]) return @"iPhone 4";
+    if ([platform isEqualToString:@"iPhone4,1"]) return @"iPhone 4";
+    if ([platform isEqualToString:@"iPhone5,1"]) return @"iPhone 5";
+    if ([platform isEqualToString:@"iPhone5,2"]) return @"iPhone 5";
+    if ([platform isEqualToString:@"iPhone5,3"]) return @"iPhone 5";
+    if ([platform isEqualToString:@"iPhone5,4"]) return @"iPhone 5";
+    if ([platform isEqualToString:@"iPhone6,1"]) return @"iPhone 5";
+    if ([platform isEqualToString:@"iPhone6,2"]) return @"iPhone 5";
+    if ([platform isEqualToString:@"iPhone7,1"]) return @"iPhone 6 Plus";
+    if ([platform isEqualToString:@"iPhone7,2"]) return @"iPhone 6";
+    
+    if ([platform isEqualToString:@"i386"])      return @"iPhone Simulator";
+    if ([platform isEqualToString:@"x86_64"])    return @"iPhone Simulator";
+    return platform;
 }
 
 @end

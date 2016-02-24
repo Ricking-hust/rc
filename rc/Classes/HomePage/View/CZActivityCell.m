@@ -118,21 +118,22 @@
     }];
     
     //add ac_time constraints
+
     textSize = [self sizeWithText:self.ac_title.text maxSize:maxSize fontSize:TIME_FONTSIZE];
-    //    [self.ac_time setFrame:CGRectMake(0, 0, self.ac_poster.frame.size.width, textSize.height)];
+
     [self.ac_time mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.ac_poster.mas_right).with.offset(50.0f/2);
-        make.top.equalTo(self.ac_title.mas_bottom).with.offset(0);
-        make.size.mas_equalTo(CGSizeMake(textSize.width + 1, textSize.height + 1));
+        make.top.equalTo(self.ac_title.mas_bottom).with.offset(10);
+        make.size.mas_equalTo(CGSizeMake(150,12));
     }];
     
     //add ac_place constraints
     textSize = [self sizeWithText:self.ac_place.text maxSize:maxSize fontSize:PLACE_FONTSIZE];
     [self.ac_place mas_makeConstraints:^(MASConstraintMaker *make) {
         
-        make.size.mas_equalTo(CGSizeMake(textSize.width+1, textSize.height+1));
+        make.size.mas_equalTo(CGSizeMake(150, textSize.height+1));
         make.left.equalTo(self.ac_poster.mas_right).with.offset(50.0f/2);
-        make.top.equalTo(self.ac_time.mas_bottom).with.offset(0);
+        make.top.equalTo(self.ac_time.mas_bottom).with.offset(5);
     }];
     
     //add ac_imageTag constraints
@@ -147,9 +148,9 @@
     textSize = [self sizeWithText:self.ac_tags.text maxSize:textSize fontSize:TAG_FONTSIZE];
     [self.ac_tags mas_makeConstraints:^(MASConstraintMaker *make) {
         
-        make.size.mas_equalTo(CGSizeMake(textSize.width+1, textSize.height+1));
+        make.size.mas_equalTo(CGSizeMake(150, textSize.height+1));
         make.left.equalTo(self.ac_imageTag.mas_right).with.offset(14.0f/2);
-        make.top.equalTo(self.ac_place.mas_bottom).with.offset(10);
+        make.top.equalTo(self.ac_place.mas_bottom).with.offset(12);
     }];
 }
 

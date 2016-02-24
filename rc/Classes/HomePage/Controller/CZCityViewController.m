@@ -9,7 +9,6 @@
 #import "CZCityViewController.h"
 #import "Masonry.h"
 #import "CZCityView.h"
-#include <sys/sysctl.h>
 
 @interface CZCityViewController ()
 
@@ -124,14 +123,38 @@
 #pragma mark - 城市选择按钮点击事件
 - (void)onClickCity:(UIButton *)btn
 {
-#pragma mark - 测试语句
     UILabel *label = [btn.superview viewWithTag:10];
     if ([label.text isEqualToString:@"北京"])
     {
         UIImageView *locationImageView = [btn.superview viewWithTag:11];
-        
+        locationImageView.hidden = NO;
+        self.wuhan.locationImage.hidden = YES;
+        self.guangzhou.locationImage.hidden = YES;
+        self.shanghai.locationImage.hidden = YES;
+    }else if ([label.text isEqualToString:@"广州"])
+    {
+        UIImageView *locationImageView = [btn.superview viewWithTag:11];
+        locationImageView.hidden = NO;
+        self.beijing.locationImage.hidden = YES;
+        self.shanghai.locationImage.hidden = YES;
+        self.wuhan.locationImage.hidden = YES;
+    }else if ([label.text isEqualToString:@"上海"])
+    {
+        UIImageView *locationImageView = [btn.superview viewWithTag:11];
+        locationImageView.hidden = NO;
+        self.beijing.locationImage.hidden = YES;
+        self.guangzhou.locationImage.hidden = YES;
+        self.wuhan.locationImage.hidden = YES;
+    }else
+    {
+        UIImageView *locationImageView = [btn.superview viewWithTag:11];
+        locationImageView.hidden = NO;
+        self.beijing.locationImage.hidden = YES;
+        self.guangzhou.locationImage.hidden = YES;
+        self.shanghai.locationImage.hidden = YES;
     }
-    
+    [self.navigationController popViewControllerAnimated:YES];
+    //to do here ------------
     
     
 }
