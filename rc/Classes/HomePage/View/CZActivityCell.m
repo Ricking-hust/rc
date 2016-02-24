@@ -8,7 +8,6 @@
 
 #import "CZActivitycell.h"
 #import "Masonry.h"
-#import "Activity.h"
 #import "ActivityModel.h"
 
 #define TITLE_FONTSIZE  14  //活动主题字体大小

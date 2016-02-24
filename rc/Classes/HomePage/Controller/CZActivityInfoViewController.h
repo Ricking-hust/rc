@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ActivityModel.h"
 
 @interface CZActivityInfoViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic,strong) UITableView *tableView;
-
+@property (nonatomic,strong) ActivityModel *activityModelPre;
 @end

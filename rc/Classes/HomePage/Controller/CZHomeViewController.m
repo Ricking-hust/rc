@@ -8,7 +8,6 @@
 
 #import "CZHomeViewController.h"
 #import "CZHomeHeaderView.h"
-#import "Activity.h"
 #import "Masonry.h"
 #import "CZActivityInfoViewController.h"
 #import "CZTagSelectViewController.h"
@@ -16,6 +15,7 @@
 #import "CZActivitycell.h"
 #import "ActivityModel.h"
 #import "DataManager.h"
+#import "UIImageView+WebCache.h"
 
 @interface CZHomeViewController ()
 
@@ -26,46 +26,6 @@
 @end
 
 @implementation CZHomeViewController
-
-/**
- *  对象方法,模拟从服务器取得数据
- *
- *  @return 返回实例对象
- */
-//- (void) getActivityFromServer
-//{
-//    self.activity = [NSMutableArray array];
-//    
-//    Activity *activity = [Activity activity];
-//    activity.ac_id = 11111;
-//    activity.ac_poster = @"img_4";
-//    activity.ac_title = @"2015年沸雪北京世界单板滑雪赛与现场音乐会";
-//    activity.ac_time = @"时间：2015.1.1 14:00 AM";
-//    activity.ac_place = @"地点：光谷体育馆";
-//    activity.ac_tags = @"相亲 单身";
-//    activity.ac_collect_num = 11111;
-//    activity.ac_praise_num = 22222;
-//    activity.ac_read_num = 33333;
-//    [self.activity addObject:activity];
-//    
-//    Activity *activity2 = [Activity activity];
-//    [activity2 setSubViewsContent];
-//    [self.activity addObject:activity2];
-//    
-//    Activity *activity3 = [Activity activity];
-//    activity3.ac_id = 11111;
-//    
-//    activity3.ac_poster = @"img_2";
-//    activity3.ac_title = @"2015年沸雪北京世界单板滑雪赛与现场音乐会";
-//    activity3.ac_time = @"时间：2015.1.1 14:00 AM";
-//    activity3.ac_place = @"地点：光谷体育馆";
-//    activity3.ac_tags = @"相亲 单身";
-//    activity3.ac_collect_num = 11111;
-//    activity3.ac_praise_num = 22222;
-//    activity3.ac_read_num = 33333;
-//    [self.activity addObject:activity3];
-//    
-//}
 
 
 - (void)configureBlocks{
@@ -84,9 +44,6 @@
 }
 - (void)viewWillAppear:(BOOL)animated
 {
-    
-    //模拟从服务器取得数据
-    //[self getActivityFromServer];
     
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
 }
@@ -177,6 +134,7 @@
 
     CZActivityInfoViewController *activityInfoViewController = [[CZActivityInfoViewController alloc]init];
     activityInfoViewController.title = @"活动介绍";
+    activityInfoViewController.activityModelPre = self.activityList.list[indexPath.section];
     [self.navigationController pushViewController:activityInfoViewController animated:YES];
     
 }
@@ -186,15 +144,17 @@
 {
     ActivityModel *ac = self.activityList.list[indexPath.section];
     
-    cell.ac_poster.image = [UIImage imageNamed:ac.acPoster];
+    [cell.ac_poster sd_setImageWithURL:[NSURL URLWithString:ac.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     cell.ac_title.text = ac.acTitle;
     cell.ac_time.text = ac.acTime;
     cell.ac_place.text = ac.acPlace;
+    NSLog(@"acPoster:%@",ac.acPoster);
     NSMutableArray *Artags = [[NSMutableArray alloc]init];
 
     for (TagModel *model in ac.tagsList.list) {
         [Artags addObject:model.tagName];
     }
+    
     NSString *tags = [Artags componentsJoinedByString:@","];
     cell.ac_tags.text = tags;
     NSLog(@"tags:%@",tags);

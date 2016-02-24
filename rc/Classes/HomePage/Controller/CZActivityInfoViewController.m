@@ -9,6 +9,7 @@
 #import "CZActivityInfoViewController.h"
 #import "CZActivityInfoHeaderView.h"
 #import "ActivityIntroduction.h"
+#import "ActivityModel.h"
 #import "Masonry.h"
 #import "CZTimeCell.h"
 #import "CZActivityInfoCell.h"
@@ -16,6 +17,7 @@
 #import "CZRemindMeView.h"
 #import "UIViewController+LewPopupViewController.h"
 #import "LewPopupViewAnimationSlide.h"
+#import "DataManager.h"
 
 
 @interface CZActivityInfoViewController ()
@@ -26,9 +28,21 @@
 @property(nonatomic,strong) UIButton *addToSchedule;
 
 @property (nonatomic, strong)ActivityIntroduction *activity;
+@property (nonatomic,strong)  ActivityModel *activitymodel;
+
+@property (nonatomic,strong) NSURLSessionDataTask *currentTask;
 @end
 
 @implementation CZActivityInfoViewController
+
+
+- (void)configureBlocks{
+    self.currentTask = [[DataManager manager] getActivityContentWithAcId:self.activityModelPre.acID userId:@"1" success:^(ActivityModel *activity) {
+        self.activitymodel = activity;
+    } failure:^(NSError *error) {
+        NSLog(@"Error:%@",error);
+    }];
+}
 
 //创建子控件
 - (void)createSubViews
@@ -107,7 +121,7 @@
     self.activity = [ActivityIntroduction acIntroduction];
     [_activity setSubViewsContent];
     
-    //设置tableVie头
+    //设置tableView头
     CZActivityInfoHeaderView *header = [CZActivityInfoHeaderView headerView];
     [header setView:_activity];
     self.tableView.tableHeaderView = header;
