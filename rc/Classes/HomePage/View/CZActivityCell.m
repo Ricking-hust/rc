@@ -151,7 +151,7 @@
         
         make.size.mas_equalTo(CGSizeMake(150, textSize.height+1));
         make.left.equalTo(self.ac_imageTag.mas_right).with.offset(14.0f/2);
-        make.top.equalTo(self.ac_place.mas_bottom).with.offset(10);
+        make.top.equalTo(self.ac_place.mas_bottom).with.offset(12);
     }];
 }
 

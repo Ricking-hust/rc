@@ -9,7 +9,6 @@
 #import "CZCityViewController.h"
 #import "Masonry.h"
 #import "CZCityView.h"
-#include <sys/sysctl.h>
 
 @interface CZCityViewController ()
 

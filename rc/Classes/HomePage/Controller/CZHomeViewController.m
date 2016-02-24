@@ -21,6 +21,8 @@
 @property (nonatomic,strong) ActivityList *activityList;
 
 @property (nonatomic,strong) NSURLSessionDataTask *currentTask;
+
+
 @end
 
 @implementation CZHomeViewController
@@ -134,6 +136,7 @@
     CZActivityInfoViewController *activityInfoViewController = [[CZActivityInfoViewController alloc]init];
     activityInfoViewController.title = @"活动介绍";
     [self.navigationController pushViewController:activityInfoViewController animated:YES];
+    
     
 }
 //给单元格进行赋值

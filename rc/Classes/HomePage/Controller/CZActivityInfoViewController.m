@@ -26,6 +26,8 @@
 @property(nonatomic,strong) UIButton *addToSchedule;
 
 @property (nonatomic, strong)ActivityIntroduction *activity;
+
+
 @end
 
 @implementation CZActivityInfoViewController
