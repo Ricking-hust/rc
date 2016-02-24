@@ -150,7 +150,6 @@
     cell.ac_title.text = ac.acTitle;
     cell.ac_time.text = ac.acTime;
     cell.ac_place.text = ac.acPlace;
-    NSLog(@"acPoster:%@",ac.acPoster);
     NSMutableArray *Artags = [[NSMutableArray alloc]init];
 
     for (TagModel *model in ac.tagsList.list) {

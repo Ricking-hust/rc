@@ -13,6 +13,9 @@
 #import "CZTagViewController.h"
 #include <sys/sysctl.h>
 #import "CZButtonView.h"
+#import "IndustryModel.h"
+#import "ActivityModel.h"
+#import "DataManager.h"
 
 @interface CZColumnViewController ()
 
@@ -22,6 +25,10 @@
 @property (nonatomic, strong) UIScrollView *toolScrollView;
 @property (nonatomic, strong) NSMutableArray *toolButtonArray;
 
+@property (nonatomic,strong) industryList *indList;
+@property (nonatomic,strong) ActivityList *activityList;
+
+@property (nonatomic,strong) NSURLSessionDataTask *currentTask;
 #pragma mark - 测试数据
 @property (nonatomic, strong) NSArray *array;
 @property (nonatomic, strong) NSMutableArray *activities;
@@ -44,6 +51,23 @@
     
 
 }
+
+-(void) indConfigureBlocks{
+    self.currentTask = [[DataManager manager] getAllIndustriesWithSuccess:^(industryList *indList) {
+        self.indList = indList;
+    } failure:^(NSError *error) {
+        NSLog(@"Error:%@",error);
+    }];
+}
+
+-(void) acConfigureBlocks{
+    self.currentTask = [[DataManager manager] checkIndustryWithCityId:@"1" industryId:@"1" startId:@"0" success:^(ActivityList *acList) {
+        self.activityList = acList;
+    } failure:^(NSError *error) {
+        NSLog(@"Error:%@",error);
+    }];
+}
+
 #pragma mark - 懒加载，创建主题色
 
 - (UIColor *)selectedColor

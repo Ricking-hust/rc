@@ -39,6 +39,7 @@
 - (void)configureBlocks{
     self.currentTask = [[DataManager manager] getActivityContentWithAcId:self.activityModelPre.acID userId:@"1" success:^(ActivityModel *activity) {
         self.activitymodel = activity;
+        NSLog(@"activityModelId:%@",self.activitymodel.acID);
     } failure:^(NSError *error) {
         NSLog(@"Error:%@",error);
     }];
@@ -117,6 +118,8 @@
     [super viewDidLoad];
     
     [self createSubViews];
+    
+    [self configureBlocks];
 
     self.activity = [ActivityIntroduction acIntroduction];
     [_activity setSubViewsContent];
