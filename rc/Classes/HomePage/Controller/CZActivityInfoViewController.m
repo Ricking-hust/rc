@@ -18,6 +18,7 @@
 #import "UIViewController+LewPopupViewController.h"
 #import "LewPopupViewAnimationSlide.h"
 #import "DataManager.h"
+#import "ActivityModel.h"
 
 
 @interface CZActivityInfoViewController ()
@@ -117,19 +118,17 @@
     [super viewDidLoad];
     
     [self createSubViews];
-
-    self.activity = [ActivityIntroduction acIntroduction];
-    [_activity setSubViewsContent];
+    [self configureBlocks];
     
     //设置tableView头
     CZActivityInfoHeaderView *header = [CZActivityInfoHeaderView headerView];
+    //对tableView头进行赋值
+    //对tableView头进行布局
     [header setView:_activity];
     self.tableView.tableHeaderView = header;
     
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(backToForwardViewController)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
-    
-    
 }
 
 //左侧按钮的点击事件
@@ -161,25 +160,30 @@
         case 0:
         {
             CZTimeCell *cell = [CZTimeCell timeCellWithTableView:tableView];
-#pragma mark - 提醒按钮
             [cell.remindMeBtn addTarget:self action:@selector(onClickRemindMe:) forControlEvents:UIControlEventTouchUpInside];
-            cell.acIntroduction = self.activity;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
+            //对cell的控件进行赋值
+            [self setCellValue:cell AtIndexPath:indexPath];
+            //对cell的控件进行布局
+            [cell setSubViewsConstraint];
+
             return cell;
         }
             break;
         case 1:
         {
             CZActivityInfoCell *cell = [CZActivityInfoCell activityCellWithTableView:tableView];
-            cell.acIntroduction = self.activity;
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
+            //对cell的控件进行赋值
+            [self setCellValue:cell AtIndexPath:indexPath];
+            //对cell的控件进行布局
+            [cell setSubViewsConstraint];
+            
             return cell;
         }
             break;
         default:
         {
             CZActivityDetailCell *cell = [CZActivityDetailCell detailCellWithTableView:tableView];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
+
             return cell;
         }
             break;
@@ -241,7 +245,19 @@
     view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     return view;
 }
-
+//cell的控件进行赋值
+- (void) setCellValue:(UITableViewCell *)cell AtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([cell isKindOfClass:[CZTimeCell class]])
+    {
+        ((CZTimeCell*)cell).timeLabel.text = self.activityModelPre.acTime;
+    }else if ([cell isKindOfClass:[CZActivityInfoCell class]])
+    {
+        ((CZActivityInfoCell *)cell).ac_placeLabel.text = self.activitymodel.acPlace;
+        ((CZActivityInfoCell *)cell).ac_sizeLabel.text  = self.activitymodel.acSize;
+        ((CZActivityInfoCell *)cell).ac_payLabel.text   = self.activitymodel.acPay;
+    }
+}
 //弹出提醒视图
 - (void)onClickRemindMe:(UIButton *)btn
 {

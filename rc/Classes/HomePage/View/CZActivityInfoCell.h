@@ -35,4 +35,9 @@
  *  @return 返回实例对象本身
  */
 - (instancetype) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier;
+/**
+ *  对cell的子控件进行布局
+ *
+ */
+- (void)setSubViewsConstraint;
 @end

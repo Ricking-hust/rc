@@ -20,6 +20,8 @@
     }
     
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
+    
     return cell;
 }
 

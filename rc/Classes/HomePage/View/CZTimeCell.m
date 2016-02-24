@@ -20,12 +20,15 @@
 {
     static NSString *reuseId = @"activiyInstructionCell";
     CZTimeCell * cell = (CZTimeCell*)[tableView dequeueReusableCellWithIdentifier:reuseId];
-    if (!cell) {
+    if (!cell)
+    {
         cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
     }
     
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
     cell.rowHeight = 94.0/2;
+    
     return cell;
 }
 
@@ -35,35 +38,21 @@
         //创建子控件
         UILabel *label = [[UILabel alloc]init];
         self.timeLabel = label;
+        self.timeLabel.font = [UIFont systemFontOfSize:TIME_FONTSIZE];
         [self.contentView addSubview:self.timeLabel];
         
         UIButton *btn = [UIButton buttonWithType:UIButtonTypeRoundedRect];
         self.remindMeBtn = btn;
+        self.remindMeBtn.layer.cornerRadius = 3.0f;
+        [self.remindMeBtn setTitle:@"提醒我" forState:UIControlStateNormal];
+        self.remindMeBtn.titleLabel.font = [UIFont systemFontOfSize:BTN_FONTSIZE];
+        [self.remindMeBtn setTintColor:[UIColor whiteColor]];
+        [self.remindMeBtn setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:130.0/255.0  blue:4.0/255.0  alpha:1.0]];
         [self.contentView addSubview:self.remindMeBtn];
         
     }
     return self;
 
-}
-
-- (void)setAcIntroduction:(ActivityIntroduction *)acIntroduction
-{
-    _acIntroduction = acIntroduction;
-    [self setSubViewsContent];
-    [self setSubViewsConstraint];
-}
-//设置子控件的值
-- (void)setSubViewsContent
-{
-    self.timeLabel.font = [UIFont systemFontOfSize:TIME_FONTSIZE];
-    self.timeLabel.text = self.acIntroduction.ac_time;
-    
-    self.remindMeBtn.layer.cornerRadius = 3.0f;
-    [self.remindMeBtn setTitle:@"提醒我" forState:UIControlStateNormal];
-    self.remindMeBtn.titleLabel.font = [UIFont systemFontOfSize:BTN_FONTSIZE];
-    [self.remindMeBtn setTintColor:[UIColor whiteColor]];
-    [self.remindMeBtn setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:130.0/255.0  blue:4.0/255.0  alpha:1.0]];
-    
 }
 
 //设置子控件的约束
@@ -73,8 +62,8 @@
     CGSize timeSize = [self sizeWithText:self.timeLabel.text maxSize:CGSizeMake(200, MAXFLOAT) fontSize:TIME_FONTSIZE];
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_left).with.offset(10);
-        make.top.equalTo(self.contentView.mas_top).with.offset(15);
-        make.size.mas_equalTo(timeSize);
+        make.centerY.equalTo(self.contentView);
+        make.size.mas_equalTo(CGSizeMake(150, 20));
         
     }];
     //添加按钮约束

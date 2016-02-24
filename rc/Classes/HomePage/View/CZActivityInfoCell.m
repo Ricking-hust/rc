@@ -23,7 +23,9 @@
     }
     
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
     cell.rowHeight = 190.0/2;
+    
     return cell;
 
 }
@@ -36,38 +38,23 @@
 
         UILabel *placeLabel = [[UILabel alloc]init];
         self.ac_placeLabel = placeLabel;
+        self.ac_placeLabel.font = [UIFont systemFontOfSize:LABEL_FONTSIZE];
         [self.contentView addSubview:self.ac_placeLabel];
 
         UILabel *sizeLabel = [[UILabel alloc]init];
         self.ac_sizeLabel = sizeLabel;
+        self.ac_sizeLabel.font = [UIFont systemFontOfSize:LABEL_FONTSIZE];
         [self.contentView addSubview:self.ac_sizeLabel];
         
         UILabel *payLabel = [[UILabel alloc]init];
         self.ac_payLabel = payLabel;
+        self.ac_payLabel.font = [UIFont systemFontOfSize:LABEL_FONTSIZE];
         [self.contentView addSubview:self.ac_payLabel];
     }
     return self;
 
 }
 
-- (void)setAcIntroduction:(ActivityIntroduction *)acIntroduction
-{
-    _acIntroduction = acIntroduction;
-    [self setSubViewsContent];
-    [self setSubViewsConstraint];
-    
-}
-- (void)setSubViewsContent
-{
-    self.ac_placeLabel.text = self.acIntroduction.ac_place;
-    self.ac_placeLabel.font = [UIFont systemFontOfSize:LABEL_FONTSIZE];
-    
-    self.ac_sizeLabel.text = self.acIntroduction.ac_size;
-    self.ac_sizeLabel.font = [UIFont systemFontOfSize:LABEL_FONTSIZE];
-    
-    self.ac_payLabel.text = self.acIntroduction.ac_pay;
-    self.ac_payLabel.font = [UIFont systemFontOfSize:LABEL_FONTSIZE];
-}
 - (void)setSubViewsConstraint
 {
     //添加地点标签约束
