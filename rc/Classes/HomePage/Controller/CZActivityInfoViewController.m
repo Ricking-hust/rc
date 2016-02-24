@@ -28,19 +28,24 @@
 @property(nonatomic,strong) UIButton *collectionBtn;
 @property(nonatomic,strong) UIButton *addToSchedule;
 
-@property (nonatomic, strong)ActivityIntroduction *activity;
 @property (nonatomic,strong)  ActivityModel *activitymodel;
+//@property (nonatomic, strong)ActivityIntroduction *activity;
 
 @property (nonatomic,strong) NSURLSessionDataTask *currentTask;
 @end
 
 @implementation CZActivityInfoViewController
 
+-(void) setActivitymodel:(ActivityModel *)activitymodel{
+    
+    _activitymodel = activitymodel;
+    
+    [self.tableView reloadData];
+}
 
 - (void)configureBlocks{
     self.currentTask = [[DataManager manager] getActivityContentWithAcId:self.activityModelPre.acID userId:@"1" success:^(ActivityModel *activity) {
         self.activitymodel = activity;
-        NSLog(@"activityModelId:%@",self.activitymodel.acID);
     } failure:^(NSError *error) {
         NSLog(@"Error:%@",error);
     }];
@@ -118,18 +123,17 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    [self createSubViews];
-    
     [self configureBlocks];
+    [self createSubViews];
 
-    self.activity = [ActivityIntroduction acIntroduction];
-    [_activity setSubViewsContent];
+    //self.activity = [ActivityIntroduction acIntroduction];
+    //[_activity setSubViewsContent];
     
     //设置tableView头
     CZActivityInfoHeaderView *header = [CZActivityInfoHeaderView headerView];
     //对tableView头进行赋值
     //对tableView头进行布局
-    [header setView:_activity];
+    //[header setView:_activity];
     self.tableView.tableHeaderView = header;
     
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(backToForwardViewController)];

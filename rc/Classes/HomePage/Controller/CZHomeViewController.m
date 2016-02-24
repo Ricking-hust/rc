@@ -54,6 +54,7 @@
     [super viewDidLoad];
     
     [self configureBlocks];
+    
     [self createSubViews];
     
     //设置tableHeaderView
