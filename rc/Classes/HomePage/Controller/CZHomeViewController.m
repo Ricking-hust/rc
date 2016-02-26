@@ -16,6 +16,7 @@
 #import "ActivityModel.h"
 #import "DataManager.h"
 #import "UIImageView+WebCache.h"
+#import "UINavigationBar+Awesome.h"
 
 @interface CZHomeViewController ()
 @property (nonatomic,strong) ActivityList *activityList;
@@ -32,6 +33,7 @@
 {
     
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
+    [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
 }
 - (void)configureBlocks{
     self.currentTask = [[DataManager manager] getActivitySearchWithKeywords:@"讲座" startId:@"0" num:@"10" cityId:@"1" success:^(ActivityList *acList) {
@@ -52,7 +54,6 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
     [self configureBlocks];
     
     [self createSubViews];
@@ -61,6 +62,7 @@
     CZHomeHeaderView *headerView = [CZHomeHeaderView headerView];
     [headerView setView];
     self.tableView.tableHeaderView = headerView;
+    
 }
 
 - (void)didReceiveMemoryWarning
@@ -74,6 +76,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return self.activityList.list.count;
+    
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -85,7 +88,6 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
     //1 创建可重用的自定义cell
     CZActivitycell *cell = (CZActivitycell*)[CZActivitycell activitycellWithTableView:tableView];
     
@@ -133,7 +135,7 @@
 #pragma mark - 单元格的点击事件
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-
+    
     CZActivityInfoViewController *activityInfoViewController = [[CZActivityInfoViewController alloc]init];
     activityInfoViewController.title = @"活动介绍";
     activityInfoViewController.activityModelPre = self.activityList.list[indexPath.section];
@@ -152,7 +154,7 @@
     cell.ac_time.text = ac.acTime;
     cell.ac_place.text = ac.acPlace;
     NSMutableArray *Artags = [[NSMutableArray alloc]init];
-
+    
     for (TagModel *model in ac.tagsList.list) {
         [Artags addObject:model.tagName];
     }

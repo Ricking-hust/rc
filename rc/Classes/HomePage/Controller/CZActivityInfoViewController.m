@@ -7,7 +7,6 @@
 //
 
 #import "CZActivityInfoViewController.h"
-#import "CZActivityInfoHeaderView.h"
 #import "ActivityIntroduction.h"
 #import "ActivityModel.h"
 #import "Masonry.h"
@@ -19,19 +18,27 @@
 #import "LewPopupViewAnimationSlide.h"
 #import "DataManager.h"
 #import "ActivityModel.h"
+#import "UIImageView+WebCache.h"
+#import "UINavigationBar+Awesome.h"
+#import "UIImageView+LBBlurredImage.h"
 
 
 @interface CZActivityInfoViewController ()
 
 @property(nonatomic, strong) UIView *bottomView;
+@property (nonatomic, strong) UIView *header;
+@property (nonatomic, strong) UIImageView *headerImageView;
+@property (nonatomic, strong) UIImageView *acImageView;
+@property (nonatomic ,strong) UIImageView *acTagImageView;
+@property (nonatomic, strong) UILabel *acTittleLabel;
+@property (nonatomic, strong) UILabel *acTagLabel;
 
 @property(nonatomic,strong) UIButton *collectionBtn;
 @property(nonatomic,strong) UIButton *addToSchedule;
 
 @property (nonatomic,strong)  ActivityModel *activitymodel;
-//@property (nonatomic, strong)ActivityIntroduction *activity;
-
 @property (nonatomic,strong) NSURLSessionDataTask *currentTask;
+
 @end
 
 @implementation CZActivityInfoViewController
@@ -82,10 +89,11 @@
     //add tableView constraints
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
-        make.top.equalTo(@64);
-        make.size.mas_equalTo(CGSizeMake(size.width, size.height - 114));
+        make.top.equalTo(self.view.mas_top);
+        make.right.equalTo(self.view.mas_right);
+        make.bottom.equalTo(self.view.mas_bottom).offset(-50);
     }];
-
+    
     //add bottomView constraints
     [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
@@ -95,18 +103,21 @@
     
     //add collectionBtn constraints
     [self.collectionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.bottomView.mas_left);
-        make.top.equalTo(self.bottomView.mas_top);
+        make.left.equalTo(self.view.mas_left);
+        make.bottom.equalTo(self.view.mas_bottom);
+        make.width.mas_equalTo(size.width * 0.33);
+        make.height.mas_equalTo(50);
         make.size.mas_equalTo(CGSizeMake(size.width * 0.33, 50));
     }];
     
     //add addToSchedule constriants
     [self.addToSchedule mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.collectionBtn.mas_right);
-        make.top.equalTo(self.bottomView.mas_top);
-        make.size.mas_equalTo(CGSizeMake(size.width * 0.69, 50));
+        make.bottom.equalTo(self.view.mas_bottom);
+        make.right.equalTo(self.view.mas_right);
+        make.height.mas_equalTo(50);
     }];
-    
+        
 }
 
 - (void)onClickCollection
@@ -125,18 +136,33 @@
     
     [self configureBlocks];
     [self createSubViews];
-
-    //self.activity = [ActivityIntroduction acIntroduction];
-    //[_activity setSubViewsContent];
+    
+    //设置导航栏
+    [self setNavigation];
+    [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
     
     //设置tableView头
-    CZActivityInfoHeaderView *header = [CZActivityInfoHeaderView headerView];
-    //对tableView头进行赋值
-    //对tableView头进行布局
-    //[header setView:_activity];
-    self.tableView.tableHeaderView = header;
+    [self layoutHeaderImageView];
+}
+- (void)setNavigation
+{
+    //设置导航标题栏
+    UILabel *titleLabel     = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
+    titleLabel.font         = [UIFont systemFontOfSize:18];
+    titleLabel.textColor    = [UIColor  whiteColor];
+    titleLabel.textAlignment= NSTextAlignmentCenter;
+    titleLabel.text = @"活动介绍";
+    self.navigationItem.titleView = titleLabel;
     
+    
+    [self configureBlocks];
+    [self createSubViews];
+    
+    
+    //设置导航栏的左侧按钮
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(backToForwardViewController)];
+    leftButton.tintColor = [UIColor whiteColor];
+    
     [self.navigationItem setLeftBarButtonItem:leftButton];
 }
 
@@ -254,6 +280,81 @@
     view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     return view;
 }
+// 配置tableView header UI布局
+- (void)layoutHeaderImageView
+{
+    CGSize screenSize = [[UIScreen mainScreen]bounds].size;
+    self.header = [[UIView alloc]init];
+    [self.header setFrame:CGRectMake(0, 0, screenSize.width, screenSize.height * 0.25 + 64)];
+    
+    self.headerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, screenSize.width, screenSize.height * 0.25 + 64)];
+    self.headerImageView.alpha = 0.7;
+    self.headerImageView.image  = [UIImage imageNamed:@"img_1"]; //headerView的背景模糊图片
+    
+    [self.header addSubview:self.headerImageView];
+    [self.headerImageView setImageToBlur:self.headerImageView.image blurRadius:21 completionBlock:nil];
+    //headerView中的子控件
+    self.acImageView    = [[UIImageView alloc]init];
+    self.acTagImageView = [[UIImageView alloc]init];
+    self.acTittleLabel  = [[UILabel alloc]init];
+    self.acTagLabel     = [[UILabel alloc]init];
+    
+    [self.header addSubview:self.acImageView];
+    [self.header addSubview:self.acTagImageView];
+    [self.header addSubview:self.acTittleLabel];
+    [self.header addSubview:self.acTagLabel];
+    
+    //对tableView头进行赋值
+    [self setTableViewHeader];
+    //对tableView头进行布局
+    [self setSubViewsConstraint];
+    
+    self.tableView.tableHeaderView = self.header;
+    
+}
+//对tableView头进行赋值
+- (void)setTableViewHeader
+{
+    
+    self.acTittleLabel.font          = [UIFont systemFontOfSize:15];
+    self.acTittleLabel.numberOfLines = 0;
+    self.acTittleLabel.textColor     = [UIColor whiteColor];
+    self.acTagLabel.font             = [UIFont systemFontOfSize:12];
+    self.acTagLabel.textColor        = self.acTittleLabel.textColor;
+    
+    self.acImageView.image    = [UIImage imageNamed:@"img_1"];
+    self.acTittleLabel.text   = @"也不喜欢测试的妹纸老来烦我，虽然你很美，但看到你很累";
+    self.acTagImageView.image = [UIImage imageNamed:@"tagImage"];
+    self.acTagLabel.text      = @"录像机 电影";
+    
+}
+- (void)setSubViewsConstraint
+{
+    [self.acImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.header).with.offset(64);
+        make.left.equalTo(self.header).with.offset(10);
+        make.size.mas_equalTo(CGSizeMake(120, 120));
+    }];
+    CGSize screenSize = [[UIScreen mainScreen]bounds].size;
+    CGSize maxSize = CGSizeMake(screenSize.width * 0.5, MAXFLOAT);
+    CGSize tittleSize = [self sizeWithText:self.acTittleLabel.text maxSize:maxSize fontSize:15];
+    [self.acTittleLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.acImageView.mas_top).with.offset(15);
+        make.left.equalTo(self.acImageView.mas_right).with.offset(25);
+        make.size.mas_equalTo(CGSizeMake(tittleSize.width + 1, tittleSize.height + 1));
+    }];
+    [self.acTagImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.acImageView.mas_right).with.offset(25);
+        make.bottom.equalTo(self.acImageView.mas_bottom).with.offset(-10);
+        make.size.mas_equalTo(self.acTagImageView.image.size);
+    }];
+    [self.acTagLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.acTagImageView.mas_right).with.offset(10);
+        make.top.equalTo(self.acTagImageView.mas_top);
+        make.size.mas_equalTo(CGSizeMake(150, 20));
+    }];
+}
+
 //cell的控件进行赋值
 - (void) setCellValue:(UITableViewCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
@@ -352,6 +453,21 @@
         }
     }
     return selectedBtn;
+}
+/**
+ *  计算字符串的长度
+ *
+ *  @param text 待计算大小的字符串
+ *
+ *  @param fontSize 指定绘制字符串所用的字体大小
+ *
+ *  @return 字符串的大小
+ */
+- (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize
+{
+    //计算文本的大小
+    CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
+    return nameSize;
 }
 
 

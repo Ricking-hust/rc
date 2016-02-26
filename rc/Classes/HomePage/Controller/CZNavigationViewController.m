@@ -8,6 +8,7 @@
 
 #import "CZNavigationViewController.h"
 #import "UINavigationBar+Awesome.h"
+#import "CZActivityInfoViewController.h"
 
 @interface CZNavigationViewController ()
 
@@ -19,30 +20,17 @@
     [super viewDidLoad];
     NSLog(@"%s",__func__);
     
-//    [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
-//    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
+    //    [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
+    //    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
     
-//    UIViewController *currentViewController = self.selectedViewController;
-//    if ([currentViewController isKindOfClass:[CZScheduleViewController class]])
-//    {
-//        NSDate *  senddate=[NSDate date];
-//        
-//        NSDateFormatter  *dateformatter=[[NSDateFormatter alloc] init];
-//        
-//        [dateformatter setDateFormat:@"MM月dd日"];
-//        
-//        NSString *  locationString=[dateformatter stringFromDate:senddate];
-//        
-//        currentViewController.title = locationString;
-//    }
-
+    
 }
 
 #pragma mark 类第一次使用的时候被调用
 +(void)initialize{
     NSLog(@"%s",__func__);
     
-
+    
     
     // 设置主题
     
@@ -62,8 +50,8 @@
     UINavigationBar *navBar = [UINavigationBar appearance];
     //[navBar setBackgroundImage:[UIImage imageNamed:@"NavBar64"] forBarMetrics:UIBarMetricsDefault];
     
-        [navBar lt_setBackgroundColor:[UIColor whiteColor]];
-        [navBar setShadowImage:[UIImage new]];
+    [navBar lt_setBackgroundColor:[UIColor whiteColor]];
+    [navBar setShadowImage:[UIImage new]];
     // 2.UIApplication设置状态栏的样式
     [UIApplication sharedApplication].statusBarStyle = UIStatusBarStyleLightContent;
     
@@ -107,6 +95,7 @@
 -(void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{
     
     NSLog(@"%s",__func__);
+    
     //设置 push 新控制器的时候 隐藏Tabbar
     viewController.hidesBottomBarWhenPushed = YES;
     return [super pushViewController:viewController animated:animated];
