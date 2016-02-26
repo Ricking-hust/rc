@@ -27,7 +27,7 @@
     cell.rowHeight = 190.0/2;
     
     return cell;
-
+    
 }
 
 - (instancetype) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
@@ -35,12 +35,12 @@
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         //创建子控件
-
+        
         UILabel *placeLabel = [[UILabel alloc]init];
         self.ac_placeLabel = placeLabel;
         self.ac_placeLabel.font = [UIFont systemFontOfSize:LABEL_FONTSIZE];
         [self.contentView addSubview:self.ac_placeLabel];
-
+        
         UILabel *sizeLabel = [[UILabel alloc]init];
         self.ac_sizeLabel = sizeLabel;
         self.ac_sizeLabel.font = [UIFont systemFontOfSize:LABEL_FONTSIZE];
@@ -52,7 +52,7 @@
         [self.contentView addSubview:self.ac_payLabel];
     }
     return self;
-
+    
 }
 
 - (void)setSubViewsConstraint
@@ -62,21 +62,21 @@
     [self.ac_placeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_left).with.offset(10);
         make.top.equalTo(self.contentView.mas_top).with.offset(28.0/2);
-        make.size.mas_equalTo(placeSize);
+        make.size.mas_equalTo(CGSizeMake(150, 20));
     }];
     //添加规模标签约束
     CGSize scaleSize = [self sizeWithText:self.ac_sizeLabel.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:LABEL_FONTSIZE];
     [self.ac_sizeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.ac_placeLabel.mas_bottom).with.offset(22.0/2);
         make.left.equalTo(self.ac_placeLabel.mas_left);
-        make.size.mas_equalTo(scaleSize);
+        make.size.mas_equalTo(CGSizeMake(150, 20));
     }];
     //添加费用标签约束
     CGSize paySize = [self sizeWithText:self.ac_payLabel.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:LABEL_FONTSIZE];
     [self.ac_payLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.ac_placeLabel.mas_left);
         make.top.equalTo(self.ac_sizeLabel.mas_bottom).with.offset(22.0/2);
-        make.size.mas_equalTo(paySize);
+        make.size.mas_equalTo(CGSizeMake(150, 20));
     }];
 }
 
@@ -98,7 +98,7 @@
 
 - (void)setSelected:(BOOL)selected animated:(BOOL)animated {
     [super setSelected:selected animated:animated];
-
+    
     // Configure the view for the selected state
 }
 

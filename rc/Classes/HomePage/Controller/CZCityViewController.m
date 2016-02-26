@@ -39,6 +39,8 @@
     }];
     //city -- 北京
     _beijing = [CZCityView cityView];
+#pragma mark - test
+    _beijing.locationImage.hidden = NO;
     str = [NSString stringWithFormat:@"city_%d",1];
     img = [UIImage imageNamed:str];
     _beijing.locationImage.image = [UIImage imageNamed:@"location"];

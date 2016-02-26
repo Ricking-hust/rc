@@ -312,6 +312,20 @@
     self.tableView.tableHeaderView = self.header;
     
 }
+// 下拉后图片拉伸的效果方法下载这个里面
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    
+    CGFloat width = self.view.frame.size.width;     // 图片宽度
+    CGFloat yOffset = scrollView.contentOffset.y;  // 偏移的y值
+    if (yOffset < 0)
+    {
+        CGFloat totalOffset = 200 + ABS(yOffset);
+        CGFloat f = totalOffset / 200;
+        self.headerImageView.frame =  CGRectMake(- (width * f - width) / 2, yOffset, width * f, totalOffset);
+    }
+}
+
 //对tableView头进行赋值
 - (void)setTableViewHeader
 {

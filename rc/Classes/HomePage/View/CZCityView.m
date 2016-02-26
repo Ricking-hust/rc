@@ -50,7 +50,7 @@
         make.size.mas_equalTo(CGSizeMake(btnW, btnH));
     }];
     [self.locationImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.cityBtn.mas_left).with.offset(10);
+        make.left.equalTo(self.cityBtn.mas_left).with.offset(5);
         make.top.equalTo(self.cityBtn.mas_bottom).with.offset(22/2);
         make.size.mas_equalTo(loactionImgSize);
     }];
