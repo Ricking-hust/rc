@@ -8,8 +8,6 @@
 
 /* Begin PBXBuildFile section */
 		561D01041C47D94C00E4E013 /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 561D01031C47D94C00E4E013 /* main.m */; };
-		561D010D1C47D94C00E4E013 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 561D010B1C47D94C00E4E013 /* Main.storyboard */; };
-		561D01121C47D94C00E4E013 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 561D01101C47D94C00E4E013 /* LaunchScreen.storyboard */; };
 		561D011D1C47D94C00E4E013 /* rcTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 561D011C1C47D94C00E4E013 /* rcTests.m */; };
 		561D01281C47D94C00E4E013 /* rcUITests.m in Sources */ = {isa = PBXBuildFile; fileRef = 561D01271C47D94C00E4E013 /* rcUITests.m */; };
 		561D01D01C47DA5600E4E013 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 561D01351C47DA5600E4E013 /* Assets.xcassets */; };
@@ -72,12 +70,13 @@
 		565EF6281C48EBA20067C032 /* CityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6211C48EBA20067C032 /* CityModel.m */; };
 		565EF6571C48EC410067C032 /* CZMyInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6331C48EC410067C032 /* CZMyInfoViewController.m */; };
 		565EF66C1C48ED1E0067C032 /* CZTabbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF66B1C48ED1E0067C032 /* CZTabbarController.m */; };
-		56637D6A1C55C4D90000BF46 /* CZTagCell.xib in Resources */ = {isa = PBXBuildFile; fileRef = 56637D691C55C4D90000BF46 /* CZTagCell.xib */; };
 		56637D721C560DA10000BF46 /* CZCityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56637D711C560DA10000BF46 /* CZCityViewController.m */; };
 		56637D751C5611230000BF46 /* CZCityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56637D741C5611230000BF46 /* CZCityView.m */; };
 		5674AF991C70B99100184A31 /* CZActivityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5674AF981C70B99100184A31 /* CZActivityCell.m */; };
 		56814C131C58963200CB60D6 /* CZTagViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56814C121C58963200CB60D6 /* CZTagViewController.m */; };
 		56814C161C58A64600CB60D6 /* CZRemindMeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56814C151C58A64600CB60D6 /* CZRemindMeView.m */; };
+		5683EC271C817F7B006430CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5683EC251C817F7B006430CB /* LaunchScreen.storyboard */; };
+		5683EC281C817F7B006430CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5683EC261C817F7B006430CB /* Main.storyboard */; };
 		5686763B1C65E9820099726A /* CZScheduleInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5686763A1C65E9820099726A /* CZScheduleInfoViewController.m */; };
 		569E58DD1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 569E58DC1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.m */; };
 		569E58E01C6ECA840060DCA6 /* CZMoreTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 569E58DF1C6ECA840060DCA6 /* CZMoreTimeCell.m */; };
@@ -152,8 +151,6 @@
 /* Begin PBXFileReference section */
 		561D00FF1C47D94C00E4E013 /* rc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rc.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		561D01031C47D94C00E4E013 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
-		561D010C1C47D94C00E4E013 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/Main.storyboard; sourceTree = "<group>"; };
-		561D01111C47D94C00E4E013 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		561D01131C47D94C00E4E013 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		561D01181C47D94C00E4E013 /* rcTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = rcTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		561D011C1C47D94C00E4E013 /* rcTests.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = rcTests.m; sourceTree = "<group>"; };
@@ -280,7 +277,6 @@
 		565EF6331C48EC410067C032 /* CZMyInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZMyInfoViewController.m; sourceTree = "<group>"; };
 		565EF66A1C48ED1E0067C032 /* CZTabbarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTabbarController.h; sourceTree = "<group>"; };
 		565EF66B1C48ED1E0067C032 /* CZTabbarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTabbarController.m; sourceTree = "<group>"; };
-		56637D691C55C4D90000BF46 /* CZTagCell.xib */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.xib; path = CZTagCell.xib; sourceTree = "<group>"; };
 		56637D701C560DA10000BF46 /* CZCityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCityViewController.h; sourceTree = "<group>"; };
 		56637D711C560DA10000BF46 /* CZCityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCityViewController.m; sourceTree = "<group>"; };
 		56637D731C5611230000BF46 /* CZCityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCityView.h; sourceTree = "<group>"; };
@@ -291,6 +287,8 @@
 		56814C121C58963200CB60D6 /* CZTagViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTagViewController.m; sourceTree = "<group>"; };
 		56814C141C58A64600CB60D6 /* CZRemindMeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZRemindMeView.h; sourceTree = "<group>"; };
 		56814C151C58A64600CB60D6 /* CZRemindMeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZRemindMeView.m; sourceTree = "<group>"; };
+		5683EC251C817F7B006430CB /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
+		5683EC261C817F7B006430CB /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		568676391C65E9820099726A /* CZScheduleInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZScheduleInfoViewController.h; sourceTree = "<group>"; };
 		5686763A1C65E9820099726A /* CZScheduleInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZScheduleInfoViewController.m; sourceTree = "<group>"; };
 		569E58DB1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZMoreRemindTimeViewController.h; sourceTree = "<group>"; };
@@ -446,9 +444,9 @@
 		561D01011C47D94C00E4E013 /* rc */ = {
 			isa = PBXGroup;
 			children = (
+				5683EC221C817EA1006430CB /* Main */,
 				561D01CB1C47DA5600E4E013 /* Resources */,
 				561D01C81C47DA5600E4E013 /* Others */,
-				561D01C51C47DA5600E4E013 /* Main */,
 				561D01361C47DA5600E4E013 /* Classes */,
 				565EF6121C48EBA20067C032 /* Managers */,
 				565EF6191C48EBA20067C032 /* Models */,
@@ -647,15 +645,6 @@
 			path = Masonry;
 			sourceTree = "<group>";
 		};
-		561D01C51C47DA5600E4E013 /* Main */ = {
-			isa = PBXGroup;
-			children = (
-				561D010B1C47D94C00E4E013 /* Main.storyboard */,
-				561D01101C47D94C00E4E013 /* LaunchScreen.storyboard */,
-			);
-			path = Main;
-			sourceTree = "<group>";
-		};
 		561D01C81C47DA5600E4E013 /* Others */ = {
 			isa = PBXGroup;
 			children = (
@@ -731,7 +720,6 @@
 				565BCFB61C51E4E30031ABBD /* CZMyTagCell.m */,
 				565BCFB81C51E4FD0031ABBD /* CZTagCell.h */,
 				565BCFB91C51E4FD0031ABBD /* CZTagCell.m */,
-				56637D691C55C4D90000BF46 /* CZTagCell.xib */,
 				56637D731C5611230000BF46 /* CZCityView.h */,
 				56637D741C5611230000BF46 /* CZCityView.m */,
 				56E470051C5735900056BE17 /* CZCityButton.h */,
@@ -844,6 +832,15 @@
 				56E523571C75922700794B0E /* CZPersonInfoCell.m */,
 			);
 			path = View;
+			sourceTree = "<group>";
+		};
+		5683EC221C817EA1006430CB /* Main */ = {
+			isa = PBXGroup;
+			children = (
+				5683EC261C817F7B006430CB /* Main.storyboard */,
+				5683EC251C817F7B006430CB /* LaunchScreen.storyboard */,
+			);
+			path = Main;
 			sourceTree = "<group>";
 		};
 		56B83C101C608CD6005FF427 /* View */ = {
@@ -1051,15 +1048,14 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5683EC271C817F7B006430CB /* LaunchScreen.storyboard in Resources */,
+				5683EC281C817F7B006430CB /* Main.storyboard in Resources */,
 				561D02171C47DA5600E4E013 /* activityImage.png in Resources */,
 				561D01FC1C47DA5600E4E013 /* LICENSE in Resources */,
 				561D02071C47DA5600E4E013 /* LICENSE in Resources */,
-				561D01121C47D94C00E4E013 /* LaunchScreen.storyboard in Resources */,
 				561D02181C47DA5600E4E013 /* Argentina.png in Resources */,
 				561D02191C47DA5600E4E013 /* Chile.png in Resources */,
-				56637D6A1C55C4D90000BF46 /* CZTagCell.xib in Resources */,
 				561D01D01C47DA5600E4E013 /* Assets.xcassets in Resources */,
-				561D010D1C47D94C00E4E013 /* Main.storyboard in Resources */,
 				561D02161C47DA5600E4E013 /* 1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -1229,27 +1225,6 @@
 			targetProxy = 561D01241C47D94C00E4E013 /* PBXContainerItemProxy */;
 		};
 /* End PBXTargetDependency section */
-
-/* Begin PBXVariantGroup section */
-		561D010B1C47D94C00E4E013 /* Main.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				561D010C1C47D94C00E4E013 /* Base */,
-			);
-			name = Main.storyboard;
-			path = ..;
-			sourceTree = "<group>";
-		};
-		561D01101C47D94C00E4E013 /* LaunchScreen.storyboard */ = {
-			isa = PBXVariantGroup;
-			children = (
-				561D01111C47D94C00E4E013 /* Base */,
-			);
-			name = LaunchScreen.storyboard;
-			path = ..;
-			sourceTree = "<group>";
-		};
-/* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
 		561D012A1C47D94C00E4E013 /* Debug */ = {

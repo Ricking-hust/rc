@@ -12,9 +12,11 @@
 #import "Masonry.h"
 
 @interface CZMyReleseViewController()
+
 @property(nonatomic, strong) NSMutableArray *activity;
 
 @end
+
 @implementation CZMyReleseViewController
 
 /**
@@ -85,15 +87,21 @@
 {
     [super viewDidLoad];
     
+    //设置导航栏
+    [self setNavigation];
+    [self createButtons];
+}
+//设置导航栏
+- (void)setNavigation
+{
     self.navigationItem.title = @"我的发布";
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(backToForwardViewController)];
     
     [self.navigationItem setLeftBarButtonItem:leftButton];
-    
-    [self createButtons];
 }
+
 - (void)backToForwardViewController
 {
     [self.navigationController popViewControllerAnimated:YES];

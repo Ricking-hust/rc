@@ -289,7 +289,9 @@
     
     self.headerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, screenSize.width, screenSize.height * 0.25 + 64)];
     self.headerImageView.alpha = 0.7;
-    self.headerImageView.image  = [UIImage imageNamed:@"img_1"]; //headerView的背景模糊图片
+    //self.headerImageView.image  = [UIImage imageNamed:@"img_1"]; //headerView的背景模糊图片
+    
+    [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:self.activityModelPre.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     
     [self.header addSubview:self.headerImageView];
     [self.headerImageView setImageToBlur:self.headerImageView.image blurRadius:21 completionBlock:nil];

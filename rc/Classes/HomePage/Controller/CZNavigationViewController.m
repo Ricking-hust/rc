@@ -16,21 +16,17 @@
 
 @implementation CZNavigationViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     NSLog(@"%s",__func__);
-    
-    //    [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
-    //    [self.navigationController.navigationBar setShadowImage:[UIImage new]];
-    
     
 }
 
 #pragma mark 类第一次使用的时候被调用
-+(void)initialize{
++(void)initialize
+{
     NSLog(@"%s",__func__);
-    
-    
     
     // 设置主题
     
@@ -45,7 +41,7 @@
     // 设置当前导航控制器的背景
     //[self.navigationController.navigationBar setBackgroundImage:[UIImage imageNamed:@"NavBar64"] forBarMetrics:UIBarMetricsDefault];
     
-#warning 一般设置导航条背景，不会在导航控制器的子控制器里设置
+#pragma mark  一般设置导航条背景，不会在导航控制器的子控制器里设置
     // 1.设置导航条的背题图片 --- 设置全局
     UINavigationBar *navBar = [UINavigationBar appearance];
     //[navBar setBackgroundImage:[UIImage imageNamed:@"NavBar64"] forBarMetrics:UIBarMetricsDefault];
@@ -77,11 +73,12 @@
 }
 
 #pragma mark 设置状态栏的样式
-//如果有导航控制器的，状态栏的样式要在导航控制器里设置，不能在子控制器里设置
-//这只方式只能针对局部的控制器
-//-(UIStatusBarStyle)preferredStatusBarStyle{
-//    return UIStatusBarStyleLightContent;
-//}
+/*
+如果有导航控制器的，状态栏的样式要在导航控制器里设置，不能在子控制器里设置
+这只方式只能针对局部的控制器
+-(UIStatusBarStyle)preferredStatusBarStyle{
+    return UIStatusBarStyleLightContent;
+}*/
 
 
 

@@ -18,7 +18,8 @@
     
     CZTagCell *cell = (CZTagCell *)[tableView dequeueReusableCellWithIdentifier:reuseId];
     
-    if(nil == cell) {
+    if(nil == cell)
+    {
         cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
     }
     
@@ -30,172 +31,11 @@
 - (instancetype) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        [self createSubView];
-        [self setSubView];
+
     }
     return self;
 }
-- (void)createSubView
-{
-    //创建按钮--创业者
-    self.bStartupBtn = [[UIButton alloc]initWithFrame:CGRectZero];
-    [self.bStartupBtn setTitle:@"创业者" forState:UIControlStateNormal];
-    [self.contentView addSubview:self.bStartupBtn];
-    
-    //创建按钮--白领
-    self.whiteCollarBtn = [[UIButton alloc]initWithFrame:CGRectZero];
-    [self.whiteCollarBtn setTitle:@"白领" forState:UIControlStateNormal];
-    [self.contentView addSubview:self.whiteCollarBtn];
-    
-    //创建按钮--清华讲座
-    self.tsinghuaLectureBtn = [[UIButton alloc]initWithFrame:CGRectZero];
-    [self.tsinghuaLectureBtn setTitle:@"清华讲座" forState:UIControlStateNormal];
-    [self.contentView addSubview:self.tsinghuaLectureBtn];
-    
-    //创建按钮--科技
-    self.technologyBtn = [[UIButton alloc]initWithFrame:CGRectZero];
-    [self.technologyBtn setTitle:@"科技" forState:UIControlStateNormal];
-    [self.contentView addSubview:self.technologyBtn];
-    
-    //创建按钮--沙龙
-    self.salonBtn = [[UIButton alloc]initWithFrame:CGRectZero];
-    [self.salonBtn setTitle:@"沙龙" forState:UIControlStateNormal];
-    [self.contentView addSubview:self.salonBtn];
-    
-    //创建按钮--高层
-    self.highriseBtn = [[UIButton alloc]initWithFrame:CGRectZero];
-    [self.highriseBtn setTitle:@"高层" forState:UIControlStateNormal];
-    [self.contentView addSubview:self.highriseBtn];
-    //创建按钮--讲座
-    self.lectureBtn = [[UIButton alloc]initWithFrame:CGRectZero];
-    [self.lectureBtn setTitle:@"讲座" forState:UIControlStateNormal];
-    [self.contentView addSubview:self.lectureBtn];
-    
-    //创建按钮--论坛
-    self.forumBtn = [[UIButton alloc]initWithFrame:CGRectZero];
-    [self.forumBtn setTitle:@"论坛" forState:UIControlStateNormal];
-    [self.contentView addSubview:self.forumBtn];
-    //创建按钮--金融
-    self.financeBtn = [[UIButton alloc]initWithFrame:CGRectZero];
-    [self.financeBtn setTitle:@"金融" forState:UIControlStateNormal];
-    [self.contentView addSubview:self.financeBtn];
-    
-}
 
-//设置按钮的约束
-- (void) setSubView
-{
-    CGSize size = CGSizeMake(140/2, 60/2);
-    if ([[self getCurrentDeviceModel]isEqualToString:@"iPhone 4"] ||
-        [[self getCurrentDeviceModel]isEqualToString:@"iPhone 5"] ||
-        [[self getCurrentDeviceModel]isEqualToString:@"iPhone Simulator"])
-    {
-        [self.bStartupBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).with.offset(15);
-            make.top.equalTo(self.contentView.mas_top).with.offset(15);
-            make.size.mas_equalTo(size);
-        }];
-        [self.tsinghuaLectureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.bStartupBtn.mas_right).with.offset(30);
-            make.top.equalTo(self.bStartupBtn.mas_top);
-            make.size.mas_equalTo(size);
-        }];
-        [self.whiteCollarBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.tsinghuaLectureBtn.mas_right).with.offset(30);
-            make.top.equalTo(self.bStartupBtn.mas_top);
-            make.size.mas_equalTo(size);
-        }];
-        [self.technologyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.bStartupBtn.mas_left);
-            make.top.equalTo(self.bStartupBtn.mas_bottom).with.offset(30.0 / 2);
-            make.size.mas_equalTo(size);
-        }];
-        [self.salonBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.technologyBtn.mas_right).with.offset(30);
-            make.top.equalTo(self.technologyBtn.mas_top);
-            make.size.mas_equalTo(size);
-        }];
-        [self.highriseBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.salonBtn.mas_right).with.offset(30);
-            make.top.equalTo(self.technologyBtn.mas_top);
-            make.size.mas_equalTo(size);
-        }];
-        [self.lectureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.bStartupBtn.mas_left);
-            make.top.equalTo(self.technologyBtn.mas_bottom).with.offset(30.0 / 2);
-            make.size.mas_equalTo(size);
-        }];
-        [self.forumBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.lectureBtn.mas_right).with.offset(30);
-            make.top.equalTo(self.lectureBtn.mas_top);
-            make.size.mas_equalTo(size);
-        }];
-        [self.financeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.forumBtn.mas_right).with.offset(30);
-            make.top.equalTo(self.lectureBtn.mas_top);
-            make.size.mas_equalTo(size);
-        }];
-
-    }else
-    {
-        [self.bStartupBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).with.offset(15);
-            make.top.equalTo(self.contentView.mas_top).with.offset(30.0 / 2);
-            make.size.mas_equalTo(size);
-        }];
-        [self.tsinghuaLectureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.whiteCollarBtn.mas_right).with.offset(42.0 / 2);
-            make.top.equalTo(self.contentView.mas_top).with.offset(30.0 / 2);
-            make.size.mas_equalTo(size);
-        }];
-        [self.whiteCollarBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.bStartupBtn.mas_right).with.offset(42.0 / 2);
-            make.top.equalTo(self.contentView.mas_top).with.offset(30.0 / 2);
-            make.size.mas_equalTo(size);
-        }];
-        [self.technologyBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.tsinghuaLectureBtn.mas_right).with.offset(42.0 / 2);
-            make.top.equalTo(self.contentView.mas_top).with.offset(30.0 / 2);
-            make.size.mas_equalTo(size);
-        }];
-        [self.salonBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).with.offset(15);
-            make.top.equalTo(self.bStartupBtn.mas_bottom).with.offset(30.0 / 2);
-            make.size.mas_equalTo(size);
-        }];
-        [self.highriseBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.salonBtn.mas_right).with.offset(42.0 / 2);
-            make.top.equalTo(self.whiteCollarBtn.mas_bottom).with.offset(30.0 / 2);
-            make.size.mas_equalTo(size);
-        }];
-        [self.lectureBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.highriseBtn.mas_right).with.offset(42.0 / 2);
-            make.top.equalTo(self.tsinghuaLectureBtn.mas_bottom).with.offset(30.0 / 2);
-            make.size.mas_equalTo(size);
-        }];
-        [self.forumBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.lectureBtn.mas_right).with.offset(42.0 / 2);
-            make.top.equalTo(self.technologyBtn.mas_bottom).with.offset(30.0 / 2);
-            make.size.mas_equalTo(size);
-        }];
-        [self.financeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).with.offset(15);
-            make.top.equalTo(self.salonBtn.mas_bottom).with.offset(30.0 / 2);
-            make.size.mas_equalTo(size);
-        }];
-    }
-    //设置按钮的样式
-    [self setStyleOfButton:self.bStartupBtn];
-    [self setStyleOfButton:self.whiteCollarBtn];
-    [self setStyleOfButton:self.tsinghuaLectureBtn];
-    [self setStyleOfButton:self.technologyBtn];
-    [self setStyleOfButton:self.salonBtn];
-    [self setStyleOfButton:self.highriseBtn];
-    [self setStyleOfButton:self.lectureBtn];
-    [self setStyleOfButton:self.forumBtn];
-    [self setStyleOfButton:self.financeBtn];
-
-}
 - (void)setStyleOfButton:(UIButton *)btn
 {
     [btn.layer setMasksToBounds:YES];//设置按钮的圆角半径不会被遮挡

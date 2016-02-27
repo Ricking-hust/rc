@@ -9,15 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface CZTagCell : UITableViewCell
-@property (strong, nonatomic)  UIButton *bStartupBtn;         //创业者
-@property (strong, nonatomic)  UIButton *whiteCollarBtn;      //白领
-@property (strong, nonatomic)  UIButton *tsinghuaLectureBtn;  //清华讲座
-@property (strong, nonatomic)  UIButton *technologyBtn;       //科技
-@property (strong, nonatomic)  UIButton *salonBtn;            //沙龙
-@property (strong, nonatomic)  UIButton *highriseBtn;         //高层
-@property (strong, nonatomic)  UIButton *lectureBtn;          //讲座
-@property (strong, nonatomic)  UIButton *forumBtn;            //论坛
-@property (strong, nonatomic)  UIButton *financeBtn;          //金融
 @property (nonatomic, assign)CGFloat rowHeight;               //行高
 
 /**

@@ -177,15 +177,15 @@
     {
         if (indexPath.row == 0)
         {
-            cell.imgIcon.image = [UIImage imageNamed:@"addIcon"];
+            cell.imgIcon.image = [UIImage imageNamed:@"activity_icon"];
             cell.contentLable.text = @"我的活动";
         }else if (indexPath.row == 1)
         {
-            cell.imgIcon.image = [UIImage imageNamed:@"addIcon"];
+            cell.imgIcon.image = [UIImage imageNamed:@"pencil_icon"];
             cell.contentLable.text = @"我的发布";
         }else
         {
-            cell.imgIcon.image = [UIImage imageNamed:@"addIcon"];
+            cell.imgIcon.image = [UIImage imageNamed:@"collection_icon"];
             cell.contentLable.text = @"我的收藏";
         }
 
@@ -193,11 +193,11 @@
     {
         if (indexPath.row == 0)
         {
-            cell.imgIcon.image = [UIImage imageNamed:@"addIcon"];
+            cell.imgIcon.image = [UIImage imageNamed:@"about_icon"];
             cell.contentLable.text = @"关于我们";
         }else
         {
-            cell.imgIcon.image = [UIImage imageNamed:@"addIcon"];
+            cell.imgIcon.image = [UIImage imageNamed:@"feedback_icon"];
             cell.contentLable.text = @"建议反馈";
         }
         
@@ -208,11 +208,23 @@
 
 - (void)setCellConstraints:(CZMyInfoCell *)cell WithIndexPath:(NSIndexPath *)indexPath
 {
-    [cell.imgIcon mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(cell.contentView.mas_left).with.offset(10);
-        make.centerY.equalTo(cell.contentView);
-        make.size.mas_equalTo(CGSizeMake(50, 50));
-    }];
+    if (indexPath.section == 0)
+    {
+        [cell.imgIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(cell.contentView.mas_left).with.offset(10);
+            make.centerY.equalTo(cell.contentView);
+            make.size.mas_equalTo(CGSizeMake(50, 50));
+        }];
+    }else
+    {
+        [cell.imgIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(cell.contentView.mas_left).with.offset(10);
+            make.centerY.equalTo(cell.contentView);
+            make.size.mas_equalTo(cell.imgIcon.image.size);
+        }];
+    }
+    
+
     CGSize contentLableSize = [self sizeWithText:cell.contentLable.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:14];
     [cell.contentLable mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(cell.imgIcon.mas_right).with.offset(15);
