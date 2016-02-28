@@ -80,6 +80,14 @@
     }];
 }
 
+-(void) setModel:(ActivityModel *)model{
+    _model = model;
+    
+    self.ac_placeLabel.text = model.acPlace;
+    self.ac_sizeLabel.text  = model.acSize;
+    self.ac_payLabel.text   = model.acPay;
+}
+
 /**
  *  计算字体的长和宽
  *
