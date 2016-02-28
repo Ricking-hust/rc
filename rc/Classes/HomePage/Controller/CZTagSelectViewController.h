@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CZTagSelectViewController : UITableViewController
+@interface CZTagSelectViewController : UIViewController
 
 @end

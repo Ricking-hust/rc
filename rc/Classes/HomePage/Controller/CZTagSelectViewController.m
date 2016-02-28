@@ -8,8 +8,6 @@
 
 #import "CZTagSelectViewController.h"
 #import "Masonry.h"
-#import "CZTagCell.h"
-#import "CZMyTagCell.h"
 #include <sys/sysctl.h>
 
 typedef NS_ENUM(NSInteger, CurrentDevice)
@@ -19,10 +17,16 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     Iphone6Plus = 2     //5.5寸  736 X 414
 };
 @interface CZTagSelectViewController ()
-
+@property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, assign) CurrentDevice device;
-@property (nonatomic, strong) NSArray *tags;
-
+@property (nonatomic, strong) UIView *myTaglabelView;
+@property (nonatomic, strong) UIView *myTagButtonsView;
+@property (nonatomic, strong) UIView *tagLabelView;
+@property (nonatomic, strong) UIView *tagButtonsView;
+@property (nonatomic, strong) NSMutableArray *tags;
+@property (nonatomic, strong) NSMutableArray *myTags;
+@property (nonatomic, strong) NSMutableArray *myTagButton;
+@property (nonatomic, strong) NSMutableArray *tagButtons;
 @end
 
 @implementation CZTagSelectViewController
@@ -31,26 +35,320 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
 {
     [super viewDidLoad];
 #pragma mark - test
-    self.tags = [[NSArray alloc]initWithObjects:@"创业", @"新闻",@"媒体",@"感觉",
-                                                @"屁事",@"发票",@"分割",@"尼玛",nil];
-    self.tableView.backgroundColor = [UIColor whiteColor];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;//去掉Cell之间的分割线
+    self.tags = [[NSMutableArray alloc]initWithObjects:@"创业者", @"新闻资讯",@"媒体",@"感觉如何",
+                 @"屁事快说",@"发票",@"分割",@"尼玛",@"尼玛",@"尼玛",@"屁事快说",@"发票",@"分割",@"尼玛",@"尼玛",@"尼玛",@"屁事快说",@"发票",@"分割",@"尼玛",@"尼玛",@"尼玛",nil];
+    self.myTags = [[NSMutableArray alloc]initWithObjects:@"创业者", @"新闻资讯",@"媒体",@"感觉如何",nil];
+    
+    self.view.backgroundColor = [UIColor whiteColor];
+    [self setNavigation];
     //获取当前的设备
-    [self currentDeviceSize];
+    self.device = [self currentDeviceSize];
+    [self createScrollView];
+    [self createSubViews];
+
+
+    
 }
-- (void)currentDeviceSize
+- (void)setNavigation
 {
-    if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 4"] ||
-        [[self getCurrentDeviceModel] isEqualToString:@"iPhone 5"] )
+    self.navigationItem.title = @"标签选择";
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(popThisViewController)];
+    [self.navigationItem setLeftBarButtonItem:leftButton];
+    UIBarButtonItem *rightButtont = [[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(confirmTag)];
+    [self.navigationItem setRightBarButtonItem:rightButtont];
+}
+- (void)createScrollView
+{
+    [self.view addSubview:[[UIView alloc]initWithFrame:CGRectZero]];
+    self.scrollView = [[UIScrollView alloc]init];
+    [self.view addSubview:self.scrollView];
+    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_top).offset(64);
+        make.left.right.bottom.equalTo(self.view);
+    }];
+}
+- (void)createSubViews
+{
+    CGFloat labelLeftPadding;
+    if (self.device == IPhone5)
     {
-        self.device = IPhone5;
+        labelLeftPadding = 12;
+    }else if (self.device == IPhone6)
+    {
         
-    }else if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 6"])
-    {
-        self.device = IPhone6;
     }else
     {
-        self.device = Iphone6Plus;
+        
+    }
+    //创建我的标签View
+    [self myTagLabelWithPadding:labelLeftPadding];
+    //创建我的标签按钮
+    [self myTagView];
+    //创建系统标签View
+    [self tagLabelWithPadding:labelLeftPadding];
+    //创建系统标签按钮
+    [self tagsView];
+    
+
+}
+//创建我的标签栏的View
+- (void)myTagLabelWithPadding:(CGFloat)padding
+{
+    self.myTaglabelView = [[UIView alloc]init];
+    [self.scrollView addSubview:self.myTaglabelView];
+    self.myTaglabelView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
+    [self.myTaglabelView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.scrollView.mas_left);
+        make.top.equalTo(self.scrollView.mas_top);
+        make.width.equalTo(@([[UIScreen mainScreen]bounds].size.width));
+        make.height.mas_equalTo(30);
+    }];
+    
+    UILabel *myTageLabel = [[UILabel alloc]init];
+    myTageLabel.text = @"我的标签";
+    myTageLabel.font = [UIFont systemFontOfSize:12];
+    myTageLabel.textColor = [UIColor colorWithRed:140.0/255.0 green:140.0/255.0  blue:140.0/255.0  alpha:1.0];
+    [self.myTaglabelView addSubview:myTageLabel];
+    [myTageLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.myTaglabelView).offset(padding);
+        make.centerY.equalTo(self.myTaglabelView);
+        make.size.mas_equalTo(CGSizeMake(100, 20));
+    }];
+}
+/**
+ *  创建我的标签按钮
+ *
+ */
+- (void)myTagView
+{
+    self.myTagButtonsView = [[UIView alloc]init];
+    self.myTagButtonsView.tag = 1;
+    [self.scrollView addSubview:self.myTagButtonsView];
+    CGFloat heigth = [self heigthForMyTagButtonsView:self.myTagButtonsView];
+    [self.myTagButtonsView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.myTaglabelView.mas_bottom);
+        make.left.equalTo(self.myTaglabelView.mas_left);
+        make.width.equalTo(self.myTaglabelView.mas_width);
+        make.height.mas_equalTo(heigth);
+    }];
+    [self creatMyTagAtView:self.myTagButtonsView];
+    
+}
+/**
+ * 创建系统标签栏
+ * 
+ */
+- (void)tagLabelWithPadding:(CGFloat)padding
+{
+    self.tagLabelView = [[UIView alloc]init];
+    [self.scrollView addSubview:self.tagLabelView];
+    self.tagLabelView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
+    [self.tagLabelView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.scrollView.mas_left);
+        make.top.equalTo(self.myTagButtonsView.mas_bottom);
+        make.width.equalTo(@([[UIScreen mainScreen]bounds].size.width));
+        make.height.mas_equalTo(30);
+    }];
+    
+    UILabel *myTageLabel = [[UILabel alloc]init];
+    myTageLabel.text = @"点击添加标签";
+    myTageLabel.font = [UIFont systemFontOfSize:12];
+    myTageLabel.textColor = [UIColor colorWithRed:140.0/255.0 green:140.0/255.0  blue:140.0/255.0  alpha:1.0];
+    [self.tagLabelView addSubview:myTageLabel];
+    [myTageLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.tagLabelView).offset(padding);
+        make.centerY.equalTo(self.tagLabelView);
+        make.size.mas_equalTo(CGSizeMake(100, 20));
+    }];
+
+}
+/**
+ *  创建系统标签按钮
+ *
+ */
+- (void)tagsView
+{
+    self.tagButtonsView = [[UIView alloc]init];
+    self.tagButtonsView.tag = 2;
+    [self.scrollView addSubview:self.tagButtonsView];
+    CGFloat heigth = [self heigthForMyTagButtonsView:self.tagButtonsView];
+    [self.tagButtonsView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.tagLabelView.mas_bottom);
+        make.left.equalTo(self.scrollView.mas_left);
+        make.width.equalTo(self.tagLabelView.mas_width);
+        make.height.mas_equalTo(heigth);
+    }];
+    [self creatTagAtView:self.tagButtonsView];
+}
+
+/**
+ *  创建我的标签按钮
+ *
+ */
+- (void)creatMyTagAtView:(UIView *)view
+{
+    int x = 0;
+    int y = 0;
+    CGFloat XPading = 0;
+    CGFloat YPadding = 12;
+    CGSize buttonSize = CGSizeMake(65, 30);
+    for (int i = 0; i < self.myTags.count; i++)
+    {
+        UIButton *btn = [[UIButton alloc]init];
+        [self setButton:btn WithTittle:self.tags[i] AtView:view];
+        [btn addTarget:self action:@selector(onClickOfTagButton:) forControlEvents:UIControlEventTouchUpInside];
+        [view addSubview:btn];
+        if (self.device == IPhone5)
+        {
+            if ((i) % 4 == 0 && i != 0 )
+            {
+                x = 0;
+                YPadding = 12 * (y + 2) + (y+1) * 30;
+                y++;
+            }
+            XPading = 12 * (x + 1) + x * 65;
+            [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.myTagButtonsView .mas_left).with.offset(XPading);
+                make.top.equalTo(self.myTagButtonsView .mas_top).with.offset(YPadding);
+                make.size.mas_equalTo(buttonSize);
+            }];
+            x++;
+        }else if (self.device == IPhone6)
+        {
+            
+        }else
+        {
+            
+        }
+    }
+}
+/**
+ *  创建系统标签按钮
+ *
+ */
+- (void)creatTagAtView:(UIView *)view
+{
+    int x = 0;
+    int y = 0;
+    CGFloat XPading = 0;
+    CGFloat YPadding = 12;
+    CGSize buttonSize = CGSizeMake(65, 30);
+    for (int i = 0; i < self.tags.count; i++)
+    {
+        UIButton *btn = [[UIButton alloc]init];
+        [self setButton:btn WithTittle:self.tags[i] AtView:view];
+        [btn addTarget:self action:@selector(onClickOfTagButton:) forControlEvents:UIControlEventTouchUpInside];
+        [view addSubview:btn];
+        if (self.device == IPhone5)
+        {
+            if ((i) % 4 == 0 && i != 0 )
+            {
+                x = 0;
+                YPadding = 12 * (y + 2) + (y+1) * 30;
+                y++;
+            }
+            XPading = 12 * (x + 1) + x * 65;
+            [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(view.mas_left).with.offset(XPading);
+                make.top.equalTo(view.mas_top).with.offset(YPadding);
+                make.size.mas_equalTo(buttonSize);
+            }];
+            x++;
+        }else if (self.device == IPhone6)
+        {
+
+        }else
+        {
+            
+        }
+    }
+}
+- (void)setButton:(UIButton *)button WithTittle:(NSString *)tittle AtView:(UIView *)view;
+{
+    if (view.tag == 1)
+    {
+        [button setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0]];
+        [button setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+        
+    }else
+    {
+        
+        [button setBackgroundColor:[UIColor whiteColor]];
+        [button setTitleColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.8] forState:UIControlStateNormal];
+        [button.layer setBorderWidth:1];    //设置边界的宽度
+        //设置按钮的边界颜色
+        //CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
+        //CGColorRef color = CGColorCreate(colorSpaceRef, (CGFloat[]){1,0,0,1});
+        CGColorRef color =[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.8].CGColor;
+        [button.layer setBorderColor:color];
+    }
+    [button setTitle:tittle forState:UIControlStateNormal];
+    button.titleLabel.font = [UIFont systemFontOfSize:14];
+    [button.layer setMasksToBounds:YES];//设置按钮的圆角半径不会被遮挡
+    [button.layer setCornerRadius:3];   //设置圆角
+    
+}
+
+- (CGFloat)heigthForMyTagButtonsView:(UIView *)view
+{
+
+    switch (self.device)
+    {
+        case IPhone5:
+        {
+            if (view.tag == 1)
+            {
+                CGFloat row = self.myTags.count / 4.0;
+                int height = (int)row;
+                if (height == row)
+                {
+                    return (height + 1) * 12 + height * 30;
+                }else
+                {
+                    height ++ ;
+                    return (height + 1) * 12 + height * 30;
+                }
+            }else
+            {
+                CGFloat row = self.tags.count / 4.0;
+                int height = (int)row;
+                if (height == row)
+                {
+                    return (height + 1) * 12 + height * 30;
+                }else
+                {
+                    height ++ ;
+                    return (height + 1) * 12 + height * 30;
+                }
+            }
+        }
+            break;
+        case IPhone6:
+        {
+            return 10;
+        }
+            break;
+            
+        default:
+        {
+            return 10;
+        }
+            break;
+    }
+
+}
+//标签按钮的点击事件
+- (void)onClickOfTagButton:(UIButton *)button
+{
+    UIView *view = button.superview;
+    if (view.tag == 1)
+    {//点击的是我的标签里的按钮
+        NSLog(@"点击的是我的标签里的按钮");
+        
+    }else
+    {//点击的是系统标签按钮
+        NSLog(@"点击的是系统标签按钮");
+        
     }
 }
 //导航栏左侧取消按钮
@@ -65,124 +363,30 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     [self.navigationController popViewControllerAnimated:YES];
 }
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+//获取当前设备
+- (CurrentDevice)currentDeviceSize
 {
-
-    return 2;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-
-    return 1;
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    CZTagCell *cell = (CZTagCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-    return cell.rowHeight;
-}
-//设置section header 高度
-- (CGFloat) tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    return 60.0/2;
-}
-//设置section header
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 1)];
-    view.backgroundColor = [UIColor colorWithRed:245.0/255 green:245.0/255  blue:245.0/255  alpha:1.0];
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(0, 0, 20, 40)];
-    label.font = [UIFont systemFontOfSize:12];
-    label.textColor = [UIColor colorWithRed:140.0/255.0 green:140.0/255.0  blue:140.0/255.0  alpha:1.0];
-    [view addSubview:label];
-    [label mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(view.mas_top).with.offset(10);
-        make.left.equalTo(view.mas_left).with.offset(10);
-    }];
-    
-    if (0 == section)
+    if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 4"] ||
+        [[self getCurrentDeviceModel] isEqualToString:@"iPhone 5"] ||
+        [[self getCurrentDeviceModel] isEqualToString:@"iPhone Simulator"])
     {
-        label.text = @"我的标签";
-    }
-    else
-    {
-        label.text = @"点击添加标签";
-    }
-    
-    return view;
-}
-
-//设置section footer高度
-- (CGFloat) tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 1;
-}
-//设置section footer
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 1)];
-    return view;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    
-    if (0 == indexPath.section)
-    {//我的标签
-        CZMyTagCell *cell = [CZMyTagCell initWithTableView:tableView];
-        UIButton *button = [[UIButton alloc]init];
-        [cell.contentView addSubview:button];
-        [self setButton:button WithTittle:@"在工在在" AtCell:cell];
+        return IPhone5;
         
-        return cell;
-    }
-    else
-    {//点击添加标签
-        CZTagCell *cell = [CZTagCell initWithTableView:tableView];
-        [self setCell:cell];
-        return cell;
-    }
-
-}
-- (void)setCell:(CZTagCell *)cell
-{
-    for (int i = 0; i < self.tags.count; i++)
+    }else if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 6"])
     {
-        UIButton *btn = [[UIButton alloc]init];
-        [cell.contentView addSubview:btn];
-        if (self.device == IPhone5)
-        {
-            [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-               
-            }];
-            if (i % 4 == 0)
-            {
-                
-            }
-        }else if (self.device == IPhone6)
-        {
-            
-        }else
-        {
-            
-        }
-    }
-    
-}
-- (void)setButton:(UIButton *)button WithTittle:(NSString *)tittle AtCell:(UITableViewCell *)cell;
-{
-    if ([cell isKindOfClass:[CZTagCell class]])
-    {
-        CZMyTagCell *myTagCell = (CZMyTagCell *)cell;
-        
+        return IPhone6;
     }else
     {
-        CZTagCell *tagCell = (CZTagCell *)cell;
-        
+        return Iphone6Plus;
     }
-
+}
+- (void)confirmTag
+{
+    
+}
+- (void)popThisViewController
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 /**
  *  计算字符串的长度

@@ -109,7 +109,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
                                 <state key="normal" title="标签"/>
                                 <connections>
-                                    <segue destination="kIb-w0-ghS" kind="show" id="aHi-Ea-w9h"/>
+                                    <action selector="toTagSelectViewController:" destination="SaJ-Yy-Uip" eventType="touchUpInside" id="OKc-9Q-pyC"/>
                                 </connections>
                             </button>
                         </barButtonItem>

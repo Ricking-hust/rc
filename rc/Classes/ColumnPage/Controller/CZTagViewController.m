@@ -54,7 +54,8 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CZTagCell *cell = (CZTagCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-    return cell.rowHeight;
+    //return cell.rowHeight;
+    return 100;
 }
 //设置节头
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

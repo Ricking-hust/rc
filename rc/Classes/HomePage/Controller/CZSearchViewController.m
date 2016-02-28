@@ -34,7 +34,8 @@
 #pragma mark - 懒加载
 - (NSMutableArray *)array
 {
-    if (!_array) {
+    if (!_array)
+    {
         self.array = [[NSMutableArray alloc]initWithObjects:@"创业",@"互联网",@"金融",@"讲座",@"IT",@"Xcode", @"mac", nil];
     }
     return _array;
@@ -79,7 +80,8 @@
 }
 - (UIView *)hotSearchView
 {
-    if (!_hotSearchView) {
+    if (!_hotSearchView)
+    {
         _hotSearchView = [[UIView alloc]init];
         _hotSearchView.backgroundColor = [UIColor whiteColor];
         [self.view addSubview:_hotSearchView];

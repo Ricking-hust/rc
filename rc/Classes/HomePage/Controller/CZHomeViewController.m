@@ -235,6 +235,11 @@
         make.bottom.equalTo(self.view.mas_bottom);
     }];
 }
+- (IBAction)toTagSelectViewController:(id)sender
+{
+    CZTagSelectViewController *tagSelcteViewController = [[CZTagSelectViewController alloc]init];
+    [self.navigationController pushViewController:tagSelcteViewController animated:YES];
+}
 #pragma mark - 首页搜索框点击事件
 - (void) onClickSearch:(UIView *)view
 {

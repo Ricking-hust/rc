@@ -9,8 +9,8 @@
 #import <UIKit/UIKit.h>
 
 @interface CZTagCell : UITableViewCell
-@property (nonatomic, assign)CGFloat rowHeight;               //行高
-
+@property (nonatomic, strong) NSArray *tags;
+@property (nonatomic, strong) NSMutableArray *tagButtons;
 /**
  *  快速创建对象实例
  *  
