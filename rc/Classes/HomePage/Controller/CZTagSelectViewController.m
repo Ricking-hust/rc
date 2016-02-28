@@ -21,6 +21,8 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
 @property (nonatomic, assign) CurrentDevice device;
 @property (nonatomic, strong) UIView *myTaglabelView;
 @property (nonatomic, strong) UIView *myTagButtonsView;
+
+@property (nonatomic, strong) UIView *defautTagView;
 @property (nonatomic, strong) UIView *tagLabelView;
 @property (nonatomic, strong) UIView *tagButtonsView;
 @property (nonatomic, strong) NSMutableArray *tags;
@@ -31,22 +33,56 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
 
 @implementation CZTagSelectViewController
 
+- (UIScrollView *)scrollView
+{
+    if (!_scrollView)
+    {
+        _scrollView = [[UIScrollView alloc]init];
+        [self.view addSubview:_scrollView];
+        [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view.mas_top).offset(0);
+            make.left.equalTo(self.view.mas_left);
+            make.width.mas_equalTo([[UIScreen mainScreen]bounds].size.width);
+            make.height.mas_equalTo([[UIScreen mainScreen]bounds].size.height - 64);
+        }];
+    }
+    return _scrollView;
+}
+//- (UIView *)myTaglabelView
+//{
+//    if (!_my) {
+//
+//    }
+//}
+- (UIView *)defautTagView
+{
+    if (!_defautTagView)
+    {
+        _defautTagView = [[UIView alloc]init];
+        _defautTagView.backgroundColor = [UIColor redColor];
+        [self.scrollView addSubview:_defautTagView];
+        [_defautTagView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.scrollView.mas_left);
+            make.top.equalTo(self.myTagButtonsView.mas_bottom);
+            make.right.equalTo(self.scrollView.mas_right);
+            make.bottom.equalTo(self.scrollView.mas_bottom);
+        }];
+    }
+    return _defautTagView;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
 #pragma mark - test
     self.tags = [[NSMutableArray alloc]initWithObjects:@"创业者", @"新闻资讯",@"媒体",@"感觉如何",
-                 @"屁事快说",@"发票",@"分割",@"尼玛",@"尼玛",@"尼玛",@"屁事快说",@"发票",@"分割",@"尼玛",@"尼玛",@"尼玛",@"屁事快说",@"发票",@"分割",@"尼玛",@"尼玛",@"尼玛",nil];
+                 @"屁事快说",nil];
     self.myTags = [[NSMutableArray alloc]initWithObjects:@"创业者", @"新闻资讯",@"媒体",@"感觉如何",nil];
     
     self.view.backgroundColor = [UIColor whiteColor];
     [self setNavigation];
     //获取当前的设备
     self.device = [self currentDeviceSize];
-    [self createScrollView];
     [self createSubViews];
-
-
     
 }
 - (void)setNavigation
@@ -56,16 +92,6 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     [self.navigationItem setLeftBarButtonItem:leftButton];
     UIBarButtonItem *rightButtont = [[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(confirmTag)];
     [self.navigationItem setRightBarButtonItem:rightButtont];
-}
-- (void)createScrollView
-{
-    [self.view addSubview:[[UIView alloc]initWithFrame:CGRectZero]];
-    self.scrollView = [[UIScrollView alloc]init];
-    [self.view addSubview:self.scrollView];
-    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_top).offset(64);
-        make.left.right.bottom.equalTo(self.view);
-    }];
 }
 - (void)createSubViews
 {
@@ -141,11 +167,11 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
 - (void)tagLabelWithPadding:(CGFloat)padding
 {
     self.tagLabelView = [[UIView alloc]init];
-    [self.scrollView addSubview:self.tagLabelView];
+    [self.defautTagView addSubview:self.tagLabelView];
     self.tagLabelView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     [self.tagLabelView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.scrollView.mas_left);
-        make.top.equalTo(self.myTagButtonsView.mas_bottom);
+        make.left.equalTo(self.defautTagView.mas_left);
+        make.top.equalTo(self.defautTagView.mas_bottom);
         make.width.equalTo(@([[UIScreen mainScreen]bounds].size.width));
         make.height.mas_equalTo(30);
     }];
@@ -161,24 +187,6 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
         make.size.mas_equalTo(CGSizeMake(100, 20));
     }];
 
-}
-/**
- *  创建系统标签按钮
- *
- */
-- (void)tagsView
-{
-    self.tagButtonsView = [[UIView alloc]init];
-    self.tagButtonsView.tag = 2;
-    [self.scrollView addSubview:self.tagButtonsView];
-    CGFloat heigth = [self heigthForMyTagButtonsView:self.tagButtonsView];
-    [self.tagButtonsView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.tagLabelView.mas_bottom);
-        make.left.equalTo(self.scrollView.mas_left);
-        make.width.equalTo(self.tagLabelView.mas_width);
-        make.height.mas_equalTo(heigth);
-    }];
-    [self creatTagAtView:self.tagButtonsView];
 }
 
 /**
@@ -222,6 +230,27 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
         }
     }
 }
+/**
+ *  创建系统标签按钮
+ *
+ */
+- (void)tagsView
+{
+    self.tagButtonsView = [[UIView alloc]init];
+    self.tagButtonsView.tag = 2;
+    [self.defautTagView addSubview:self.tagButtonsView];
+    CGFloat heigth = [self heigthForMyTagButtonsView:self.tagButtonsView];
+    [self.tagButtonsView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.tagLabelView.mas_bottom);
+        make.left.equalTo(self.defautTagView.mas_left);
+        make.width.equalTo(self.tagLabelView.mas_width);
+        make.height.mas_equalTo(heigth+100);
+    }];
+#pragma mark -test
+    self.tagButtonsView.backgroundColor = [UIColor greenColor];
+    [self creatTagAtView:self.tagButtonsView];
+}
+
 /**
  *  创建系统标签按钮
  *
@@ -291,7 +320,6 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
 
 - (CGFloat)heigthForMyTagButtonsView:(UIView *)view
 {
-
     switch (self.device)
     {
         case IPhone5:
@@ -345,9 +373,25 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     {//点击的是我的标签里的按钮
         NSLog(@"点击的是我的标签里的按钮");
         
+        
     }else
     {//点击的是系统标签按钮
         NSLog(@"点击的是系统标签按钮");
+        if (self.tags.count % 4 < 4)
+        {//此时不用增加myTageView的高度
+            
+        }else if (self.tags.count % 4 == 0)
+        {//增加一行myTagView的高度
+            int row = self.tags.count / 4;  //行数
+            [UIView animateWithDuration:1 animations:^{
+                
+            }];
+            
+        }else
+        {
+            ;
+        }
+        [self.tags addObject:button.titleLabel.text];
         
     }
 }
