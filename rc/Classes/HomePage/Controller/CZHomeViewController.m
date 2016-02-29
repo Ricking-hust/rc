@@ -17,11 +17,12 @@
 #import "DataManager.h"
 #import "UIImageView+WebCache.h"
 #import "UINavigationBar+Awesome.h"
+#import "EXTScope.h"
 
 @interface CZHomeViewController ()
 @property (nonatomic,strong) ActivityList *activityList;
 
-@property (nonatomic,strong) NSURLSessionDataTask *currentTask;
+@property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListBlock)();
 
 
 @end
@@ -31,16 +32,42 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
 }
 - (void)configureBlocks{
-    self.currentTask = [[DataManager manager] getActivitySearchWithKeywords:@"讲座" startId:@"0" num:@"10" cityId:@"1" success:^(ActivityList *acList) {
-        self.activityList = acList;
-    } failure:^(NSError *error) {
-        NSLog(@"error:%@",error);
-    }];
+    @weakify(self);
+    self.getActivityListBlock = ^(){
+        @strongify(self);
+        
+        return [[DataManager manager] getActivitySearchWithKeywords:@"讲座" startId:@"0" num:@"10" cityId:@"1" success:^(ActivityList *acList) {
+            @strongify(self);
+            self.activityList = acList;
+        } failure:^(NSError *error) {
+            NSLog(@"error:%@",error);
+        }];
+    };
+}
+
+- (void)startget{
+    if (self.getActivityListBlock) {
+        self.getActivityListBlock();
+    }
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    @weakify(self);
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        @strongify(self);
+        
+        [self startget];
+        
+    });
 }
 
 - (void) setActivityList:(ActivityList *)activityList{

@@ -21,6 +21,7 @@
 #import "UIImageView+WebCache.h"
 #import "UINavigationBar+Awesome.h"
 #import "UIImageView+LBBlurredImage.h"
+#import "EXTScope.h"
 
 
 @interface CZActivityInfoViewController ()
@@ -37,11 +38,25 @@
 @property(nonatomic,strong) UIButton *addToSchedule;
 
 @property (nonatomic,strong)  ActivityModel *activitymodel;
-@property (nonatomic,strong) NSURLSessionDataTask *currentTask;
+@property (nonatomic, copy) NSURLSessionDataTask* (^getActivityBlock)();
 
 @end
 
 @implementation CZActivityInfoViewController
+
+- (void)configureBlocks{
+    @weakify(self);
+    self.getActivityBlock = ^(){
+        @strongify(self);
+        
+        return [[DataManager manager] getActivityContentWithAcId:self.activityModelPre.acID userId:@"1" success:^(ActivityModel *activity) {
+            @strongify(self);
+            self.activitymodel = activity;
+        } failure:^(NSError *error) {
+            NSLog(@"Error:%@",error);
+        }];
+    };
+}
 
 -(void) setActivitymodel:(ActivityModel *)activitymodel{
     
@@ -50,12 +65,11 @@
     [self.tableView reloadData];
 }
 
-- (void)configureBlocks{
-    self.currentTask = [[DataManager manager] getActivityContentWithAcId:self.activityModelPre.acID userId:@"1" success:^(ActivityModel *activity) {
-        self.activitymodel = activity;
-    } failure:^(NSError *error) {
-        NSLog(@"Error:%@",error);
-    }];
+-(void)startgetAc
+{
+    if (self.getActivityBlock) {
+        self.getActivityBlock();
+    }
 }
 
 //创建子控件
@@ -143,6 +157,19 @@
     
     //设置tableView头
     [self layoutHeaderImageView];
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+    @weakify(self);
+    static dispatch_once_t onceToken;
+    dispatch_once(&onceToken, ^{
+        @strongify(self);
+        
+        [self startgetAc];
+        
+    });
 }
 - (void)setNavigation
 {
@@ -339,7 +366,8 @@
     self.acTagLabel.textColor        = self.acTittleLabel.textColor;
     
     self.acImageView.image    = [UIImage imageNamed:@"img_1"];
-    self.acTittleLabel.text   = @"也不喜欢测试的妹纸老来烦我，虽然你很美，但看到你很累";
+    self.acTittleLabel.text   = self.activityModelPre.acTitle;
+    NSLog(@"acTitle:%@",self.activityModelPre.acTitle);
     self.acTagImageView.image = [UIImage imageNamed:@"tagImage"];
     self.acTagLabel.text      = @"录像机 电影";
     
@@ -379,6 +407,7 @@
         ((CZTimeCell*)cell).timeLabel.text = self.activityModelPre.acTime;
     }else if ([cell isKindOfClass:[CZActivityInfoCell class]])
     {
+
         CZActivityInfoCell *infoCell = ((CZActivityInfoCell *)cell);
         infoCell.model = self.activitymodel;
 //        
@@ -388,6 +417,9 @@
     }else
     {
         ;
+
+  
+
     }
 }
 //弹出提醒视图
