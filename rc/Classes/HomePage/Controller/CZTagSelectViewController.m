@@ -9,7 +9,7 @@
 #import "CZTagSelectViewController.h"
 #import "Masonry.h"
 #include <sys/sysctl.h>
-
+#define buttonSize CGSizeMake(65, 30)
 typedef NS_ENUM(NSInteger, CurrentDevice)
 {
     IPhone5     = 0,    //4寸    568 X 320
@@ -21,14 +21,17 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
 @property (nonatomic, assign) CurrentDevice device;
 @property (nonatomic, strong) UIView *myTaglabelView;
 @property (nonatomic, strong) UIView *myTagButtonsView;
-
-@property (nonatomic, strong) UIView *defautTagView;
+@property (nonatomic, assign) CGFloat myTagViewHeight;      //我的标签按钮的父容器视图的高度
+@property (nonatomic, assign) CGFloat defaultTagViewHeight; //系统标签与按钮的父容器视图的高度
+@property (nonatomic, strong) UIView *defaultTagView;
 @property (nonatomic, strong) UIView *tagLabelView;
 @property (nonatomic, strong) UIView *tagButtonsView;
 @property (nonatomic, strong) NSMutableArray *tags;
 @property (nonatomic, strong) NSMutableArray *myTags;
 @property (nonatomic, strong) NSMutableArray *myTagButton;
 @property (nonatomic, strong) NSMutableArray *tagButtons;
+
+@property (nonatomic, assign) BOOL isDirect;    //按钮的添加方式 yes为直接添加 no为改变mytagView的高度再添加 默认no
 @end
 
 @implementation CZTagSelectViewController
@@ -38,9 +41,10 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     if (!_scrollView)
     {
         _scrollView = [[UIScrollView alloc]init];
+        _scrollView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
         [self.view addSubview:_scrollView];
         [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view.mas_top).offset(0);
+            make.top.equalTo(self.view.mas_top).offset(64);
             make.left.equalTo(self.view.mas_left);
             make.width.mas_equalTo([[UIScreen mainScreen]bounds].size.width);
             make.height.mas_equalTo([[UIScreen mainScreen]bounds].size.height - 64);
@@ -48,38 +52,24 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     }
     return _scrollView;
 }
-
-- (UIView *)defautTagView
-{
-    if (!_defautTagView)
-    {
-        _defautTagView = [[UIView alloc]init];
-
-        [self.scrollView addSubview:_defautTagView];
-#pragma mark - 测试大小
-        [_defautTagView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.scrollView.mas_left);
-            make.top.equalTo(self.myTagButtonsView.mas_bottom);
-            make.width.equalTo(@320);
-            make.height.equalTo(@400);
-        }];
-    }
-    return _defautTagView;
-}
+#pragma mark - 界面加载完毕
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.view addSubview:[[UIView alloc]init]];    //用于消除第一个被添加到self.view中的scroll被导航栏影响问题
+    self.isDirect = NO;
 #pragma mark - test
     self.tags = [[NSMutableArray alloc]initWithObjects:@"创业者", @"新闻资讯",@"媒体",@"感觉如何",
                  @"屁事快说",nil];
-    self.myTags = [[NSMutableArray alloc]initWithObjects:@"创业者", @"新闻资讯",@"媒体",@"感觉如何",nil];
+    self.myTags = [[NSMutableArray alloc]initWithObjects:@"创业者", @"新闻资讯",@"媒体",@"感觉如何",@"创业者", @"新闻资讯",@"媒体",nil];
     
     self.view.backgroundColor = [UIColor whiteColor];
     [self setNavigation];
     //获取当前的设备
     self.device = [self currentDeviceSize];
+
     [self createSubViews];
-    
+    self.scrollView.contentSize = CGSizeMake(0, self.myTagViewHeight + 30 + self.defaultTagViewHeight);
 }
 - (void)setNavigation
 {
@@ -144,14 +134,16 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
 - (void)myTagView
 {
     self.myTagButtonsView = [[UIView alloc]init];
+    self.myTagButtonsView.backgroundColor = [UIColor whiteColor];
     self.myTagButtonsView.tag = 1;
     [self.scrollView addSubview:self.myTagButtonsView];
     CGFloat heigth = [self heigthForTagButtonsView:self.myTagButtonsView];
+    self.myTagViewHeight = heigth;
     [self.myTagButtonsView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.myTaglabelView.mas_bottom);
         make.left.equalTo(self.myTaglabelView.mas_left);
         make.width.equalTo(self.myTaglabelView.mas_width);
-        make.height.mas_equalTo(heigth);
+        make.height.mas_equalTo(self.myTagViewHeight);
     }];
     [self creatMyTagAtView:self.myTagButtonsView];
     
@@ -166,11 +158,10 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     int y = 0;
     CGFloat XPading = 0;
     CGFloat YPadding = 12;
-    CGSize buttonSize = CGSizeMake(65, 30);
     for (int i = 0; i < self.myTags.count; i++)
     {
         UIButton *btn = [[UIButton alloc]init];
-        [self setButton:btn WithTittle:self.tags[i] AtView:view];
+        [self setButton:btn WithTittle:self.myTags[i] AtView:view];
         [btn addTarget:self action:@selector(onClickOfTagButton:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:btn];
         if (self.device == IPhone5)
@@ -204,11 +195,22 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
 - (void)tagLabelWithPadding:(CGFloat)padding
 {
     self.tagLabelView = [[UIView alloc]init];
-    [self.defautTagView addSubview:self.tagLabelView];
+    self.defaultTagView = [[UIView alloc]init];
+    
+    [self.scrollView addSubview:_defaultTagView];
+
+    self.defaultTagViewHeight = [self heigthForTagButtonsView:self.tagButtonsView] + 30;
+    [self.defaultTagView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.scrollView.mas_left);
+        make.top.equalTo(self.myTagButtonsView.mas_bottom);
+        make.width.mas_equalTo([[UIScreen mainScreen]bounds].size.width);
+        make.height.mas_equalTo(self.defaultTagViewHeight);
+    }];
+    [self.defaultTagView addSubview:self.tagLabelView];
     self.tagLabelView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     [self.tagLabelView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.defautTagView.mas_left);
-        make.top.equalTo(self.defautTagView.mas_bottom);
+        make.left.equalTo(self.defaultTagView.mas_left);
+        make.top.equalTo(self.defaultTagView.mas_top);
         make.width.equalTo(@([[UIScreen mainScreen]bounds].size.width));
         make.height.mas_equalTo(30);
     }];
@@ -232,17 +234,18 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
 - (void)tagsView
 {
     self.tagButtonsView = [[UIView alloc]init];
+    self.tagButtonsView.backgroundColor = [UIColor whiteColor];
     self.tagButtonsView.tag = 2;
-    [self.defautTagView addSubview:self.tagButtonsView];
+    [self.defaultTagView addSubview:self.tagButtonsView];
     CGFloat heigth = [self heigthForTagButtonsView:self.tagButtonsView];
+
     [self.tagButtonsView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.tagLabelView.mas_bottom);
-        make.left.equalTo(self.defautTagView.mas_left);
+        make.left.equalTo(self.defaultTagView.mas_left);
         make.width.equalTo(self.tagLabelView.mas_width);
-        make.height.mas_equalTo(heigth+100);
+        make.height.mas_equalTo(heigth);
     }];
-#pragma mark -test
-    self.tagButtonsView.backgroundColor = [UIColor greenColor];
+
     [self creatTagAtView:self.tagButtonsView];
 }
 
@@ -256,7 +259,7 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     int y = 0;
     CGFloat XPading = 0;
     CGFloat YPadding = 12;
-    CGSize buttonSize = CGSizeMake(65, 30);
+
     for (int i = 0; i < self.tags.count; i++)
     {
         UIButton *btn = [[UIButton alloc]init];
@@ -360,36 +363,91 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     }
 
 }
-//标签按钮的点击事件
+#pragma mark - 标签按钮的点击事件
 - (void)onClickOfTagButton:(UIButton *)button
 {
+
     UIView *view = button.superview;
     if (view.tag == 1)
     {//点击的是我的标签里的按钮
-        NSLog(@"点击的是我的标签里的按钮");
-        
+
+
         
     }else
     {//点击的是系统标签按钮
-        NSLog(@"点击的是系统标签按钮");
-        if (self.tags.count % 4 < 4)
-        {//此时不用增加myTageView的高度
-            
-        }else if (self.tags.count % 4 == 0)
+        if (self.myTags.count % 4 == 0)
         {//增加一行myTagView的高度
-            int row = self.tags.count / 4;  //行数
+            self.isDirect = NO;
+            self.myTagViewHeight = self.myTagViewHeight + 42;
+
             [UIView animateWithDuration:1 animations:^{
-                
+                [self.myTagButtonsView mas_updateConstraints:^(MASConstraintMaker *make) {
+                    make.height.mas_equalTo(self.myTagViewHeight);
+                }];
+                [self.defaultTagView mas_updateConstraints:^(MASConstraintMaker *make) {
+                    make.top.equalTo(self.myTagButtonsView.mas_bottom);
+                }];
+
+                [self.view layoutIfNeeded];
             }];
-            
+            //添加按钮
+            UIButton *tempBtn = [[UIButton alloc]init];
+            [self.myTagButtonsView addSubview:tempBtn];
+            [self addButton:tempBtn WithTittel:button.titleLabel.text];
         }else
-        {
-            ;
+        {//此时不用增加myTageView的高度
+            self.isDirect = YES;
+        //1.创建按钮
+            UIButton *tempBtn = [[UIButton alloc]init];
+        //2.添加按钮
+            [self.myTagButtonsView addSubview:tempBtn];
+            [self addButton:tempBtn WithTittel:button.titleLabel.text];
+
         }
-        [self.tags addObject:button.titleLabel.text];
-        
+        [self.myTags addObject:button.titleLabel.text];
+        self.scrollView.contentSize = CGSizeMake(0, self.defaultTagViewHeight + self.myTagViewHeight + 30);
     }
 }
+- (void)addButton:(UIButton *)button WithTittel:(NSString *)tittle
+{
+    [button addTarget:self action:@selector(onClickOfTagButton:) forControlEvents:UIControlEventTouchUpInside];
+    [self setButton:button WithTittle:tittle AtView:button.superview];
+
+    if (self.device == IPhone5)
+    {
+        if (self.isDirect)
+        {//isDirect == yes 直接添加
+            //1.计算按钮所在列
+            long int column = self.myTags.count % 4;
+            //2.计算按钮所在行
+            CGFloat count = (CGFloat)self.myTags.count;
+            long int row = ((int)count / 4.0) + 1;
+            [button mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(button.superview.mas_top).offset(row *12 + (row - 1)*30);
+                make.left.equalTo(button.superview.mas_left).offset((column+1)*12 + column * 65);
+                make.size.mas_equalTo(buttonSize);
+            }];
+
+        }else
+        {//isDirect == no 改变mytagView的高度再添加
+            long int row = self.myTags.count /4;
+            [button mas_makeConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.myTagButtonsView.mas_left).offset(12);
+                make.top.equalTo(self.myTagButtonsView.mas_top).offset((row+1)*12 + row * 30);
+                make.size.mas_equalTo(buttonSize);
+            }];
+        }
+
+    }else if (self.device == IPhone6)
+    {
+        
+    }else
+    {
+        
+    }
+
+}
+
 //导航栏左侧取消按钮
 - (IBAction)onClickCancel:(id)sender
 {
