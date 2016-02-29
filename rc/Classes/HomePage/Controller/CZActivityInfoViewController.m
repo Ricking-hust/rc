@@ -380,9 +380,6 @@
     }else if ([cell isKindOfClass:[CZActivityInfoCell class]])
     {
         ((CZActivityInfoCell *)cell).model = self.activitymodel;
-//        ((CZActivityInfoCell *)cell).ac_placeLabel.text = self.activitymodel.acPlace;
-//        ((CZActivityInfoCell *)cell).ac_sizeLabel.text  = self.activitymodel.acSize;
-//        ((CZActivityInfoCell *)cell).ac_payLabel.text   = self.activitymodel.acPay;
     }
 }
 //弹出提醒视图
