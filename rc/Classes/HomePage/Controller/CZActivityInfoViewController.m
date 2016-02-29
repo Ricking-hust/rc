@@ -379,10 +379,15 @@
         ((CZTimeCell*)cell).timeLabel.text = self.activityModelPre.acTime;
     }else if ([cell isKindOfClass:[CZActivityInfoCell class]])
     {
-        ((CZActivityInfoCell *)cell).model = self.activitymodel;
-//        ((CZActivityInfoCell *)cell).ac_placeLabel.text = self.activitymodel.acPlace;
-//        ((CZActivityInfoCell *)cell).ac_sizeLabel.text  = self.activitymodel.acSize;
-//        ((CZActivityInfoCell *)cell).ac_payLabel.text   = self.activitymodel.acPay;
+        CZActivityInfoCell *infoCell = ((CZActivityInfoCell *)cell);
+        infoCell.model = self.activitymodel;
+//        
+//        infoCell.ac_placeLabel.text = self.activitymodel.acPlace;
+//        infoCell.ac_sizeLabel.text  = self.activitymodel.acSize;
+//        infoCell.ac_payLabel.text   = self.activitymodel.acPay;
+    }else
+    {
+        ;
     }
 }
 //弹出提醒视图

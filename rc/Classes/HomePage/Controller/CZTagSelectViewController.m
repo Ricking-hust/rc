@@ -48,24 +48,20 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     }
     return _scrollView;
 }
-//- (UIView *)myTaglabelView
-//{
-//    if (!_my) {
-//
-//    }
-//}
+
 - (UIView *)defautTagView
 {
     if (!_defautTagView)
     {
         _defautTagView = [[UIView alloc]init];
-        _defautTagView.backgroundColor = [UIColor redColor];
+
         [self.scrollView addSubview:_defautTagView];
+#pragma mark - 测试大小
         [_defautTagView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.scrollView.mas_left);
             make.top.equalTo(self.myTagButtonsView.mas_bottom);
-            make.right.equalTo(self.scrollView.mas_right);
-            make.bottom.equalTo(self.scrollView.mas_bottom);
+            make.width.equalTo(@320);
+            make.height.equalTo(@400);
         }];
     }
     return _defautTagView;
@@ -142,7 +138,7 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     }];
 }
 /**
- *  创建我的标签按钮
+ *  创建我的标签按钮的父容器
  *
  */
 - (void)myTagView
@@ -150,7 +146,7 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     self.myTagButtonsView = [[UIView alloc]init];
     self.myTagButtonsView.tag = 1;
     [self.scrollView addSubview:self.myTagButtonsView];
-    CGFloat heigth = [self heigthForMyTagButtonsView:self.myTagButtonsView];
+    CGFloat heigth = [self heigthForTagButtonsView:self.myTagButtonsView];
     [self.myTagButtonsView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.myTaglabelView.mas_bottom);
         make.left.equalTo(self.myTaglabelView.mas_left);
@@ -160,35 +156,6 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     [self creatMyTagAtView:self.myTagButtonsView];
     
 }
-/**
- * 创建系统标签栏
- * 
- */
-- (void)tagLabelWithPadding:(CGFloat)padding
-{
-    self.tagLabelView = [[UIView alloc]init];
-    [self.defautTagView addSubview:self.tagLabelView];
-    self.tagLabelView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
-    [self.tagLabelView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.defautTagView.mas_left);
-        make.top.equalTo(self.defautTagView.mas_bottom);
-        make.width.equalTo(@([[UIScreen mainScreen]bounds].size.width));
-        make.height.mas_equalTo(30);
-    }];
-    
-    UILabel *myTageLabel = [[UILabel alloc]init];
-    myTageLabel.text = @"点击添加标签";
-    myTageLabel.font = [UIFont systemFontOfSize:12];
-    myTageLabel.textColor = [UIColor colorWithRed:140.0/255.0 green:140.0/255.0  blue:140.0/255.0  alpha:1.0];
-    [self.tagLabelView addSubview:myTageLabel];
-    [myTageLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.tagLabelView).offset(padding);
-        make.centerY.equalTo(self.tagLabelView);
-        make.size.mas_equalTo(CGSizeMake(100, 20));
-    }];
-
-}
-
 /**
  *  创建我的标签按钮
  *
@@ -231,6 +198,34 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     }
 }
 /**
+ * 创建系统标签栏
+ *
+ */
+- (void)tagLabelWithPadding:(CGFloat)padding
+{
+    self.tagLabelView = [[UIView alloc]init];
+    [self.defautTagView addSubview:self.tagLabelView];
+    self.tagLabelView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
+    [self.tagLabelView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.defautTagView.mas_left);
+        make.top.equalTo(self.defautTagView.mas_bottom);
+        make.width.equalTo(@([[UIScreen mainScreen]bounds].size.width));
+        make.height.mas_equalTo(30);
+    }];
+    
+    UILabel *myTageLabel = [[UILabel alloc]init];
+    myTageLabel.text = @"点击添加标签";
+    myTageLabel.font = [UIFont systemFontOfSize:12];
+    myTageLabel.textColor = [UIColor colorWithRed:140.0/255.0 green:140.0/255.0  blue:140.0/255.0  alpha:1.0];
+    [self.tagLabelView addSubview:myTageLabel];
+    [myTageLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.tagLabelView).offset(padding);
+        make.centerY.equalTo(self.tagLabelView);
+        make.size.mas_equalTo(CGSizeMake(100, 20));
+    }];
+    
+}
+/**
  *  创建系统标签按钮
  *
  */
@@ -239,7 +234,7 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     self.tagButtonsView = [[UIView alloc]init];
     self.tagButtonsView.tag = 2;
     [self.defautTagView addSubview:self.tagButtonsView];
-    CGFloat heigth = [self heigthForMyTagButtonsView:self.tagButtonsView];
+    CGFloat heigth = [self heigthForTagButtonsView:self.tagButtonsView];
     [self.tagButtonsView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.tagLabelView.mas_bottom);
         make.left.equalTo(self.defautTagView.mas_left);
@@ -318,7 +313,7 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     
 }
 
-- (CGFloat)heigthForMyTagButtonsView:(UIView *)view
+- (CGFloat)heigthForTagButtonsView:(UIView *)view
 {
     switch (self.device)
     {
