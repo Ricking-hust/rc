@@ -1,0 +1,24 @@
+//
+//  rc-PrefixHeader.pch
+//  rc
+//
+//  Created by 余笃 on 16/3/1.
+//  Copyright © 2016年 AlanZhang. All rights reserved.
+//
+#ifdef __OBJC__
+
+#ifndef rc_PrefixHeader_pch
+#define rc_PrefixHeader_pch
+
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import "AFNetworking.h"
+#import "SDWebImageManager.h"
+#import "UIImageView+WebCache.h"
+#import "EXTScope.h"
+#endif
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* rc_PrefixHeader_pch */
