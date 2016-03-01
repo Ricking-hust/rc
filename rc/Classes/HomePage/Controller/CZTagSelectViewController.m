@@ -10,6 +10,9 @@
 #import "Masonry.h"
 #include <sys/sysctl.h>
 #define buttonSize CGSizeMake(65, 30)
+#define IPHONE5PADDING  12
+#define IPHONE6PADDING  23
+#define IPHONE6PLUSPADDING  30.8
 typedef NS_ENUM(NSInteger, CurrentDevice)
 {
     IPhone5     = 0,    //4寸    568 X 320
@@ -56,10 +59,10 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self.view addSubview:[[UIView alloc]init]];    //用于消除第一个被添加到self.view中的scroll被导航栏影响问题
+    [self.view addSubview:[[UIView alloc]init]];    //用于消除第一个被添加到self.view中的scroll被导航栏影响布局的问题
     self.isDirect = NO;
 #pragma mark - test
-    self.tags = [[NSMutableArray alloc]initWithObjects:@"创业者", @"新闻资讯",@"媒体",@"感觉如何",
+    self.tags = [[NSMutableArray alloc]initWithObjects:@"创者", @"资讯",@"媒s",@"感如何",@"者", @"讯",@"媒",@"如何",
                  @"屁事快说",nil];
     self.myTags = [[NSMutableArray alloc]initWithObjects:@"创业者", @"新闻资讯",@"媒体",@"感觉如何",@"创业者", @"新闻资讯",@"媒体",nil];
     
@@ -81,17 +84,7 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
 }
 - (void)createSubViews
 {
-    CGFloat labelLeftPadding;
-    if (self.device == IPhone5)
-    {
-        labelLeftPadding = 12;
-    }else if (self.device == IPhone6)
-    {
-        
-    }else
-    {
-        
-    }
+    CGFloat labelLeftPadding = 12;
     //创建我的标签View
     [self myTagLabelWithPadding:labelLeftPadding];
     //创建我的标签按钮
@@ -158,34 +151,36 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     int y = 0;
     CGFloat XPading = 0;
     CGFloat YPadding = 12;
+    CGFloat padding;
+    if (self.device == IPhone5)
+    {
+        padding = IPHONE5PADDING;
+    }else if (self.device == IPhone6)
+    {
+        padding = IPHONE6PADDING;
+    }else
+    {
+        padding = IPHONE6PLUSPADDING;
+    }
     for (int i = 0; i < self.myTags.count; i++)
     {
         UIButton *btn = [[UIButton alloc]init];
         [self setButton:btn WithTittle:self.myTags[i] AtView:view];
         [btn addTarget:self action:@selector(onClickOfTagButton:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:btn];
-        if (self.device == IPhone5)
+        if ((i) % 4 == 0 && i != 0 )
         {
-            if ((i) % 4 == 0 && i != 0 )
-            {
-                x = 0;
-                YPadding = 12 * (y + 2) + (y+1) * 30;
-                y++;
-            }
-            XPading = 12 * (x + 1) + x * 65;
-            [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.myTagButtonsView .mas_left).with.offset(XPading);
-                make.top.equalTo(self.myTagButtonsView .mas_top).with.offset(YPadding);
-                make.size.mas_equalTo(buttonSize);
-            }];
-            x++;
-        }else if (self.device == IPhone6)
-        {
-            
-        }else
-        {
-            
+            x = 0;
+            YPadding = 12 * (y + 2) + (y+1) * 30;
+            y++;
         }
+        XPading = padding * (x + 1) + x * 65;
+        [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.myTagButtonsView .mas_left).with.offset(XPading);
+            make.top.equalTo(self.myTagButtonsView .mas_top).with.offset(YPadding);
+            make.size.mas_equalTo(buttonSize);
+        }];
+        x++;
     }
 }
 /**
@@ -259,35 +254,36 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     int y = 0;
     CGFloat XPading = 0;
     CGFloat YPadding = 12;
-
+    CGFloat padding;
+    if (self.device == IPhone5)
+    {
+        padding = IPHONE5PADDING;
+    }else if (self.device == IPhone6)
+    {
+        padding = IPHONE6PADDING;
+    }else
+    {
+        padding = IPHONE6PLUSPADDING;
+    }
     for (int i = 0; i < self.tags.count; i++)
     {
         UIButton *btn = [[UIButton alloc]init];
         [self setButton:btn WithTittle:self.tags[i] AtView:view];
         [btn addTarget:self action:@selector(onClickOfTagButton:) forControlEvents:UIControlEventTouchUpInside];
         [view addSubview:btn];
-        if (self.device == IPhone5)
+        if ((i) % 4 == 0 && i != 0 )
         {
-            if ((i) % 4 == 0 && i != 0 )
-            {
-                x = 0;
-                YPadding = 12 * (y + 2) + (y+1) * 30;
-                y++;
-            }
-            XPading = 12 * (x + 1) + x * 65;
-            [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(view.mas_left).with.offset(XPading);
-                make.top.equalTo(view.mas_top).with.offset(YPadding);
-                make.size.mas_equalTo(buttonSize);
-            }];
-            x++;
-        }else if (self.device == IPhone6)
-        {
-
-        }else
-        {
-            
+            x = 0;
+            YPadding = 12 * (y + 2) + (y+1) * 30;
+            y++;
         }
+        XPading = padding * (x + 1) + x * 65;
+        [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(view.mas_left).with.offset(XPading);
+            make.top.equalTo(view.mas_top).with.offset(YPadding);
+            make.size.mas_equalTo(buttonSize);
+        }];
+        x++;
     }
 }
 - (void)setButton:(UIButton *)button WithTittle:(NSString *)tittle AtView:(UIView *)view;
@@ -318,48 +314,30 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
 
 - (CGFloat)heigthForTagButtonsView:(UIView *)view
 {
-    switch (self.device)
+    if (view.tag == 1)
     {
-        case IPhone5:
+        CGFloat row = self.myTags.count / 4.0;
+        int height = (int)row;
+        if (height == row)
         {
-            if (view.tag == 1)
-            {
-                CGFloat row = self.myTags.count / 4.0;
-                int height = (int)row;
-                if (height == row)
-                {
-                    return (height + 1) * 12 + height * 30;
-                }else
-                {
-                    height ++ ;
-                    return (height + 1) * 12 + height * 30;
-                }
-            }else
-            {
-                CGFloat row = self.tags.count / 4.0;
-                int height = (int)row;
-                if (height == row)
-                {
-                    return (height + 1) * 12 + height * 30;
-                }else
-                {
-                    height ++ ;
-                    return (height + 1) * 12 + height * 30;
-                }
-            }
-        }
-            break;
-        case IPhone6:
+            return (height + 1) * 12 + height * 30;
+        }else
         {
-            return 10;
+            height ++ ;
+            return (height + 1) * 12 + height * 30;
         }
-            break;
-            
-        default:
+    }else
+    {
+        CGFloat row = self.tags.count / 4.0;
+        int height = (int)row;
+        if (height == row)
         {
-            return 10;
+            return (height + 1) * 12 + height * 30;
+        }else
+        {
+            height ++ ;
+            return (height + 1) * 12 + height * 30;
         }
-            break;
     }
 
 }
@@ -375,75 +353,93 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
         
     }else
     {//点击的是系统标签按钮
-        if (self.myTags.count % 4 == 0)
-        {//增加一行myTagView的高度
-            self.isDirect = NO;
-            self.myTagViewHeight = self.myTagViewHeight + 42;
-
-            [UIView animateWithDuration:1 animations:^{
-                [self.myTagButtonsView mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.height.mas_equalTo(self.myTagViewHeight);
+        if (![self isRepeat:button])
+        {
+            if (self.myTags.count % 4 == 0)
+            {//增加一行myTagView的高度
+                self.isDirect = NO;
+                self.myTagViewHeight = self.myTagViewHeight + 42;
+                
+                [UIView animateWithDuration:1 animations:^{
+                    [self.myTagButtonsView mas_updateConstraints:^(MASConstraintMaker *make) {
+                        make.height.mas_equalTo(self.myTagViewHeight);
+                    }];
+                    [self.defaultTagView mas_updateConstraints:^(MASConstraintMaker *make) {
+                        make.top.equalTo(self.myTagButtonsView.mas_bottom);
+                    }];
+                    
+                    [self.view layoutIfNeeded];
                 }];
-                [self.defaultTagView mas_updateConstraints:^(MASConstraintMaker *make) {
-                    make.top.equalTo(self.myTagButtonsView.mas_bottom);
-                }];
-
-                [self.view layoutIfNeeded];
-            }];
-            //添加按钮
-            UIButton *tempBtn = [[UIButton alloc]init];
-            [self.myTagButtonsView addSubview:tempBtn];
-            [self addButton:tempBtn WithTittel:button.titleLabel.text];
-        }else
-        {//此时不用增加myTageView的高度
-            self.isDirect = YES;
-        //1.创建按钮
-            UIButton *tempBtn = [[UIButton alloc]init];
-        //2.添加按钮
-            [self.myTagButtonsView addSubview:tempBtn];
-            [self addButton:tempBtn WithTittel:button.titleLabel.text];
-
+                //添加按钮
+                UIButton *tempBtn = [[UIButton alloc]init];
+                [self.myTagButtonsView addSubview:tempBtn];
+                [self addButton:tempBtn WithTittel:button.titleLabel.text];
+            }else
+            {//此时不用增加myTageView的高度
+                self.isDirect = YES;
+                //1.创建按钮
+                UIButton *tempBtn = [[UIButton alloc]init];
+                //2.添加按钮
+                [self.myTagButtonsView addSubview:tempBtn];
+                [self addButton:tempBtn WithTittel:button.titleLabel.text];
+                
+            }
+            [self.myTags addObject:button.titleLabel.text];
+            self.scrollView.contentSize = CGSizeMake(0, self.defaultTagViewHeight + self.myTagViewHeight + 30);
         }
-        [self.myTags addObject:button.titleLabel.text];
-        self.scrollView.contentSize = CGSizeMake(0, self.defaultTagViewHeight + self.myTagViewHeight + 30);
     }
+}
+- (BOOL)isRepeat:(UIButton *)btn
+{
+    for (int i = 0; i < self.myTags.count; i++)
+    {
+        if ([self.myTags[i] isEqualToString:btn.titleLabel.text])
+        {
+            return YES;
+        }
+    }
+    return NO;
 }
 - (void)addButton:(UIButton *)button WithTittel:(NSString *)tittle
 {
     [button addTarget:self action:@selector(onClickOfTagButton:) forControlEvents:UIControlEventTouchUpInside];
     [self setButton:button WithTittle:tittle AtView:button.superview];
-
+    CGFloat padding;
     if (self.device == IPhone5)
     {
-        if (self.isDirect)
-        {//isDirect == yes 直接添加
-            //1.计算按钮所在列
-            long int column = self.myTags.count % 4;
-            //2.计算按钮所在行
-            CGFloat count = (CGFloat)self.myTags.count;
-            long int row = ((int)count / 4.0) + 1;
-            [button mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(button.superview.mas_top).offset(row *12 + (row - 1)*30);
-                make.left.equalTo(button.superview.mas_left).offset((column+1)*12 + column * 65);
-                make.size.mas_equalTo(buttonSize);
-            }];
-
-        }else
-        {//isDirect == no 改变mytagView的高度再添加
-            long int row = self.myTags.count /4;
-            [button mas_makeConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(self.myTagButtonsView.mas_left).offset(12);
-                make.top.equalTo(self.myTagButtonsView.mas_top).offset((row+1)*12 + row * 30);
-                make.size.mas_equalTo(buttonSize);
-            }];
-        }
-
+        padding = IPHONE5PADDING;
     }else if (self.device == IPhone6)
     {
-        
+        padding = IPHONE6PADDING;
     }else
     {
+        padding = IPHONE6PLUSPADDING;
+    }
+    
+    if (self.isDirect)
+    {//isDirect == no 改变mytagView的高度再添加
+        //1.计算按钮所在列
+        long int column = self.myTags.count % 4;
+        //2.计算按钮所在行
+        CGFloat count = (CGFloat)self.myTags.count;
+        long int row = ((int)count / 4.0) + 1;
+        CGFloat YPadding = row *12 + (row - 1)*30;
+        CGFloat XPadding = (column+1)*padding + column * 65;
+        [button mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(button.superview.mas_top).offset(YPadding);
+            make.left.equalTo(button.superview.mas_left).offset(XPadding);
+            make.size.mas_equalTo(buttonSize);
+        }];
         
+    }else
+    {//isDirect == yes 直接添加
+        long int row = self.myTags.count /4;
+        CGFloat YPadding = (row+1)*12 + row * 30;
+        [button mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.myTagButtonsView.mas_left).offset(padding);
+            make.top.equalTo(self.myTagButtonsView.mas_top).offset(YPadding);
+            make.size.mas_equalTo(buttonSize);
+        }];
     }
 
 }
@@ -464,8 +460,7 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
 - (CurrentDevice)currentDeviceSize
 {
     if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 4"] ||
-        [[self getCurrentDeviceModel] isEqualToString:@"iPhone 5"] ||
-        [[self getCurrentDeviceModel] isEqualToString:@"iPhone Simulator"])
+        [[self getCurrentDeviceModel] isEqualToString:@"iPhone 5"])
     {
         return IPhone5;
         
