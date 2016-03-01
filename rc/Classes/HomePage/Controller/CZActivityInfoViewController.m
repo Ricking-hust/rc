@@ -74,7 +74,8 @@
     [self.tableView reloadData];
 }
 
--(void)startgetAc{
+-(void)startgetAc
+{
     if (self.getActivityBlock) {
         self.getActivityBlock();
     }

@@ -9,6 +9,7 @@
 #import "CZActivityInfoCell.h"
 #import "ActivityIntroduction.h"
 #import "Masonry.h"
+#import "ActivityModel.h"
 #define LABEL_FONTSIZE 14
 
 @implementation CZActivityInfoCell
@@ -80,7 +81,8 @@
     }];
 }
 
--(void) setModel:(ActivityModel *)model{
+- (void) setModel:(ActivityModel *)model
+{
     _model = model;
     
     self.ac_placeLabel.text = model.acPlace;

@@ -7,10 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "ActivityModel.h"
+@class ActivityModel;
 @class ActivityIntroduction;
 @interface CZActivityInfoCell : UITableViewCell
-@property (nonatomic, strong)ActivityIntroduction *acIntroduction;
 @property (nonatomic,strong)ActivityModel *model;
 @property (nonatomic, strong)UILabel *ac_placeLabel;
 @property (nonatomic, strong)UILabel *ac_sizeLabel;
