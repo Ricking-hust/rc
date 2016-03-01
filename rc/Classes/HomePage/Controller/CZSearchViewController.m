@@ -9,12 +9,24 @@
 #import "CZSearchViewController.h"
 #import "Masonry.h"
 #include <sys/sysctl.h>
-
+#define buttonSize CGSizeMake(65, 30)
+#define IPHONE5PADDING  12
+#define IPHONE6PADDING  23
+#define IPHONE6PLUSPADDING  30.8
+typedef NS_ENUM(NSInteger, CurrentDevice)
+{
+    IPhone5     = 0,    //4寸    568 X 320
+    IPhone6     = 1,    //4.7寸  667 X 375
+    Iphone6Plus = 2     //5.5寸  736 X 414
+};
 @interface CZSearchViewController ()
 @property (strong, nonatomic) UIView *bgView;
 @property (strong, nonatomic) UISearchBar *searchBar;
 @property (strong, nonatomic) UIButton *rightBtn;
 @property (strong, nonatomic) UIView *hotSearchView;
+@property (assign, nonatomic) CurrentDevice device;
+@property (assign, nonatomic) CGFloat padding;
+@property (strong, nonatomic) UIScrollView *scrollView;
 #pragma mark - 测试数据
 @property (strong, nonatomic) NSMutableArray *array;
 
@@ -22,11 +34,13 @@
 
 @implementation CZSearchViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     self.navigationController.navigationBarHidden = YES;
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
+    self.device = [self currentDeviceSize];
     [self addSearchBarConstraint];
     [self addHotSearchConstraint];
 
@@ -39,6 +53,15 @@
         self.array = [[NSMutableArray alloc]initWithObjects:@"创业",@"互联网",@"金融",@"讲座",@"IT",@"Xcode", @"mac", nil];
     }
     return _array;
+}
+- (UIScrollView *)scrollView
+{
+    if (!_scrollView)
+    {
+        _scrollView = [[UIScrollView alloc]init];
+        [self.view addSubview:_scrollView];
+    }
+    return _scrollView;
 }
 - (UIView *)bgView
 {
@@ -111,8 +134,6 @@
         make.top.equalTo(self.searchBar.mas_top).with.offset(8);
         make.size.mas_equalTo(btnSize);
     }];
-
-    
     
 }
 #pragma mark - 点击空白处收起键盘
@@ -124,132 +145,125 @@
 - (void) addHotSearchConstraint
 {
     CGRect rect = [[UIScreen mainScreen]bounds];
-    CGFloat hotSearchH = rect.size.width * 0.54;
-    [self.hotSearchView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
-        make.top.equalTo(self.view.mas_top).with.offset(100);
-        make.size.mas_equalTo(CGSizeMake(rect.size.width, hotSearchH));
+#pragma mark - scrollView上边距要调整
+        make.top.equalTo(self.view.mas_top).offset(100);
+        make.right.equalTo(self.view.mas_right);
+        make.bottom.equalTo(self.view.mas_bottom);
+    }];
+    CGFloat hotSearchH = [self heigthForTagButtonsView];
+    [self.hotSearchView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.scrollView.mas_left);
+        make.top.equalTo(self.scrollView.mas_top);
+        make.size.mas_equalTo(CGSizeMake(rect.size.width, hotSearchH+44));
+    }];
+    UIView *imgAndLabelView = [[UIView alloc]init];
+    [self.hotSearchView addSubview:imgAndLabelView];
+    [imgAndLabelView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.hotSearchView.mas_left);
+        make.top.equalTo(self.hotSearchView.mas_top);
+        make.right.equalTo(self.hotSearchView.mas_right);
+        make.height.mas_equalTo(44);
     }];
     //图片
     UIImageView *imgView = [[UIImageView alloc]init];
     imgView.image = [UIImage imageNamed:@"hotIcon"];
-    CGSize imgSize = imgView.image.size;
-    [self.hotSearchView addSubview:imgView];
-    CGFloat imgViewTopPadding = (hotSearchH * 0.30 - imgSize.height)/2;
+    [imgAndLabelView addSubview:imgView];
     [imgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.hotSearchView.mas_left).with.offset(imgViewTopPadding);
-        make.top.equalTo(self.hotSearchView.mas_top).with.offset(imgViewTopPadding);
-        make.size.mas_equalTo(imgSize);
+        make.centerY.equalTo(imgAndLabelView.mas_centerY);
+        make.left.equalTo(imgAndLabelView.mas_left).offset(self.padding);
+        make.size.mas_equalTo(imgView.image.size);
     }];
     
-    //标签
+    //标签-热闹搜索
     UILabel *label = [[UILabel alloc]init];
     label.text = @"热闹搜索";
     label.textColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
     label.font = [UIFont systemFontOfSize:14];
-    [self.hotSearchView addSubview:label];
+    [imgAndLabelView addSubview:label];
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(imgView.mas_top);
+        make.centerY.equalTo(imgAndLabelView.mas_centerY);
         make.left.equalTo(imgView.mas_right).with.offset(14);
         make.size.mas_equalTo(CGSizeMake(80, 20));
     }];
     
     //分割线
     UIView *segView = [[UIView alloc]init];
-    CGFloat segViewY = hotSearchH * 0.30;
-    segView.backgroundColor = [UIColor colorWithRed:202.0/255.0 green:202.0/255.0  blue:202.0/255.0  alpha:1.0];
-    [self.hotSearchView addSubview:segView];
+    segView.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0  blue:204.0/255.0  alpha:1.0];
+    [imgAndLabelView addSubview:segView];
     [segView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.hotSearchView.mas_left);
-        make.top.equalTo(self.hotSearchView.mas_top).with.offset(segViewY);
+        make.top.equalTo(self.hotSearchView.mas_top).with.offset(43);
         make.size.mas_equalTo(CGSizeMake(rect.size.width, 1));
     }];
     
     //添加标签按钮
-    [self addTagButton:segView];
+    [self addTagButton];
     
 }
 
 #pragma mark - 根据设备大小添加标签按钮
-- (void)addTagButton:(UIView *)view
+- (void)addTagButton
 {
+    int x = 0;
+    int y = 0;
+    CGFloat XPading = 0;
+    CGFloat YPadding = 12;
     long int count = self.array.count;
     for (int i = 0; i < count; i++)
     {
         UIButton *btn = [[UIButton alloc]init];
-        [btn setTitle:self.array[i] forState:UIControlStateNormal];
-        [btn setTitleColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.8] forState:UIControlStateNormal];
-        btn.titleLabel.font = [UIFont systemFontOfSize:14];
-        [btn setTag:i + 10];
-        [btn.layer setMasksToBounds:YES];//设置按钮的圆角半径不会被遮挡
-        [btn.layer setCornerRadius:3];
-        [btn.layer setBorderWidth:1];//设置边界的宽度
-        
-        //设置按钮的边界颜色
-        CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
-        CGColorRef color = CGColorCreate(colorSpaceRef, (CGFloat[]){38/255 ,40/255,50/255,0.8});
-        [btn.layer setBorderColor:color];
-
-        [btn addTarget:self action:@selector(onClickTagBtn:) forControlEvents:UIControlEventTouchUpInside];
         [self.hotSearchView addSubview:btn];
-    }
-    if ([[self getCurrentDeviceModel]isEqualToString:@"iPhone 4"] ||
-        [[self getCurrentDeviceModel]isEqualToString:@"iPhone 5"] ||
-        [[self getCurrentDeviceModel]isEqualToString:@"iPhone Simulator"])
-    {//设备为iphone 4，5时
-
-        CGFloat horizontalPadding = 15; //水平间距
-        CGFloat verticalPadding = 15;   //垂直间距
-        CGSize btnSize = CGSizeMake(60, 30);
-        int x = 0;
-        int y = 0;
-        for (int i = 0; i < self.array.count; i++)
+        [self setButton:btn WithTittle:self.array[i]];
+        [btn addTarget:self action:@selector(onClickTagBtn:) forControlEvents:UIControlEventTouchUpInside];
+        if ((i) % 4 == 0 && i != 0 )
         {
-            UIButton *btn = (UIButton *)[self.hotSearchView viewWithTag:i + 10];
-
-            int multipleY = (i+1)/5;
-            CGFloat paddingY;
-            CGFloat paddingX;
-            int flag = (i+1)%5;
-
-            if (flag == 0)
-            {//换行
-
-                x = 0;
-                paddingY = (multipleY+1)*verticalPadding+(multipleY*btnSize.height);
-                paddingX = (y+1)*horizontalPadding+(y*btnSize.width);
-                [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.left.equalTo(self.hotSearchView.mas_left).with.offset(paddingX);
-                    make.top.equalTo(view.mas_bottom).with.offset(paddingY);
-                    make.size.mas_equalTo(btnSize);
-                }];
-                y++;
-                
-            }else
-            {//不换行
-                 y = 0;
-                paddingX = (x+1)*horizontalPadding+(x*btnSize.width);
-                [btn mas_makeConstraints:^(MASConstraintMaker *make) {
-                    make.left.equalTo(self.hotSearchView.mas_left).with.offset(paddingX);
-                    make.top.equalTo(view.mas_bottom).with.offset(verticalPadding);
-                    make.size.mas_equalTo(btnSize);
-                }];
-                x++;
-
-            }
-        
+            x = 0;
+            YPadding = 12 * (y + 2) + (y+1) * 30;
+            y++;
         }
-        
-    }else if ([[self getCurrentDeviceModel]isEqualToString:@"iPhone 6"])
-    {//设备为iphone 6时
-        NSLog(@"iPhone 6");
+        XPading = self.padding * (x + 1) + x * 65;
+        [btn mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.hotSearchView.mas_left).with.offset(XPading);
+            make.top.equalTo(self.hotSearchView.mas_top).with.offset(YPadding + 44);
+            make.size.mas_equalTo(buttonSize);
+        }];
+        x++;
+    }
+    
+}
+- (CGFloat)heigthForTagButtonsView
+{
+
+    CGFloat row = self.array.count / 4.0;
+    int height = (int)row;
+    if (height == row)
+    {
+        return (height + 1) * 12 + height * 30;
     }else
-    {//设备为iphone 6 plus时
-        NSLog(@"iphone 6 plus");
+    {
+        height ++ ;
+        return (height + 1) * 12 + height * 30;
     }
     
 }
 
+- (void)setButton:(UIButton *)button WithTittle:(NSString *)tittle
+{
+    [button setBackgroundColor:[UIColor whiteColor]];
+    [button setTitleColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.8] forState:UIControlStateNormal];
+    [button.layer setBorderWidth:1];    //设置边界的宽度
+    //设置按钮的边界颜色
+    CGColorRef color = [UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.8].CGColor;
+    [button.layer setBorderColor:color];
+
+    [button setTitle:tittle forState:UIControlStateNormal];
+    button.titleLabel.font = [UIFont systemFontOfSize:14];
+    [button.layer setMasksToBounds:YES];//设置按钮的圆角半径不会被遮挡
+    [button.layer setCornerRadius:3];   //设置圆角
+    
+}
 - (void)onClickTagBtn:(UIButton *)btn
 {
     NSLog(@"%@",btn.titleLabel.text);
@@ -260,6 +274,25 @@
     [self.navigationController popToRootViewControllerAnimated:YES];
     self.navigationController.navigationBarHidden = NO;
 
+}
+//获取当前设备
+- (CurrentDevice)currentDeviceSize
+{
+    if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 4"] ||
+        [[self getCurrentDeviceModel] isEqualToString:@"iPhone 5"])
+    {
+        self.padding = IPHONE5PADDING;
+        return IPhone5;
+        
+    }else if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 6"])
+    {
+        self.padding = IPHONE6PADDING;
+        return IPhone6;
+    }else
+    {
+        self.padding = IPHONE6PLUSPADDING;
+        return Iphone6Plus;
+    }
 }
 //获得设备型号
 - (NSString *)getCurrentDeviceModel
