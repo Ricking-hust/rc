@@ -21,8 +21,9 @@
 
 @interface CZHomeViewController ()
 @property (nonatomic,strong) ActivityList *activityList;
-
+@property (nonatomic,strong)  ActivityModel *activitymodel;
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListBlock)();
+@property (nonatomic, copy) NSURLSessionDataTask* (^getActivityBlock)(NSString *acID);
 
 
 @end
@@ -49,6 +50,17 @@
             NSLog(@"error:%@",error);
         }];
     };
+    
+//    self.getActivityBlock = ^(NSString *acID){
+//        @strongify(self);
+//        
+//        return [[DataManager manager] getActivityContentWithAcId:acID userId:@"1" success:^(ActivityModel *activity) {
+//            @strongify(self);
+//            self.activitymodel = activity;
+//        } failure:^(NSError *error) {
+//            NSLog(@"Error:%@",error);
+//        }];
+//    };
 }
 
 - (void)startget{
@@ -77,13 +89,16 @@
     [self.tableView reloadData];
 }
 
-#pragma mark - viewDidLoad
+-(void)loadView{
+    [super loadView];
+    
+    [self createSubViews];
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self configureBlocks];
-    
-    [self createSubViews];
     
     //设置tableHeaderView
     CZHomeHeaderView *headerView = [CZHomeHeaderView headerView];
@@ -166,6 +181,9 @@
     CZActivityInfoViewController *activityInfoViewController = [[CZActivityInfoViewController alloc]init];
     activityInfoViewController.title = @"活动介绍";
     activityInfoViewController.activityModelPre = self.activityList.list[indexPath.section];
+//    NSString *acID = activityInfoViewController.activityModelPre.acID;
+//    self.getActivityBlock(acID);
+//    activityInfoViewController.activitymodel = self.activitymodel;
     [self.navigationController pushViewController:activityInfoViewController animated:YES];
     
     

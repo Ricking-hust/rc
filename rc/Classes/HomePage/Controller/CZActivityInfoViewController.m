@@ -38,12 +38,14 @@
 @property(nonatomic,strong) UIButton *addToSchedule;
 
 @property (nonatomic,strong)  ActivityModel *activitymodel;
+
 @property (nonatomic, copy) NSURLSessionDataTask* (^getActivityBlock)();
 
 @end
 
 @implementation CZActivityInfoViewController
 
+#pragma mark - Data
 - (void)configureBlocks{
     @weakify(self);
     self.getActivityBlock = ^(){
@@ -58,10 +60,17 @@
     };
 }
 
--(void) setActivitymodel:(ActivityModel *)activitymodel{
+
+-(void)setActivityModelPre:(ActivityModel *)activityModelPre{
+    _activityModelPre = activityModelPre;
+    
+}
+
+-(void)setActivitymodel:(ActivityModel *)activitymodel{
     
     _activitymodel = activitymodel;
-    
+    //对tableView头进行赋值
+    [self setTableViewHeader];
     [self.tableView reloadData];
 }
 
@@ -69,6 +78,58 @@
     if (self.getActivityBlock) {
         self.getActivityBlock();
     }
+}
+
+#pragma mark - view
+
+-(void)loadView{
+    [super loadView];
+    
+    [self createSubViews];
+    
+    //设置导航栏
+    [self setNavigation];
+    [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
+    
+    //设置tableView头
+    [self layoutHeaderImageView];
+}
+
+//界面加载完毕
+- (void)viewDidLoad {
+    [super viewDidLoad];
+    
+    [self configureBlocks];
+    self.getActivityBlock();
+}
+
+-(void)didReceiveMemoryWarning{
+    [super didReceiveMemoryWarning];
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
+}
+
+- (void)viewWillAppear:(BOOL)animated {
+    [super viewWillAppear:animated];
+}
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+//    @weakify(self);
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        @strongify(self);
+//        
+//        [self startgetAc];
+    
+//    });
+}
+
+-(void)viewWillLayoutSubviews{
+    [super viewWillLayoutSubviews];
 }
 
 //创建子控件
@@ -143,33 +204,7 @@
 //     NSLog(@"addToSchedule");
 }
 
-//界面加载完毕
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    [self configureBlocks];
-    [self createSubViews];
-    
-    //设置导航栏
-    [self setNavigation];
-    [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
-    
-    //设置tableView头
-    [self layoutHeaderImageView];
-}
 
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-    
-    @weakify(self);
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        @strongify(self);
-        
-        [self startgetAc];
-        
-    });
-}
 - (void)setNavigation
 {
     //设置导航标题栏
@@ -180,9 +215,7 @@
     titleLabel.text = @"活动介绍";
     self.navigationItem.titleView = titleLabel;
     
-    
-    [self configureBlocks];
-    [self createSubViews];
+    //[self createSubViews];
     
     
     //设置导航栏的左侧按钮
@@ -223,7 +256,7 @@
             CZTimeCell *cell = [CZTimeCell timeCellWithTableView:tableView];
             [cell.remindMeBtn addTarget:self action:@selector(onClickRemindMe:) forControlEvents:UIControlEventTouchUpInside];
             //对cell的控件进行赋值
-            [self setCellValue:cell AtIndexPath:indexPath];
+            [self setCellValue:cell AtIndexPath:indexPath];//3
             //对cell的控件进行布局
             [cell setSubViewsConstraint];
 
@@ -332,8 +365,6 @@
     [self.header addSubview:self.acTittleLabel];
     [self.header addSubview:self.acTagLabel];
     
-    //对tableView头进行赋值
-    [self setTableViewHeader];
     //对tableView头进行布局
     [self setSubViewsConstraint];
     
@@ -364,11 +395,19 @@
     self.acTagLabel.font             = [UIFont systemFontOfSize:12];
     self.acTagLabel.textColor        = self.acTittleLabel.textColor;
     
-    self.acImageView.image    = [UIImage imageNamed:@"img_1"];
-    self.acTittleLabel.text   = self.activityModelPre.acTitle;
-    NSLog(@"acTitle:%@",self.activityModelPre.acTitle);
+    //self.acImageView.image    = [UIImage imageNamed:@"img_1"];
+    [self.acImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
+    self.acTittleLabel.text   = self.activitymodel.acTitle;
+    NSLog(@"acTitle:%@",self.activitymodel.acTitle);
     self.acTagImageView.image = [UIImage imageNamed:@"tagImage"];
-    self.acTagLabel.text      = @"录像机 电影";
+    NSMutableArray *Artags = [[NSMutableArray alloc]init];
+    
+    for (TagModel *model in self.activitymodel.tagsList.list) {
+        [Artags addObject:model.tagName];
+    }
+    
+    NSString *tags = [Artags componentsJoinedByString:@","];
+    self.acTagLabel.text      = tags;
     
 }
 - (void)setSubViewsConstraint
@@ -404,9 +443,11 @@
     if ([cell isKindOfClass:[CZTimeCell class]])
     {
         ((CZTimeCell*)cell).timeLabel.text = self.activityModelPre.acTime;
+        
     }else if ([cell isKindOfClass:[CZActivityInfoCell class]])
     {
         ((CZActivityInfoCell *)cell).model = self.activitymodel;
+        NSLog(@"acPlace:%@",self.activitymodel.acPlace);
     }
 }
 //弹出提醒视图
