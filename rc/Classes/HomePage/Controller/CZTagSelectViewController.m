@@ -286,7 +286,7 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
         x++;
     }
 }
-- (void)setButton:(UIButton *)button WithTittle:(NSString *)tittle AtView:(UIView *)view;
+- (void)setButton:(UIButton *)button WithTittle:(NSString *)tittle AtView:(UIView *)view
 {
     if (view.tag == 1)
     {
