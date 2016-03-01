@@ -118,15 +118,6 @@
 
 -(void)viewDidAppear:(BOOL)animated{
     [super viewDidAppear:animated];
-    
-//    @weakify(self);
-//    static dispatch_once_t onceToken;
-//    dispatch_once(&onceToken, ^{
-//        @strongify(self);
-//        
-//        [self startgetAc];
-    
-//    });
 }
 
 -(void)viewWillLayoutSubviews{
