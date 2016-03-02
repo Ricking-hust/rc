@@ -183,6 +183,8 @@
     self.themeLabel = [[UILabel alloc]init];
     self.themeLabel.text = @"行程主题";
     [self.themeView addSubview:self.themeLabel];
+    UITapGestureRecognizer *themeGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickMoreTagButton)];
+    [self.themeView addGestureRecognizer:themeGesture];
     CGFloat leftPaddingInThemeViewOfThemeLabel = 10;
     CGSize themeLabelSize = [self setLabelStyle:self.themeLabel WithContent:self.themeLabel.text];
     self.themeLabel.alpha = 0.8;
@@ -246,7 +248,6 @@
     CGRect screenRect = [[UIScreen mainScreen]bounds];
     self.contentView = [[UIView alloc]init];
     [self.view addSubview:self.contentView];
-//    self.contentView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     self.contentView.backgroundColor = [UIColor whiteColor];
     
     CGFloat topPaddingRelativeToThemeView = 10;
@@ -336,6 +337,8 @@
     self.timeView = [[UIView alloc]init];
     [self.contentView addSubview:self.timeView];
     self.timeView.backgroundColor = [UIColor whiteColor];
+    UITapGestureRecognizer *timeGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickMoreTimeButton)];
+    [self.timeView addGestureRecognizer:timeGesture];
     [self.timeView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.segmentView.mas_bottom);
         make.left.and.right.equalTo(self.contentView);
@@ -401,6 +404,8 @@
     self.remindView = [[UIView alloc]init];
     [self.contentView addSubview:self.remindView];
     self.remindView.backgroundColor = [UIColor whiteColor];
+    UITapGestureRecognizer *remindGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickMoreRemindTime)];
+    [self.remindView addGestureRecognizer:remindGesture];
     [self.remindView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.segmentViewReletiveToRv.mas_bottom);
         make.left.and.right.equalTo(self.contentView);
@@ -463,6 +468,7 @@
 {
     UIImage *image = [UIImage imageNamed:@"backIcon"];
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+    
     [self.navigationItem setLeftBarButtonItem:leftButton];
     
     UIBarButtonItem *rigthButton = [[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(commintModify)];

@@ -79,7 +79,7 @@
 
         make.size.mas_equalTo(CGSizeMake(PAGECONTROL_WIDTH, PAGECONTROL_HEIGHT));
     }];
-    self.pageControl.currentPageIndicatorTintColor = [UIColor redColor];
+    self.pageControl.currentPageIndicatorTintColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/2550 alpha:1.0];
     
     //configure label constraints
     NSString *text = @"为你推荐";
