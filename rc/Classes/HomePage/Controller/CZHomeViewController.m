@@ -50,17 +50,6 @@
             NSLog(@"error:%@",error);
         }];
     };
-    
-//    self.getActivityBlock = ^(NSString *acID){
-//        @strongify(self);
-//        
-//        return [[DataManager manager] getActivityContentWithAcId:acID userId:@"1" success:^(ActivityModel *activity) {
-//            @strongify(self);
-//            self.activitymodel = activity;
-//        } failure:^(NSError *error) {
-//            NSLog(@"Error:%@",error);
-//        }];
-//    };
 }
 
 - (void)startget{
@@ -181,11 +170,7 @@
     CZActivityInfoViewController *activityInfoViewController = [[CZActivityInfoViewController alloc]init];
     activityInfoViewController.title = @"活动介绍";
     activityInfoViewController.activityModelPre = self.activityList.list[indexPath.section];
-//    NSString *acID = activityInfoViewController.activityModelPre.acID;
-//    self.getActivityBlock(acID);
-//    activityInfoViewController.activitymodel = self.activitymodel;
     [self.navigationController pushViewController:activityInfoViewController animated:YES];
-    
     
 }
 //给单元格进行赋值

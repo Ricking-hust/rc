@@ -16,8 +16,11 @@
 #import "CZAboutUsViewController.h"
 #import "CZFeedbackViewController.h"
 #import "CZSettingViewController.h"
+#import "LoginViewController.h"
 
 @interface CZMyInfoViewController ()
+
+
 
 @end
 
@@ -129,8 +132,13 @@
     {
         case 0:
         {
-            CZPersonInfoViewController *personInfoViewController = [[CZPersonInfoViewController alloc]init];
-            [self.navigationController pushViewController:personInfoViewController animated:YES];
+            if (![DataManager manager].user.isLogin) {
+                LoginViewController *loginViewController = [[LoginViewController alloc]init];
+                [self.navigationController pushViewController:loginViewController animated:YES];
+            } else {
+                CZPersonInfoViewController *personInfoViewController = [[CZPersonInfoViewController alloc]init];
+                [self.navigationController pushViewController:personInfoViewController animated:YES];
+            }
         }
         break;
             

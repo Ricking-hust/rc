@@ -24,7 +24,6 @@ typedef NS_ENUM(NSInteger,RcErrorType) {
 +(instancetype)manager;
 
 @property(nonatomic,strong) UserModel *user;
-@property (nonatomic, assign) BOOL preferHttps;
 
 #pragma mark - Public Request Methods - HomePage
 
@@ -153,10 +152,13 @@ typedef NS_ENUM(NSInteger,RcErrorType) {
                                         success:(void (^)(planList *plList))success
                                         failure:(void (^)(NSError *error))failure;
 
+#pragma mark - Login & Profile
+
 -(NSURLSessionDataTask *)UserLoginOrRegisteWithUserphone:(NSString *)userphone
                                                 password:(NSString *)password
                                                  op_type:(NSString *)op_type
                                                  success:(void (^)(UserModel *user))success
                                                  failure:(void (^)(NSError *))failure;
+- (void)UserLogout;
 
 @end

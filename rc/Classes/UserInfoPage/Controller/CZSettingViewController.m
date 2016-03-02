@@ -90,6 +90,9 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (indexPath.section == 1) {
+        [[DataManager manager] UserLogout];
+    }
     NSLog(@"你点击了第 %ld Cell", indexPath.row);
 }
 @end

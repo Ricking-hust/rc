@@ -7,9 +7,7 @@
 //
 
 
-#import "AFNetworking.h"
 #import "DataManager.h"
-#import "CityModel.h"
 
 static NSString *const kUsername = @"usr_name";
 static NSString *const kUserid = @"user_id";
@@ -35,8 +33,6 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
         if (isLogin) {
             UserModel *user = [[UserModel alloc] init];
             user.login = YES;
-            user.userId = [[NSUserDefaults standardUserDefaults] objectForKey:kUserid];
-            user.userName = [[NSUserDefaults standardUserDefaults] objectForKey:kUsername];
             _user = user;
         }
     }
@@ -529,6 +525,16 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
     }];
     
     return nil;
+}
+
+- (void)UserLogout {
+    
+    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (NSHTTPCookie *cookie in [storage cookies]) {
+        [storage deleteCookie:cookie];
+    }
+    
+    self.user = nil;
 }
 
 @end

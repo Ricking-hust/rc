@@ -7,7 +7,6 @@
 //
 
 #import "CZActivityInfoViewController.h"
-#import "ActivityIntroduction.h"
 #import "ActivityModel.h"
 #import "Masonry.h"
 #import "CZTimeCell.h"
@@ -16,12 +15,10 @@
 #import "CZRemindMeView.h"
 #import "UIViewController+LewPopupViewController.h"
 #import "LewPopupViewAnimationSlide.h"
-#import "DataManager.h"
 #import "ActivityModel.h"
 #import "UIImageView+WebCache.h"
 #import "UINavigationBar+Awesome.h"
 #import "UIImageView+LBBlurredImage.h"
-#import "EXTScope.h"
 
 
 @interface CZActivityInfoViewController ()
