@@ -9,5 +9,5 @@
 #import <UIKit/UIKit.h>
 
 @interface CZScheduleInfoViewController : UIViewController
-
+@property (nonatomic, strong) UIButton *deleteBtn;
 @end

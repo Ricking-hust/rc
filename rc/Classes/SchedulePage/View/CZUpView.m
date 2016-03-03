@@ -22,7 +22,7 @@
         self.themeNameLabel.font = [UIFont systemFontOfSize:FONTSIZE];
         self.img = [[UIImageView alloc]init];
         self.segLine = [[UIView alloc]init];
-        self.segLine.backgroundColor = [UIColor redColor];
+        self.segLine.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
         
         [self addSubview:self.themeView];
         [self.themeView addSubview:self.themeLabel];

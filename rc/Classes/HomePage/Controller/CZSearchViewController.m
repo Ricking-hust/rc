@@ -107,11 +107,14 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     {
         _hotSearchView = [[UIView alloc]init];
         _hotSearchView.backgroundColor = [UIColor whiteColor];
-        [self.view addSubview:_hotSearchView];
+        [self.scrollView addSubview:_hotSearchView];
     }
     return _hotSearchView;
 }
-
+- (void)hideKeyboard
+{
+    [self.searchBar resignFirstResponder];
+}
 #pragma mark - 搜索框约束
 - (void)addSearchBarConstraint
 {
@@ -178,7 +181,7 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     
     //标签-热闹搜索
     UILabel *label = [[UILabel alloc]init];
-    label.text = @"热闹搜索";
+    label.text = @"热门搜索";
     label.textColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
     label.font = [UIFont systemFontOfSize:14];
     [imgAndLabelView addSubview:label];
@@ -268,13 +271,15 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
 {
     NSLog(@"%@",btn.titleLabel.text);
 }
-- (void)onClick:(UIButton *)btn {
+- (void)onClick:(UIButton *)btn
+{
     
     [self.searchBar resignFirstResponder];
     [self.navigationController popToRootViewControllerAnimated:YES];
     self.navigationController.navigationBarHidden = NO;
 
 }
+
 //获取当前设备
 - (CurrentDevice)currentDeviceSize
 {

@@ -42,8 +42,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     
-    self.title = @"行程详情";
-    self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
+    [self setNavigation];
 #pragma mark - 测试数据
     self.image = [UIImage imageNamed:@"businessIcon"];
     self.strTheme = @"出差";
@@ -51,15 +50,19 @@
     self.strContent = @"OS 是苹果公司为其移动产品开发的操作系统。它主要给 iPhone、iPod touch、iPad 以及 Apple TV 使用.";
     self.strRemindTime = @"提前一天";
     
+    [self createSubViews];
+
+}
+- (void)setNavigation
+{
+    self.title = @"行程详情";
+    self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     UIBarButtonItem *rigthItem = [[UIBarButtonItem alloc] initWithTitle:@"编辑" style:UIBarButtonItemStylePlain target:self action:@selector(edit)];
     [self.navigationItem setRightBarButtonItem:rigthItem];
     
     UIImage *image = [UIImage imageNamed:@"backIcon"];
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(back)];
     [self.navigationItem setLeftBarButtonItem:leftItem];
-    
-    [self createSubViews];
-
 }
 - (void)edit
 {
@@ -89,6 +92,20 @@
     
     [self createScRemindTimeLabel];
     [self createScRemindTime];
+    //创建删除按钮
+    self.deleteBtn = [[UIButton alloc]init];
+    self.deleteBtn.layer.cornerRadius = 2.0f;
+    self.deleteBtn.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:64.0/255.0 blue:0 alpha:1.0];
+    [self.deleteBtn setTitle:@"删除按钮" forState:UIControlStateNormal];
+    [self.deleteBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.deleteBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    [self.view addSubview:self.deleteBtn];
+    [self.deleteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.bgView.mas_bottom).offset(10);
+        make.centerX.equalTo(self.bgView.mas_centerX);
+        make.height.mas_equalTo(40);
+        make.width.mas_equalTo(self.view.frame.size.width - 40);
+    }];
 
 }
 - (void)createBgView
@@ -110,7 +127,7 @@
         make.centerX.equalTo(self.view);
         make.top.equalTo(self.view.mas_top).with.offset(40+64);
         make.width.mas_equalTo(bgViewW);
-        make.height.mas_equalTo(scContentSize.height + labelSize.height * 3 + topPadding*2 + 3*12);
+        make.height.mas_equalTo(scContentSize.height + labelSize.height * 3 + topPadding*2 + 20);
     }];
 
 }
