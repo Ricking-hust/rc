@@ -16,6 +16,7 @@
 #import "CZTagWithLabelView.h"
 #import "CZUpView.h"
 #import "CZDownView.h"
+#import "CZTagWithLabelView.h"
 
 #define FONTSIZE    14  //字体大小
 #define MAXLENGTH   90  //contentTextView的最大字数
@@ -164,10 +165,19 @@
     [self setNavigationBarItem];
     [self.view addSubview:self.upView];
     [self.view addSubview:self.downView];
+    [self.upView addSubview:self.meetingTag];
+    [self.upView addSubview:self.appointmentTag];
+    [self.upView addSubview:self.businessTag];
+    [self.upView addSubview:self.sportTag];
+    [self.upView addSubview:self.shoppingTag];
+    [self.upView addSubview:self.entertainmentTag];
+    [self.upView addSubview:self.partTag];
+    [self.upView addSubview:self.otherTag];
  
     [self setSubViewsOfUpView];
     [self setSubViewsOfDownView];
     
+    [self initMoreTagView];
 }
 
 #pragma mark - 初始化
@@ -177,6 +187,21 @@
     {
         self.upView = [[CZUpView alloc]init];
         self.downView = [[CZDownView alloc]init];
+        
+        self.meetingTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"meetingIcon"] andTittle:@"会议"];
+        
+        self.appointmentTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"appointmentIcon"] andTittle:@"约会"];
+        
+        self.businessTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"businessIcon"] andTittle:@"出差"];
+        
+        self.sportTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"sportIcon"] andTittle:@"运动"];
+        self.shoppingTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"shoppingIcon"] andTittle:@"购物"];
+        
+        self.entertainmentTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"entertainmentIcon"] andTittle:@"娱乐"];
+        
+        self.partTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"partIcon"] andTittle:@"聚会"];
+        
+        self.otherTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"otherIcon"] andTittle:@"其他"];
     }
     return self;
 }
@@ -232,6 +257,7 @@
         make.right.equalTo(self.upView.themeNameLabel.mas_left).offset(-10);
         make.size.mas_equalTo(self.upView.tagImgView.image.size);
     }];
+    //分割线
     [self.upView.segLine mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.upView.themeView.mas_left).offset(10);
         make.top.equalTo(self.upView.themeView.mas_bottom).offset(-1);
@@ -540,23 +566,6 @@
     {
         [self didHideMoreTag];
     }
-    
-//    CZTagSelectView *tagSelectView = [CZTagSelectView tagSelectView];
-//
-//    [tagSelectView.meetingTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
-//    [tagSelectView.appointmentTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
-//    [tagSelectView.businessTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
-//    [tagSelectView.sportTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
-//    [tagSelectView.shoppingTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
-//    [tagSelectView.entertainmentTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
-//    [tagSelectView.partTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
-//    [tagSelectView.otherTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
-    
-//    LewPopupViewAnimationSlide *animation = [[LewPopupViewAnimationSlide alloc]init];
-//    animation.type = LewPopupViewAnimationSlideTypeBottomBottom;
-//    [self lew_presentPopupView:tagSelectView animation:animation dismissed:^{
-//        NSLog(@"主题选择视图已弹出");
-//    }];
 }
 #pragma mark - 显示下拉更多标签按钮
 - (void)didShowMoreTag
@@ -571,10 +580,35 @@
         [self.upView.segLine mas_updateConstraints:^(MASConstraintMaker *make) {
             make.width.mas_equalTo(self.view.frame.size.width - 20);
         }];
+        [self didShowTag];
         //3.重新布局
         [self.view layoutIfNeeded];
     }];
 
+}
+- (void)didShowTag
+{
+    [self updateHeightToNormal:self.meetingTag];
+    [self updateHeightToNormal:self.appointmentTag];
+    [self updateHeightToNormal:self.businessTag];
+    [self updateHeightToNormal:self.sportTag];
+    [self updateHeightToNormal:self.shoppingTag];
+    [self updateHeightToNormal:self.entertainmentTag];
+    [self updateHeightToNormal:self.partTag];
+    [self updateHeightToNormal:self.otherTag];
+    
+}
+- (void)updateHeightToNormal:(CZTagWithLabelView *)view
+{
+    [view mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(view.tagButton.imageView.image.size.height + 22);
+    }];
+    [view.tagButton mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(view.tagButton.imageView.image.size.height);
+    }];
+    [view.label mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(17);
+    }];
 }
 #pragma mark - 隐藏下拉更多标签按钮
 - (void)didHideMoreTag
@@ -590,17 +624,102 @@
         [self.upView.segLine mas_updateConstraints:^(MASConstraintMaker *make) {
             make.width.mas_equalTo(0);
         }];
+        //隐藏标签
+        [self didHideTag];
          //3.重新布局
         [self.view layoutIfNeeded];
+        
     }];
 }
-//初始化弹出的标签面板
+- (void)didHideTag
+{
+    [self updateHeightToZero:self.meetingTag];
+    [self updateHeightToZero:self.appointmentTag];
+    [self updateHeightToZero:self.businessTag];
+    [self updateHeightToZero:self.sportTag];
+    [self updateHeightToZero:self.shoppingTag];
+    [self updateHeightToZero:self.entertainmentTag];
+    [self updateHeightToZero:self.partTag];
+    [self updateHeightToZero:self.otherTag];
+}
+- (void)updateHeightToZero:(CZTagWithLabelView *)view
+{
+    [view mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(0);
+    }];
+    [view.tagButton mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(0);
+    }];
+    [view.label mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(0);
+    }];
+}
+#pragma mark - 初始化弹出的标签面板
 - (void)initMoreTagView
 {
+    CGRect rect = [[UIScreen mainScreen]bounds];
+    CGFloat topPadding = rect.size.width * 0.05 + VIEWH;
+    CGFloat leftPadding = rect.size.width * 0.07;
+    CGFloat bottomPadding = rect.size.width * 0.04;
     
+    CGFloat paddingToMeeting = rect.size.width * 0.16;      //约会距离会议的右边距
+    CGFloat paddingToAppointment = rect.size.width * 0.17;  //出差距离约会的右边距
+    CGFloat paddingToBusiness = rect.size.width * 0.14;     //运动距离出差的右边距
+    CGFloat paddingToShopping = rect.size.width * 0.15;     //娱乐距离购物的右边距
+    CGFloat paddingToEntertainment = rect.size.width * 0.17;//聚会距离娱乐的右边距
+    CGFloat paddingToPart = rect.size.width * 0.14;         //其他距离聚会的右边距
+    
+    [self.meetingTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+    [self.meetingTag mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.upView.themeView.mas_top).with.offset(topPadding);
+        make.left.equalTo(self.upView).with.offset(leftPadding);
+    }];
+    
+    [self.appointmentTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+    [self.appointmentTag mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.meetingTag.mas_top);
+        make.left.equalTo(self.meetingTag.mas_right).with.offset(paddingToMeeting);
+    }];
+    
+    [self.businessTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+    [self.businessTag mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.meetingTag.mas_top);
+        make.left.equalTo(self.appointmentTag.mas_right).with.offset(paddingToAppointment);;
+    }];
+    
+    [self.sportTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+    [self.sportTag mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.meetingTag.mas_top);
+        make.left.equalTo(self.businessTag.mas_right).with.offset(paddingToBusiness);
+    }];
+    
+    [self.shoppingTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+    [self.shoppingTag mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.meetingTag.mas_left);
+        make.bottom.equalTo(self.upView.mas_bottom).with.offset(-bottomPadding);
+    }];
+    
+    [self.entertainmentTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+    [self.entertainmentTag mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.meetingTag.mas_right).with.offset(paddingToShopping);
+        make.bottom.equalTo(self.shoppingTag.mas_bottom);
+    }];
+    
+    [self.partTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+    [self.partTag mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.entertainmentTag.mas_right).with.offset(paddingToEntertainment);
+        make.bottom.equalTo(self.shoppingTag.mas_bottom);
+    }];
+    
+     [self.otherTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+    [self.otherTag mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.partTag.mas_right).with.offset(paddingToPart);
+        make.bottom.equalTo(self.shoppingTag.mas_bottom);
+    }];
+
 }
 
-//选择弹出的主题事件
+//选择行程主题
 - (void)selectTheme:(UIButton *)btn
 {
     UIView *view = btn.superview;
@@ -634,8 +753,6 @@
     {
         self.upView.tagImgView.image  = [UIImage imageNamed:@"otherSmallIcon"];
     }
-
-    [self lew_dismissPopupView];
 }
 
 

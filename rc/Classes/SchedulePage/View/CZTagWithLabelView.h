@@ -11,7 +11,5 @@
 @interface CZTagWithLabelView : UIView
 @property (nonatomic, strong) UIButton *tagButton;
 @property (nonatomic, strong) UILabel *label;
-
-+ (instancetype)tagWithLabel;
 - (id)initWithImage:(UIImage *)img andTittle:(NSString *)tittle;
 @end

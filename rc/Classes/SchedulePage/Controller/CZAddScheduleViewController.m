@@ -26,7 +26,6 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    self.deleteScheduleButton.hidden = YES;
     
     UIImage *image = [UIImage imageNamed:@"backIcon"];
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(back)];

@@ -12,17 +12,6 @@
 #define FONTSIZE    14
 @implementation CZTagWithLabelView
 
-+ (instancetype)tagWithLabel
-{
-    CZTagWithLabelView *tag = [[CZTagWithLabelView alloc]init];
-    tag.tagButton = [[UIButton alloc]init];
-    [tag addSubview:tag.tagButton];
-    
-    tag.label = [[UILabel alloc]init];
-    [tag addSubview:tag.label];
-    
-    return tag;
-}
 - (id)initWithImage:(UIImage *)img andTittle:(NSString *)tittle
 {
     if (self = [super init])
@@ -46,17 +35,23 @@
     CGSize tagButtonSize = self.tagButton.imageView.image.size;
     [self mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.top.equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(tagButtonSize.width, tagButtonSize.height+labelSize.height+5));
+        make.width.mas_equalTo(tagButtonSize.width);
+        //make.height.mas_equalTo(tagButtonSize.height + 22);
+        make.height.mas_equalTo(0);
     }];
     
     [self.tagButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.and.left.equalTo(self);
-        make.size.mas_equalTo(self.tagButton.imageView.image.size);
+        make.width.mas_equalTo(self.tagButton.imageView.image.size.width);
+        //make.height.mas_equalTo(self.tagButton.imageView.image.size.height);
+        make.height.mas_equalTo(0);
     }];
     [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self);
         make.top.equalTo(self.tagButton.mas_bottom).with.offset(5);
-        make.size.mas_equalTo(CGSizeMake(labelSize.width+1, labelSize.height+1));
+        make.width.mas_equalTo(labelSize.width+1);
+        //make.height.mas_equalTo(17);
+        make.height.mas_equalTo(0);
     }];
 }
 //设置标签的样式
