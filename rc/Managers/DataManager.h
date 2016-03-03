@@ -158,7 +158,7 @@ typedef NS_ENUM(NSInteger,RcErrorType) {
                                                 password:(NSString *)password
                                                  op_type:(NSString *)op_type
                                                  success:(void (^)(UserModel *user))success
-                                                 failure:(void (^)(NSError *))failure;
+                                                 failure:(void (^)(NSError *error))failure;
 - (void)UserLogout;
 
 @end

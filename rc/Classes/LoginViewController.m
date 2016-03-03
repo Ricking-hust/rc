@@ -9,6 +9,7 @@
 #import "LoginViewController.h"
 
 static CGFloat const kContainViewYNormal = 120.0;
+static CGFloat const kContainViewYEditing = 60.0;
 
 @interface LoginViewController ()
 
@@ -163,7 +164,90 @@ static CGFloat const kContainViewYNormal = 120.0;
     self.registeButton.layer.borderColor = [UIColor colorWithWhite:0.000 alpha:0.10].CGColor;
     self.registeButton.layer.borderWidth = 0.5;
     [self.containView addSubview:self.registeButton];
+    
+    [self.usernameField addTarget:self action:@selector(showKeyboard) forControlEvents:UIControlEventEditingDidBegin];
+    [self.usernameField addTarget:self action:@selector(goPassword) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [self.passwordField addTarget:self action:@selector(showKeyboard) forControlEvents:UIControlEventEditingDidBegin];
+    [self.passwordField addTarget:self action:@selector(login) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [self.loginButton addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
 
+}
+
+#pragma mark - Private Methods
+
+-(void)beginLogin{
+    self.isLogining = YES;
+    
+    self.usernameField.enabled = NO;
+    self.passwordField.enabled = NO;
+}
+
+-(void)endLogin{
+    self.usernameField.enabled = YES;
+    self.passwordField.enabled = YES;
+    
+    self.isLogining = NO;
+}
+
+-(void)login{
+    if (!self.isLogining) {
+        [self hideKeyboard];
+        
+        [[DataManager manager] UserLoginOrRegisteWithUserphone:self.usernameField.text password:self.passwordField.text op_type:@"1" success:^(UserModel *user) {
+            [DataManager manager].user = user;
+            [self endLogin];
+            [self dismissViewControllerAnimated:YES completion:nil];
+        } failure:^(NSError *error) {
+            NSString *reasonString;
+            
+            if (error.code < 700) {
+                reasonString = @"请检查网络状态";
+            } else {
+                reasonString = @"请检查用户名或密码";
+            }
+        }];
+
+    }
+}
+
+- (void)showKeyboard {
+    
+    if (self.isKeyboardShowing) {
+        ;
+    } else {
+        [UIView animateWithDuration:0.3 animations:^{
+            self.containView.y      = kContainViewYEditing;
+            self.descriptionLabel.y -= 5;
+            self.usernameField.y    -= 10;
+            self.passwordField.y    -= 12;
+            self.loginButton.y      -= 14;
+            self.registeButton.y    -= 16;
+        }];
+        self.isKeyboardShowing = YES;
+    }
+    
+}
+
+- (void)hideKeyboard {
+    
+    if (self.isKeyboardShowing) {
+        self.isKeyboardShowing = NO;
+        [[UIApplication sharedApplication].keyWindow endEditing:YES];
+        [UIView animateWithDuration:0.3 animations:^{
+            self.containView.y      = kContainViewYNormal;
+            self.descriptionLabel.y += 5;
+            self.usernameField.y    += 10;
+            self.passwordField.y    += 12;
+            self.loginButton.y      += 14;
+            self.registeButton.y    += 16;
+        } completion:^(BOOL finished) {
+        }];
+    }
+    
+}
+
+-(void)goPassword{
+    [self.passwordField becomeFirstResponder];
 }
 
 @end

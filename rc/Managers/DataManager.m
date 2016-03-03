@@ -9,9 +9,6 @@
 
 #import "DataManager.h"
 
-static NSString *const kUsername = @"usr_name";
-static NSString *const kUserid = @"user_id";
-static NSString *const kUserIsLogin = @"userIsLogin";
 
 typedef NS_ENUM(NSInteger,RcRequestMethod){
     RcRequestMethodJSONGET    = 1,
@@ -29,7 +26,7 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
 
 -(instancetype)init{
     if (self = [super init]) {
-        BOOL isLogin = [[[NSUserDefaults standardUserDefaults] objectForKey:kUserIsLogin] boolValue];
+        BOOL isLogin = [[[NSUserDefaults standardUserDefaults] objectForKey:@"userIsLogin"] boolValue];
         if (isLogin) {
             UserModel *user = [[UserModel alloc] init];
             user.login = YES;
@@ -46,14 +43,16 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
     if (user) {
         self.user.login = YES;
         
-        [[NSUserDefaults standardUserDefaults] setObject:user.userName forKey:kUsername];
-        [[NSUserDefaults standardUserDefaults] setObject:user.userId forKey:kUserid];
-        [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:kUserIsLogin];
+        [[NSUserDefaults standardUserDefaults] setObject:user.userName forKey:@"usr_name"];
+        [[NSUserDefaults standardUserDefaults] setObject:user.userId forKey:@"user_id"];
+        [[NSUserDefaults standardUserDefaults] setObject:user.userPhone forKey:@"usr_phone"];
+        [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:@"userIsLogin"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     } else {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUsername];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserid];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:kUserIsLogin];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"usr_name"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"user_id"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"usr_phone"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userIsLogin"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }
@@ -504,21 +503,35 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
     }];
 }
 
+#pragma mark - Login & Profile
+
 -(NSURLSessionDataTask *)UserLoginOrRegisteWithUserphone:(NSString *)userphone
                                                 password:(NSString *)password
                                                  op_type:(NSString *)op_type
                                                  success:(void (^)(UserModel *user))success
-                                                 failure:(void (^)(NSError *))failure{
+                                                 failure:(void (^)(NSError *error))failure{
+    NSHTTPCookieStorage *storage = [NSHTTPCookieStorage sharedHTTPCookieStorage];
+    for (NSHTTPCookie *cookie in [storage cookies]) {
+        [storage deleteCookie:cookie];
+    }
+    
     NSDictionary *parameters = @{
                                  @"op_type":op_type,
                                  @"usr_phone":userphone,
-                                 @"act_password":password,
+                                 @"act_passwd":password,
                                  };
     [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Person/login" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
-        if ([responseObject isKindOfClass:[NSDictionary class]]) {
+        NSDictionary *loginMessage = [[NSDictionary alloc]initWithDictionary:responseObject];
+        NSNumber *code = [loginMessage objectForKey:@"code"];
+        NSNumber *successcode = [NSNumber numberWithLong:200];
+        if ([code isEqualToNumber:successcode]) {
             UserModel *user = [[UserModel alloc] initWithDictionary:[responseObject objectForKey:@"data"]];
             NSLog(@"phone:%@",user.userPhone);
             success(user);
+        } else {
+            NSError *error = [[NSError alloc] initWithDomain:@"com.app-rc.dingdewen" code:RcErrorTypeLoginFailure userInfo:nil];
+            failure(error);
+            NSLog(@"Error:%@",error);
         }
     } failure:^(NSError *error) {
         failure(error);

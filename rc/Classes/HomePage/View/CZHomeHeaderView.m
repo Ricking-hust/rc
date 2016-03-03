@@ -55,7 +55,6 @@
     return headerView;
 }
 
-
 - (void)setView
 {
     //设置父容器的大小
