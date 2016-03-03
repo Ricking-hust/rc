@@ -13,6 +13,7 @@
 #import "CZUpdateScheduleViewController.h"
 #import "CZMoreTimeCell.h"
 #import "CZRemindTimeCell.h"
+#import "CZDownView.h"
 #define FONTSIZE    14
 
 @interface CZMoreRemindTimeViewController ()
@@ -150,10 +151,10 @@
     if ([cell isKindOfClass:[CZMoreTimeCell class]])
     {
         
-        updateViewController.remindInfo.text = ((CZMoreTimeCell *)cell).timeLable.text;
+        updateViewController.downView.timeInfoLabel.text = ((CZMoreTimeCell *)cell).timeLable.text;
     }else
     {
-        updateViewController.remindInfo.text = ((CZRemindTimeCell *)cell).time.text;
+        updateViewController.downView.remindTimeLabel.text = ((CZRemindTimeCell *)cell).time.text;
     }
     
 }

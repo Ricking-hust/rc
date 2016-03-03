@@ -12,6 +12,8 @@
 #import "UIViewController+LewPopupViewController.h"
 #import "LewPopupViewAnimationSlide.h"
 #import "Masonry.h"
+#import "CZUpView.h"
+#import "CZDownView.h"
 #define FONTSIZE    14  //字体大小
 
 @interface CZAddScheduleViewController ()
@@ -42,7 +44,7 @@
 - (void)addSchedule
 {
 
-    if (![self.contentTextView.text isEqualToString:@"请输入行程地点+内容(40字以内)"])
+    if (![self.downView.textView.text isEqualToString:@"请输入行程地点+内容(40字以内)"])
     {
         CZScheduleViewController *schedule = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
         
@@ -61,13 +63,13 @@
     
     data.tagStr = [self getTag];
     
-    data.contentStr = self.contentTextView.text;
+    data.contentStr = self.downView.textView.text;
     
     data.dayStr = [self getDay];
     
     data.weekStr = [self getWeek];
     
-    data.taglabel = self.tagLabel.text;
+    data.taglabel = self.upView.themeNameLabel.text;
     
     return data;
 }
@@ -76,25 +78,25 @@
 {
     NSString *tag;
 
-    if ([self.tagLabel.text isEqualToString:@"运动"])
+    if ([self.upView.themeNameLabel.text isEqualToString:@"运动"])
     {
         tag = @"sportIcon";
-    }else if ([self.tagLabel.text isEqualToString:@"约会"])
+    }else if ([self.upView.themeNameLabel.text isEqualToString:@"约会"])
     {
         tag = @"appointmentIcon";
-    }else if ([self.tagLabel.text isEqualToString:@"出差"])
+    }else if ([self.upView.themeNameLabel.text isEqualToString:@"出差"])
     {
         tag = @"businessIcon";
-    }else if ([self.tagLabel.text isEqualToString:@"会议"])
+    }else if ([self.upView.themeNameLabel.text isEqualToString:@"会议"])
     {
         tag = @"meetingIcon";
-    }else if ([self.tagLabel.text isEqualToString:@"购物"])
+    }else if ([self.upView.themeNameLabel.text isEqualToString:@"购物"])
     {
         tag = @"shoppingIcon";
-    }else if ([self.tagLabel.text isEqualToString:@"娱乐"])
+    }else if ([self.upView.themeNameLabel.text isEqualToString:@"娱乐"])
     {
         tag = @"entertainmentIcon";
-    }else if ([self.tagLabel.text isEqualToString:@"聚会"])
+    }else if ([self.upView.themeNameLabel.text isEqualToString:@"聚会"])
     {
         tag = @"partIcon";
     }else
@@ -109,17 +111,17 @@
     //NSString *day = [[NSString alloc]init];
     NSString *month = [[NSString alloc]init];
     NSRange rangeOfMonth = NSMakeRange(5, 2);
-    month = [self.timeInfo.text substringWithRange:rangeOfMonth];
+    month = [self.downView.timeInfoLabel.text substringWithRange:rangeOfMonth];
     
     NSRange rangeOfDay = NSMakeRange(8, 2);
-    NSString *day = [self.timeInfo.text substringWithRange:rangeOfDay];
+    NSString *day = [self.downView.timeInfoLabel.text substringWithRange:rangeOfDay];
     return [NSString stringWithFormat:@"%@.%@",month, day];
 }
 - (NSString *)getTime
 {
     NSString *time = [[NSString alloc]init];
-    long int length = [self.timeInfo.text length];
-    time = [self.timeInfo.text substringFromIndex:length - 6];
+    long int length = [self.downView.timeInfoLabel.text length];
+    time = [self.downView.timeInfoLabel.text substringFromIndex:length - 6];
     
     return time;
 }
@@ -129,7 +131,7 @@
     [formatter setDateFormat:@"YYYY年MM月dd日"];
     
     NSRange rangeOfFulltime = NSMakeRange(0, 11);
-    NSString *fullTime = [self.timeInfo.text substringWithRange:rangeOfFulltime];
+    NSString *fullTime = [self.downView.timeInfoLabel.text substringWithRange:rangeOfFulltime];
     
     return [self weekdayStringFromDate:[formatter dateFromString:fullTime]];;
 }

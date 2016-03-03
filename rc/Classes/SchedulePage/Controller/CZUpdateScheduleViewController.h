@@ -7,29 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
+@class CZUpView;
+@class CZDownView;
 
 @interface CZUpdateScheduleViewController : UIViewController
-@property (strong, nonatomic) UIView *themeView;
-@property (strong, nonatomic) UILabel *themeLabel;
-@property (strong, nonatomic) UIImageView *tagimageView;
-@property (strong, nonatomic) UILabel *tagLabel;
-@property (strong, nonatomic) UIButton *moreTagButton;
-
-@property (strong, nonatomic) UIView *contentView;
-@property (strong, nonatomic) UITextView *contentTextView;
-@property (strong, nonatomic) UILabel *limitedLabel;
-@property (strong, nonatomic) UIView *segmentView;
-
-@property (strong, nonatomic) UIView *timeView;
-@property (strong, nonatomic) UILabel *timeLabel;
-@property (strong, nonatomic) UILabel *timeInfo;
-@property (strong, nonatomic) UIButton *moreTimeButton;
-@property (strong, nonatomic) UIView *segmentViewReletiveToRv;
-
-@property (strong, nonatomic) UIView *remindView;
-@property (strong, nonatomic) UILabel *remindLabel;
-@property (strong, nonatomic) UILabel *remindInfo;
-@property (strong, nonatomic) UIButton *moreRemindButton;
+@property (strong, nonatomic) CZUpView *upView;     //上方View
+@property (strong, nonatomic) CZDownView *downView; //下方View
 
 @property (strong, nonatomic) UIView *timeSelectView;
 @property (strong, nonatomic) UIButton *deleteScheduleButton;
