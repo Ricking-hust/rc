@@ -14,35 +14,21 @@
 #import "CZMoreRemindTimeViewController.h"
 #import "CZTagSelectView.h"
 #import "CZTagWithLabelView.h"
+#import "CZUpView.h"
+#import "CZDownView.h"
 
 #define FONTSIZE    14  //字体大小
 #define MAXLENGTH   90  //contentTextView的最大字数
+#define VIEWH self.view.frame.size.width * 0.12
 
 @interface CZUpdateScheduleViewController ()<UITextViewDelegate,UIPickerViewDelegate, UIPickerViewDataSource>
 
+@property (nonatomic, assign) BOOL isShow;
+@property (nonatomic, assign, readonly) CGFloat paddingAtDownViewH; //downView内的子控件之间的纵向间距
+@property (nonatomic, assign, readonly) CGFloat textViewH;          //textView的高度
 @end
 
 @implementation CZUpdateScheduleViewController
-
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    //注册通知,确定contentTextView的text的字数
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewEditChanged:) name:UITextViewTextDidChangeNotification object:self.contentTextView];
-
-#pragma mar - 测试数据
-    self.strThemelabel = @"出差";
-    self.strContent = @"你是我的小呀小苹果，怎么爱你都不嫌多，啊啊啊啊啊你你欠工工工工";
-    self.strTime = @"2012年12月12日22日 22:22";
-    self.strRemind = @"提前一天";
-    self.strTagImg = @"businessSmallIcon";
-
-    self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
-    //设置导航栏的左右按钮
-    [self setNavigationBarItem];
-    
-    [self createSubViews];
-    
-}
 
 #pragma mark - 懒加载选择器的数据
 - (NSMutableArray *)years
@@ -158,427 +144,258 @@
     }
     return _times;
 }
-#pragma mark - 创建子控件
-- (void)createSubViews
+- (void)viewDidLoad
 {
-    [self createThemeView];
+    [super viewDidLoad];
+    //注册通知,确定contentTextView的text的字数
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(textViewEditChanged:) name:UITextViewTextDidChangeNotification object:self.downView.textView];
+    self.isShow = NO;
+    _paddingAtDownViewH = 10;
+    _textViewH = self.view.frame.size.width * 0.23;
+#pragma mar - 测试数据
+    self.strThemelabel = @"出差";
+    self.strContent = @"你是我的小呀小苹果，怎么爱你都不嫌多，啊啊啊啊啊你你欠工工工工";
+    self.strTime = @"2012年12月12日 22:22";
+    self.strRemind = @"提前一天";
+    self.strTagImg = @"businessSmallIcon";
     
-    [self createContentView];
-}
-- (void)createThemeView
-{
-    CGRect screenRect = [[UIScreen mainScreen]bounds];
-    self.themeView = [[UIView alloc]init];
-    self.themeView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:self.themeView];
-    CGFloat themeViewH = screenRect.size.width * 0.13;            //themeView的高度
-    [self.themeView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_top).with.offset(64+10);
-        make.left.equalTo(self.view.mas_left).with.offset(0);
-        make.height.mas_equalTo(themeViewH);
-        make.width.mas_equalTo(screenRect.size.width);
-    }];
-    
-    //行程主题
-    self.themeLabel = [[UILabel alloc]init];
-    self.themeLabel.text = @"行程主题";
-    [self.themeView addSubview:self.themeLabel];
-    UITapGestureRecognizer *themeGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickMoreTagButton)];
-    [self.themeView addGestureRecognizer:themeGesture];
-    CGFloat leftPaddingInThemeViewOfThemeLabel = 10;
-    CGSize themeLabelSize = [self setLabelStyle:self.themeLabel WithContent:self.themeLabel.text];
-    self.themeLabel.alpha = 0.8;
-    [self.themeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.themeView);
-        make.left.equalTo(self.themeView.mas_left).with.offset(leftPaddingInThemeViewOfThemeLabel);
-        make.size.mas_equalTo(CGSizeMake(themeLabelSize.width+1, themeLabelSize.height+1));
-    }];
-    
-    //themeView的下分割线
-    UIView *segmentDownLine = [[UIView alloc]init];
-    segmentDownLine.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
-    segmentDownLine.alpha = 0.5;
-    [self.themeView addSubview:segmentDownLine];
-    [segmentDownLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.themeView.mas_left);
-        make.bottom.equalTo(self.themeView.mas_bottom);
-        make.height.mas_equalTo(2);
-        make.width.mas_equalTo(screenRect.size.width);
-    }];
-    //下拉按钮,标签,行程图标
-    CGFloat padding = 5;    //下拉按钮,标签,行程图标三者之间的间距
-    
-    self.moreTagButton = [[UIButton alloc]init];
-    [self.themeView addSubview:self.moreTagButton];
-    [self.moreTagButton addTarget:self action:@selector(onClickMoreTagButton) forControlEvents:UIControlEventTouchUpInside];
-    [self.moreTagButton setImage:[UIImage imageNamed:@"moreTagbuttonIcon"] forState:UIControlStateNormal];
-    
-    CGFloat rightPaddingInThemeViewOfMoreTagButton = 10;
-    [self.moreTagButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.themeView);
-        make.right.equalTo(self.themeView.mas_right).with.offset(-rightPaddingInThemeViewOfMoreTagButton);
-        make.size.mas_equalTo(CGSizeMake(self.moreTagButton.imageView.image.size.width+10, self.moreTagButton.imageView.image.size.height));
-    }];
-    
-    self.tagLabel = [[UILabel alloc]init];
-    [self.themeView addSubview:self.tagLabel];
-#pragma mark - 行程标签测试语句
-    self.tagLabel.text = @"出差";
-    CGSize tagLabelSize = [self setLabelStyle:self.tagLabel WithContent:self.tagLabel.text];
-    [self.tagLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.themeView);
-        make.right.equalTo(self.moreTagButton.mas_left).with.offset(-padding);
-        make.size.mas_equalTo(CGSizeMake(tagLabelSize.width+1, tagLabelSize.height+1));
-    }];
-    
-    self.tagimageView = [[UIImageView alloc]init];
-    [self.themeView addSubview:self.tagimageView];
-#pragma mark - 行程图标测试语句
-    self.tagimageView.image = [UIImage imageNamed:self.strTagImg];
-    [self.tagimageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.themeView);
-        make.right.equalTo(self.tagLabel.mas_left).with.offset(-padding);
-        make.size.mas_equalTo(self.tagimageView.image.size);
-    }];
+    self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
+    //设置导航栏的左右按钮
+    [self setNavigationBarItem];
+    [self.view addSubview:self.upView];
+    [self.view addSubview:self.downView];
+ 
+    [self setSubViewsOfUpView];
+    [self setSubViewsOfDownView];
     
 }
 
-- (void)createContentView
+#pragma mark - 初始化
+- (id)init
 {
-    CGRect screenRect = [[UIScreen mainScreen]bounds];
-    self.contentView = [[UIView alloc]init];
-    [self.view addSubview:self.contentView];
-    self.contentView.backgroundColor = [UIColor whiteColor];
-    
-    CGFloat topPaddingRelativeToThemeView = 10;
-    CGFloat contentViewH = screenRect.size.width * 0.1 *2 + screenRect.size.width * 0.32 + topPaddingRelativeToThemeView * 4;
-    [self.contentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view.mas_left);
-        make.top.equalTo(self.themeView.mas_bottom).with.offset(topPaddingRelativeToThemeView);
-        make.right.equalTo(self.view.mas_right);
-        make.height.mas_equalTo(contentViewH);
-    }];
-
-    [self createContentTextView];
-    [self createLimitedLabel];
-    [self createTimeView];
-    [self createRemindView];
-    [self createDeleteScheduleButton];
-    
-}
-#pragma mark -  创建TextView
-- (void)createContentTextView
-{
-    CGRect screenRect = [[UIScreen mainScreen]bounds];
-    
-    self.contentTextView = [[UITextView alloc]initWithFrame:CGRectMake(0, 0, 300, 30)];
-    [self.contentView addSubview:self.contentTextView];
-    self.contentTextView.backgroundColor = [UIColor whiteColor];
-    
-    self.contentTextView.userInteractionEnabled = YES;
-    
-    self.contentTextView.scrollEnabled = YES;    //当文字超过视图的边框时是否允许滑动，默认为“YES”
-    self.contentTextView.editable = YES;        //是否允许编辑内容，默认为“YES”
-    self.contentTextView.delegate = self;       //设置代理方法的实现类
-    self.contentTextView.font=[UIFont fontWithName:@"Arial" size:14.0]; //设置字体名字和字体大小;
-    self.contentTextView.returnKeyType = UIReturnKeyDone;//return键的类型
-    self.contentTextView.keyboardType = UIKeyboardTypeDefault;//键盘类型
-    self.contentTextView.textAlignment = NSTextAlignmentLeft; //文本显示的位置默认为居左
-    self.contentTextView.textColor = [UIColor blackColor];
-    self.contentTextView.text = @"请输入行程地点+内容(40字以内)";//设置显示的文本内容
-    self.contentTextView.alpha = 0.5;
-    self.automaticallyAdjustsScrollViewInsets = NO;
-    CGFloat padding = 10;
-    CGFloat contentTextFieldH = screenRect.size.width * 0.23;
-    [self.contentTextView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView.mas_left).with.offset(padding);
-        make.top.equalTo(self.contentView.mas_top).with.offset(padding);
-        make.right.equalTo(self.contentView.mas_right).with.offset(-padding);
-        make.height.mas_equalTo(contentTextFieldH);
-    }];
-}
-- (void)createLimitedLabel
-{
-    self.limitedLabel = [[UILabel alloc]init];
-    [self.contentView addSubview:self.limitedLabel];
-    self.limitedLabel.text = @"40字";
-    CGFloat padding = 10;
-    CGSize LimitedLabelSize = [self setLabelStyle:self.limitedLabel WithContent:self.limitedLabel.text];
-    self.limitedLabel.alpha = 0.5;
-    [self.limitedLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentTextView.mas_bottom).with.offset(padding);
-        make.right.equalTo(self.contentTextView.mas_right);
-        make.size.mas_equalTo(CGSizeMake(LimitedLabelSize.width+1, LimitedLabelSize.height+1));
-    }];
-    //LimitedLabel下分割线
-    UIView *segmentDownLine = [[UIView alloc]init];
-    [self.contentView addSubview:segmentDownLine];
-    segmentDownLine.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
-    segmentDownLine.alpha = 0.5;
-    CGFloat paddingReletiveToLimintedLabel = 10;
-    [segmentDownLine mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.limitedLabel.mas_bottom).with.offset(paddingReletiveToLimintedLabel);
-        make.left.and.right.equalTo(self.contentView);
-        make.height.mas_equalTo(1);
-    }];
-    //下分割线下的分割视图
-    self.segmentView = [[UIView alloc]init];
-    [self.contentView addSubview:self.segmentView];
-    self.segmentView.backgroundColor = self.view.backgroundColor;
-    CGFloat segmentViewH = 10;      //分割视图的高度
-    [self.segmentView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(segmentDownLine.mas_bottom);
-        make.left.right.equalTo(self.contentView);
-        make.height.mas_equalTo(segmentViewH);
-    }];
-}
-- (void)createTimeView
-{
-    self.timeView = [[UIView alloc]init];
-    [self.contentView addSubview:self.timeView];
-    self.timeView.backgroundColor = [UIColor whiteColor];
-    UITapGestureRecognizer *timeGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickMoreTimeButton)];
-    [self.timeView addGestureRecognizer:timeGesture];
-    [self.timeView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.segmentView.mas_bottom);
-        make.left.and.right.equalTo(self.contentView);
-        make.height.equalTo(self.themeView.mas_height);
-    }];
-    
-    //创建timeLabel
-    self.timeLabel = [[UILabel alloc]init];
-    [self.timeView addSubview:self.timeLabel];
-    self.timeLabel.text = @"行程时间";
-    CGFloat padding = 10;
-    CGSize timeLabelSize = [self setLabelStyle:self.timeLabel WithContent:self.timeLabel.text];
-    self.timeLabel.alpha = self.themeLabel.alpha;
-    [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.timeView);
-        make.left.equalTo(self.themeLabel.mas_left);
-        make.size.mas_equalTo(CGSizeMake(timeLabelSize.width+1, timeLabelSize.height+1));
-    }];
-    //创建mroeTimeButton,timeInfo
-    self.moreTimeButton = [[UIButton alloc]init];
-    [self.timeView addSubview:self.moreTimeButton];
-    [self.moreTimeButton setImage:[UIImage imageNamed:@"moreTagbuttonIcon"] forState:UIControlStateNormal];
-    [self.moreTimeButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.timeView);
-        make.right.equalTo(self.timeView.mas_right).with.offset(-padding);
-        make.size.mas_equalTo(CGSizeMake(self.moreTimeButton.imageView.image.size.width+5, self.moreTimeButton.imageView.image.size.height));
-    }];
-    [self.moreTimeButton addTarget:self action:@selector(onClickMoreTimeButton) forControlEvents:UIControlEventTouchUpInside];
-    
-    self.timeInfo = [[UILabel alloc]init];
-    [self.timeView addSubview:self.timeInfo];
-    //默认显示当前系统时间
-    NSDate *senddate=[NSDate date];
-    NSDateFormatter  *dateformatter=[[NSDateFormatter alloc] init];
-    [dateformatter setDateFormat:@"YYYY年MM月dd日 HH:mm"];
-    
-    NSString *locationString=[dateformatter stringFromDate:senddate];
-    NSRange range = NSMakeRange(15, 2);
-    NSString *defaultDate = [locationString stringByReplacingCharactersInRange:range withString:@"00"];
-    
-
-    CGSize timeInfoSize = [self setLabelStyle:self.timeInfo WithContent:defaultDate];
-    
-    [self.timeInfo mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.timeView);
-        make.right.equalTo(self.moreTimeButton.mas_left).with.offset(-padding);
-        make.size.mas_equalTo(CGSizeMake(timeInfoSize.width+1, timeInfoSize.height+1));
-    }];
-    
-    //创建
-    self.segmentViewReletiveToRv = [[UIView alloc]init];
-    [self.contentView addSubview:self.segmentViewReletiveToRv];
-    self.segmentViewReletiveToRv.backgroundColor = self.view.backgroundColor;
-    [self.segmentViewReletiveToRv mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.timeView.mas_bottom);
-        make.left.and.right.equalTo(self.contentView);
-        make.height.mas_equalTo(padding);
-    }];
-    
-}
-- (void)createRemindView
-{
-    self.remindView = [[UIView alloc]init];
-    [self.contentView addSubview:self.remindView];
-    self.remindView.backgroundColor = [UIColor whiteColor];
-    UITapGestureRecognizer *remindGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickMoreRemindTime)];
-    [self.remindView addGestureRecognizer:remindGesture];
-    [self.remindView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.segmentViewReletiveToRv.mas_bottom);
-        make.left.and.right.equalTo(self.contentView);
-        make.height.equalTo(self.themeView.mas_height);
-    }];
-    //创建
-    self.remindLabel = [[UILabel alloc]init];
-    [self.remindView addSubview:self.remindLabel];
-    self.remindLabel.text = @"需要提醒";
-    CGSize remindLabelSize = [self setLabelStyle:self.remindLabel WithContent:self.remindLabel.text];
-    self.remindLabel.alpha = self.themeLabel.alpha;
-    [self.remindLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.remindView);
-        make.left.equalTo(self.themeLabel.mas_left);
-        make.size.mas_equalTo(CGSizeMake(remindLabelSize.width+1, remindLabelSize.height+1));
-    }];
-    
-    //创建moreRemindButton,remindInfo
-    self.moreRemindButton = [[UIButton alloc]init];
-    [self.remindView addSubview:self.moreRemindButton];
-    [self.moreRemindButton setImage:[UIImage imageNamed:@"nextIcon"] forState:UIControlStateNormal];
-    [self.moreRemindButton addTarget:self action:@selector(onClickMoreRemindTime) forControlEvents:UIControlEventTouchUpInside];
-    CGFloat padding = 10;
-    [self.moreRemindButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.remindView.mas_right).with.offset(-padding);
-        make.centerY.equalTo(self.remindView);
-        make.size.mas_equalTo(CGSizeMake(self.moreRemindButton.imageView.image.size.width+5, self.moreRemindButton.imageView.image.size.height));
-    }];
-    
-    self.remindInfo = [[UILabel alloc]init];
-    [self.remindView addSubview:self.remindInfo];
-    CGSize remindInfoSize = [self setLabelStyle:self.remindInfo WithContent:self.strRemind];
-    [self.remindInfo mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.remindView);
-        make.right.equalTo(self.moreRemindButton.mas_left).with.offset(-padding);
-        make.size.mas_equalTo(CGSizeMake(remindInfoSize.width+1, remindInfoSize.height+1));
-    }];
-    
-    
-}
-- (void)createDeleteScheduleButton
-{
-    CGRect screenRect = [[UIScreen mainScreen]bounds];
-    self.deleteScheduleButton = [[UIButton alloc]init];
-    [self.view addSubview:self.deleteScheduleButton];
-    [self.deleteScheduleButton setTitle:@"删除行程" forState:UIControlStateNormal];
-    [self.deleteScheduleButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    [self.deleteScheduleButton setBackgroundColor:[UIColor colorWithRed:247.0/255.0 green:79.0/255.0 blue:14.0/255.0 alpha:1.0]];
-    CGFloat buttonW = screenRect.size.width * 0.85;
-    CGFloat buttonH = buttonW * 0.14;
-    CGFloat paddingRelativeToContentView = 20;
-    [self.deleteScheduleButton mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.view);
-        make.top.equalTo(self.contentView.mas_bottom).with.offset(paddingRelativeToContentView + 10);
-        make.size.mas_equalTo(CGSizeMake(buttonW, buttonH));
-    }];
-}
-//设置导航栏的左右按钮
-- (void)setNavigationBarItem
-{
-    UIImage *image = [UIImage imageNamed:@"backIcon"];
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(back)];
-    
-    [self.navigationItem setLeftBarButtonItem:leftButton];
-    
-    UIBarButtonItem *rigthButton = [[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(commintModify)];
-    [self.navigationItem setRightBarButtonItem:rigthButton];
-    
-}
-- (void)back
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-//提交修改
-- (void)commintModify
-{
-    
-}
-
-#pragma mark - 进入时间选择视图控制器
-- (void)onClickMoreRemindTime
-{
-    //收起键盘
-    [self.contentTextView resignFirstResponder];
-    
-    CZMoreRemindTimeViewController *moreRemindTimeViewController = [[CZMoreRemindTimeViewController alloc]init];
-    moreRemindTimeViewController.title = @"提醒时间";
-    [self.navigationController pushViewController:moreRemindTimeViewController animated:YES];
-}
-#pragma mark - 弹出主题选择视图
-- (void)onClickMoreTagButton
-{
-    //收起键盘
-    [self.contentTextView resignFirstResponder];
-    
-    CZTagSelectView *tagSelectView = [CZTagSelectView tagSelectView];
-
-    [tagSelectView.meetingTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
-    [tagSelectView.appointmentTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
-    [tagSelectView.businessTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
-    [tagSelectView.sportTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
-    [tagSelectView.shoppingTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
-    [tagSelectView.entertainmentTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
-    [tagSelectView.partTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
-    [tagSelectView.otherTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
-    
-    LewPopupViewAnimationSlide *animation = [[LewPopupViewAnimationSlide alloc]init];
-    animation.type = LewPopupViewAnimationSlideTypeBottomBottom;
-    [self lew_presentPopupView:tagSelectView animation:animation dismissed:^{
-        NSLog(@"主题选择视图已弹出");
-    }];
-}
-//选择弹出的主题事件
-- (void)selectTheme:(UIButton *)btn
-{
-    UIView *view = btn.superview;
-    
-    UILabel *label = [view viewWithTag:10]; //10表示主题标签在其父视图中的Tag
-    //UIButton *button = [view viewWithTag:9];//9表示主题按钮在其父视图中的Tag
-    
-    self.tagLabel.text = label.text;
-    if ([label.text isEqualToString:@"运动"])
+    if (self = [super init])
     {
-        self.tagimageView.image = [UIImage imageNamed:@"sportSmallIcon"];
-    }else if ([label.text isEqualToString:@"约会"])
-    {
-        self.tagimageView.image = [UIImage imageNamed:@"appointmentSmallIcon"];
-    }else if ([label.text isEqualToString:@"出差"])
-    {
-        self.tagimageView.image = [UIImage imageNamed:@"businessSmallIcon"];
-    }else if ([label.text isEqualToString:@"会议"])
-    {
-        self.tagimageView.image = [UIImage imageNamed:@"meetingSmallIcon"];
-    }else if ([label.text isEqualToString:@"购物"])
-    {
-        self.tagimageView.image = [UIImage imageNamed:@"shoppingSmallIcon"];
-    }else if ([label.text isEqualToString:@"娱乐"])
-    {
-        self.tagimageView.image = [UIImage imageNamed:@"entertainmentSmallIcon"];
-    }else if ([label.text isEqualToString:@"聚会"])
-    {
-        self.tagimageView.image = [UIImage imageNamed:@"partSmallIcon"];
-    }else
-    {
-        self.tagimageView.image = [UIImage imageNamed:@"otherSmallIcon"];
+        self.upView = [[CZUpView alloc]init];
+        self.downView = [[CZDownView alloc]init];
     }
-
-    [self lew_dismissPopupView];
+    return self;
 }
+#pragma mark - 对upView的子控件进行赋值
+- (void)setSubViewsOfUpView
+{
+    self.upView.tagImgView.image = [UIImage imageNamed:self.strTagImg];
+    self.upView.themeNameLabel.text = self.strThemelabel;
+    self.upView.img.image = [UIImage imageNamed:@"moreTagbuttonIcon"];
+    //对upView的子控件themeView添加点击事件
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickMoreTag)];
+    [self.upView.themeView addGestureRecognizer:gesture];
+    [self addSubViewsConstraintOfUpView];   //添加约束
+}
+- (void)addSubViewsConstraintOfUpView
+{
+    //1.添加upView约束
+    [self.upView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left);
+        make.top.equalTo(self.view.mas_top).offset(64 + 10);
+        make.width.mas_equalTo(self.view.frame.size.width);
+        make.height.mas_equalTo(VIEWH);
+    }];
+    //2.添加upView的子控件themeView约束
+    [self.upView.themeView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.upView.mas_left);
+        make.top.equalTo(self.upView.mas_top);
+        make.width.equalTo(self.upView.mas_width);
+        make.height.mas_equalTo(VIEWH);
+    }];
+    //3.添加themeView的子控件themeLabel约束
+    [self.upView.themeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.upView.themeView.mas_centerY);
+        make.left.equalTo(self.upView.themeView.mas_left).offset(10);
+        make.size.mas_equalTo(CGSizeMake(70, 20));
+    }];
+    //4.添加themeView的子控件img约束
+    [self.upView.img mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.upView.themeView.mas_centerY);
+        make.right.equalTo(self.upView.themeView.mas_right).offset(-10);
+        make.size.mas_equalTo(self.upView.img.image.size);
+    }];
+    //5.添加themeView的子控件themeNameLabel约束
+    CGSize themeNameSize = [self sizeWithText:self.upView.themeNameLabel.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:FONTSIZE];
+    [self.upView.themeNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.upView.themeView.mas_centerY);
+        make.right.equalTo(self.upView.img.mas_left).offset(-10);
+        make.size.mas_equalTo(CGSizeMake(themeNameSize.width + 1, themeNameSize.height + 1));
+    }];
+    //6.添加themeView的子控件themeNameLabel约束
+    [self.upView.tagImgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.upView.themeView.mas_centerY);
+        make.right.equalTo(self.upView.themeNameLabel.mas_left).offset(-10);
+        make.size.mas_equalTo(self.upView.tagImgView.image.size);
+    }];
+    [self.upView.segLine mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.upView.themeView.mas_left).offset(10);
+        make.top.equalTo(self.upView.themeView.mas_bottom).offset(-1);
+        make.height.mas_equalTo(0.5);
+        make.width.mas_equalTo(0);
+    }];
+}
+#pragma mark - 对downView的子控件进行赋值
+- (void)setSubViewsOfDownView
+{
+    //对整个downView布局
+    CGFloat paddingToUpView = 20; //upView与downView之间的纵向间距
+    CGFloat heightOfLimintedLabel = [self sizeWithText:self.downView.limitedLabel.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:FONTSIZE].height;
+    CGFloat height = self.paddingAtDownViewH * 2 + self.textViewH + VIEWH * 2 + heightOfLimintedLabel + 20;
+    [self.downView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left);
+        make.top.equalTo(self.upView.mas_bottom).offset(paddingToUpView);
+        make.width.mas_equalTo(self.view.frame.size.width);
+        make.height.mas_equalTo(height);
+    }];
+    //1.设置文本框
+    [self addContextViewConstraint];
+    //2.设置行程时间框
+    [self setSubViewOfTimeView];
+    //3.设置提醒时间框
+    [self setSubViewOfRemindView];
+}
+#pragma mark - 对downView的子控件contextView布局
+- (void)addContextViewConstraint
+{
 
-#pragma mark - 选择提醒时间
-- (void)onClickMoreTimeButton
+    CGSize sizeOfLimintedLabel = [self sizeWithText:self.downView.limitedLabel.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:FONTSIZE];
+    [self.downView.contextView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.downView.mas_top);
+        make.left.equalTo(self.downView.mas_left);
+        make.width.equalTo(self.downView.mas_width);
+        make.height.mas_equalTo(self.textViewH + 10 + sizeOfLimintedLabel.height +10);
+    }];
+
+    [self setTextViewProperty:self.downView.textView];
+    CGFloat padding = 10;
+    [self.downView.textView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.downView.contextView.mas_top).offset(padding);
+        make.left.equalTo(self.downView.contextView.mas_left).offset(padding);
+        make.right.equalTo(self.downView.contextView.mas_right).offset(-padding);
+        make.height.mas_equalTo(self.view.frame.size.width * 0.23);
+    }];
+    [self.downView.limitedLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.downView.textView.mas_bottom).with.offset(5);
+        make.right.equalTo(self.downView.contextView.mas_right).offset(-10);
+        make.size.mas_equalTo(CGSizeMake(sizeOfLimintedLabel.width+1, sizeOfLimintedLabel.height+1));
+    }];
+}
+//设置textView的属性
+- (void)setTextViewProperty:(UITextView *)textView
+{
+    textView.backgroundColor = [UIColor whiteColor];
+    textView.userInteractionEnabled = YES;
+    textView.scrollEnabled = YES;    //当文字超过视图的边框时是否允许滑动，默认为“YES”
+    textView.editable = YES;        //是否允许编辑内容，默认为“YES”
+    textView.delegate = self;       //设置代理方法的实现类
+    textView.font=[UIFont fontWithName:@"Arial" size:14.0]; //设置字体名字和字体大小;
+    textView.returnKeyType = UIReturnKeyDone;//return键的类型
+    textView.keyboardType = UIKeyboardTypeDefault;//键盘类型
+    textView.textAlignment = NSTextAlignmentLeft; //文本显示的位置默认为居左
+    textView.textColor = [UIColor blackColor];
+    textView.text = @"请输入行程地点+内容(40字以内)";//设置显示的文本内容
+    textView.alpha = 0.5;
+    self.automaticallyAdjustsScrollViewInsets = NO;
+}
+- (void)setSubViewOfTimeView
+{
+    self.downView.moreTimeImg.image = [UIImage imageNamed:@"moreTagbuttonIcon"];
+    self.downView.timeInfoLabel.text = self.strTime;
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickTimeView)];
+    [self.downView.timeView addGestureRecognizer:gesture];
+    //对行程时间框的子控件进行赋值
+    [self addTimeViewConstraint];
+    
+}
+- (void)addTimeViewConstraint
+{
+    [self.downView.timeView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.downView.contextView.mas_bottom).offset(self.paddingAtDownViewH);
+        make.left.equalTo(self.downView.mas_left);
+        make.width.mas_equalTo(self.view.frame.size.width);
+        make.height.mas_equalTo(VIEWH);
+    }];
+    //设置timeView内的子控件约束
+    [self.downView.timelabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.downView.timeView.mas_left).offset(10);
+        make.centerY.equalTo(self.downView.timeView.mas_centerY);
+        make.size.mas_equalTo(CGSizeMake(70, 20));
+    }];
+    [self.downView.moreTimeImg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.downView.timeView.mas_centerY);
+        make.right.equalTo(self.downView.timeView.mas_right).offset(-10);
+        make.size.mas_equalTo(self.downView.moreTimeImg.image.size);
+    }];
+    CGSize timeSize = [self sizeWithText:self.downView.timeInfoLabel.text maxSize:CGSizeMake(MAXFLOAT, 20) fontSize:14];
+    [self.downView.timeInfoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.downView.timeView.mas_centerY);
+        make.right.equalTo(self.downView.moreTimeImg.mas_left).offset(-10);
+        make.size.mas_equalTo(CGSizeMake(timeSize.width + 1, timeSize.height + 1));
+    }];
+}
+- (void)setSubViewOfRemindView
+{
+    self.downView.remindTimeLabel.text = self.strRemind;
+    self.downView.moreRemindImg.image = [UIImage imageNamed:@"moreTagbuttonIcon"];
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickRemindView)];
+    [self.downView.remindView addGestureRecognizer:gesture];
+    [self addRemindViewConstraint];
+}
+- (void)addRemindViewConstraint
+{
+    [self.downView.remindView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.downView.mas_left);
+        make.top.equalTo(self.downView.timeView.mas_bottom).offset(10);
+        make.width.mas_equalTo(self.view.frame.size.width);
+        make.height.mas_equalTo(VIEWH);
+    }];
+    [self.downView.remindLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.downView.remindView.mas_centerY);
+        make.left.equalTo(self.downView.remindView.mas_left).offset(10);
+        make.size.mas_equalTo(CGSizeMake(70, 20));
+    }];
+    [self.downView.moreRemindImg mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.downView.remindView.mas_centerY);
+        make.right.equalTo(self.downView.remindView.mas_right).offset(-10);
+        make.size.mas_equalTo(self.downView.moreRemindImg.image.size);
+    }];
+    CGSize remindTimeLableSize = [self sizeWithText:self.downView.remindTimeLabel.text maxSize:CGSizeMake(MAXFLOAT, 20) fontSize:14];
+    [self.downView.remindTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.downView.remindView.mas_centerY);
+        make.right.equalTo(self.downView.moreRemindImg.mas_left).offset(-10);
+        make.size.mas_equalTo(CGSizeMake(remindTimeLableSize.width+1, remindTimeLableSize.height+1));
+    }];
+}
+#pragma mark - timeView的点击事件
+- (void)onClickTimeView
 {
     //收起键盘
-    [self.contentTextView resignFirstResponder];
-
+    [self.downView.textView resignFirstResponder];
+    
     CZTimeSelectView *selectView = [CZTimeSelectView selectView];
     selectView.pickView.dataSource = self;
     selectView.pickView.delegate = self;
-    [selectView.OKbtn addTarget:self action:@selector(didSelectedTime:) forControlEvents:UIControlEventTouchUpInside];
+    [selectView.OKbtn addTarget:self action:@selector(selectTime:) forControlEvents:UIControlEventTouchUpInside];
     
     LewPopupViewAnimationSlide *animation = [[LewPopupViewAnimationSlide alloc]init];
     animation.type = LewPopupViewAnimationSlideTypeBottomBottom;
     [self lew_presentPopupView:selectView animation:animation dismissed:^{
         NSLog(@"时间选择视图已弹出");
     }];
+
 }
-- (void)didSelectedTime:(UIButton *)btn
+#pragma mark - 时间选择器确定
+- (void)selectTime:(UIButton *)btn
 {
     UIView *view = btn.superview;
     
     UIPickerView *pickView = [view viewWithTag:10];
-
+    
     long int rowYear = [pickView selectedRowInComponent:0];
     NSString *year = self.years[rowYear];
     long int rowMonth = [pickView selectedRowInComponent:1];
@@ -588,16 +405,25 @@
     long int rowTime = [pickView selectedRowInComponent:3];
     NSString *time = self.times[rowTime];
     
-    self.timeInfo.text = [NSString stringWithFormat:@"%@年%@月%@日 %@", year, month, day, time];
-    CGSize timeInfoSize = [self setLabelStyle:self.timeInfo WithContent:self.timeInfo.text];
-    [self.timeInfo mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.timeView);
-        make.right.equalTo(self.moreTimeButton.mas_left).with.offset(-5);
+    self.downView.timeInfoLabel.text = [NSString stringWithFormat:@"%@年%@月%@日 %@", year, month, day, time];
+    CGSize timeInfoSize = [self sizeWithText:self.downView.timeInfoLabel.text maxSize:CGSizeMake(MAXFLOAT, 20) fontSize:14];
+    [self.downView.timeInfoLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(timeInfoSize.width+1, timeInfoSize.height+1));
     }];
     [self lew_dismissPopupView];
 }
 
+#pragma mark - remindView点击事件
+- (void)onClickRemindView
+{
+    //收起键盘
+    [self.downView.textView resignFirstResponder];
+    
+    CZMoreRemindTimeViewController *moreRemindTimeViewController = [[CZMoreRemindTimeViewController alloc]init];
+    moreRemindTimeViewController.title = @"提醒时间";
+    [self.navigationController pushViewController:moreRemindTimeViewController animated:YES];
+    
+}
 #pragma mark - TextView在的代理方法
 - (BOOL)textView:(UITextView *)textView shouldChangeTextInRange:(NSRange)range replacementText:(NSString *)text
 {
@@ -605,7 +431,7 @@
     if ([text isEqualToString:@"\n"]) {
         
         [textView resignFirstResponder];
-
+        
         return NO;
     }
     
@@ -613,9 +439,10 @@
 }
 - (void)textViewDidBeginEditing:(UITextView *)textView
 {
-    if ([self.contentTextView.text isEqualToString:@"请输入行程地点+内容(40字以内)"]) {
-        self.contentTextView.text = @"";
-        self.contentTextView.alpha = 1.0;
+    if ([textView.text isEqualToString:@"请输入行程地点+内容(40字以内)"])
+    {
+        textView.text = @"";
+        textView.alpha = 1.0;
     }
 }
 
@@ -628,10 +455,11 @@
     }
 }
 
-// 监听文本改变
+#pragma mark -  监听textView文本改变实现限制字数
+
 - (void)textViewEditChanged:(NSNotification *)obj{
     
-    UITextView *textView = self.contentTextView;
+    UITextView *textView = self.downView.textView;
     
     NSString *toBeString = textView.text;
     NSString *lang = self.textInputMode.primaryLanguage;
@@ -656,10 +484,10 @@
         }
     }
     CGRect rect = [[UIScreen mainScreen]bounds];
-    CGFloat heigth = [self heightForString:self.contentTextView andWidth:rect.size.width - 8];
-    self.contentTextView.contentSize = CGSizeMake(0, heigth+8);
-    NSRange range = NSMakeRange([self.contentTextView.text length]- 1, 1);
-    [self.contentTextView scrollRangeToVisible:range];
+    CGFloat heigth = [self heightForString:self.downView.textView andWidth:rect.size.width - 8];
+    self.downView.textView.contentSize = CGSizeMake(0, heigth+8);
+    NSRange range = NSMakeRange([self.downView.textView.text length]- 1, 1);
+    [self.downView.textView scrollRangeToVisible:range];
 }
 /**
  * @method 获取指定宽度width的字符串在UITextView上的高度
@@ -667,9 +495,147 @@
  * @param Width 限制字符串显示区域的宽度
  * @result float 返回的高度
  */
-- (CGFloat) heightForString:(UITextView *)textView andWidth:(float)width{
+- (CGFloat) heightForString:(UITextView *)textView andWidth:(float)width
+{
     CGSize sizeToFit = [textView sizeThatFits:CGSizeMake(width, MAXFLOAT)];
     return sizeToFit.height;
+}
+//收起键盘
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.downView.textView resignFirstResponder];
+}
+//设置导航栏的左右按钮
+- (void)setNavigationBarItem
+{
+    UIImage *image = [UIImage imageNamed:@"backIcon"];
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(back)];
+    
+    [self.navigationItem setLeftBarButtonItem:leftButton];
+    
+    UIBarButtonItem *rigthButton = [[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(commintModify)];
+    [self.navigationItem setRightBarButtonItem:rigthButton];
+    
+}
+- (void)back
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+//提交修改
+- (void)commintModify
+{
+    
+}
+#pragma mark - 上方upView的点击事件
+- (void)onClickMoreTag
+{
+    //收起键盘
+    [self.downView.textView resignFirstResponder];
+    
+    self.isShow = !self.isShow;
+    if (self.isShow)
+    {
+        [self didShowMoreTag];
+    }else
+    {
+        [self didHideMoreTag];
+    }
+    
+//    CZTagSelectView *tagSelectView = [CZTagSelectView tagSelectView];
+//
+//    [tagSelectView.meetingTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+//    [tagSelectView.appointmentTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+//    [tagSelectView.businessTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+//    [tagSelectView.sportTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+//    [tagSelectView.shoppingTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+//    [tagSelectView.entertainmentTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+//    [tagSelectView.partTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+//    [tagSelectView.otherTag.tagButton addTarget:self action:@selector(selectTheme:) forControlEvents:UIControlEventTouchUpInside];
+    
+//    LewPopupViewAnimationSlide *animation = [[LewPopupViewAnimationSlide alloc]init];
+//    animation.type = LewPopupViewAnimationSlideTypeBottomBottom;
+//    [self lew_presentPopupView:tagSelectView animation:animation dismissed:^{
+//        NSLog(@"主题选择视图已弹出");
+//    }];
+}
+#pragma mark - 显示下拉更多标签按钮
+- (void)didShowMoreTag
+{
+    self.upView.img.image = [UIImage imageNamed:@"up_arrow"];
+    [UIView animateWithDuration:0.5 animations:^{
+        //1.增加themeView的高度
+        [self.upView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(VIEWH + 150);
+        }];
+        //显示分割线
+        [self.upView.segLine mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.mas_equalTo(self.view.frame.size.width - 20);
+        }];
+        //3.重新布局
+        [self.view layoutIfNeeded];
+    }];
+
+}
+#pragma mark - 隐藏下拉更多标签按钮
+- (void)didHideMoreTag
+{
+    self.upView.img.image = [UIImage imageNamed:@"moreTagbuttonIcon"];
+    //1.减少themeView的高度
+    [UIView animateWithDuration:0.5 animations:^{
+        //1.减少themeView的高度
+        [self.upView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(VIEWH);
+        }];
+        //隐藏分割线
+        [self.upView.segLine mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.width.mas_equalTo(0);
+        }];
+         //3.重新布局
+        [self.view layoutIfNeeded];
+    }];
+}
+//初始化弹出的标签面板
+- (void)initMoreTagView
+{
+    
+}
+
+//选择弹出的主题事件
+- (void)selectTheme:(UIButton *)btn
+{
+    UIView *view = btn.superview;
+    
+    UILabel *label = [view viewWithTag:10]; //10表示主题标签在其父视图中的Tag
+    //UIButton *button = [view viewWithTag:9];//9表示主题按钮在其父视图中的Tag
+    
+    self.upView.themeNameLabel.text = label.text;
+    if ([label.text isEqualToString:@"运动"])
+    {
+        self.upView.tagImgView.image = [UIImage imageNamed:@"sportSmallIcon"];
+    }else if ([label.text isEqualToString:@"约会"])
+    {
+        self.upView.tagImgView.image  = [UIImage imageNamed:@"appointmentSmallIcon"];
+    }else if ([label.text isEqualToString:@"出差"])
+    {
+        self.upView.tagImgView.image  = [UIImage imageNamed:@"businessSmallIcon"];
+    }else if ([label.text isEqualToString:@"会议"])
+    {
+        self.upView.tagImgView.image  = [UIImage imageNamed:@"meetingSmallIcon"];
+    }else if ([label.text isEqualToString:@"购物"])
+    {
+        self.upView.tagImgView.image  = [UIImage imageNamed:@"shoppingSmallIcon"];
+    }else if ([label.text isEqualToString:@"娱乐"])
+    {
+        self.upView.tagImgView.image  = [UIImage imageNamed:@"entertainmentSmallIcon"];
+    }else if ([label.text isEqualToString:@"聚会"])
+    {
+        self.upView.tagImgView.image  = [UIImage imageNamed:@"partSmallIcon"];
+    }else
+    {
+        self.upView.tagImgView.image  = [UIImage imageNamed:@"otherSmallIcon"];
+    }
+
+    [self lew_dismissPopupView];
 }
 
 
