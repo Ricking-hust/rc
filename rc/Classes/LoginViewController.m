@@ -24,6 +24,7 @@ static CGFloat const kContainViewYNormal = 120.0;
 @property (nonatomic, strong) UITextField *usernameField;
 @property (nonatomic, strong) UITextField *passwordField;
 @property (nonatomic, strong) UIButton    *loginButton;
+@property (nonatomic,strong) UIButton *registeButton;
 
 @property (nonatomic, assign) BOOL isKeyboardShowing;
 @property (nonatomic, assign) BOOL isLogining;
@@ -67,12 +68,13 @@ static CGFloat const kContainViewYNormal = 120.0;
     self.backgroundImageView.frame = self.view.frame;
     self.closeButton.frame = (CGRect){10,20,44,44};
     
-    self.containView.frame = (CGRect){0,kContainViewYNormal,kScreenWidth,300};
+    self.containView.frame = (CGRect){0,kContainViewYNormal,kScreenWidth,400};
     self.logoLabel.center = (CGPoint){kScreenWidth/2,30};
     self.descriptionLabel.frame = (CGRect){20, 60, kScreenWidth - 20,70};
     self.usernameField.frame = (CGRect){60, 150, kScreenWidth - 120, 30};
     self.passwordField.frame = (CGRect){60, 190, kScreenWidth - 120, 30};
     self.loginButton.center = (CGPoint){kScreenWidth/2, 270};
+    self.registeButton.center = (CGPoint){kScreenWidth/2,330};
     
 }
 
@@ -152,6 +154,15 @@ static CGFloat const kContainViewYNormal = 120.0;
     self.loginButton.layer.borderColor = [UIColor colorWithWhite:0.000 alpha:0.10].CGColor;
     self.loginButton.layer.borderWidth = 0.5;
     [self.containView addSubview:self.loginButton];
+    
+    self.registeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.registeButton setTitle:@"注册" forState:UIControlStateNormal];
+    [self.registeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.registeButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
+    self.registeButton.viewSize = CGSizeMake(180, 44);
+    self.registeButton.layer.borderColor = [UIColor colorWithWhite:0.000 alpha:0.10].CGColor;
+    self.registeButton.layer.borderWidth = 0.5;
+    [self.containView addSubview:self.registeButton];
 
 }
 
