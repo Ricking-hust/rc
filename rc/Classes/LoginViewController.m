@@ -7,25 +7,27 @@
 //
 
 #import "LoginViewController.h"
+#import "MyTextField.h"
+#import "RegisteViewController.h"
+#import "CZHomeViewController.h"
 
-static CGFloat const kContainViewYNormal = 120.0;
+static CGFloat const kContainViewYNormal = 70.0;
 static CGFloat const kContainViewYEditing = 60.0;
 
 @interface LoginViewController ()
 
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 
-@property (nonatomic, strong) UIButton    *closeButton;
-
 @property (nonatomic, strong) UIView      *containView;
 
 @property (nonatomic, strong) UILabel     *logoLabel;
-@property (nonatomic, strong) UILabel     *descriptionLabel;
+//@property (nonatomic, strong) UILabel     *descriptionLabel;
 
-@property (nonatomic, strong) UITextField *usernameField;
-@property (nonatomic, strong) UITextField *passwordField;
+@property (nonatomic, strong) MyTextField *usernameField;
+@property (nonatomic, strong) MyTextField *passwordField;
+@property (nonatomic,strong) UIImageView *leftUsernameView;
+@property (nonatomic,strong) UIImageView *leftPasswdView;
 @property (nonatomic, strong) UIButton    *loginButton;
-@property (nonatomic,strong) UIButton *registeButton;
 
 @property (nonatomic, assign) BOOL isKeyboardShowing;
 @property (nonatomic, assign) BOOL isLogining;
@@ -44,18 +46,19 @@ static CGFloat const kContainViewYEditing = 60.0;
     return self;
 }
 
-
--(void)loadView{
-    [super loadView];
-    
-    [self configureViews];
-    [self configureTextField];
-}
-
 - (void)viewDidLoad {
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor whiteColor];
+    
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"cross_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(logBackToForwardViewController)];
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithTitle:@"注册" style:UIBarButtonItemStylePlain target:self action:@selector(turnToRegisteViewController)];
+    
+    [self.navigationItem setLeftBarButtonItem:leftButton];
+    [self.navigationItem setRightBarButtonItem:rightButton];
+    
+    [self configureViews];
+    [self configureTextField];
 }
 
 - (void)didReceiveMemoryWarning {
@@ -67,15 +70,13 @@ static CGFloat const kContainViewYEditing = 60.0;
 -(void)viewWillLayoutSubviews{
     
     self.backgroundImageView.frame = self.view.frame;
-    self.closeButton.frame = (CGRect){10,20,44,44};
     
     self.containView.frame = (CGRect){0,kContainViewYNormal,kScreenWidth,400};
-    self.logoLabel.center = (CGPoint){kScreenWidth/2,30};
-    self.descriptionLabel.frame = (CGRect){20, 60, kScreenWidth - 20,70};
-    self.usernameField.frame = (CGRect){60, 150, kScreenWidth - 120, 30};
-    self.passwordField.frame = (CGRect){60, 190, kScreenWidth - 120, 30};
-    self.loginButton.center = (CGPoint){kScreenWidth/2, 270};
-    self.registeButton.center = (CGPoint){kScreenWidth/2,330};
+    self.logoLabel.center = (CGPoint){kScreenWidth/2,80};
+    //self.descriptionLabel.frame = (CGRect){20, 60, kScreenWidth - 20,70};
+    self.usernameField.frame = (CGRect){50, 214, kScreenWidth - 100, 30};
+    self.passwordField.frame = (CGRect){50, 254, kScreenWidth - 100, 30};
+    self.loginButton.center = (CGPoint){kScreenWidth/2, 350};
     
 }
 
@@ -85,13 +86,6 @@ static CGFloat const kContainViewYEditing = 60.0;
     self.backgroundImageView = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"Default-568_blurred"]];
     self.backgroundImageView.contentMode = UIViewContentModeScaleAspectFill;
     [self.view addSubview:self.backgroundImageView];
-    
-    self.closeButton = [UIButton buttonWithType:UIButtonTypeSystem];
-    [self.closeButton setImage:[UIImage imageNamed:@"close"] forState:UIControlStateNormal];
-    [self.closeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [self.closeButton setTintColor:[UIColor whiteColor]];
-    self.closeButton.alpha = 0.5;
-    [self.view addSubview:self.closeButton];
     
     self.containView = [[UIView alloc] init];
     [self.view addSubview:self.containView];
@@ -103,23 +97,23 @@ static CGFloat const kContainViewYEditing = 60.0;
     [self.logoLabel sizeToFit];
     [self.containView addSubview:self.logoLabel];
     
-    self.descriptionLabel = [[UILabel alloc] init];
-    //    self.descriptionLabel.text = @"A community of start-ups, designers, developers and creative people.";
-    self.descriptionLabel.text = @"打造有知阶层的公众生活";
-    self.descriptionLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:18];
-    self.descriptionLabel.textColor = [UIColor blackColor];
-    self.descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
-    self.descriptionLabel.numberOfLines = 0;
-    self.descriptionLabel.textAlignment = NSTextAlignmentCenter;
-    [self.containView addSubview:self.descriptionLabel];
+//    self.descriptionLabel = [[UILabel alloc] init];
+//    self.descriptionLabel.text = @"打造有知阶层的公众生活";
+//    self.descriptionLabel.font = [UIFont fontWithName:@"Helvetica-Light" size:18];
+//    self.descriptionLabel.textColor = [UIColor blackColor];
+//    self.descriptionLabel.lineBreakMode = NSLineBreakByWordWrapping;
+//    self.descriptionLabel.numberOfLines = 0;
+//    self.descriptionLabel.textAlignment = NSTextAlignmentCenter;
+//    [self.containView addSubview:self.descriptionLabel];
 }
 
 - (void)configureTextField{
-    self.usernameField = [[UITextField alloc] init];
+    
+    self.usernameField = [[MyTextField alloc] init];
     self.usernameField.textAlignment = NSTextAlignmentCenter;
     self.usernameField.textColor = [UIColor blackColor];
     self.usernameField.font = [UIFont systemFontOfSize:18];
-    self.usernameField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"用户名"
+    self.usernameField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入手机号"
                                                                                attributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:0.836 alpha:1.000],
                                                                                             NSFontAttributeName:[UIFont italicSystemFontOfSize:18]}];
     self.usernameField.keyboardType = UIKeyboardTypeEmailAddress;
@@ -129,13 +123,16 @@ static CGFloat const kContainViewYEditing = 60.0;
     self.usernameField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     self.usernameField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.usernameField.rightViewMode = UITextFieldViewModeWhileEditing;
+    self.leftUsernameView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"phone_icon"]];
+    self.usernameField.leftView = self.leftUsernameView;
+    self.usernameField.leftViewMode = UITextFieldViewModeAlways;
     [self.containView addSubview:self.usernameField];
     
-    self.passwordField = [[UITextField alloc] init];
+    self.passwordField = [[MyTextField alloc] init];
     self.passwordField.textAlignment = NSTextAlignmentCenter;
     self.passwordField.textColor = [UIColor blackColor];
     self.passwordField.font = [UIFont systemFontOfSize:18];
-    self.passwordField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"密码"        attributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:0.836 alpha:1.000],
+    self.passwordField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入密码"        attributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:0.836 alpha:1.000],
                                                                                                                     NSFontAttributeName:[UIFont italicSystemFontOfSize:18]}];
     self.passwordField.secureTextEntry = YES;
     self.passwordField.keyboardType = UIKeyboardTypeASCIICapable;
@@ -145,25 +142,20 @@ static CGFloat const kContainViewYEditing = 60.0;
     self.passwordField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
     self.passwordField.clearButtonMode = UITextFieldViewModeWhileEditing;
     self.passwordField.rightViewMode = UITextFieldViewModeWhileEditing;
+    self.leftPasswdView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"password_icon"]];
+    self.passwordField.leftView = self.leftPasswdView;
+    self.passwordField.leftViewMode = UITextFieldViewModeAlways;
     [self.containView addSubview:self.passwordField];
     
     self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
-    [self.loginButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    [self.loginButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.loginButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
-    self.loginButton.viewSize = CGSizeMake(180, 44);
+    [self.loginButton setBackgroundColor:RGB(0xFD8529, 1)];
+    self.loginButton.viewSize = CGSizeMake(300, 45);
     self.loginButton.layer.borderColor = [UIColor colorWithWhite:0.000 alpha:0.10].CGColor;
     self.loginButton.layer.borderWidth = 0.5;
     [self.containView addSubview:self.loginButton];
-    
-    self.registeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.registeButton setTitle:@"注册" forState:UIControlStateNormal];
-    [self.registeButton setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-    [self.registeButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
-    self.registeButton.viewSize = CGSizeMake(180, 44);
-    self.registeButton.layer.borderColor = [UIColor colorWithWhite:0.000 alpha:0.10].CGColor;
-    self.registeButton.layer.borderWidth = 0.5;
-    [self.containView addSubview:self.registeButton];
     
     [self.usernameField addTarget:self action:@selector(showKeyboard) forControlEvents:UIControlEventEditingDidBegin];
     [self.usernameField addTarget:self action:@selector(goPassword) forControlEvents:UIControlEventEditingDidEndOnExit];
@@ -172,6 +164,7 @@ static CGFloat const kContainViewYEditing = 60.0;
     [self.loginButton addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
 
 }
+
 
 #pragma mark - Private Methods
 
@@ -196,7 +189,7 @@ static CGFloat const kContainViewYEditing = 60.0;
         [[DataManager manager] UserLoginOrRegisteWithUserphone:self.usernameField.text password:self.passwordField.text op_type:@"1" success:^(UserModel *user) {
             [DataManager manager].user = user;
             [self endLogin];
-            [self dismissViewControllerAnimated:YES completion:nil];
+            [self.navigationController popToRootViewControllerAnimated:YES];
         } failure:^(NSError *error) {
             NSString *reasonString;
             
@@ -217,11 +210,9 @@ static CGFloat const kContainViewYEditing = 60.0;
     } else {
         [UIView animateWithDuration:0.3 animations:^{
             self.containView.y      = kContainViewYEditing;
-            self.descriptionLabel.y -= 5;
             self.usernameField.y    -= 10;
             self.passwordField.y    -= 12;
             self.loginButton.y      -= 14;
-            self.registeButton.y    -= 16;
         }];
         self.isKeyboardShowing = YES;
     }
@@ -235,11 +226,9 @@ static CGFloat const kContainViewYEditing = 60.0;
         [[UIApplication sharedApplication].keyWindow endEditing:YES];
         [UIView animateWithDuration:0.3 animations:^{
             self.containView.y      = kContainViewYNormal;
-            self.descriptionLabel.y += 5;
             self.usernameField.y    += 10;
             self.passwordField.y    += 12;
             self.loginButton.y      += 14;
-            self.registeButton.y    += 16;
         } completion:^(BOOL finished) {
         }];
     }
@@ -248,6 +237,16 @@ static CGFloat const kContainViewYEditing = 60.0;
 
 -(void)goPassword{
     [self.passwordField becomeFirstResponder];
+}
+
+- (void)logBackToForwardViewController
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)turnToRegisteViewController{
+    RegisteViewController *registeViewController = [[RegisteViewController alloc]init];
+    [self.navigationController pushViewController:registeViewController animated:YES];
 }
 
 @end

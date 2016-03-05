@@ -42,13 +42,18 @@
     @weakify(self);
     self.getActivityListBlock = ^(){
         @strongify(self);
-        
-        return [[DataManager manager] getActivitySearchWithKeywords:@"讲座" startId:@"0" num:@"10" cityId:@"1" success:^(ActivityList *acList) {
+        return [[DataManager manager] getActivityRecommendWithCityId:@"1" startId:@"0" num:@"10" userId:@"1" success:^(ActivityList *acList) {
             @strongify(self);
             self.activityList = acList;
         } failure:^(NSError *error) {
             NSLog(@"error:%@",error);
         }];
+//        return [[DataManager manager] getActivitySearchWithKeywords:@"讲座" startId:@"0" num:@"10" cityId:@"1" success:^(ActivityList *acList) {
+//            @strongify(self);
+//            self.activityList = acList;
+//        } failure:^(NSError *error) {
+//            NSLog(@"error:%@",error);
+//        }];
     };
 }
 

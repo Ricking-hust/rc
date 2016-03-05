@@ -32,10 +32,12 @@
     self.tableView.tableHeaderView = self.headerView;
     self.tableView.separatorInset = UIEdgeInsetsMake(10, 10, 10, 10);
 }
+
 - (void)backToForwardViewController
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     return 3;

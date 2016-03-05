@@ -9,6 +9,8 @@
 #import "CZPersonInfoViewController.h"
 #import "CZPersonInfoCell.h"
 #import "Masonry.h"
+#import "RegisteViewController.h"
+#import "LoginViewController.h"
 
 @implementation CZPersonInfoViewController
 
@@ -25,10 +27,12 @@
     
     [self.navigationItem setLeftBarButtonItem:leftButton];
 }
+
 - (void)backToForwardViewController
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     if (section == 0)

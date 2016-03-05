@@ -80,8 +80,9 @@
 
 #pragma mark - view
 
--(void)loadView{
-    [super loadView];
+//界面加载完毕
+- (void)viewDidLoad {
+    [super viewDidLoad];
     
     [self createSubViews];
     
@@ -91,11 +92,6 @@
     
     //设置tableView头
     [self layoutHeaderImageView];
-}
-
-//界面加载完毕
-- (void)viewDidLoad {
-    [super viewDidLoad];
     
     [self configureBlocks];
     self.getActivityBlock();
