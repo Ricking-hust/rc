@@ -9,6 +9,7 @@
 #import "CZColumnViewController.h"
 #import "Masonry.h"
 #import "CZAcitivityModelOfColumn.h"
+#import "RCActivityCollectionViewCell.h"
 #import "CZActivityOfColumn.h"
 #import "CZTagViewController.h"
 #include <sys/sysctl.h>
@@ -21,7 +22,6 @@
 
 @property (nonatomic, strong) UIColor *selectedColor;
 
-@property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, strong) UIScrollView *toolScrollView;
 @property (nonatomic, strong) NSMutableArray *toolButtonArray;
 
@@ -36,9 +36,10 @@
 
 @implementation CZColumnViewController
 
+static NSString * const reuseIdentifier = @"Cell";
+
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     UIView *temp = [[UIView alloc]init];
     [self.view addSubview:temp];
     self.activities = [[NSMutableArray alloc]init];
@@ -48,6 +49,8 @@
     
     //创建子控件
     [self createSubView];
+    
+    [self.activityCollectionView registerClass:[RCActivityCollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
 
 }
@@ -91,26 +94,7 @@
     }
     return _toolScrollView;
 }
-#pragma mark - 懒加载，创建scrollView
-- (UIScrollView *)scrollView
-{
-    if (!_scrollView) {
-        //创建滚动条
-        _scrollView = [[UIScrollView alloc]initWithFrame:CGRectZero];
-        [self.view addSubview:_scrollView];
-        CGRect rect = [[UIScreen mainScreen]bounds];
-        CGSize scrollSize = CGSizeMake(rect.size.width, rect.size.height - 103);
-        [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.view.mas_left);
-            make.top.equalTo(_toolScrollView.mas_bottom).with.offset(20/2);
-            make.size.mas_equalTo(scrollSize);
-        }];
-#pragma mark - 测试语句
-        //设置滚动条
-        _scrollView.contentSize = CGSizeMake(0, scrollSize.height*2);
-    }
-    return _scrollView;
-}
+
 #pragma mark - 懒加载，创建toolbuttonarray
 - (NSMutableArray *)toolButtonArray
 {
@@ -233,68 +217,96 @@
     [self.navigationController pushViewController:tagViewController animated:YES];
 }
 
-#pragma mark -
+#pragma mark -将collectionView添加到scrollView
 - (void) showActivityView
 {
-    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickAcView:)];
-    UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickAcView:)];
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
+    layout.itemSize = CGSizeMake(self.view.width/2, self.view.height/2);
+    layout.minimumInteritemSpacing = 0;
+    layout.minimumLineSpacing = 0;
+    self.activityCollectionView = [[UICollectionView alloc]initWithFrame:self.view.bounds collectionViewLayout:layout];
+    [self.view addSubview:self.activityCollectionView];
     
-    CZAcitivityModelOfColumn *av = self.activities[0];
-    av.ac_title = @"你是铁小基一工在十七";
+    self.activityCollectionView.dataSource = self;
+    self.activityCollectionView.delegate = self;
     
-    CZActivityOfColumn *acView = [CZActivityOfColumn activityView];
-    acView.activity = av;
-    [self.scrollView addSubview:acView];
-    [acView addGestureRecognizer:tapGesture];
+//    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickAcView:)];
+//    UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickAcView:)];
+//    
+//    CZAcitivityModelOfColumn *av = self.activities[0];
+//    av.ac_title = @"你是铁小基一工在十七";
+//    
+//    CZActivityOfColumn *acView = [CZActivityOfColumn activityView];
+//    acView.activity = av;
+//    [self.scrollView addSubview:acView];
+//    [acView addGestureRecognizer:tapGesture];
+//
+//    CZActivityOfColumn *acView2 = [CZActivityOfColumn activityView];
+//    
+//
+//    av.ac_title = @"你是铁小基一工在十七你是铁小基一工在十七你是铁小基一工在十七";
+//    acView2.activity = av;
+//    [self.scrollView addSubview:acView2];
+//    [acView2 addGestureRecognizer:tapGesture2];
+//    
+//
+//    CZActivityOfColumn *acView3 = [CZActivityOfColumn activityView];
+//    acView3.activity = av;
+//    [self.scrollView addSubview:acView3];
+//    
+//    //CGFloat letfPadding = 15;
+//    CGFloat padding;
+//    CGFloat topPadding;
+//    //根据设备调整布局
+//    if ([[self getCurrentDeviceModel]isEqualToString:@"iPhone 4"] ||
+//        [[self getCurrentDeviceModel]isEqualToString:@"iPhone 5"] )
+//    {//设备为iphone4与iphone 5时
+//        padding = 10;
+//    }else if([[self getCurrentDeviceModel]isEqualToString:@"iPhone 6"] ||
+//             [[self getCurrentDeviceModel]isEqualToString:@"iPhone Simulator"])
+//    {//设备为iphone 6时
+//        padding = 15;
+//        topPadding = 10;
+//    }else
+//    {//设备为iphone 6 plus时
+//        padding = 20;
+//    }
+//    
+//    [acView mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.scrollView.mas_top);
+//        make.left.equalTo(self.scrollView.mas_left).with.offset(padding);
+//        make.size.mas_equalTo(CGSizeMake(acView.width, acView.heigth));
+//    }];
+//    
+//    [acView2 mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(acView.mas_top);
+//        make.left.equalTo(acView.mas_right).with.offset(padding);
+//        make.size.mas_equalTo(CGSizeMake(acView2.width, acView2.heigth));
+//    }];
+//    [acView3 mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(acView.mas_bottom).with.offset(topPadding);
+//        make.left.equalTo(self.scrollView).with.offset(padding);
+//        make.size.mas_equalTo(CGSizeMake(acView3.width, acView3.heigth));
+//    }];
+}
 
-    CZActivityOfColumn *acView2 = [CZActivityOfColumn activityView];
-    
+#pragma mark <UICollectionViewDataSource>
 
-    av.ac_title = @"你是铁小基一工在十七你是铁小基一工在十七你是铁小基一工在十七";
-    acView2.activity = av;
-    [self.scrollView addSubview:acView2];
-    [acView2 addGestureRecognizer:tapGesture2];
-    
+- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
+    return 1;
+}
 
-    CZActivityOfColumn *acView3 = [CZActivityOfColumn activityView];
-    acView3.activity = av;
-    [self.scrollView addSubview:acView3];
-    
-    //CGFloat letfPadding = 15;
-    CGFloat padding;
-    CGFloat topPadding;
-    //根据设备调整布局
-    if ([[self getCurrentDeviceModel]isEqualToString:@"iPhone 4"] ||
-        [[self getCurrentDeviceModel]isEqualToString:@"iPhone 5"] )
-    {//设备为iphone4与iphone 5时
-        padding = 10;
-    }else if([[self getCurrentDeviceModel]isEqualToString:@"iPhone 6"] ||
-             [[self getCurrentDeviceModel]isEqualToString:@"iPhone Simulator"])
-    {//设备为iphone 6时
-        padding = 15;
-        topPadding = 10;
-    }else
-    {//设备为iphone 6 plus时
-        padding = 20;
-    }
-    
-    [acView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.scrollView.mas_top);
-        make.left.equalTo(self.scrollView.mas_left).with.offset(padding);
-        make.size.mas_equalTo(CGSizeMake(acView.width, acView.heigth));
-    }];
-    
-    [acView2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(acView.mas_top);
-        make.left.equalTo(acView.mas_right).with.offset(padding);
-        make.size.mas_equalTo(CGSizeMake(acView2.width, acView2.heigth));
-    }];
-    [acView3 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(acView.mas_bottom).with.offset(topPadding);
-        make.left.equalTo(self.scrollView).with.offset(padding);
-        make.size.mas_equalTo(CGSizeMake(acView3.width, acView3.heigth));
-    }];
 
+- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
+    return 4;
+}
+
+- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    RCActivityCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+    
+    // Configure the cell
+    
+    return cell;
 }
 //获得设备型号
 - (NSString *)getCurrentDeviceModel
