@@ -26,17 +26,15 @@
     return self;
 }
 
+//@property (nonatomic, strong) UIImageView *acImage;
+//@property (nonatomic, strong) UILabel *acName;
+//@property (nonatomic, strong) UILabel *acTime;
+//@property (nonatomic, strong) UILabel *acPlace;
+//@property (nonatomic, strong) UIImageView *acTagImage;
+//@property (nonatomic, strong) UILabel *acTag;
+
 -(void)configureViews{
     self.contentView.backgroundColor = [UIColor whiteColor];
-    
-    self.goodNameLabel = [[UILabel alloc] initWithFrame:(CGRect){self.contentView.width/2-7,self.contentView.height-5,14,5}];
-    self.goodNameLabel.backgroundColor = [UIColor whiteColor];
-    self.goodNameLabel.textColor =[UIColor blackColor];
-    self.goodNameLabel.font = [UIFont systemFontOfSize:4];
-    [self.contentView addSubview:self.goodNameLabel];
-    
-    self.goodImageView = [[UIImageView alloc]init];
-    [self.contentView addSubview:self.goodImageView];
     
 }
 

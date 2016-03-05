@@ -95,6 +95,27 @@ static NSString * const reuseIdentifier = @"Cell";
     return _toolScrollView;
 }
 
+//#pragma mark - 懒加载，创建scrollView
+//- (UIScrollView *)scrollView
+//{
+//    if (!_scrollView) {
+//        //创建滚动条
+//        _scrollView = [[UIScrollView alloc]initWithFrame:CGRectZero];
+//        [self.view addSubview:_scrollView];
+//        CGRect rect = [[UIScreen mainScreen]bounds];
+//        CGSize scrollSize = CGSizeMake(rect.size.width, rect.size.height - 103);
+//        [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+//            make.left.equalTo(self.view.mas_left);
+//            make.top.equalTo(_toolScrollView.mas_bottom).with.offset(20/2);
+//            make.size.mas_equalTo(scrollSize);
+//        }];
+//#pragma mark - 测试语句
+//        //设置滚动条
+//        _scrollView.contentSize = CGSizeMake(0, scrollSize.height*2);
+//    }
+//    return _scrollView;
+//}
+
 #pragma mark - 懒加载，创建toolbuttonarray
 - (NSMutableArray *)toolButtonArray
 {
@@ -217,14 +238,15 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.navigationController pushViewController:tagViewController animated:YES];
 }
 
-#pragma mark -将collectionView添加到scrollView
+#pragma mark -将collectionView添加到View
 - (void) showActivityView
 {
+    
     UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
-    layout.itemSize = CGSizeMake(self.view.width/2, self.view.height/2);
+    layout.itemSize = CGSizeMake(self.view.width/2, (kScreenHeight-self.toolScrollView.height-64)/2);
     layout.minimumInteritemSpacing = 0;
     layout.minimumLineSpacing = 0;
-    self.activityCollectionView = [[UICollectionView alloc]initWithFrame:self.view.bounds collectionViewLayout:layout];
+    self.activityCollectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 68+self.toolScrollView.height, kScreenWidth, kScreenHeight-self.toolScrollView.height-64) collectionViewLayout:layout];
     [self.view addSubview:self.activityCollectionView];
     
     self.activityCollectionView.dataSource = self;
@@ -232,10 +254,10 @@ static NSString * const reuseIdentifier = @"Cell";
     
 //    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickAcView:)];
 //    UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickAcView:)];
-//    
+////    
 //    CZAcitivityModelOfColumn *av = self.activities[0];
 //    av.ac_title = @"你是铁小基一工在十七";
-//    
+//
 //    CZActivityOfColumn *acView = [CZActivityOfColumn activityView];
 //    acView.activity = av;
 //    [self.scrollView addSubview:acView];
@@ -255,23 +277,23 @@ static NSString * const reuseIdentifier = @"Cell";
 //    [self.scrollView addSubview:acView3];
 //    
 //    //CGFloat letfPadding = 15;
-//    CGFloat padding;
-//    CGFloat topPadding;
-//    //根据设备调整布局
-//    if ([[self getCurrentDeviceModel]isEqualToString:@"iPhone 4"] ||
-//        [[self getCurrentDeviceModel]isEqualToString:@"iPhone 5"] )
-//    {//设备为iphone4与iphone 5时
-//        padding = 10;
-//    }else if([[self getCurrentDeviceModel]isEqualToString:@"iPhone 6"] ||
-//             [[self getCurrentDeviceModel]isEqualToString:@"iPhone Simulator"])
-//    {//设备为iphone 6时
-//        padding = 15;
-//        topPadding = 10;
-//    }else
-//    {//设备为iphone 6 plus时
-//        padding = 20;
-//    }
-//    
+    CGFloat padding;
+    CGFloat topPadding;
+    //根据设备调整布局
+    if ([[self getCurrentDeviceModel]isEqualToString:@"iPhone 4"] ||
+        [[self getCurrentDeviceModel]isEqualToString:@"iPhone 5"] )
+    {//设备为iphone4与iphone 5时
+        padding = 10;
+    }else if([[self getCurrentDeviceModel]isEqualToString:@"iPhone 6"] ||
+             [[self getCurrentDeviceModel]isEqualToString:@"iPhone Simulator"])
+    {//设备为iphone 6时
+        padding = 15;
+        topPadding = 10;
+    }else
+    {//设备为iphone 6 plus时
+        padding = 20;
+    }
+//
 //    [acView mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.top.equalTo(self.scrollView.mas_top);
 //        make.left.equalTo(self.scrollView.mas_left).with.offset(padding);
@@ -302,6 +324,8 @@ static NSString * const reuseIdentifier = @"Cell";
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
+    CZAcitivityModelOfColumn *av = self.activities[0];
+    av.ac_title = @"你是铁小基一工在十七";
     RCActivityCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     
     // Configure the cell
