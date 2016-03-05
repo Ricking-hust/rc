@@ -7,8 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class CZScheduleInfoView;
 @interface CZScheduleViewController : UIViewController<UIScrollViewDelegate>
+@property (nonatomic, strong) CZScheduleInfoView *scInfoView;
 @property (nonatomic, assign) BOOL isLogin;
 @property (nonatomic, strong) UIImageView *timeLine;
 @property (nonatomic, strong) UIScrollView *leftScrollView;

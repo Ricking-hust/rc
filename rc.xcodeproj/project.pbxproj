@@ -45,6 +45,7 @@
 		561D02171C47DA5600E4E013 /* activityImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 561D01CD1C47DA5600E4E013 /* activityImage.png */; };
 		561D02181C47DA5600E4E013 /* Argentina.png in Resources */ = {isa = PBXBuildFile; fileRef = 561D01CE1C47DA5600E4E013 /* Argentina.png */; };
 		561D02191C47DA5600E4E013 /* Chile.png in Resources */ = {isa = PBXBuildFile; fileRef = 561D01CF1C47DA5600E4E013 /* Chile.png */; };
+		5626241F1C8AD58B00F81A39 /* CZScheduleInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5626241E1C8AD58B00F81A39 /* CZScheduleInfoView.m */; };
 		562CC4461C6C962100774C22 /* CZTimeSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CC4451C6C962100774C22 /* CZTimeSelectView.m */; };
 		56423F4B1C4FB4710072CCC3 /* CZHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56423F4A1C4FB4710072CCC3 /* CZHomeViewController.m */; };
 		564596B51C732A84006D8493 /* LewPopupBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 564596AA1C732A84006D8493 /* LewPopupBackgroundView.m */; };
@@ -236,6 +237,8 @@
 		561D01CD1C47DA5600E4E013 /* activityImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = activityImage.png; sourceTree = "<group>"; };
 		561D01CE1C47DA5600E4E013 /* Argentina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Argentina.png; sourceTree = "<group>"; };
 		561D01CF1C47DA5600E4E013 /* Chile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Chile.png; sourceTree = "<group>"; };
+		5626241D1C8AD58B00F81A39 /* CZScheduleInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZScheduleInfoView.h; sourceTree = "<group>"; };
+		5626241E1C8AD58B00F81A39 /* CZScheduleInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZScheduleInfoView.m; sourceTree = "<group>"; };
 		562CC4441C6C962100774C22 /* CZTimeSelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTimeSelectView.h; sourceTree = "<group>"; };
 		562CC4451C6C962100774C22 /* CZTimeSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTimeSelectView.m; sourceTree = "<group>"; };
 		56423F491C4FB4710072CCC3 /* CZHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZHomeViewController.h; sourceTree = "<group>"; };
@@ -905,6 +908,8 @@
 				56E8C66F1C8A2BD000435758 /* CZRemintTimeView.m */,
 				566AA7A71C8AA396001C1576 /* CZDateView.h */,
 				566AA7A81C8AA396001C1576 /* CZDateView.m */,
+				5626241D1C8AD58B00F81A39 /* CZScheduleInfoView.h */,
+				5626241E1C8AD58B00F81A39 /* CZScheduleInfoView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1161,6 +1166,7 @@
 				561D01FA1C47DA5600E4E013 /* AFURLResponseSerialization.m in Sources */,
 				56B9CD381C807A7100914F00 /* UIImage+WebP.m in Sources */,
 				56B9CD2E1C807A7100914F00 /* SDImageCache.m in Sources */,
+				5626241F1C8AD58B00F81A39 /* CZScheduleInfoView.m in Sources */,
 				56B83C1D1C609C2D005FF427 /* CZData.m in Sources */,
 				561D02081C47DA5600E4E013 /* MASCompositeConstraint.m in Sources */,
 				561D02031C47DA5600E4E013 /* UIImageView+AFNetworking.m in Sources */,

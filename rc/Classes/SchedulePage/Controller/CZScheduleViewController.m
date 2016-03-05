@@ -10,6 +10,7 @@
 #import "Masonry.h"
 #import "CZAddScheduleViewController.h"
 #import "CZDateView.h"
+#import "CZScheduleInfoView.h"
 #include <sys/sysctl.h>
 typedef NS_ENUM(NSInteger, CurrentDevice)
 {
@@ -31,6 +32,28 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
         _array = [[NSArray alloc]initWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8", nil];
     }
     return _array;
+}
+- (CZScheduleInfoView *)scInfoView
+{
+    if (!_scInfoView)
+    {
+        _scInfoView = [[CZScheduleInfoView alloc]init];
+        UITapGestureRecognizer *click = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didViewInfo:)];
+        [_scInfoView addGestureRecognizer:click];
+        [self.view addSubview:_scInfoView];
+
+        UIImage *image = [UIImage imageNamed:@"bg_background1"];
+        _scInfoView.layer.contents = (id) image.CGImage;    // 如果需要背景透明加上下面这句
+        _scInfoView.layer.backgroundColor = [UIColor clearColor].CGColor;
+        NSLog(@"");
+        [_scInfoView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.rigthScrollView.mas_centerY);
+            make.centerX.equalTo(self.rigthScrollView.mas_centerX);
+            make.width.mas_equalTo(image.size.width);
+            make.height.mas_equalTo(image.size.height);
+        }];
+    }
+    return _scInfoView;
 }
 - (UIImageView *)timeLine
 {
@@ -85,10 +108,9 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     self.device = [self currentDeviceSize];
     NSLog(@"test data %f",self.timeLine.frame.size.width);
-    self.rigthScrollView.backgroundColor = [UIColor grayColor];
     self.rigthScrollView.contentSize = CGSizeMake(0, 1000);
-    //[self test];
     [self displaySchedule];
+    NSLog(@"%@",self.scInfoView);
 
 }
 - (void)displaySchedule
@@ -170,6 +192,10 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     
 
 }
+- (void)didViewInfo:(UITapGestureRecognizer *)clickGesture
+{
+    NSLog(@"click");
+}
 - (void)test
 {
     UIView *line = [[UIView alloc]init];
@@ -235,10 +261,7 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     [contentView addGestureRecognizer:tap];
     
 }
-- (void)click
-{
-    NSLog(@"click");
-}
+
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
