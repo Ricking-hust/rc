@@ -31,6 +31,10 @@
     [cell.contentView addSubview:cell.timeButton];
     cell.selectionStyle =UITableViewCellSelectionStyleNone ;
     
+    cell.label.alpha = 0.3;
+    cell.time.alpha = cell.label.alpha;
+    cell.timeButton.enabled = NO;
+    
     return cell;
 }
 

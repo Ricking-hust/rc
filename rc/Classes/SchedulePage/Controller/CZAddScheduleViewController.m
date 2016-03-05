@@ -23,10 +23,10 @@
 
 @implementation CZAddScheduleViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     // Do any additional setup after loading the view.
-    
     UIImage *image = [UIImage imageNamed:@"backIcon"];
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(back)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
@@ -47,7 +47,7 @@
     {
         CZScheduleViewController *schedule = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
         
-        [schedule.datas addObject:[self getSchedule]];
+        //[schedule.datas addObject:[self getSchedule]];
         
         [self.navigationController popViewControllerAnimated:YES];
     }
