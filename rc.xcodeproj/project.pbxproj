@@ -132,6 +132,7 @@
 		C4C05E6D1C842126005E7FEE /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C05E6B1C842126005E7FEE /* EXTScope.m */; };
 		C4C05EEB1C85C500005E7FEE /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C05EEA1C85C500005E7FEE /* LoginViewController.m */; };
 		C4C075271C89CF6C00C5E54D /* MyTextField.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C075261C89CF6C00C5E54D /* MyTextField.m */; };
+		C4C0752F1C8AC86A00C5E54D /* RCAtivityCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C0752E1C8AC86A00C5E54D /* RCAtivityCollectionViewCell.m */; };
 		C4CAD1BB1C7B3943003FD0B0 /* IndustryModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CAD1B41C7B3943003FD0B0 /* IndustryModel.m */; };
 		C4CAD1BC1C7B3943003FD0B0 /* PlanModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CAD1B61C7B3943003FD0B0 /* PlanModel.m */; };
 		C4CAD1BD1C7B3943003FD0B0 /* TagModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CAD1B81C7B3943003FD0B0 /* TagModel.m */; };
@@ -411,6 +412,8 @@
 		C4C05EED1C85D1A8005E7FEE /* rc-PrefixHeader.pch */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.h; path = "rc-PrefixHeader.pch"; sourceTree = "<group>"; };
 		C4C075251C89CF6C00C5E54D /* MyTextField.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MyTextField.h; sourceTree = "<group>"; };
 		C4C075261C89CF6C00C5E54D /* MyTextField.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MyTextField.m; sourceTree = "<group>"; };
+		C4C0752D1C8AC86A00C5E54D /* RCActivityCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCActivityCollectionViewCell.h; sourceTree = "<group>"; };
+		C4C0752E1C8AC86A00C5E54D /* RCAtivityCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAtivityCollectionViewCell.m; sourceTree = "<group>"; };
 		C4CAD1B31C7B3943003FD0B0 /* IndustryModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = IndustryModel.h; sourceTree = "<group>"; };
 		C4CAD1B41C7B3943003FD0B0 /* IndustryModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = IndustryModel.m; sourceTree = "<group>"; };
 		C4CAD1B51C7B3943003FD0B0 /* PlanModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PlanModel.h; sourceTree = "<group>"; };
@@ -971,6 +974,8 @@
 				56E4700B1C5749450056BE17 /* CZActivityOfColumn.m */,
 				56E7AE751C709C8C004593E6 /* CZButtonView.h */,
 				56E7AE761C709C8C004593E6 /* CZButtonView.m */,
+				C4C0752D1C8AC86A00C5E54D /* RCActivityCollectionViewCell.h */,
+				C4C0752E1C8AC86A00C5E54D /* RCAtivityCollectionViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1218,6 +1223,7 @@
 				564596B81C732A84006D8493 /* LewPopupViewAnimationSlide.m in Sources */,
 				56A191E21C756A3100E03B41 /* CZMyInfoCell.m in Sources */,
 				56B9CD311C807A7100914F00 /* SDWebImageDownloader.m in Sources */,
+				C4C0752F1C8AC86A00C5E54D /* RCAtivityCollectionViewCell.m in Sources */,
 				56E7AE771C709C8C004593E6 /* CZButtonView.m in Sources */,
 				561D02091C47DA5600E4E013 /* MASConstraint.m in Sources */,
 				565BCFB71C51E4E30031ABBD /* CZMyTagCell.m in Sources */,
@@ -1383,11 +1389,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/rc/Framework",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/rc/rc-PrefixHeader.pch";
 				INFOPLIST_FILE = rc/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhang.rc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
@@ -1400,11 +1411,16 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_IDENTITY = "iPhone Developer";
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/rc/Framework",
+				);
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/rc/rc-PrefixHeader.pch";
 				INFOPLIST_FILE = rc/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
+				OTHER_LDFLAGS = "";
 				PRODUCT_BUNDLE_IDENTIFIER = com.zhang.rc;
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				PROVISIONING_PROFILE = "";
