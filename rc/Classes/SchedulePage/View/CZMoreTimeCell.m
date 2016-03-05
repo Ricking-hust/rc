@@ -18,6 +18,7 @@
     [cell.contentView addSubview:cell.timeLable];
     
     cell.imgView = [[UIImageView alloc]init];
+    cell.imgView.image = [UIImage imageNamed:@"selectedIcon"];
     [cell.contentView addSubview:cell.imgView];
     
     cell.imgView.hidden = YES;

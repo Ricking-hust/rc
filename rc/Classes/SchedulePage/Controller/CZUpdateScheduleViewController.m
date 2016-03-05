@@ -244,6 +244,7 @@
         make.right.equalTo(self.upView.themeView.mas_right).offset(-10);
         make.size.mas_equalTo(self.upView.img.image.size);
     }];
+
     //5.添加themeView的子控件themeNameLabel约束
     CGSize themeNameSize = [self sizeWithText:self.upView.themeNameLabel.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:FONTSIZE];
     [self.upView.themeNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -367,7 +368,6 @@
 - (void)setSubViewOfRemindView
 {
     self.downView.remindTimeLabel.text = self.strRemind;
-    self.downView.moreRemindImg.image = [UIImage imageNamed:@"moreTagbuttonIcon"];
     UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickRemindView)];
     [self.downView.remindView addGestureRecognizer:gesture];
     [self addRemindViewConstraint];
@@ -470,6 +470,8 @@
         textView.text = @"";
         textView.alpha = 1.0;
     }
+    [self didHideMoreTag];
+    
 }
 
 - (void)textViewDidEndEditing:(UITextView *)textView
@@ -728,6 +730,7 @@
     //UIButton *button = [view viewWithTag:9];//9表示主题按钮在其父视图中的Tag
     
     self.upView.themeNameLabel.text = label.text;
+    
     if ([label.text isEqualToString:@"运动"])
     {
         self.upView.tagImgView.image = [UIImage imageNamed:@"sportSmallIcon"];
@@ -753,6 +756,10 @@
     {
         self.upView.tagImgView.image  = [UIImage imageNamed:@"otherSmallIcon"];
     }
+    [self.upView.tagImgView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(self.upView.tagImgView.image.size);
+    }];
+//    [self.view layoutIfNeeded];
 }
 
 

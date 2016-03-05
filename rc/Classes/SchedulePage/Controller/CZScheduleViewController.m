@@ -1,431 +1,326 @@
 //
 //  CZScheduleViewController.m
-//  日常
+//  rc
 //
-//  Created by AlanZhang on 15/12/22.
-//  Copyright © 2015年 AlanZhang. All rights reserved.
+//  Created by AlanZhang on 16/3/5.
+//  Copyright © 2016年 AlanZhang. All rights reserved.
 //
 
 #import "CZScheduleViewController.h"
 #import "Masonry.h"
-#import "CZTimeCourseCell.h"
-#import "CZData.h"
-#import "CZScheduleInfoViewController.h"
 #import "CZAddScheduleViewController.h"
-
-@interface CZScheduleViewController ()<UITableViewDelegate, UITableViewDataSource, UIGestureRecognizerDelegate>
-@property (nonatomic, strong) UITableView *tableView;
-@property (nonatomic, strong) UIImageView *moreImg;
-@property (nonatomic, assign) BOOL isShowDeleteButton;
-@property (nonatomic, assign) long int cellIndex;
-
+#import "CZDateView.h"
+#include <sys/sysctl.h>
+typedef NS_ENUM(NSInteger, CurrentDevice)
+{
+    IPhone5     = 0,    //4寸    568 X 320
+    IPhone6     = 1,    //4.7寸  667 X 375
+    Iphone6Plus = 2     //5.5寸  736 X 414
+};
+@interface CZScheduleViewController ()
+@property (nonatomic, assign) CurrentDevice device;
 @end
 
 @implementation CZScheduleViewController
 
-- (void)viewDidLoad {
-    [super viewDidLoad];
-    
-    self.isShowDeleteButton = NO;
-    
-    self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-    [self.moreImg setImage:[UIImage imageNamed:@"more"]];
-
-    self.tableView.dataSource = self;
-    self.tableView.delegate = self;
-    
-    NSDate *senddate=[NSDate date];
-    
-    NSDateFormatter  *dateformatter=[[NSDateFormatter alloc] init];
-    
-    [dateformatter setDateFormat:@"MM月dd日"];
-    
-    NSString *locationString=[dateformatter stringFromDate:senddate];
-    
-    self.navigationItem.title = locationString;
-    
-    
- 
-}
-- (void)viewWillAppear:(BOOL)animated
+#pragma mark - 懒加载顶部imgview
+- (NSArray *)array
 {
-    self.isShowDeleteButton = NO;
-    [self.tableView reloadData];
-}
-//添加行程
-- (IBAction)toAddSchedule:(id)sender
-{
-    
-    CZAddScheduleViewController *addScheduleViewController = [[CZAddScheduleViewController alloc]init];
-    
-    addScheduleViewController.title = @"添加行程";
-    
-    [self.navigationController pushViewController:addScheduleViewController animated:YES];
-}
-
-#pragma mark - 懒加载
-
-- (NSMutableArray *)datas
-{
-    if (!_datas)
+    if (!_array)
     {
-        _datas = [[NSMutableArray alloc]init];
-        for (int i = 0; i< 10; i++)
-        {
-            CZData *data = [CZData data];
-            data.contentStr = [NSString stringWithFormat:@"%d老夫聊发少年狂,治肾亏,不含糖.",i];
-            [_datas addObject:data];
-        }
+        _array = [[NSArray alloc]initWithObjects:@"1",@"2",@"3",@"4",@"5",@"6",@"7",@"8", nil];
     }
-    return _datas;
+    return _array;
 }
-
-- (UITableView *)tableView
+- (UIImageView *)timeLine
 {
-    if (!_tableView) {
-        _tableView = [[UITableView alloc]init];
-        _tableView.backgroundColor = [UIColor clearColor];
-        CGRect rect = [[UIScreen mainScreen]bounds];
-        [self.view addSubview:_tableView];
-        CGSize size = CGSizeMake(rect.size.width, rect.size.height - 64 - self.moreImg.image.size.height);
-        [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.view.mas_left).with.offset(0);
-            make.top.equalTo(self.moreImg.mas_bottom);
-            make.size.mas_equalTo(size);
+    if (!_timeLine)
+    {
+        _timeLine = [[UIImageView alloc]init];
+        _timeLine.image = [UIImage imageNamed:@"more"];
+        [self.view addSubview:_timeLine];
+        [_timeLine mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.view.mas_left).offset(28);
+            make.top.equalTo(self.view.mas_top).offset(64);
+            make.size.mas_equalTo(_timeLine.image.size);
         }];
-        
     }
-    return _tableView;
+    return _timeLine;
 }
-- (UIImageView *)moreImg
+- (UIScrollView *)leftScrollView
 {
-    if (!_moreImg) {
-        UIView *moreView = [[UIView alloc]init];
-        moreView.backgroundColor = [UIColor clearColor];
-        [self.view addSubview:moreView];
-        _moreImg = [[UIImageView alloc]init];
-        _moreImg.image = [UIImage imageNamed:@"more"];
-        [moreView addSubview:_moreImg];
-        CGRect rect = [[UIScreen mainScreen]bounds];
-        CGFloat leftPadding = rect.size.width * 0.21 - _moreImg.image.size.width / 2;
-        [moreView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.width.mas_equalTo([[UIScreen mainScreen]bounds].size.width);
-            make.top.equalTo(self.view.mas_top).with.offset(64);
+    if (!_leftScrollView)
+    {
+        _leftScrollView = [[UIScrollView alloc]init];
+        _leftScrollView.scrollEnabled = NO;
+        [self.view addSubview:_leftScrollView];
+        [_leftScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view.mas_top).offset(64+35);
             make.left.equalTo(self.view.mas_left);
-            make.height.mas_equalTo(_moreImg.image.size.height);
-        }];
-        [_moreImg mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(moreView.mas_left).with.offset(leftPadding);
-            make.top.equalTo(moreView.mas_top).with.offset(0);
-            make.size.mas_equalTo(_moreImg.image.size);
+            make.height.mas_equalTo(self.view.frame.size.height - 64 - 35-49);
+            make.width.mas_equalTo(75);
         }];
     }
-    return _moreImg;
+    return _leftScrollView;
 }
+- (UIScrollView *)rigthScrollView
+{
+    if (!_rigthScrollView)
+    {
+        _rigthScrollView = [[UIScrollView alloc]init];
+        _rigthScrollView.delegate = self;
+        [self.view addSubview:_rigthScrollView];
+        [_rigthScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.leftScrollView.mas_top);
+            make.left.equalTo(self.leftScrollView.mas_right);
+            make.height.mas_equalTo(self.view.frame.size.height - 64 - 35-49);
+            make.right.equalTo(self.view.mas_right);
+        }];
+    }
+    return _rigthScrollView;
+}
+- (void)viewDidLoad
+{
+    [super viewDidLoad];
+    self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
+    self.device = [self currentDeviceSize];
+    NSLog(@"test data %f",self.timeLine.frame.size.width);
+    self.rigthScrollView.backgroundColor = [UIColor grayColor];
+    self.rigthScrollView.contentSize = CGSizeMake(0, 1000);
+    //[self test];
+    [self displaySchedule];
 
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+}
+- (void)displaySchedule
 {
 
-    return 1;
+    CGFloat padding;
+    if (self.device == IPhone5)
+    {
+        //根据个数创建point和point的上线和下线
+        padding = 84;
+        [self createTimePoint:padding];
+    }else if (self.device == IPhone6)
+    {
+        
+    }else
+    {
+        padding = 84;
+        [self createTimePoint:padding];
+    }
+
 }
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+- (void)createTimePoint:(CGFloat)padding
 {
-
-    return self.datas.count+1;
-}
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    //添加单击手势
-    UITapGestureRecognizer *clickGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didSelecteCellGesture:)];
-
-    //添加长按手势
-    UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc] initWithTarget:self action:@selector(longPressView:)];
-    //长按响应时间
-    longPress.minimumPressDuration = 1;
-    longPress.delegate = self;
-
-    if (indexPath.row == self.datas.count - 1)
-    {//当前的cell
-        CZTimeCourseCell *cell = [CZTimeCourseCell cellWithTableView:tableView];
-
-        cell.isLastCell = YES;
-        cell.data = self.datas[indexPath.row];
+    UIColor *color = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
+    for (int i = 0; i < self.array.count; i++)
+    {
+        UIView *point = [[UIView alloc]init];
+        point.backgroundColor = color;
+        point.layer.cornerRadius = 7;
+        point.tag = (i+1)*10;
+        UIView *upLine = [[UIView alloc]init];
+        upLine.backgroundColor = color;
+        upLine.tag = (i+1)*10+1;
+        UIView *downLine = [[UIView alloc]init];
+        downLine.backgroundColor = color;
+        downLine.tag = (i+1)*10 + 2;
         
-        [cell.bgImage addGestureRecognizer:longPress];
-        
-        [cell.bgImage addGestureRecognizer:clickGesture];
-        
-        cell.tag = indexPath.row;
-        
-        [cell.deleteButton addTarget:self action:@selector(deleteCell:) forControlEvents:UIControlEventTouchUpInside];
-        cell.contentView.tag = indexPath.row;
-        
-
-        if (self.isShowDeleteButton)
-        {
-            if (indexPath.row == self.cellIndex)
+        [self.leftScrollView addSubview:point];
+        [self.leftScrollView addSubview:upLine];
+        [self.leftScrollView addSubview:downLine];
+        CGFloat upLineTopPadding = (padding + 14)*i + 10 *i;
+        CGFloat downLineTopPadding = (padding  + 14 ) * (i+1) + 10*i;
+        [upLine mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.leftScrollView.mas_top).offset(upLineTopPadding);
+            make.left.equalTo(self.leftScrollView.mas_left).offset(62);
+            make.width.mas_equalTo(3);
+            make.height.mas_equalTo(padding);
+        }];
+        [point mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(upLine.mas_bottom);
+            make.left.equalTo(upLine.mas_left).offset(-6);
+            make.width.mas_equalTo(14);
+            make.height.mas_equalTo(14);
+        }];
+        [downLine mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(point.mas_bottom);
+            make.left.equalTo(upLine.mas_left);
+            make.width.equalTo(upLine.mas_width);
+            if (i == self.array.count - 1)
             {
-                CABasicAnimation *animation = (CABasicAnimation *)[cell.deleteButton.layer animationForKey:@"rotation"];
-                if (animation == nil)
-                {
-                    //[self shakeImage];
-                    //创建动画对象,绕Z轴旋转
-                    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-                    
-                    //设置属性，周期时长
-                    [animation setDuration:0.08];
-                    
-                    //抖动角度
-                    animation.fromValue = @(-M_1_PI/2);
-                    animation.toValue = @(M_1_PI/2);
-                    //重复次数，无限大
-                    animation.repeatCount = HUGE_VAL;
-                    //恢复原样
-                    animation.autoreverses = YES;
-                    //锚点设置为图片中心，绕中心抖动
-                    
-                    cell.deleteButton.layer.anchorPoint = CGPointMake(0.5, 0.5);
-                    
-                    [cell.deleteButton.layer addAnimation:animation forKey:@"rotation"];
-                }else
-                {
-                    [self resume];
-                }
-                cell.deleteButton.hidden = NO;
-                [cell.bgImage removeGestureRecognizer:clickGesture];
-            }
-        }
-        return cell;
-    }else if (indexPath.row == self.datas.count)
-    {
-        UITableViewCell *cell = [[UITableViewCell alloc]init];
-        cell.backgroundColor = [UIColor clearColor];
-        return cell;
-
-    }else
-    {
-        CZTimeCourseCell *cell = [CZTimeCourseCell cellWithTableView:tableView];
-        cell.data = self.datas[indexPath.row];
-
-        [cell.bgImage addGestureRecognizer:longPress];
-        [cell.bgImage addGestureRecognizer:clickGesture];
-        cell.tag = indexPath.row;
-        
-        [cell.deleteButton addTarget:self action:@selector(deleteCell:) forControlEvents:UIControlEventTouchUpInside];
-        cell.contentView.tag = indexPath.row;
-        
-        if (self.isShowDeleteButton)
-        {
-            if (indexPath.row == self.cellIndex)
+                make.height.mas_equalTo(80);
+            }else
             {
-                CABasicAnimation *animation = (CABasicAnimation *)[cell.deleteButton.layer animationForKey:@"rotation"];
-                if (animation == nil)
-                {
-                    //[self shakeImage];
-                    //创建动画对象,绕Z轴旋转
-                    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-                    
-                    //设置属性，周期时长
-                    [animation setDuration:0.08];
-                    
-                    //抖动角度
-                    animation.fromValue = @(-M_1_PI/2);
-                    animation.toValue = @(M_1_PI/2);
-                    //重复次数，无限大
-                    animation.repeatCount = HUGE_VAL;
-                    //恢复原样
-                    animation.autoreverses = YES;
-                    //锚点设置为图片中心，绕中心抖动
-
-                    cell.deleteButton.layer.anchorPoint = CGPointMake(0.5, 0.5);
-                    
-                    [cell.deleteButton.layer addAnimation:animation forKey:@"rotation"];
-
-
-                }else
-                {
-                    [self resume];
-                }
-                cell.deleteButton.hidden = NO;
-                [cell.bgImage removeGestureRecognizer:clickGesture];
+                make.height.mas_equalTo(10);
             }
-        }
-        return cell;
+        }];
+        CZDateView *dateView = [[CZDateView alloc]init];
+        [self.leftScrollView addSubview:dateView];
+        [dateView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(point.mas_left).offset(-5);
+            make.top.equalTo(point.mas_top).offset(-10);
+            make.width.mas_equalTo(45);
+            make.height.mas_equalTo(40);
+        }];
+        dateView.month.text = @"12.29";
+        dateView.week.text = @"星期一";
+        [dateView addSubViewConstraint];
     }
+    
 
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+- (void)test
 {
-    if (indexPath.row == self.datas.count)
+    UIView *line = [[UIView alloc]init];
+    line.backgroundColor = [UIColor redColor];
+    [self.leftScrollView addSubview:line];
+    [line mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.leftScrollView.mas_top);
+        make.left.equalTo(self.leftScrollView.mas_left).offset(62);
+        make.width.mas_equalTo(3);
+        make.height.mas_equalTo(self.view.frame.size.height - 64-35-49);
+    }];
+    UIView *p1 = [[UIView alloc]init];
+    p1.layer.cornerRadius = 7;
+    p1.backgroundColor = [UIColor redColor];
+    [self.leftScrollView addSubview:p1];
+    UIView *p2 = [[UIView alloc]init];
+        p2.backgroundColor = [UIColor redColor];
+        p2.layer.cornerRadius = 7;
+    [self.leftScrollView addSubview:p2];
+    UIView *p3 = [[UIView alloc]init];
+        p3.backgroundColor = [UIColor redColor];
+        p3.layer.cornerRadius = 7;
+    [self.leftScrollView addSubview:p3];
+    
+    UIView *p4 = [[UIView alloc]init];
+    p4.backgroundColor = [UIColor redColor];
+    p4.layer.cornerRadius = 7;
+    [self.leftScrollView addSubview:p4];
+    
+    [p1 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.leftScrollView.mas_top).offset(84);
+        make.left.equalTo(self.leftScrollView.mas_left).offset(55);
+        make.width.mas_equalTo(14);
+        make.height.mas_equalTo(14);
+    }];
+    
+    [p2 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(p1.mas_top).offset(84);
+        make.left.equalTo(self.leftScrollView.mas_left).offset(55);
+        make.width.mas_equalTo(14);
+        make.height.mas_equalTo(14);
+    }];
+
+    
+    [p3 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(p2.mas_top).offset(84);
+        make.left.equalTo(self.leftScrollView.mas_left).offset(55);
+        make.width.mas_equalTo(14);
+        make.height.mas_equalTo(14);
+    }];
+
+    [p4 mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(p3.mas_top).offset(84);
+        make.left.equalTo(self.leftScrollView.mas_left).offset(55);
+        make.width.mas_equalTo(14);
+        make.height.mas_equalTo(14);
+    }];
+    self.leftScrollView.contentSize = CGSizeMake(0, 420+84*4);
+    UIView *contentView = [[UIView alloc]initWithFrame:CGRectMake(100, 300, 40, 40)];
+    contentView.backgroundColor = [UIColor redColor];
+    [self.view addSubview:contentView];
+    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(click)];
+    [contentView addGestureRecognizer:tap];
+    
+}
+- (void)click
+{
+    NSLog(@"click");
+}
+- (void)didReceiveMemoryWarning
+{
+    [super didReceiveMemoryWarning];
+    // Dispose of any resources that can be recreated.
+}
+- (IBAction)addSchedule:(id)sender
+{
+    CZAddScheduleViewController *addSchedule = [[CZAddScheduleViewController alloc]init];
+    [self.navigationController pushViewController:addSchedule animated:YES];
+}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    
+    self.leftScrollView.contentOffsetY = scrollView.contentOffset.y;
+}
+
+/**
+ *  计算字符串的长度
+ *
+ *  @param text 待计算大小的字符串
+ *
+ *  @param fontSize 指定绘制字符串所用的字体大小
+ *
+ *  @return 字符串的大小
+ */
+- (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize
+{
+    //计算文本的大小
+    CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
+    return nameSize;
+}
+//获取当前设备
+- (CurrentDevice)currentDeviceSize
+{
+    if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 4"] ||
+        [[self getCurrentDeviceModel] isEqualToString:@"iPhone 5"])
     {
-        return 100;
+        return IPhone5;
+        
+    }else if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 6"])
+    {
+        return IPhone6;
     }else
     {
-        CZTimeCourseCell *cell = (CZTimeCourseCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-        if (cell.cellSize.height < 100)
-        {
-            return 100;
-        }else
-        {
-            return cell.cellSize.height;
-        }
+        return Iphone6Plus;
     }
-
 }
-////插入单元格
-//- (void)tableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    
-//}
-
-- (void)deleteCell:(UIButton *)btn
+//获得设备型号
+- (NSString *)getCurrentDeviceModel
 {
-    self.isShowDeleteButton = NO;
+    int mib[2];
+    size_t len;
+    char *machine;
     
-    UIView *contentView = btn.superview;
-    [self.datas removeObjectAtIndex:contentView.tag];
-
-    [self.tableView reloadData];
-}
-
-#pragma mark - 手势代理,允许多个手势同时发生
-- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldRecognizeSimultaneouslyWithGestureRecognizer:(UIGestureRecognizer *)otherGestureRecognizer
-{
-    return YES;
-}
-- (void)didSelecteCellGesture:(UITapGestureRecognizer *)gesture
-{
-//    UIView *view = gesture.view;
-//    UIView *contentView = view.superview;
-//    CZTimeCourseCell *cell = contentView.superview;
-//    long int indexOfCell = cell.tag;
-    //------------
-    CZScheduleInfoViewController *scheduleInfoViewController = [[CZScheduleInfoViewController alloc]init];
-    [self.navigationController pushViewController:scheduleInfoViewController animated:YES];
-}
-- (void)longPressView:(UILongPressGestureRecognizer *)longPressGest{
-    self.isShowDeleteButton = YES;
+    mib[0] = CTL_HW;
+    mib[1] = HW_MACHINE;
+    sysctl(mib, 2, NULL, &len, NULL, 0);
+    machine = malloc(len);
+    sysctl(mib, 2, machine, &len, NULL, 0);
     
-    if (longPressGest.state == UIGestureRecognizerStateBegan)
-    {
-         NSLog(@"长按手势开始");
-        UIView *view = longPressGest.view;
-        UIGestureRecognizer *gesture = view.gestureRecognizers[1];
-        [view removeGestureRecognizer:gesture];
-        
-        UIView *contentView = view.superview;
-
-        CZTimeCourseCell *cell = (CZTimeCourseCell *)contentView.superview;
-        cell.isShowDeleteButton = YES;
-        cell.deleteButton.hidden = NO;
-//        NSIndexPath *indexPath = [NSIndexPath indexPathForRow:cell.tag inSection:1];
-//        [self.tableView reloadRowsAtIndexPaths:[NSArray arrayWithObject:indexPath] withRowAnimation:UITableViewRowAnimationFade];
-        self.cellIndex = contentView.tag;
-        [self.tableView reloadData];
-//        CABasicAnimation *animation = (CABasicAnimation *)[cell.deleteButton.layer animationForKey:@"rotation"];
-//        if (animation == nil)
-//        {
-////            [self shakeImage];
-//            //创建动画对象,绕Z轴旋转
-//            CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-//            
-//            //设置属性，周期时长
-//            [animation setDuration:0.08];
-//            
-//            //抖动角度
-//            animation.fromValue = @(-M_1_PI/2);
-//            animation.toValue = @(M_1_PI/2);
-//            //重复次数，无限大
-//            animation.repeatCount = HUGE_VAL;
-//            //恢复原样
-//            animation.autoreverses = YES;
-//            //锚点设置为图片中心，绕中心抖动
-//        
-//            cell.deleteButton.layer.anchorPoint = CGPointMake(0.5, 0.5);
-//            
-//            [cell.deleteButton.layer addAnimation:animation forKey:@"rotation"];
-//
-//
-//        }else
-//        {
-//            [self resume];
-//        }
-    }else
-    {
-        NSLog(@"长按手势结束");
-
-    }
-}
-- (void)pause
-{
-    for (int i = 0; i < self.tableView.visibleCells.count; ++i)
-    {
-        CZTimeCourseCell *cell = self.tableView.visibleCells[i];
-        cell.deleteButton.layer.speed = 0.0;
-    }
-
-}
-
-- (void)resume
-{
-    for (int i = 0; i < self.tableView.visibleCells.count; i++)
-    {
-        CZTimeCourseCell *cell = self.tableView.visibleCells[i];
-        cell.deleteButton.layer.speed = 1.0;
-        
-    }
-}
-
-- (void)shakeImage
-{
-    //创建动画对象,绕Z轴旋转
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
+    NSString *platform = [NSString stringWithCString:machine encoding:NSASCIIStringEncoding];
+    free(machine);
     
-    //设置属性，周期时长
-    [animation setDuration:0.08];
+    if ([platform isEqualToString:@"iPhone1,1"]) return @"iPhone 2G (A1203)";
+    if ([platform isEqualToString:@"iPhone1,2"]) return @"iPhone 3G (A1241/A1324)";
+    if ([platform isEqualToString:@"iPhone2,1"]) return @"iPhone 3GS (A1303/A1325)";
+    if ([platform isEqualToString:@"iPhone3,1"]) return @"iPhone 4";
+    if ([platform isEqualToString:@"iPhone3,2"]) return @"iPhone 4";
+    if ([platform isEqualToString:@"iPhone3,3"]) return @"iPhone 4";
+    if ([platform isEqualToString:@"iPhone4,1"]) return @"iPhone 4";
+    if ([platform isEqualToString:@"iPhone5,1"]) return @"iPhone 5";
+    if ([platform isEqualToString:@"iPhone5,2"]) return @"iPhone 5";
+    if ([platform isEqualToString:@"iPhone5,3"]) return @"iPhone 5";
+    if ([platform isEqualToString:@"iPhone5,4"]) return @"iPhone 5";
+    if ([platform isEqualToString:@"iPhone6,1"]) return @"iPhone 5";
+    if ([platform isEqualToString:@"iPhone6,2"]) return @"iPhone 5";
+    if ([platform isEqualToString:@"iPhone7,1"]) return @"iPhone 6 Plus";
+    if ([platform isEqualToString:@"iPhone7,2"]) return @"iPhone 6";
     
-    //抖动角度
-    animation.fromValue = @(-M_1_PI/2);
-    animation.toValue = @(M_1_PI/2);
-    //重复次数，无限大
-    animation.repeatCount = HUGE_VAL;
-    //恢复原样
-    animation.autoreverses = YES;
-    //锚点设置为图片中心，绕中心抖动
-
-    for (int i = 0; i < self.tableView.visibleCells.count; i++)
-    {
-        CZTimeCourseCell *cell = self.tableView.visibleCells[i];
-        cell.deleteButton.layer.anchorPoint = CGPointMake(0.5, 0.5);
-        
-        [cell.deleteButton.layer addAnimation:animation forKey:@"rotation"];
-    }
-
-
-
-}//如果点击图标外区域，停止抖动
-- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
-{
-    UITouch *touch = [touches anyObject];
-    CGPoint point = [touch locationInView:self.view];
-    //转换坐标系，判断touch点是否在imageView内，在的话，仍然抖动，否则停止抖动
-
-    for (int i = 0; i < self.tableView.visibleCells.count; ++i)
-    {
-        CZTimeCourseCell *cell = self.tableView.visibleCells[i];
-        CGPoint p = [self.view convertPoint:point toView:cell.deleteButton];
-        if (![cell.deleteButton pointInside:p withEvent:event])
-        {
-            cell.deleteButton.hidden = YES;
-            [self pause];
-        }
-    }
-    self.isShowDeleteButton = NO;
-    [self.tableView reloadData];
-
+    if ([platform isEqualToString:@"i386"])      return @"iPhone Simulator";
+    if ([platform isEqualToString:@"x86_64"])    return @"iPhone Simulator";
+    return platform;
 }
+
 @end

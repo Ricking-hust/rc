@@ -7,7 +7,12 @@
 //
 
 #import <UIKit/UIKit.h>
-
-@interface CZMoreRemindTimeViewController : UITableViewController
-
+@class CZRemindView;
+@class CZRemintTimeView;
+@interface CZMoreRemindTimeViewController : UIViewController
+@property (strong, nonatomic) CZRemindView *notRemind;
+@property (strong, nonatomic) CZRemindView *beforeOneDay;
+@property (strong, nonatomic) CZRemindView *beforeThreeDay;
+@property (strong, nonatomic) CZRemindView *beforeFiveDay;
+@property (strong, nonatomic) CZRemintTimeView *timeView;
 @end

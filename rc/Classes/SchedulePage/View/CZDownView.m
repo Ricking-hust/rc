@@ -35,6 +35,7 @@
         self.remindTimeLabel = [[UILabel alloc]init];
         self.remindTimeLabel.font = [UIFont systemFontOfSize:14];
         self.moreRemindImg = [[UIImageView alloc]init];
+        self.moreRemindImg.image = [UIImage imageNamed:@"nextIcon"];
         
         [self addSubview:self.contextView];
         [self.contextView addSubview:self.textView];
