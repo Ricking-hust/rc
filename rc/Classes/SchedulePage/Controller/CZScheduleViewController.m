@@ -20,11 +20,38 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
 };
 @interface CZScheduleViewController ()
 @property (nonatomic, assign) CurrentDevice device;
+@property (nonatomic, assign) CGFloat padding;
+@property (nonatomic, assign) BOOL isMoreSc;
 @end
 
 @implementation CZScheduleViewController
 
 #pragma mark - 懒加载顶部imgview
+- (CGFloat)padding
+{
+    if (_padding)
+    {
+        if (self.device == IPhone5)
+        {
+            _padding = 84;
+        }else if (self.device == IPhone6)
+        {
+            _padding = 184;
+        }else
+        {
+            _padding = 84;
+        }
+    }
+    return _padding;
+}
+- (CurrentDevice)device
+{
+    if (!_device)
+    {
+        _device = [self currentDeviceSize];
+    }
+    return _device;
+}
 - (NSArray *)array
 {
     if (!_array)
@@ -40,16 +67,18 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
         _scInfoView = [[CZScheduleInfoView alloc]init];
         UITapGestureRecognizer *click = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didViewInfo:)];
         [_scInfoView addGestureRecognizer:click];
-        [self.view addSubview:_scInfoView];
+        [self.rigthScrollView addSubview:_scInfoView];
 
         UIImage *image = [UIImage imageNamed:@"bg_background1"];
         _scInfoView.layer.contents = (id) image.CGImage;    // 如果需要背景透明加上下面这句
         _scInfoView.layer.backgroundColor = [UIColor clearColor].CGColor;
-        NSLog(@"");
+        NSLog(@"%f",image.size.height);
+        CGFloat top = self.scInfoView.height * 0.35;
         [_scInfoView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.rigthScrollView.mas_centerY);
+            //make.centerY.equalTo(self.rigthScrollView.mas_centerY);
+            make.top.equalTo(self.rigthScrollView.mas_top).offset(84 - top);
             make.centerX.equalTo(self.rigthScrollView.mas_centerX);
-            make.width.mas_equalTo(image.size.width);
+            make.width.mas_equalTo(self.view.frame.size.width - 30 - 75);
             make.height.mas_equalTo(image.size.height);
         }];
     }
@@ -75,8 +104,11 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     if (!_leftScrollView)
     {
         _leftScrollView = [[UIScrollView alloc]init];
-        _leftScrollView.scrollEnabled = NO;
+        //_leftScrollView.scrollEnabled = NO;
+        _leftScrollView.tag = 1;
+        _leftScrollView.delegate = self;
         [self.view addSubview:_leftScrollView];
+        _leftScrollView.contentSize = CGSizeMake(0, 1000);
         [_leftScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.view.mas_top).offset(64+35);
             make.left.equalTo(self.view.mas_left);
@@ -91,6 +123,7 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     if (!_rigthScrollView)
     {
         _rigthScrollView = [[UIScrollView alloc]init];
+        _rigthScrollView.tag = 2;
         _rigthScrollView.delegate = self;
         [self.view addSubview:_rigthScrollView];
         [_rigthScrollView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -106,29 +139,38 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
-    self.device = [self currentDeviceSize];
+    self.isMoreSc = NO;
     NSLog(@"test data %f",self.timeLine.frame.size.width);
     self.rigthScrollView.contentSize = CGSizeMake(0, 1000);
     [self displaySchedule];
     NSLog(@"%@",self.scInfoView);
+    
+    self.scInfoView.img.image = [UIImage imageNamed:@"appointmentSmallIcon"];
+    self.scInfoView.tagLabel.text = @"出差";
+    self.scInfoView.timeLabel.text = @"12:12";
+    self.scInfoView.scNameLabel.text = @"[视频]你的Q";
+    [self.scInfoView addSubViewConstraint];
 
+    CGFloat heigth = [self sizeWithText:@"12:12" maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:14].height;
+    CGFloat scNameW = kScreenWidth - 30 - 75 - self.scInfoView.img.image.size.width - 18 - 20;
+    CGFloat scNameH = [self sizeWithText:self.scInfoView.scNameLabel.text maxSize:CGSizeMake(scNameW, MAXFLOAT) fontSize:14].height;
+    self.leftScrollView.scrollEnabled = NO;
 }
 - (void)displaySchedule
 {
 
-    CGFloat padding;
     if (self.device == IPhone5)
     {
         //根据个数创建point和point的上线和下线
-        padding = 84;
-        [self createTimePoint:padding];
+        self.padding = 84;
+        [self createTimePoint:self.padding];
     }else if (self.device == IPhone6)
     {
         
     }else
     {
-        padding = 84;
-        [self createTimePoint:padding];
+        self.padding = 84;
+        [self createTimePoint:self.padding];
     }
 
 }
@@ -194,73 +236,9 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
 }
 - (void)didViewInfo:(UITapGestureRecognizer *)clickGesture
 {
-    NSLog(@"click");
+    self.scInfoView.scNameLabel.text = @"好听哭了";
 }
-- (void)test
-{
-    UIView *line = [[UIView alloc]init];
-    line.backgroundColor = [UIColor redColor];
-    [self.leftScrollView addSubview:line];
-    [line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.leftScrollView.mas_top);
-        make.left.equalTo(self.leftScrollView.mas_left).offset(62);
-        make.width.mas_equalTo(3);
-        make.height.mas_equalTo(self.view.frame.size.height - 64-35-49);
-    }];
-    UIView *p1 = [[UIView alloc]init];
-    p1.layer.cornerRadius = 7;
-    p1.backgroundColor = [UIColor redColor];
-    [self.leftScrollView addSubview:p1];
-    UIView *p2 = [[UIView alloc]init];
-        p2.backgroundColor = [UIColor redColor];
-        p2.layer.cornerRadius = 7;
-    [self.leftScrollView addSubview:p2];
-    UIView *p3 = [[UIView alloc]init];
-        p3.backgroundColor = [UIColor redColor];
-        p3.layer.cornerRadius = 7;
-    [self.leftScrollView addSubview:p3];
-    
-    UIView *p4 = [[UIView alloc]init];
-    p4.backgroundColor = [UIColor redColor];
-    p4.layer.cornerRadius = 7;
-    [self.leftScrollView addSubview:p4];
-    
-    [p1 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.leftScrollView.mas_top).offset(84);
-        make.left.equalTo(self.leftScrollView.mas_left).offset(55);
-        make.width.mas_equalTo(14);
-        make.height.mas_equalTo(14);
-    }];
-    
-    [p2 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(p1.mas_top).offset(84);
-        make.left.equalTo(self.leftScrollView.mas_left).offset(55);
-        make.width.mas_equalTo(14);
-        make.height.mas_equalTo(14);
-    }];
 
-    
-    [p3 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(p2.mas_top).offset(84);
-        make.left.equalTo(self.leftScrollView.mas_left).offset(55);
-        make.width.mas_equalTo(14);
-        make.height.mas_equalTo(14);
-    }];
-
-    [p4 mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(p3.mas_top).offset(84);
-        make.left.equalTo(self.leftScrollView.mas_left).offset(55);
-        make.width.mas_equalTo(14);
-        make.height.mas_equalTo(14);
-    }];
-    self.leftScrollView.contentSize = CGSizeMake(0, 420+84*4);
-    UIView *contentView = [[UIView alloc]initWithFrame:CGRectMake(100, 300, 40, 40)];
-    contentView.backgroundColor = [UIColor redColor];
-    [self.view addSubview:contentView];
-    UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(click)];
-    [contentView addGestureRecognizer:tap];
-    
-}
 
 - (void)didReceiveMemoryWarning
 {
@@ -272,9 +250,20 @@ typedef NS_ENUM(NSInteger, CurrentDevice)
     CZAddScheduleViewController *addSchedule = [[CZAddScheduleViewController alloc]init];
     [self.navigationController pushViewController:addSchedule animated:YES];
 }
+#pragma mark - scrollView的代理
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     
+    //1.滚动一个时间节点，在右侧显示对应的行程
+        //a 如果右侧的行程超出屏幕范围，则滚动改为，滚动行程，否则则右侧滚动继续滚动时间节点，
+        //b 左侧滚动条滚动一个时间节点，在右侧显示对应的行程，复生a
+    
+    
+    CGFloat top = self.scInfoView.height * 0.35;
+
+    [self.scInfoView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.rigthScrollView.mas_top).offset(84 - top+ scrollView.contentOffset.y);
+    }];
     self.leftScrollView.contentOffsetY = scrollView.contentOffset.y;
 }
 
