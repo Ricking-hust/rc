@@ -10,8 +10,11 @@
 
 @interface CZScheduleInfoView : UIView
 @property (nonatomic, strong) UIImageView *img;
+@property (nonatomic, strong) UIView *tagWithImgView;
 @property (nonatomic, strong) UILabel *tagLabel;
 @property (nonatomic, strong) UILabel *timeLabel;
-@property (nonatomic, strong) UILabel *contentLabel;
+@property (nonatomic, strong) UILabel *scNameLabel;
+@property (nonatomic, assign) CGFloat scNameH;
+@property (nonatomic, assign) CGFloat height;
 - (void)addSubViewConstraint;
 @end
