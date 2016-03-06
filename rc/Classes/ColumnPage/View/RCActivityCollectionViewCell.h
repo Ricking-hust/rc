@@ -8,11 +8,11 @@
 
 #import <UIKit/UIKit.h>
 
-@class CZAcitivityModelOfColumn;
+@class ActivityModel;
 
 @interface RCActivityCollectionViewCell : UICollectionViewCell
 
-@property (nonatomic, strong) CZAcitivityModelOfColumn *activity;
+@property (nonatomic, strong) ActivityList *activityList;
 
 @property (nonatomic, strong) UIImageView *acImage;
 @property (nonatomic, strong) UILabel *acName;

@@ -28,24 +28,25 @@
 @property (nonatomic,strong) industryList *indList;
 @property (nonatomic,strong) ActivityList *activityList;
 
-@property (nonatomic,strong) NSURLSessionDataTask *currentTask;
+@property (nonatomic,copy) NSURLSessionDataTask *(^getIndListBlock)();
+@property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)();
+
 #pragma mark - 测试数据
-@property (nonatomic, strong) NSArray *array;
-@property (nonatomic, strong) NSMutableArray *activities;
+//@property (nonatomic, strong) NSArray *array;
+//@property (nonatomic, strong) NSMutableArray *activities;
 @end
 
 @implementation CZColumnViewController
 
 static NSString * const reuseIdentifier = @"Cell";
 
+#pragma mark - View
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     UIView *temp = [[UIView alloc]init];
     [self.view addSubview:temp];
-    self.activities = [[NSMutableArray alloc]init];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-#pragma mark - 测试数据
-    [self getData];
     
     //创建子控件
     [self createSubView];
@@ -55,20 +56,23 @@ static NSString * const reuseIdentifier = @"Cell";
 
 }
 
--(void) indConfigureBlocks{
-    self.currentTask = [[DataManager manager] getAllIndustriesWithSuccess:^(industryList *indList) {
-        self.indList = indList;
-    } failure:^(NSError *error) {
-        NSLog(@"Error:%@",error);
-    }];
+#pragma mark - get data
+
+- (void)configureBlocks{
+    @weakify(self);
+    self.getIndListBlock = ^(){
+        @strongify(self);
+        return [[DataManager manager] getAllIndustriesWithSuccess:^(industryList *indList) {
+            @strongify(self)
+            self.indList = indList;
+        } failure:^(NSError *error) {
+            NSLog(@"Error:%@",error);
+        }];
+    };
 }
 
--(void) acConfigureBlocks{
-    self.currentTask = [[DataManager manager] checkIndustryWithCityId:@"1" industryId:@"1" startId:@"0" success:^(ActivityList *acList) {
-        self.activityList = acList;
-    } failure:^(NSError *error) {
-        NSLog(@"Error:%@",error);
-    }];
+-(void)setIndList:(industryList *)indList{
+    _indList = indList;
 }
 
 #pragma mark - 懒加载，创建主题色
@@ -95,27 +99,6 @@ static NSString * const reuseIdentifier = @"Cell";
     return _toolScrollView;
 }
 
-//#pragma mark - 懒加载，创建scrollView
-//- (UIScrollView *)scrollView
-//{
-//    if (!_scrollView) {
-//        //创建滚动条
-//        _scrollView = [[UIScrollView alloc]initWithFrame:CGRectZero];
-//        [self.view addSubview:_scrollView];
-//        CGRect rect = [[UIScreen mainScreen]bounds];
-//        CGSize scrollSize = CGSizeMake(rect.size.width, rect.size.height - 103);
-//        [_scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.left.equalTo(self.view.mas_left);
-//            make.top.equalTo(_toolScrollView.mas_bottom).with.offset(20/2);
-//            make.size.mas_equalTo(scrollSize);
-//        }];
-//#pragma mark - 测试语句
-//        //设置滚动条
-//        _scrollView.contentSize = CGSizeMake(0, scrollSize.height*2);
-//    }
-//    return _scrollView;
-//}
-
 #pragma mark - 懒加载，创建toolbuttonarray
 - (NSMutableArray *)toolButtonArray
 {
@@ -125,14 +108,15 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     return _toolButtonArray;
 }
-#pragma mark - 懒加载，测试数据
-- (NSArray *)array
-{
-    if (!_array) {
-        _array = [NSArray arrayWithObjects:@"创业", @"讲座", @"金融",@"设计",@"资讯",@"联网",@"设计",@"资讯",@"联网" ,nil];
-    }
-    return  _array;
-}
+//#pragma mark - 懒加载，测试数据
+//- (NSArray *)array
+//{
+//    if (!_array) {
+//        _array = [NSArray arrayWithObjects:@"创业", @"讲座", @"金融",@"设计",@"资讯",@"联网",@"设计",@"资讯",@"联网" ,nil];
+//    }
+//    return  _array;
+//}
+
 #pragma mark - 创建子控件，显示数据
 - (void) createSubView
 {
@@ -146,18 +130,19 @@ static NSString * const reuseIdentifier = @"Cell";
 //创建工具条按钮
 - (void)showToolButtons
 {
-    UIColor *selectedColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0] ;
+    //UIColor *selectedColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0] ;
     CGRect rect = [[UIScreen mainScreen]bounds];
     CGFloat leftPadding = 10;
     CGFloat topPadding = (self.toolScrollView.frame.size.height - 30)/2;
     CGFloat padding = rect.size.width * 0.07;
     
     //设置工具条的水平滚动范围
-    CGFloat horizontalContentSize = self.array.count*30 + (self.array.count - 1)*padding + leftPadding + 10;
+    CGFloat horizontalContentSize = self.indList.list.count*30 + (self.indList.list.count - 1)*padding + leftPadding + 10;
     self.toolScrollView.contentSize = CGSizeMake(horizontalContentSize, 0);
-    for (int i = 0; i<self.array.count; i++)
+    for (int i = 0; i<self.indList.list.count; i++)
     {
-        CZButtonView *btnView = [[CZButtonView alloc]initWithTittle:self.array[i]];
+        IndustryModel *indModel = self.indList.list[i];
+        CZButtonView *btnView = [[CZButtonView alloc]initWithTittle:indModel.indName];
         //添加tagButton的观察者
         //[self addObserver:btnView.tagButton forKeyPath:@"tagButton" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
         if (i == 0)
@@ -182,19 +167,19 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 }
 
-#pragma mark - 模拟取得数据
-- (void)getData
-{
-    CZAcitivityModelOfColumn *activity = [CZAcitivityModelOfColumn activity];
-    [self.activities addObject:activity];
-    
-    CZAcitivityModelOfColumn *activity2 = [CZAcitivityModelOfColumn activity];
-   [self.activities addObject:activity2];
-    
-    CZAcitivityModelOfColumn *activity3 = [CZAcitivityModelOfColumn activity];
-    [self.activities addObject:activity3];
-    
-}
+//#pragma mark - 模拟取得数据
+//- (void)getData
+//{
+//    CZAcitivityModelOfColumn *activity = [CZAcitivityModelOfColumn activity];
+//    [self.activities addObject:activity];
+//    
+//    CZAcitivityModelOfColumn *activity2 = [CZAcitivityModelOfColumn activity];
+//   [self.activities addObject:activity2];
+//    
+//    CZAcitivityModelOfColumn *activity3 = [CZAcitivityModelOfColumn activity];
+//    [self.activities addObject:activity3];
+//    
+//}
 //处理tagButton收到的更改通知
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
@@ -252,64 +237,7 @@ static NSString * const reuseIdentifier = @"Cell";
     self.activityCollectionView.dataSource = self;
     self.activityCollectionView.delegate = self;
     
-//    UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickAcView:)];
-//    UITapGestureRecognizer *tapGesture2 = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickAcView:)];
-////    
-//    CZAcitivityModelOfColumn *av = self.activities[0];
-//    av.ac_title = @"你是铁小基一工在十七";
-//
-//    CZActivityOfColumn *acView = [CZActivityOfColumn activityView];
-//    acView.activity = av;
-//    [self.scrollView addSubview:acView];
-//    [acView addGestureRecognizer:tapGesture];
-//
-//    CZActivityOfColumn *acView2 = [CZActivityOfColumn activityView];
-//    
-//
-//    av.ac_title = @"你是铁小基一工在十七你是铁小基一工在十七你是铁小基一工在十七";
-//    acView2.activity = av;
-//    [self.scrollView addSubview:acView2];
-//    [acView2 addGestureRecognizer:tapGesture2];
-//    
-//
-//    CZActivityOfColumn *acView3 = [CZActivityOfColumn activityView];
-//    acView3.activity = av;
-//    [self.scrollView addSubview:acView3];
-//    
-//    //CGFloat letfPadding = 15;
-    CGFloat padding;
-    CGFloat topPadding;
-    //根据设备调整布局
-    if ([[self getCurrentDeviceModel]isEqualToString:@"iPhone 4"] ||
-        [[self getCurrentDeviceModel]isEqualToString:@"iPhone 5"] )
-    {//设备为iphone4与iphone 5时
-        padding = 10;
-    }else if([[self getCurrentDeviceModel]isEqualToString:@"iPhone 6"] ||
-             [[self getCurrentDeviceModel]isEqualToString:@"iPhone Simulator"])
-    {//设备为iphone 6时
-        padding = 15;
-        topPadding = 10;
-    }else
-    {//设备为iphone 6 plus时
-        padding = 20;
-    }
-//
-//    [acView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.scrollView.mas_top);
-//        make.left.equalTo(self.scrollView.mas_left).with.offset(padding);
-//        make.size.mas_equalTo(CGSizeMake(acView.width, acView.heigth));
-//    }];
-//    
-//    [acView2 mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(acView.mas_top);
-//        make.left.equalTo(acView.mas_right).with.offset(padding);
-//        make.size.mas_equalTo(CGSizeMake(acView2.width, acView2.heigth));
-//    }];
-//    [acView3 mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(acView.mas_bottom).with.offset(topPadding);
-//        make.left.equalTo(self.scrollView).with.offset(padding);
-//        make.size.mas_equalTo(CGSizeMake(acView3.width, acView3.heigth));
-//    }];
+
 }
 
 #pragma mark <UICollectionViewDataSource>
@@ -320,12 +248,10 @@ static NSString * const reuseIdentifier = @"Cell";
 
 
 - (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 4;
+    return 6;
 }
 
 - (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    CZAcitivityModelOfColumn *av = self.activities[0];
-    av.ac_title = @"你是铁小基一工在十七";
     RCActivityCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
     
     // Configure the cell

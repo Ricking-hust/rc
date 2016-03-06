@@ -30,6 +30,7 @@
 
 @implementation CZHomeViewController
 
+#pragma  mark - View
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -37,30 +38,6 @@
     
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
-}
-- (void)configureBlocks{
-    @weakify(self);
-    self.getActivityListBlock = ^(){
-        @strongify(self);
-        return [[DataManager manager] getActivityRecommendWithCityId:@"1" startId:@"0" num:@"10" userId:@"1" success:^(ActivityList *acList) {
-            @strongify(self);
-            self.activityList = acList;
-        } failure:^(NSError *error) {
-            NSLog(@"error:%@",error);
-        }];
-//        return [[DataManager manager] getActivitySearchWithKeywords:@"讲座" startId:@"0" num:@"10" cityId:@"1" success:^(ActivityList *acList) {
-//            @strongify(self);
-//            self.activityList = acList;
-//        } failure:^(NSError *error) {
-//            NSLog(@"error:%@",error);
-//        }];
-    };
-}
-
-- (void)startget{
-    if (self.getActivityListBlock) {
-        self.getActivityListBlock();
-    }
 }
 
 -(void)viewDidAppear:(BOOL)animated{
@@ -76,23 +53,12 @@
     });
 }
 
-- (void) setActivityList:(ActivityList *)activityList{
-    
-    _activityList = activityList;
-    
-    [self.tableView reloadData];
-}
-
--(void)loadView{
-    [super loadView];
-    
-    [self createSubViews];
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self configureBlocks];
+    
+    [self createSubViews];
     
     //设置tableHeaderView
     CZHomeHeaderView *headerView = [CZHomeHeaderView headerView];
@@ -105,6 +71,34 @@
 {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
+}
+
+#pragma mark - get data
+
+- (void)configureBlocks{
+    @weakify(self);
+    self.getActivityListBlock = ^(){
+        @strongify(self);
+        return [[DataManager manager] getActivityRecommendWithCityId:@"1" startId:@"0" num:@"10" userId:@"1" success:^(ActivityList *acList) {
+            @strongify(self);
+            self.activityList = acList;
+        } failure:^(NSError *error) {
+            NSLog(@"error:%@",error);
+        }];
+    };
+}
+
+- (void)startget{
+    if (self.getActivityListBlock) {
+        self.getActivityListBlock();
+    }
+}
+
+- (void) setActivityList:(ActivityList *)activityList{
+    
+    _activityList = activityList;
+    
+    [self.tableView reloadData];
 }
 
 #pragma mark - Tableview 数据源

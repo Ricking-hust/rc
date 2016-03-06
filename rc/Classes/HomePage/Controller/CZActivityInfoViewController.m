@@ -42,45 +42,8 @@
 
 @implementation CZActivityInfoViewController
 
-#pragma mark - Data
-- (void)configureBlocks{
-    @weakify(self);
-    self.getActivityBlock = ^(){
-        @strongify(self);
-        
-        return [[DataManager manager] getActivityContentWithAcId:self.activityModelPre.acID userId:@"1" success:^(ActivityModel *activity) {
-            @strongify(self);
-            self.activitymodel = activity;
-        } failure:^(NSError *error) {
-            NSLog(@"Error:%@",error);
-        }];
-    };
-}
-
-
--(void)setActivityModelPre:(ActivityModel *)activityModelPre{
-    _activityModelPre = activityModelPre;
-    
-}
-
--(void)setActivitymodel:(ActivityModel *)activitymodel{
-    
-    _activitymodel = activitymodel;
-    //对tableView头进行赋值
-    [self setTableViewHeader];
-    [self.tableView reloadData];
-}
-
--(void)startgetAc
-{
-    if (self.getActivityBlock) {
-        self.getActivityBlock();
-    }
-}
-
 #pragma mark - view
 
-//界面加载完毕
 - (void)viewDidLoad {
     [super viewDidLoad];
     
@@ -115,6 +78,41 @@
 
 -(void)viewWillLayoutSubviews{
     [super viewWillLayoutSubviews];
+}
+
+#pragma mark - Data
+- (void)configureBlocks{
+    @weakify(self);
+    self.getActivityBlock = ^(){
+        @strongify(self);
+        
+        return [[DataManager manager] getActivityContentWithAcId:self.activityModelPre.acID userId:@"1" success:^(ActivityModel *activity) {
+            @strongify(self);
+            self.activitymodel = activity;
+        } failure:^(NSError *error) {
+            NSLog(@"Error:%@",error);
+        }];
+    };
+}
+
+//-(void)startgetAc
+//{
+//    if (self.getActivityBlock) {
+//        self.getActivityBlock();
+//    }
+//}
+
+-(void)setActivityModelPre:(ActivityModel *)activityModelPre{
+    _activityModelPre = activityModelPre;
+    
+}
+
+-(void)setActivitymodel:(ActivityModel *)activitymodel{
+    
+    _activitymodel = activitymodel;
+    //对tableView头进行赋值
+    [self setTableViewHeader];
+    [self.tableView reloadData];
 }
 
 //创建子控件
@@ -381,6 +379,7 @@
     self.acTagLabel.textColor        = self.acTittleLabel.textColor;
     
     //self.acImageView.image    = [UIImage imageNamed:@"img_1"];
+    NSLog(@"acPoster:%@",self.activitymodel.acPoster);
     [self.acImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     self.acTittleLabel.text   = self.activitymodel.acTitle;
     NSLog(@"acTitle:%@",self.activitymodel.acTitle);
@@ -432,7 +431,6 @@
     }else if ([cell isKindOfClass:[CZActivityInfoCell class]])
     {
         ((CZActivityInfoCell *)cell).model = self.activitymodel;
-        NSLog(@"acPlace:%@",self.activitymodel.acPlace);
     }
 }
 //弹出提醒视图
