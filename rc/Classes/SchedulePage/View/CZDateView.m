@@ -29,11 +29,9 @@
     self.month.textColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
     self.week.font = [UIFont systemFontOfSize:10];
     self.week.textColor = self.month.textColor;
-    NSLog(@"%@",self.month.text);
     CGSize monthSize = [self sizeWithText:self.month.text maxSize:CGSizeMake(60, 20) fontSize:18];
     CGSize weekSize = [self sizeWithText:self.week.text maxSize:CGSizeMake(60, 20) fontSize:10];
-    NSLog(@"month w %f,h %f",monthSize.width , monthSize.height);
-    NSLog(@"week w %f,h %f",weekSize.width , weekSize.height);
+
 
     [self.month mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top);

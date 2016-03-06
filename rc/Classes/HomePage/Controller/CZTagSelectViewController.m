@@ -13,12 +13,7 @@
 #define IPHONE5PADDING  12
 #define IPHONE6PADDING  23
 #define IPHONE6PLUSPADDING  30.8
-typedef NS_ENUM(NSInteger, CurrentDevice)
-{
-    IPhone5     = 0,    //4寸    568 X 320
-    IPhone6     = 1,    //4.7寸  667 X 375
-    Iphone6Plus = 2     //5.5寸  736 X 414
-};
+
 @interface CZTagSelectViewController ()
 @property (nonatomic, strong) UIScrollView *scrollView;
 @property (nonatomic, assign) CurrentDevice device;

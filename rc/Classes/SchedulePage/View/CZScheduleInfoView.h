@@ -16,5 +16,6 @@
 @property (nonatomic, strong) UILabel *scNameLabel;
 @property (nonatomic, assign) CGFloat scNameH;
 @property (nonatomic, assign) CGFloat height;
+@property (nonatomic, copy) NSString *strScName;
 - (void)addSubViewConstraint;
 @end

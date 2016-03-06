@@ -56,7 +56,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self configureBlocks];
+    //[self configureBlocks];
     
     [self createSubViews];
     
@@ -64,6 +64,7 @@
     CZHomeHeaderView *headerView = [CZHomeHeaderView headerView];
     [headerView setView];
     self.tableView.tableHeaderView = headerView;
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
 }
 
