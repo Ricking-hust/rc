@@ -41,10 +41,6 @@
 		561D02111C47DA5600E4E013 /* ViewController+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 561D01C31C47DA5600E4E013 /* ViewController+MASAdditions.m */; };
 		561D02121C47DA5600E4E013 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 561D01C41C47DA5600E4E013 /* README.md */; };
 		561D02151C47DA5600E4E013 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 561D01CA1C47DA5600E4E013 /* AppDelegate.m */; };
-		561D02161C47DA5600E4E013 /* 1.png in Resources */ = {isa = PBXBuildFile; fileRef = 561D01CC1C47DA5600E4E013 /* 1.png */; };
-		561D02171C47DA5600E4E013 /* activityImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 561D01CD1C47DA5600E4E013 /* activityImage.png */; };
-		561D02181C47DA5600E4E013 /* Argentina.png in Resources */ = {isa = PBXBuildFile; fileRef = 561D01CE1C47DA5600E4E013 /* Argentina.png */; };
-		561D02191C47DA5600E4E013 /* Chile.png in Resources */ = {isa = PBXBuildFile; fileRef = 561D01CF1C47DA5600E4E013 /* Chile.png */; };
 		5626241F1C8AD58B00F81A39 /* CZScheduleInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5626241E1C8AD58B00F81A39 /* CZScheduleInfoView.m */; };
 		562CC4461C6C962100774C22 /* CZTimeSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CC4451C6C962100774C22 /* CZTimeSelectView.m */; };
 		56423F4B1C4FB4710072CCC3 /* CZHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56423F4A1C4FB4710072CCC3 /* CZHomeViewController.m */; };
@@ -239,10 +235,6 @@
 		561D01C41C47DA5600E4E013 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		561D01C91C47DA5600E4E013 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		561D01CA1C47DA5600E4E013 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
-		561D01CC1C47DA5600E4E013 /* 1.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = 1.png; sourceTree = "<group>"; };
-		561D01CD1C47DA5600E4E013 /* activityImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = activityImage.png; sourceTree = "<group>"; };
-		561D01CE1C47DA5600E4E013 /* Argentina.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Argentina.png; sourceTree = "<group>"; };
-		561D01CF1C47DA5600E4E013 /* Chile.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Chile.png; sourceTree = "<group>"; };
 		5626241D1C8AD58B00F81A39 /* CZScheduleInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZScheduleInfoView.h; sourceTree = "<group>"; };
 		5626241E1C8AD58B00F81A39 /* CZScheduleInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZScheduleInfoView.m; sourceTree = "<group>"; };
 		562CC4441C6C962100774C22 /* CZTimeSelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTimeSelectView.h; sourceTree = "<group>"; };
@@ -496,7 +488,6 @@
 			isa = PBXGroup;
 			children = (
 				5683EC221C817EA1006430CB /* Main */,
-				561D01CB1C47DA5600E4E013 /* Resources */,
 				561D01C81C47DA5600E4E013 /* Others */,
 				561D01361C47DA5600E4E013 /* Classes */,
 				565EF6121C48EBA20067C032 /* Managers */,
@@ -712,17 +703,6 @@
 				561D01CA1C47DA5600E4E013 /* AppDelegate.m */,
 			);
 			path = Others;
-			sourceTree = "<group>";
-		};
-		561D01CB1C47DA5600E4E013 /* Resources */ = {
-			isa = PBXGroup;
-			children = (
-				561D01CC1C47DA5600E4E013 /* 1.png */,
-				561D01CD1C47DA5600E4E013 /* activityImage.png */,
-				561D01CE1C47DA5600E4E013 /* Argentina.png */,
-				561D01CF1C47DA5600E4E013 /* Chile.png */,
-			);
-			path = Resources;
 			sourceTree = "<group>";
 		};
 		564596A81C732A84006D8493 /* popupViewController */ = {
@@ -1152,13 +1132,9 @@
 			files = (
 				5683EC271C817F7B006430CB /* LaunchScreen.storyboard in Resources */,
 				5683EC281C817F7B006430CB /* Main.storyboard in Resources */,
-				561D02171C47DA5600E4E013 /* activityImage.png in Resources */,
 				561D01FC1C47DA5600E4E013 /* LICENSE in Resources */,
 				561D02071C47DA5600E4E013 /* LICENSE in Resources */,
-				561D02181C47DA5600E4E013 /* Argentina.png in Resources */,
-				561D02191C47DA5600E4E013 /* Chile.png in Resources */,
 				561D01D01C47DA5600E4E013 /* Assets.xcassets in Resources */,
-				561D02161C47DA5600E4E013 /* 1.png in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

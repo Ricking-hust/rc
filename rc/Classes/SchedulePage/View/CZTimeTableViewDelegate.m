@@ -108,6 +108,7 @@
     {//上拉
         self.indexAtCell++;
         self.isUp = NO;
+        //NSLog(@"上拉 %d",self.indexAtCell);
         //reflesh scTableView---------
         [self updateDataSoucre:self.array];
         [self.scTableView reloadData];
@@ -125,6 +126,7 @@
         {
             self.isUp = NO;
         }
+        //NSLog(@"下拉 %d",self.indexAtCell);
         //reflesh scTableView---------
         [self updateDataSoucre:self.array];
         [self.array removeObjectAtIndex:0];
@@ -155,8 +157,5 @@
     CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
     return nameSize;
 }
-
-
-
 
 @end
