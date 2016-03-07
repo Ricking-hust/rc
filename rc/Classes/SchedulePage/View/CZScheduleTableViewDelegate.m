@@ -108,7 +108,7 @@
     [cell.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(cell.bgView.mas_top).offset(12);
         make.left.equalTo(cell.tagImageView.mas_right).offset(12);
-        make.width.mas_equalTo(40);
+        make.width.mas_equalTo(70);
         make.height.mas_equalTo(17);
     }];
     CGSize  placeSize = [self sizeWithText:cell.placeLabel.text maxSize:CGSizeMake(maxW, MAXFLOAT) fontSize:14];
