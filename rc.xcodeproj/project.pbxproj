@@ -129,6 +129,7 @@
 		56E842811C4BD21500D1D198 /* CZActivityDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E842801C4BD21500D1D198 /* CZActivityDetailCell.m */; };
 		56E8C66D1C8A19D300435758 /* CZRemindView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8C66C1C8A19D300435758 /* CZRemindView.m */; };
 		56E8C6701C8A2BD000435758 /* CZRemintTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8C66F1C8A2BD000435758 /* CZRemintTimeView.m */; };
+		C459AD8E1C8D9633009922EE /* NSDictionary+NotNullKey.m in Sources */ = {isa = PBXBuildFile; fileRef = C459AD8D1C8D9633009922EE /* NSDictionary+NotNullKey.m */; };
 		C46A93D01C85DA5E009626F6 /* ScrollViewFrameAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = C46A93CD1C85DA5E009626F6 /* ScrollViewFrameAccessor.m */; };
 		C46A93D11C85DA5E009626F6 /* ViewFrameAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = C46A93CF1C85DA5E009626F6 /* ViewFrameAccessor.m */; };
 		C4BBA81A1C89B93300AD02EE /* RegisteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BBA8191C89B93300AD02EE /* RegisteViewController.m */; };
@@ -410,6 +411,8 @@
 		56E8C66C1C8A19D300435758 /* CZRemindView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZRemindView.m; sourceTree = "<group>"; };
 		56E8C66E1C8A2BD000435758 /* CZRemintTimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZRemintTimeView.h; sourceTree = "<group>"; };
 		56E8C66F1C8A2BD000435758 /* CZRemintTimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZRemintTimeView.m; sourceTree = "<group>"; };
+		C459AD8C1C8D9633009922EE /* NSDictionary+NotNullKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+NotNullKey.h"; sourceTree = "<group>"; };
+		C459AD8D1C8D9633009922EE /* NSDictionary+NotNullKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+NotNullKey.m"; sourceTree = "<group>"; };
 		C46A93CB1C85DA5E009626F6 /* FrameAccessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameAccessor.h; sourceTree = "<group>"; };
 		C46A93CC1C85DA5E009626F6 /* ScrollViewFrameAccessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewFrameAccessor.h; sourceTree = "<group>"; };
 		C46A93CD1C85DA5E009626F6 /* ScrollViewFrameAccessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewFrameAccessor.m; sourceTree = "<group>"; };
@@ -836,6 +839,8 @@
 				C4CAD1B81C7B3943003FD0B0 /* TagModel.m */,
 				C4CAD1B91C7B3943003FD0B0 /* ThemeModel.h */,
 				C4CAD1BA1C7B3943003FD0B0 /* ThemeModel.m */,
+				C459AD8C1C8D9633009922EE /* NSDictionary+NotNullKey.h */,
+				C459AD8D1C8D9633009922EE /* NSDictionary+NotNullKey.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1170,6 +1175,7 @@
 				56B9CD2F1C807A7100914F00 /* SDWebImageCompat.m in Sources */,
 				56423F4B1C4FB4710072CCC3 /* CZHomeViewController.m in Sources */,
 				565EF6281C48EBA20067C032 /* CityModel.m in Sources */,
+				C459AD8E1C8D9633009922EE /* NSDictionary+NotNullKey.m in Sources */,
 				561D020D1C47DA5600E4E013 /* MASViewConstraint.m in Sources */,
 				561D01FA1C47DA5600E4E013 /* AFURLResponseSerialization.m in Sources */,
 				56B9CD381C807A7100914F00 /* UIImage+WebP.m in Sources */,

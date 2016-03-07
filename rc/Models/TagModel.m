@@ -7,14 +7,15 @@
 //
 
 #import "TagModel.h"
+#import "NSDictionary+NotNullKey.h"
 
 @implementation TagModel
 
 -(instancetype)initWithDictionary:(NSDictionary *)dict{
     if (self = [super initWithDictionary:dict]) {
         
-        self.tagId          = [dict objectForKey:@"tag_id"];
-        self.tagName        = [dict objectForKey:@"tag_name"];
+        self.tagId          = [dict objectForSafeKey:@"tag_id"];
+        self.tagName        = [dict objectForSafeKey:@"tag_name"];
     }
     return self;
 }

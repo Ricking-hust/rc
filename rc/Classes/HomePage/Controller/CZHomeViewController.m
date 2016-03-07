@@ -56,7 +56,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    //[self configureBlocks];
+    [self configureBlocks];
     
     [self createSubViews];
     

@@ -7,33 +7,39 @@
 //
 
 #import "ActivityModel.h"
+#import "NSDictionary+NotNullKey.h"
 
 @implementation ActivityModel
 
 -(instancetype)initWithDictionary:(NSDictionary *)dict{
     if (self = [super initWithDictionary:dict]) {
-        self.acID               = [dict objectForKey:@"ac_id"];
-        self.acPoster           = [dict objectForKey:@"ac_poster"];
-        self.acPosterTop        = [dict objectForKey:@"ac_poster_top"];
-        self.acTitle            = [dict objectForKey:@"ac_title"];
-        self.acTime             = [dict objectForKey:@"ac_time"];
-        self.acTheme            = [dict objectForKey:@"ac_theme"];
-        self.acPlace            = [dict objectForKey:@"ac_place"];
-        self.acCollectNum       = [dict objectForKey:@"ac_collect_num"];
-        self.acSize             = [dict objectForKey:@"ac_size"];
-        self.acPay              = [dict objectForKey:@"ac_pay"];
-        self.acDesc             = [dict objectForKey:@"ac_desc"];
-        self.acPraiseNum        = [dict objectForKey:@"ac_praise_num"];
-        self.acReadNum          = [dict objectForKey:@"ac_read_num"];
-        self.acHtml             = [dict objectForKey:@"ac_html"];
-        self.acCollect          = [dict objectForKey:@"ac_collect"];
-        self.plan               = [dict objectForKey:@"plan"];
+        self.acID               = [dict objectForSafeKey:@"ac_id"];
+        self.acPoster           = [dict objectForSafeKey:@"ac_poster"];
+        self.acPosterTop        = [dict objectForSafeKey:@"ac_poster_top"];
+        self.acTitle            = [dict objectForSafeKey:@"ac_title"];
+        self.acTime             = [dict objectForSafeKey:@"ac_time"];
+        self.acTheme            = [dict objectForSafeKey:@"ac_theme"];
+        self.acPlace            = [dict objectForSafeKey:@"ac_place"];
+        self.acCollectNum       = [dict objectForSafeKey:@"ac_collect_num"];
+        self.acSize             = [dict objectForSafeKey:@"ac_size"];
+        self.acPay              = [dict objectForSafeKey:@"ac_pay"];
+        self.acDesc             = [dict objectForSafeKey:@"ac_desc"];
+        self.acPraiseNum        = [dict objectForSafeKey:@"ac_praise_num"];
+        self.acReadNum          = [dict objectForSafeKey:@"ac_read_num"];
+        self.acHtml             = [dict objectForSafeKey:@"ac_html"];
+        self.acCollect          = [dict objectForSafeKey:@"ac_collect"];
+        self.plan               = [dict objectForSafeKey:@"plan"];
         
-        NSMutableArray *tagList = [[NSMutableArray alloc] initWithArray:[dict objectForKey:@"ac_tags"]];
-        self.tagsList            = [[TagsList alloc] initWithArray:tagList];
+        if ([dict objectForSafeKey:@"ac_tags"]) {
+            NSMutableArray *tagList = [[NSMutableArray alloc] initWithArray:[dict objectForSafeKey:@"ac_tags"]];
+            self.tagsList            = [[TagsList alloc] initWithArray:tagList];
+        }else{
+            NSLog(@"活动标签为空");
+        }
     }
     return self;
 }
+
 
 @end
 
