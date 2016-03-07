@@ -12,6 +12,7 @@
 #import "Masonry.h"
 #import "CZTimeTableViewDelegate.h"
 #import "CZScheduleTableViewDelegate.h"
+#import "CZUpdateScheduleViewController.h"
 #import "CZTestData.h"
 #include <sys/sysctl.h>
 @interface CZScheduleViewController ()
@@ -38,7 +39,7 @@
         data1.img  = @"businessSmallIcon";
         data1.time = @"20:29";
         data1.tag = @"IT";
-        data1.content = @"全他妈情侣酒店 卧槽";
+        data1.content = @"今天天气不错，晚上吃什么好呢。";
         [_array addObject:data1];
         
         CZTestData *data2 = [[CZTestData alloc]init];
@@ -53,10 +54,22 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
+    [self setNavigation];
     [self addSubViews];
     [self displayTimeNode];
     
+}
+- (void)setNavigation
+{
+    NSDate *senddate=[NSDate date];
+    
+    NSDateFormatter  *dateformatter=[[NSDateFormatter alloc] init];
+    
+    [dateformatter setDateFormat:@"MM月dd日"];
+    
+    NSString *locationString=[dateformatter stringFromDate:senddate];
+    
+    self.navigationItem.title = locationString;
 }
 - (void)displayTimeNode
 {
@@ -118,7 +131,8 @@
 }
 - (IBAction)addSchedule:(id)sender
 {
-    
+    CZUpdateScheduleViewController *updateSc = [[CZUpdateScheduleViewController alloc]init];
+    [self.navigationController pushViewController:updateSc animated:YES];
 }
 - (void)didReceiveMemoryWarning
 {
