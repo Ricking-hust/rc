@@ -11,24 +11,28 @@
 
 @implementation CZCityView
 
-+ (instancetype)cityView
+- (id)initName:(NSString *)cityName WithImageString:(NSString *)imageString
 {
-    CZCityView *cityView = [[CZCityView alloc]init];
-    cityView.cityBtn = [[UIButton alloc]init];
-    cityView.locationImage = [[UIImageView alloc]init];
-    cityView.locationImage.tag = 11;
-    cityView.locationImage.hidden = YES;
-    cityView.cityNameLabel = [[UILabel alloc]init];
-    [cityView.cityNameLabel setTag:10];
-    [cityView addSubview:cityView.cityBtn];
-    [cityView addSubview:cityView.locationImage];
-    [cityView addSubview:cityView.cityNameLabel];
-    
-    [cityView.cityBtn.layer setMasksToBounds:YES];//设置按钮的圆角半径不会被遮挡
-    [cityView.cityBtn.layer setCornerRadius:10];
-    cityView.cityNameLabel.font = [UIFont systemFontOfSize:15];
+    if (self = [super init])
+    {
+        self.cityBtn = [[UIButton alloc]init];
+        self.locationImage = [[UIImageView alloc]init];
+        self.locationImage.tag = 11;
+        self.locationImage.hidden = YES;
+        self.cityNameLabel = [[UILabel alloc]init];
+        [self.cityNameLabel setTag:10];
+        [self addSubview:self.cityBtn];
+        [self addSubview:self.locationImage];
+        [self addSubview:self.cityNameLabel];
+        self.locationImage.image = [UIImage imageNamed:@"location"];
+        [self.cityBtn.layer setMasksToBounds:YES];//设置按钮的圆角半径不会被遮挡
+        [self.cityBtn.layer setCornerRadius:10];
+        self.cityNameLabel.font = [UIFont systemFontOfSize:15];
+        [self.cityBtn setImage:[UIImage imageNamed:imageString] forState:UIControlStateNormal];
+        self.cityNameLabel.text = cityName;
 
-    return cityView;
+    }
+    return self;
 }
 - (void)setConstraints
 {

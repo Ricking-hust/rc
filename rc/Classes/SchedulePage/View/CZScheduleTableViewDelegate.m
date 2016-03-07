@@ -78,13 +78,41 @@
 - (void)setValueToCell:(CZScheduleInfoCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
     planModel *plmodel = self.array[indexPath.row-1];
-    cell.tagImageView.image = [UIImage imageNamed:@""];
+    cell.tagImageView.image = [self getTagImageFormNString:plmodel.themeName];
     cell.tagLabel.text = plmodel.themeName;
-    NSLog(@"TimeLabel:%@",plmodel.planTime);
     NSString *timeText = [plmodel.planTime substringFromIndex:11];
     cell.timeLabel.text = timeText;
     cell.contentLabel.text = plmodel.planContent;
     cell.placeLabel.text = plmodel.acPlace;
+}
+- (UIImage *)getTagImageFormNString:(NSString *)str
+{
+    if ([str isEqualToString:@"运动"])
+    {
+        return [UIImage imageNamed:@"sportSmallIcon"];
+    }else if ([str isEqualToString:@"约会"])
+    {
+        return [UIImage imageNamed:@"appointmentSmallIcon"];
+    }else if ([str isEqualToString:@"出差"])
+    {
+        return [UIImage imageNamed:@"businessSmallIcon"];
+    }else if ([str isEqualToString:@"会议"])
+    {
+        return [UIImage imageNamed:@"meetingSmallIcon"];
+    }else if ([str isEqualToString:@"购物"])
+    {
+        return [UIImage imageNamed:@"shoppingSmallIcon"];
+    }else if ([str isEqualToString:@"娱乐"])
+    {
+        return [UIImage imageNamed:@"entertainmentSmallIcon"];
+    }else if ([str isEqualToString:@"聚会"])
+    {
+        return [UIImage imageNamed:@"partSmallIcon"];
+    }else
+    {
+        return [UIImage imageNamed:@"otherSmallIcon"];
+    }
+    
 }
 - (void)addCellConstraint:(CZScheduleInfoCell *)cell
 {

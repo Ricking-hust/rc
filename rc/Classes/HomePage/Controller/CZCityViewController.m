@@ -47,10 +47,7 @@
 //确定城市选择
 - (void)didSelectCity
 {
-    long int count = self.navigationController.viewControllers.count;
-    CZHomeViewController *homePage = (CZHomeViewController *)self.navigationController.viewControllers[count - 2];
-    homePage.city = self.city;
-    [self.navigationController popViewControllerAnimated:YES];
+
 }
 
 #pragma mark - 城市选择按钮点击事件
@@ -90,7 +87,10 @@
         self.shanghai.locationImage.hidden = YES;
         self.city = Wuhan;
     }
-    
+    long int count = self.navigationController.viewControllers.count;
+    CZHomeViewController *homePage = (CZHomeViewController *)self.navigationController.viewControllers[count - 2];
+    homePage.city = self.city;
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)locateCity
 {
@@ -114,10 +114,10 @@
     if (self = [super init])
     {
         self.bgView = [[UIView alloc]init];
-        self.beijing = [CZCityView cityView];
-        self.shanghai = [CZCityView cityView];
-        self.guangzhou = [CZCityView cityView];
-        self.wuhan = [CZCityView cityView];
+        self.beijing = [[CZCityView alloc]initName:@"北京" WithImageString:@"Beijing_Icon"];
+        self.shanghai = [[CZCityView alloc]initName:@"上海" WithImageString:@"Shanghai_Icon"];
+        self.guangzhou = [[CZCityView alloc]initName:@"广州" WithImageString:@"Guangzhou_Icon"];;
+        self.wuhan = [[CZCityView alloc]initName:@"武汉" WithImageString:@"Wuhan_Icon"];;
         self.device = [self currentDeviceSize];
     }
     [self addSubViewToSuperView];
