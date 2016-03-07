@@ -10,7 +10,7 @@
 
 @class CZCityView;
 @interface CZCityViewController : UIViewController
-
+@property (nonatomic, assign) City city;
 @property (nonatomic, strong) CZCityView *beijing;
 @property (nonatomic, strong) CZCityView *shanghai;
 @property (nonatomic, strong) CZCityView *guangzhou;
