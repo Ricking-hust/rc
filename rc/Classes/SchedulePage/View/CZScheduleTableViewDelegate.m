@@ -71,7 +71,8 @@
         return 35;
     }else
     {
-        return self.height;
+        CZScheduleInfoCell *cell = (CZScheduleInfoCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+        return cell.height;
     }
 }
 - (void)setValueToCell:(CZScheduleInfoCell *)cell AtIndexPath:(NSIndexPath *)indexPath
@@ -89,12 +90,6 @@
     CGFloat maxW = kScreenWidth - 75 - 60 - cell.tagImageView.image.size.width;
     CGSize size = [self sizeWithText:cell.contentLabel.text maxSize:CGSizeMake(maxW, MAXFLOAT) fontSize:14];
 
-    [cell.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(cell.contentView.mas_left).offset(10);
-        make.right.equalTo(cell.contentView.mas_right).offset(-10);
-        make.centerY.equalTo(cell.contentView.mas_centerY).offset(5);
-        make.height.mas_equalTo(size.height+1+17+12+12);
-    }];
     [cell.tagImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(cell.bgView.mas_left).offset(18);
         make.centerY.equalTo(cell.bgView.mas_centerY).offset(-10);
@@ -114,18 +109,27 @@
         make.width.mas_equalTo(40);
         make.height.mas_equalTo(17);
     }];
+    CGSize  placeSize = [self sizeWithText:cell.placeLabel.text maxSize:CGSizeMake(maxW, MAXFLOAT) fontSize:14];
     [cell.placeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(cell.bgView.mas_top).offset(12);
-        make.left.equalTo(cell.timeLabel.mas_right);
-        make.width.mas_equalTo(90);
-        make.height.mas_equalTo(22);
+        make.top.equalTo(cell.timeLabel.mas_bottom);
+        make.left.equalTo(cell.timeLabel.mas_left);
+        make.width.mas_equalTo(placeSize.width + 1);
+        make.height.mas_equalTo(placeSize.height + 1);
     }];
     [cell.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(cell.timeLabel.mas_bottom);
+        make.top.equalTo(cell.placeLabel.mas_bottom);
         make.left.equalTo(cell.timeLabel.mas_left);
         make.width.mas_equalTo(size.width+1);
         make.height.mas_equalTo(size.height+1);
     }];
+    [cell.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(cell.contentView.mas_left).offset(10);
+        make.right.equalTo(cell.contentView.mas_right).offset(-10);
+        make.centerY.equalTo(cell.contentView.mas_centerY);
+        make.height.mas_equalTo(17 + 12 + size.height + placeSize.height + 12);
+    }];
+    //17表示timeLabel的高度，12为timeLabel的上边距，size.height表示内容的高度,placeSize.height表示地点的高度,12表示内容的下边距,15表示bgView的上下边距
+    cell.height = 17 + 12 + size.height + placeSize.height + 12 + 15+15;
 
 }
 - (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize
