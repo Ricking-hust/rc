@@ -9,6 +9,7 @@
 #import "CZCityViewController.h"
 #import "Masonry.h"
 #import "CZCityView.h"
+#import "CZHomeViewController.h"
 
 @interface CZCityViewController ()
 
@@ -16,13 +17,98 @@
 
 @implementation CZCityViewController
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
-
+    [self setNavigation];
     [self createCityView];
 
+}
+- (void)setNavigation
+{
+    UIBarButtonItem *leftButton =[[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"close"] style:UIBarButtonItemStylePlain target:self action:@selector(didCancelSelection)];
+    [self.navigationItem setLeftBarButtonItem:leftButton];
+    UIBarButtonItem *rigthButton =[[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(didSelectCity)];
+    [self.navigationItem setRightBarButtonItem:rigthButton];
+    
+}
+#pragma mark - 刷新数据
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self locateCity];
+}
+//取消城市选择直接返回上一个视图控制器
+- (void)didCancelSelection
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+//确定城市选择
+- (void)didSelectCity
+{
+    long int count = self.navigationController.viewControllers.count;
+    CZHomeViewController *homePage = (CZHomeViewController *)self.navigationController.viewControllers[count - 2];
+    homePage.city = self.city;
+    
+    
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+#pragma mark - 城市选择按钮点击事件
+- (void)onClickCity:(UIButton *)btn
+{
+    UILabel *label = [btn.superview viewWithTag:10];
+    if ([label.text isEqualToString:@"北京"])
+    {
+        UIImageView *locationImageView = [btn.superview viewWithTag:11];
+        locationImageView.hidden = NO;
+        self.wuhan.locationImage.hidden = YES;
+        self.guangzhou.locationImage.hidden = YES;
+        self.shanghai.locationImage.hidden = YES;
+        self.city = Beijing;
+    }else if ([label.text isEqualToString:@"广州"])
+    {
+        UIImageView *locationImageView = [btn.superview viewWithTag:11];
+        locationImageView.hidden = NO;
+        self.beijing.locationImage.hidden = YES;
+        self.shanghai.locationImage.hidden = YES;
+        self.wuhan.locationImage.hidden = YES;
+        self.city = Guangzhou;
+    }else if ([label.text isEqualToString:@"上海"])
+    {
+        UIImageView *locationImageView = [btn.superview viewWithTag:11];
+        locationImageView.hidden = NO;
+        self.beijing.locationImage.hidden = YES;
+        self.guangzhou.locationImage.hidden = YES;
+        self.wuhan.locationImage.hidden = YES;
+        self.city = Shanghai;
+    }else
+    {
+        UIImageView *locationImageView = [btn.superview viewWithTag:11];
+        locationImageView.hidden = NO;
+        self.beijing.locationImage.hidden = YES;
+        self.guangzhou.locationImage.hidden = YES;
+        self.shanghai.locationImage.hidden = YES;
+        self.city = Wuhan;
+    }
+    
+}
+- (void)locateCity
+{
+    if (_city == Wuhan)
+    {
+        self.wuhan.locationImage.hidden = NO;
+    }else if (_city == Shanghai)
+    {
+        self.shanghai.locationImage.hidden = NO;
+    }else if (_city == Beijing)
+    {
+        self.beijing.locationImage.hidden = NO;
+    }else
+    {
+        self.guangzhou.locationImage.hidden = NO;
+    }
 }
 
 - (void)createCityView
@@ -39,8 +125,6 @@
     }];
     //city -- 北京
     _beijing = [CZCityView cityView];
-#pragma mark - test
-    _beijing.locationImage.hidden = NO;
     str = [NSString stringWithFormat:@"city_%d",1];
     img = [UIImage imageNamed:str];
     _beijing.locationImage.image = [UIImage imageNamed:@"location"];
@@ -118,48 +202,9 @@
     }];
 }
 #pragma mark - 左侧取消按钮点击事件
-- (IBAction)cancelSelect:(id)sender {
-
-    [self.navigationController popViewControllerAnimated:YES];
-}
-#pragma mark - 城市选择按钮点击事件
-- (void)onClickCity:(UIButton *)btn
+- (IBAction)cancelSelect:(id)sender
 {
-    UILabel *label = [btn.superview viewWithTag:10];
-    if ([label.text isEqualToString:@"北京"])
-    {
-        UIImageView *locationImageView = [btn.superview viewWithTag:11];
-        locationImageView.hidden = NO;
-        self.wuhan.locationImage.hidden = YES;
-        self.guangzhou.locationImage.hidden = YES;
-        self.shanghai.locationImage.hidden = YES;
-    }else if ([label.text isEqualToString:@"广州"])
-    {
-        UIImageView *locationImageView = [btn.superview viewWithTag:11];
-        locationImageView.hidden = NO;
-        self.beijing.locationImage.hidden = YES;
-        self.shanghai.locationImage.hidden = YES;
-        self.wuhan.locationImage.hidden = YES;
-    }else if ([label.text isEqualToString:@"上海"])
-    {
-        UIImageView *locationImageView = [btn.superview viewWithTag:11];
-        locationImageView.hidden = NO;
-        self.beijing.locationImage.hidden = YES;
-        self.guangzhou.locationImage.hidden = YES;
-        self.wuhan.locationImage.hidden = YES;
-    }else
-    {
-        UIImageView *locationImageView = [btn.superview viewWithTag:11];
-        locationImageView.hidden = NO;
-        self.beijing.locationImage.hidden = YES;
-        self.guangzhou.locationImage.hidden = YES;
-        self.shanghai.locationImage.hidden = YES;
-    }
+
     [self.navigationController popViewControllerAnimated:YES];
-    //to do here ------------
-    
-    
 }
-
-
 @end

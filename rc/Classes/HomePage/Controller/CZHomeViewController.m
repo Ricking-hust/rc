@@ -9,6 +9,7 @@
 #import "CZHomeViewController.h"
 #import "CZHomeHeaderView.h"
 #import "Masonry.h"
+#import "CZCityViewController.h"
 #import "CZActivityInfoViewController.h"
 #import "CZTagSelectViewController.h"
 #import "CZSearchViewController.h"
@@ -25,22 +26,22 @@
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListBlock)();
 @property (nonatomic, copy) NSURLSessionDataTask* (^getActivityBlock)(NSString *acID);
 
-
 @end
 
 @implementation CZHomeViewController
 
-#pragma  mark - View
-
+#pragma  mark - 刷新数据
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
+    
 }
 
--(void)viewDidAppear:(BOOL)animated{
+-(void)viewDidAppear:(BOOL)animated
+{
     [super viewDidAppear:animated];
     
     @weakify(self);
@@ -52,12 +53,19 @@
         
     });
 }
-
+- (id)init
+{
+    if (self == [super init])
+    {
+        self.city = Wuhan;
+    }
+    return self;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self configureBlocks];
     
+    [self configureBlocks];
     [self createSubViews];
     
     //设置tableHeaderView
@@ -65,7 +73,7 @@
     [headerView setView];
     self.tableView.tableHeaderView = headerView;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    
+    self.city = Wuhan;
 }
 
 - (void)didReceiveMemoryWarning
@@ -264,6 +272,13 @@
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
+}
+#pragma mark - 城市选择
+- (IBAction)didSelectCity:(id)sender
+{
+    CZCityViewController *cityViewController = [[CZCityViewController alloc]init];
+    cityViewController.city = self.city;
+    [self.navigationController pushViewController:cityViewController animated:YES];
 }
 - (IBAction)toTagSelectViewController:(id)sender
 {

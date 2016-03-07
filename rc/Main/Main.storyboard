@@ -98,7 +98,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <segue destination="qzR-b3-fz0" kind="show" id="18z-bX-v9z"/>
+                                    <action selector="didSelectCity:" destination="SaJ-Yy-Uip" eventType="touchUpInside" id="F36-jx-yWE"/>
                                 </connections>
                             </button>
                         </barButtonItem>
