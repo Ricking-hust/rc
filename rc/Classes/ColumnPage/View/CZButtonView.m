@@ -58,12 +58,13 @@
     }];
     [self.tagButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.left.equalTo(self);
-        make.width.equalTo(self);
-        make.height.mas_equalTo(30);
+        make.width.equalTo(@45);
+        make.height.mas_equalTo(self);
     }];
     [self.line mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.right.bottom.equalTo(self);
+        make.left.right.equalTo(self.tagButton);
         make.height.mas_equalTo(1);
+        make.bottom.equalTo(self);
     }];
 }
 /**

@@ -8,7 +8,6 @@
 
 #import "CZColumnViewController.h"
 #import "Masonry.h"
-#import "CZAcitivityModelOfColumn.h"
 #import "RCActivityCollectionViewCell.h"
 #import "CZActivityOfColumn.h"
 #import "CZTagViewController.h"
@@ -31,9 +30,6 @@
 @property (nonatomic,copy) NSURLSessionDataTask *(^getIndListBlock)();
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)();
 
-#pragma mark - 测试数据
-//@property (nonatomic, strong) NSArray *array;
-//@property (nonatomic, strong) NSMutableArray *activities;
 @end
 
 @implementation CZColumnViewController
@@ -48,13 +44,20 @@ static NSString * const reuseIdentifier = @"Cell";
     [self.view addSubview:temp];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     
+    [self configureBlocks];
+    self.getIndListBlock();
+    
     //创建子控件
     [self createSubView];
     
     [self.activityCollectionView registerClass:[RCActivityCollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
     
-
 }
+
+-(void)didReceiveMemoryWarning{
+    [super didReceiveMemoryWarning];
+}
+
 
 #pragma mark - get data
 
@@ -73,6 +76,10 @@ static NSString * const reuseIdentifier = @"Cell";
 
 -(void)setIndList:(industryList *)indList{
     _indList = indList;
+    
+    //创建工具条按钮
+    [self showToolButtons];
+    
 }
 
 #pragma mark - 懒加载，创建主题色
@@ -108,21 +115,10 @@ static NSString * const reuseIdentifier = @"Cell";
     }
     return _toolButtonArray;
 }
-//#pragma mark - 懒加载，测试数据
-//- (NSArray *)array
-//{
-//    if (!_array) {
-//        _array = [NSArray arrayWithObjects:@"创业", @"讲座", @"金融",@"设计",@"资讯",@"联网",@"设计",@"资讯",@"联网" ,nil];
-//    }
-//    return  _array;
-//}
 
 #pragma mark - 创建子控件，显示数据
 - (void) createSubView
 {
-    //创建工具条按钮
-    [self showToolButtons];
-
     //将活动添加到滚动条中
     [self showActivityView];
 
@@ -167,19 +163,6 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 }
 
-//#pragma mark - 模拟取得数据
-//- (void)getData
-//{
-//    CZAcitivityModelOfColumn *activity = [CZAcitivityModelOfColumn activity];
-//    [self.activities addObject:activity];
-//    
-//    CZAcitivityModelOfColumn *activity2 = [CZAcitivityModelOfColumn activity];
-//   [self.activities addObject:activity2];
-//    
-//    CZAcitivityModelOfColumn *activity3 = [CZAcitivityModelOfColumn activity];
-//    [self.activities addObject:activity3];
-//    
-//}
 //处理tagButton收到的更改通知
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
@@ -400,9 +383,5 @@ static NSString * const reuseIdentifier = @"Cell";
 //        NSLog(@"selected");
 //    }
 //}
-- (void)didReceiveMemoryWarning {
-    [super didReceiveMemoryWarning];
-    // Dispose of any resources that can be recreated.
-}
 
 @end
