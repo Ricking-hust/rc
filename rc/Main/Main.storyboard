@@ -98,7 +98,7 @@
                                     <color key="titleShadowColor" white="0.5" alpha="1" colorSpace="calibratedWhite"/>
                                 </state>
                                 <connections>
-                                    <action selector="didSelectCity:" destination="SaJ-Yy-Uip" eventType="touchUpInside" id="F36-jx-yWE"/>
+                                    <action selector="didSelectCity:" destination="SaJ-Yy-Uip" eventType="touchUpInside" id="L7a-Wt-J7S"/>
                                 </connections>
                             </button>
                         </barButtonItem>
@@ -114,6 +114,9 @@
                             </button>
                         </barButtonItem>
                     </navigationItem>
+                    <connections>
+                        <outlet property="leftButton" destination="gfJ-bJ-XM9" id="MzW-6z-xWB"/>
+                    </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1rb-eh-veG" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>

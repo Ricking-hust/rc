@@ -10,6 +10,6 @@
 
 @interface CZHomeViewController : UIViewController <UITableViewDelegate, UITableViewDelegate>
 @property (nonatomic, assign) City city;
-@property (strong, nonatomic)  UIView *searchView;
-@property (strong, nonatomic)  UITableView *tableView;
+@property (strong, nonatomic) UIView *searchView;
+@property (strong, nonatomic) UITableView *tableView;
 @end

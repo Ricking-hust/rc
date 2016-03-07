@@ -9,6 +9,7 @@
 #import "CZHomeViewController.h"
 #import "CZHomeHeaderView.h"
 #import "Masonry.h"
+#import "CZCityButton.h"
 #import "CZCityViewController.h"
 #import "CZActivityInfoViewController.h"
 #import "CZTagSelectViewController.h"
@@ -24,6 +25,7 @@
 @property (nonatomic,strong) ActivityList *activityList;
 @property (nonatomic,strong)  ActivityModel *activitymodel;
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListBlock)();
+@property (weak, nonatomic) IBOutlet CZCityButton *leftButton;
 
 @end
 
@@ -36,9 +38,28 @@
     
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
+
+    //刷新数据
+    [self refleshDataByCity];
+}
+- (void)refleshDataByCity
+{
+    if (self.city == Wuhan)
+    {
+        [self.leftButton setTitle:@"武汉" forState:UIControlStateNormal];
+    }else if (self.city == Shanghai)
+    {
+        [self.leftButton setTitle:@"上海" forState:UIControlStateNormal];
+    }else if (self.city == Guangzhou)
+    {
+        [self.leftButton setTitle:@"广州" forState:UIControlStateNormal];
+    }else
+    {
+        [self.leftButton setTitle:@"北京" forState:UIControlStateNormal];
+    }
+    //刷新
     
 }
-
 -(void)viewDidAppear:(BOOL)animated
 {
     [super viewDidAppear:animated];
@@ -273,11 +294,12 @@
     }];
 }
 #pragma mark - 城市选择
-- (IBAction)didSelectCity:(id)sender
+- (IBAction)didSelectCity:(UIButton *)sender
 {
     CZCityViewController *cityViewController = [[CZCityViewController alloc]init];
     cityViewController.city = self.city;
     [self.navigationController pushViewController:cityViewController animated:YES];
+
 }
 - (IBAction)toTagSelectViewController:(id)sender
 {
