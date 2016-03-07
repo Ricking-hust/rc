@@ -87,7 +87,7 @@
     @weakify(self);
     self.getActivityListBlock = ^(){
         @strongify(self);
-        return [[DataManager manager] getActivityRecommendWithCityId:@"1" startId:@"0" num:@"10" userId:@"1" success:^(ActivityList *acList) {
+        return [[DataManager manager] getActivityRecommendWithCityId:@"1" startId:@"0" num:@"20" userId:@"1" success:^(ActivityList *acList) {
             @strongify(self);
             self.activityList = acList;
         } failure:^(NSError *error) {
