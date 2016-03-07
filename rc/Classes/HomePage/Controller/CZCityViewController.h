@@ -16,6 +16,7 @@
 @property (nonatomic, strong) CZCityView *guangzhou;
 @property (nonatomic, strong) CZCityView *wuhan;
 @property (nonatomic, strong) UIView *bgView;
+@property (nonatomic, assign) CurrentDevice device;
 
 
 @end
