@@ -80,7 +80,9 @@
     planModel *plmodel = self.array[indexPath.row-1];
     cell.tagImageView.image = [UIImage imageNamed:@""];
     cell.tagLabel.text = plmodel.themeName;
-    cell.timeLabel.text = plmodel.planTime;
+    NSLog(@"TimeLabel:%@",plmodel.planTime);
+    NSString *timeText = [plmodel.planTime substringFromIndex:11];
+    cell.timeLabel.text = timeText;
     cell.contentLabel.text = plmodel.planContent;
     cell.placeLabel.text = plmodel.acPlace;
 }
