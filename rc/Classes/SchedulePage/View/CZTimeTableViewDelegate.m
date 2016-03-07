@@ -9,6 +9,7 @@
 #import "CZTimeTableViewDelegate.h"
 #import "CZTimeNodeCell.h"
 #import "Masonry.h"
+#import "CZTestData.h"
 
 @implementation CZTimeTableViewDelegate
 
@@ -16,13 +17,31 @@
 {
     if (self = [super init])
     {
-        
+        self.height = 0;
+        self.scrollH = 10000;
+        self.isUp = NO;
     }
     return self;
 }
+- (void)setDevice:(CurrentDevice)device
+{
+    _device = device;
+    if (_device == IPhone5)
+    {
+        self.height = 105;
+    }else if(_device == IPhone6)
+    {
+        self.height = 103.8;
+    }else
+    {
+        //self.height = 117.6;
+        self.height = 105;
+
+    }
+}
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.array.count;
+    return 30;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -39,17 +58,8 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.device == IPhone5)
-    {
-        return 105;
-    }else if (self.device == IPhone6)
-    {
-        return 105;
-    }else
-    {
-        return 105;
-    }
     
+    return self.height;
 }
 - (void)setValueToCell:(CZTimeNodeCell *)cell
 {
@@ -76,9 +86,6 @@
         make.width.equalTo(cell.upLineView.mas_width);
         make.bottom.equalTo(cell.contentView.mas_bottom);
     }];
-    
-    CGSize dayLabelSize = [self sizeWithText:cell.dayLabel.text maxSize:CGSizeMake(60, 20) fontSize:13];
-    CGSize weekLabelSize = [self sizeWithText:cell.weekLabel.text maxSize:CGSizeMake(60, 20) fontSize:10];
 
     [cell.dayLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(cell.point.mas_top).offset(-6);
@@ -93,6 +100,54 @@
         make.height.mas_equalTo(12);
     }];
 
+}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    int index = (int)scrollView.contentOffsetY / self.height;
+    if (index > self.indexAtCell)
+    {//上拉
+        self.indexAtCell++;
+        self.isUp = NO;
+        //reflesh scTableView---------
+        [self updateDataSoucre:self.array];
+        [self.scTableView reloadData];
+    }
+    int flag = scrollView.contentOffsetY / self.height;
+    if (flag < self.indexAtCell)
+    {
+        self.isUp = YES;
+    }
+
+    if ((int)scrollView.contentOffsetY % (int)self.height == 0 && self.isUp)
+    {//下拉
+        self.indexAtCell = (int)scrollView.contentOffsetY / (int)self.height;
+        if (self.indexAtCell == 0)
+        {
+            self.isUp = NO;
+        }
+        //reflesh scTableView---------
+        [self updateDataSoucre:self.array];
+        [self.array removeObjectAtIndex:0];
+        [self.scTableView reloadData];
+    }
+}
+- (void)updateDataSoucre:(NSMutableArray *)array
+{
+    [self.array removeAllObjects];
+    CZTestData *data1 = [[CZTestData alloc]init];
+    data1.img  = @"businessSmallIcon";
+    data1.time = @"20:29";
+    data1.tag = @"鬼混";
+    data1.content = @"@property (nonatomic, strong)";
+    [self.array addObject:data1];
+    
+    CZTestData *data2 = [[CZTestData alloc]init];
+    data2.img  = @"businessSmallIcon";
+    data2.time = @"03：20";
+    data2.tag = @"瞎搞";
+    data2.content = @"sizeWithText:(NSString *)text";
+    [self.array addObject:data2];
+    
 }
 - (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize
 {

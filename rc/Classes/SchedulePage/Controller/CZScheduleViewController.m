@@ -12,6 +12,7 @@
 #import "Masonry.h"
 #import "CZTimeTableViewDelegate.h"
 #import "CZScheduleTableViewDelegate.h"
+#import "CZTestData.h"
 #include <sys/sysctl.h>
 @interface CZScheduleViewController ()
 @property (nonatomic, assign) CurrentDevice device;
@@ -32,7 +33,20 @@
 {
     if (!_array)
     {
-        _array = [[NSMutableArray alloc]initWithObjects:@"1",@"2",@"3",@"4",@"5", nil];
+        _array = [[NSMutableArray alloc]init];
+        CZTestData *data1 = [[CZTestData alloc]init];
+        data1.img  = @"businessSmallIcon";
+        data1.time = @"20:29";
+        data1.tag = @"IT";
+        data1.content = @"全他妈情侣酒店 卧槽";
+        [_array addObject:data1];
+        
+        CZTestData *data2 = [[CZTestData alloc]init];
+        data2.img  = @"businessSmallIcon";
+        data2.time = @"20:29";
+        data2.tag = @"开房";
+        data2.content = @"中午谁有时间  一起去集贸看看？";
+        [_array addObject:data2];
     }
     return _array;
 }
@@ -48,6 +62,9 @@
 {
     self.timeDelegate.array = self.array;
     self.timeDelegate.device = self.device;
+    self.timeDelegate.indexAtCell = 0;
+    self.scDelegate.array = self.array;
+    self.scDelegate.device = self.device;
 }
 - (void)addSubViews
 {
@@ -95,6 +112,7 @@
         self.scDelegate = [[CZScheduleTableViewDelegate alloc]init];
         self.scTableView.delegate = self.scDelegate;
         self.scTableView.dataSource = self.scDelegate;
+        self.timeDelegate.scTableView = self.scTableView;
     }
     return self;
 }
