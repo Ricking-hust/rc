@@ -23,7 +23,6 @@
 @property (nonatomic,strong) ActivityList *activityList;
 @property (nonatomic,strong)  ActivityModel *activitymodel;
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListBlock)();
-@property (nonatomic, copy) NSURLSessionDataTask* (^getActivityBlock)(NSString *acID);
 
 
 @end

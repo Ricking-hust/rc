@@ -7,20 +7,22 @@
 //
 
 #import "PlanModel.h"
+#import "NSDictionary+NotNullKey.h"
 
 @implementation planModel
 
 -(instancetype) initWithDictionary:(NSDictionary *)dict{
     if (self = [super initWithDictionary:dict]) {
-        self.planId                         = [dict objectForKey:@"pl_id"];
-        self.planContent                    = [dict objectForKey:@"pl_content"];
-        self.plAlarmOne                     = [dict objectForKey:@"pl_alarm_one"];
-        self.plAlarmTwo                     = [dict objectForKey:@"pl_alarm_two"];
-        self.plAlarmThree                   = [dict objectForKey:@"pl_alarm_three"];
-        
-        self.user                           = [[UserModel alloc] initWithDictionary:dict];
-        self.activity                       = [[ActivityModel alloc] initWithDictionary:dict];
-        self.theme                          = [[ThemeModel alloc] initWithDictionary:dict];
+        self.planId                         = [dict objectForSafeKey:@"pl_id"];
+        self.planContent                    = [dict objectForSafeKey:@"pl_content"];
+        self.planTime                      = [dict objectForSafeKey:@"pl_time"];
+        self.plAlarmOne                     = [dict objectForSafeKey:@"pl_alarm_one"];
+        self.plAlarmTwo                     = [dict objectForSafeKey:@"pl_alarm_two"];
+        self.plAlarmThree                   = [dict objectForSafeKey:@"pl_alarm_three"];
+        self.userId                         = [dict objectForSafeKey:@"usr_id"];
+        self.acId                           = [dict objectForSafeKey:@"ac_id"];
+        self.themeName                      = [dict objectForSafeKey:@"theme_name"];
+        self.acPlace                        = [dict objectForSafeKey:@"ac_place"];
     }
     return self;
 }

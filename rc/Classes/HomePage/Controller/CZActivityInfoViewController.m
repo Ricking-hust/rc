@@ -95,13 +95,6 @@
     };
 }
 
-//-(void)startgetAc
-//{
-//    if (self.getActivityBlock) {
-//        self.getActivityBlock();
-//    }
-//}
-
 -(void)setActivityModelPre:(ActivityModel *)activityModelPre{
     _activityModelPre = activityModelPre;
     

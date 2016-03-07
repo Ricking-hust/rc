@@ -11,13 +11,37 @@
 #import "CZScheduleTableViewDelegate.h"
 #import "CZUpdateScheduleViewController.h"
 #import "CZTestData.h"
+#import "PlanModel.h"
 #include <sys/sysctl.h>
 @interface CZScheduleViewController ()
 @property (nonatomic, assign) CurrentDevice device;
-@property (nonatomic, strong) NSMutableArray *array;
+@property (nonatomic,strong) planList *planList;
+//@property (nonatomic, strong) NSMutableArray *array;
+@property (nonatomic,copy) NSURLSessionDataTask *(^getPlanListBlock)();
 @end
 
 @implementation CZScheduleViewController
+
+#pragma mark - data
+
+-(void)configureBlocks{
+    @weakify(self);
+    self.getPlanListBlock = ^(){
+        @strongify(self);
+        return [[DataManager manager] getPlanWithUserId:@"1" beginDate:@"2016-01-01" endDate:@"2016-10-08" success:^(planList *plList) {
+            @strongify(self);
+            self.planList = plList;
+        } failure:^(NSError *error) {
+            NSLog(@"Error:%@",error);
+        }];
+    };
+}
+
+-(void)setPlanList:(planList *)planList{
+    _planList = planList;
+    
+    [self displayTimeNode];
+}
 
 - (CurrentDevice)device
 {
@@ -27,33 +51,14 @@
     }
     return _device;
 }
-- (NSMutableArray *)array
-{
-    if (!_array)
-    {
-        _array = [[NSMutableArray alloc]init];
-        CZTestData *data1 = [[CZTestData alloc]init];
-        data1.img  = @"businessSmallIcon";
-        data1.time = @"20:29";
-        data1.tag = @"IT";
-        data1.content = @"今天天气不错，晚上吃什么好呢。";
-        [_array addObject:data1];
-        
-        CZTestData *data2 = [[CZTestData alloc]init];
-        data2.img  = @"businessSmallIcon";
-        data2.time = @"20:29";
-        data2.tag = @"开房";
-        data2.content = @"中午谁有时间  一起去集贸看看？";
-        [_array addObject:data2];
-    }
-    return _array;
-}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     [self setNavigation];
     [self addSubViews];
-    [self displayTimeNode];
+    [self configureBlocks];
+    self.getPlanListBlock();
     
 }
 - (void)setNavigation
@@ -70,12 +75,15 @@
 }
 - (void)displayTimeNode
 {
-    self.timeDelegate.array = self.array;
+    self.timeDelegate.array = self.planList.list;
     self.timeDelegate.device = self.device;
     self.timeDelegate.indexAtCell = 0;
-    self.scDelegate.array = self.array;
+    self.scDelegate.array = self.planList.list;
     self.scDelegate.device = self.device;
     self.timeDelegate.timeNodeTableView = self.timeNodeTableView;
+    
+    [self.timeNodeTableView reloadData];
+    [self.scTableView reloadData];
 }
 - (void)addSubViews
 {

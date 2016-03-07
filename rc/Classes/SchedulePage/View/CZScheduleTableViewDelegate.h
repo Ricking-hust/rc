@@ -10,6 +10,6 @@
 
 @interface CZScheduleTableViewDelegate : UIView<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, assign) CurrentDevice device;
-@property (nonatomic, strong) NSMutableArray *array;
+@property (nonatomic, strong) NSArray *array;
 @property (nonatomic, assign) CGFloat height;
 @end

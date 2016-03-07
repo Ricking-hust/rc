@@ -130,22 +130,8 @@
         [self updateDataSoucre:self.array AtTableView:self.scTableView];
     }
 }
-- (void)updateDataSoucre:(NSMutableArray *)array AtTableView:(UITableView *)tableView
+- (void)updateDataSoucre:(NSArray *)array AtTableView:(UITableView *)tableView
 {
-    [self.array removeAllObjects];
-    CZTestData *data1 = [[CZTestData alloc]init];
-    data1.img  = @"businessSmallIcon";
-    data1.time = @"20:29";
-    data1.tag = @"鬼混";
-    data1.content = @"@property (nonatomic, strong)";
-    [self.array addObject:data1];
-    
-    CZTestData *data2 = [[CZTestData alloc]init];
-    data2.img  = @"businessSmallIcon";
-    data2.time = @"03：20";
-    data2.tag = @"瞎搞";
-    data2.content = @"sizeWithText:(NSString *)text";
-    [self.array addObject:data2];
     //[self adjustScTableViewHeight];
     [tableView reloadData];
     
@@ -194,20 +180,20 @@
 }
 - (void)updateUpDataSoucre:(NSMutableArray *)array AtTableView:(UITableView *)tableView
 {
-    [self.array removeAllObjects];
-    CZTestData *data1 = [[CZTestData alloc]init];
-    data1.img  = @"businessSmallIcon";
-    data1.time = @"20:29";
-    data1.tag = @"IT";
-    data1.content = @"今天天气不错，晚上吃什么好呢。";
-    [self.array addObject:data1];
-    
-    CZTestData *data2 = [[CZTestData alloc]init];
-    data2.img  = @"businessSmallIcon";
-    data2.time = @"20:29";
-    data2.tag = @"开房";
-    data2.content = @"中午谁有时间  一起去集贸看看？";
-    [self.array addObject:data2];
+//    [self.array removeAllObjects];
+//    CZTestData *data1 = [[CZTestData alloc]init];
+//    data1.img  = @"businessSmallIcon";
+//    data1.time = @"20:29";
+//    data1.tag = @"IT";
+//    data1.content = @"今天天气不错，晚上吃什么好呢。";
+//    [self.array addObject:data1];
+//    
+//    CZTestData *data2 = [[CZTestData alloc]init];
+//    data2.img  = @"businessSmallIcon";
+//    data2.time = @"20:29";
+//    data2.tag = @"开房";
+//    data2.content = @"中午谁有时间  一起去集贸看看？";
+//    [self.array addObject:data2];
     [tableView reloadData];
 }
 - (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize

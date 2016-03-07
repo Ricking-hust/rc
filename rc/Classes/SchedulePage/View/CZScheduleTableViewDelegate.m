@@ -10,6 +10,7 @@
 #import "CZScheduleInfoCell.h"
 #import "Masonry.h"
 #import "CZTestData.h"
+#import "PlanModel.h"
 
 @implementation CZScheduleTableViewDelegate
 
@@ -75,12 +76,12 @@
 }
 - (void)setValueToCell:(CZScheduleInfoCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-    CZTestData *data = self.array[indexPath.row-1];
-    cell.tagImageView.image = [UIImage imageNamed:data.img];
-    cell.tagLabel.text = data.tag;
-    cell.timeLabel.text = data.time;
-    cell.contentLabel.text = data.content;
-    cell.placeLabel.text = @"光谷体育馆";
+    planModel *plmodel = self.array[indexPath.row-1];
+    cell.tagImageView.image = [UIImage imageNamed:@""];
+    cell.tagLabel.text = plmodel.themeName;
+    cell.timeLabel.text = plmodel.planTime;
+    cell.contentLabel.text = plmodel.planContent;
+    cell.placeLabel.text = plmodel.acPlace;
 }
 - (void)addCellConstraint:(CZScheduleInfoCell *)cell
 {
