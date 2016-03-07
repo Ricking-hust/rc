@@ -15,4 +15,5 @@
 @property (nonatomic, strong) UILabel *tagLabel;
 @property (nonatomic, strong) UILabel *contentLabel;
 @property (nonatomic, strong) UIView *bgView;
+@property (nonatomic, assign) CGFloat height;
 @end

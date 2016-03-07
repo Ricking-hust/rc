@@ -22,6 +22,7 @@
         self.timeLabel = [[UILabel alloc]init];
         self.contentLabel = [[UILabel alloc]init];
         self.bgView = [[UIView alloc]init];
+        self.height = 44;
         [self addsubViewToContentView];
     }
     self.selectionStyle = UITableViewCellSelectionStyleNone;
