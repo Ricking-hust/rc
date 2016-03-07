@@ -80,6 +80,7 @@
     cell.tagLabel.text = data.tag;
     cell.timeLabel.text = data.time;
     cell.contentLabel.text = data.content;
+    cell.placeLabel.text = @"光谷体育馆";
 }
 - (void)addCellConstraint:(CZScheduleInfoCell *)cell
 {
@@ -109,8 +110,14 @@
     [cell.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(cell.bgView.mas_top).offset(12);
         make.left.equalTo(cell.tagImageView.mas_right).offset(12);
-        make.width.mas_equalTo(60);
+        make.width.mas_equalTo(40);
         make.height.mas_equalTo(17);
+    }];
+    [cell.placeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(cell.bgView.mas_top).offset(12);
+        make.left.equalTo(cell.timeLabel.mas_right);
+        make.width.mas_equalTo(90);
+        make.height.mas_equalTo(22);
     }];
     [cell.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(cell.timeLabel.mas_bottom);

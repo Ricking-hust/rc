@@ -10,6 +10,7 @@
 
 @interface CZScheduleInfoCell : UITableViewCell
 @property (nonatomic, strong) UIImageView *tagImageView;
+@property (nonatomic, strong) UILabel *placeLabel;
 @property (nonatomic, strong) UILabel *timeLabel;
 @property (nonatomic, strong) UILabel *tagLabel;
 @property (nonatomic, strong) UILabel *contentLabel;

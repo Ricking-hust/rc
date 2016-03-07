@@ -18,7 +18,6 @@
     if (self = [super init])
     {
         self.height = 0;
-        self.scrollH = 10000;
         self.isUp = NO;
     }
     return self;
@@ -101,17 +100,17 @@
     }];
 
 }
+
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     int index = (int)scrollView.contentOffsetY / self.height;
     if (index > self.indexAtCell)
-    {//上拉
+    {//上拉显示下一个时间点
         self.indexAtCell++;
         self.isUp = NO;
         //NSLog(@"上拉 %d",self.indexAtCell);
         //reflesh scTableView---------
-        [self updateDataSoucre:self.array];
-        [self.scTableView reloadData];
+        [self updateDataSoucre:self.array AtTableView:self.scTableView];
     }
     int flag = scrollView.contentOffsetY / self.height;
     if (flag < self.indexAtCell)
@@ -120,7 +119,7 @@
     }
 
     if ((int)scrollView.contentOffsetY % (int)self.height == 0 && self.isUp)
-    {//下拉
+    {//下拉显示上一个时间点
         self.indexAtCell = (int)scrollView.contentOffsetY / (int)self.height;
         if (self.indexAtCell == 0)
         {
@@ -128,12 +127,10 @@
         }
         //NSLog(@"下拉 %d",self.indexAtCell);
         //reflesh scTableView---------
-        [self updateDataSoucre:self.array];
-        [self.array removeObjectAtIndex:0];
-        [self.scTableView reloadData];
+        [self updateDataSoucre:self.array AtTableView:self.scTableView];
     }
 }
-- (void)updateDataSoucre:(NSMutableArray *)array
+- (void)updateDataSoucre:(NSMutableArray *)array AtTableView:(UITableView *)tableView
 {
     [self.array removeAllObjects];
     CZTestData *data1 = [[CZTestData alloc]init];
@@ -149,7 +146,69 @@
     data2.tag = @"瞎搞";
     data2.content = @"sizeWithText:(NSString *)text";
     [self.array addObject:data2];
+    //[self adjustScTableViewHeight];
+    [tableView reloadData];
     
+}
+/**
+ *  调整scTableView的宽度
+ *  iphone4/4s5/5s 一屏显示4个行程信息，超过4个开始timeScrollView的宽度恢复75，不足4个宽度满屏
+ *
+ *iphone6 一屏显示5个行程信息，超过5个开始timeScrollView的宽度恢复75，不足5个宽度满屏
+ *
+ *iphone6plus 一屏显示5个行程信息，超过5个开始timeScrollView的宽度恢复75，不足5个宽度满屏
+ *
+ */
+- (void)adjustScTableViewHeight
+{
+    if (self.device == IPhone5)
+    {
+        if (self.array.count > 4)
+        {
+            [self.timeNodeTableView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.width.mas_equalTo(kScreenWidth);
+            }];
+            //self.scTableView.scrollEnabled = NO;
+        }else
+        {
+            [self.timeNodeTableView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.width.mas_equalTo(75);
+            }];
+            //self.scTableView.scrollEnabled = YES;
+        }
+    }else
+    {
+        if (self.array.count > 5)
+        {
+            [self.timeNodeTableView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.width.mas_equalTo(kScreenWidth);
+            }];
+        }else
+        {
+            [self.timeNodeTableView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.width.mas_equalTo(75);
+            }];
+        }
+    }
+
+}
+- (void)updateUpDataSoucre:(NSMutableArray *)array AtTableView:(UITableView *)tableView
+{
+    [self.array removeAllObjects];
+    CZTestData *data1 = [[CZTestData alloc]init];
+    data1.img  = @"businessSmallIcon";
+    data1.time = @"20:29";
+    data1.tag = @"IT";
+    data1.content = @"今天天气不错，晚上吃什么好呢。";
+    [self.array addObject:data1];
+    
+    CZTestData *data2 = [[CZTestData alloc]init];
+    data2.img  = @"businessSmallIcon";
+    data2.time = @"20:29";
+    data2.tag = @"开房";
+    data2.content = @"中午谁有时间  一起去集贸看看？";
+    [self.array addObject:data2];
+    [tableView reloadData];
 }
 - (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize
 {

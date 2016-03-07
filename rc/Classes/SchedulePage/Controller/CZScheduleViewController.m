@@ -1,5 +1,3 @@
-
-
 //
 //  CZScheduleViewController.m
 //  rc
@@ -7,7 +5,6 @@
 //  Created by AlanZhang on 16/3/6.
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
-
 #import "CZScheduleViewController.h"
 #import "Masonry.h"
 #import "CZTimeTableViewDelegate.h"
@@ -78,6 +75,7 @@
     self.timeDelegate.indexAtCell = 0;
     self.scDelegate.array = self.array;
     self.scDelegate.device = self.device;
+    self.timeDelegate.timeNodeTableView = self.timeNodeTableView;
 }
 - (void)addSubViews
 {
@@ -87,6 +85,8 @@
     [self.view addSubview:self.imgView];
     [self.view addSubview:self.timeNodeTableView];
     [self.view addSubview:self.scTableView];
+
+
     self.timeNodeTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.scTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.timeNodeTableView.showsVerticalScrollIndicator = NO;

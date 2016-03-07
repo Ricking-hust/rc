@@ -18,6 +18,7 @@
     {
         self.tagImageView = [[UIImageView alloc]init];
         self.tagLabel = [[UILabel alloc]init];
+        self.placeLabel = [[UILabel alloc]init];
         self.timeLabel = [[UILabel alloc]init];
         self.contentLabel = [[UILabel alloc]init];
         self.bgView = [[UIView alloc]init];
@@ -32,10 +33,12 @@
     self.tagLabel.font = [UIFont systemFontOfSize:12];
     self.contentLabel.font = [UIFont systemFontOfSize:14];
     self.timeLabel.font = [UIFont systemFontOfSize:14];
+    self.placeLabel.font = [UIFont systemFontOfSize:14];
     self.contentLabel.numberOfLines = 0;
     [self.bgView addSubview:self.tagImageView];
     [self.bgView addSubview:self.tagLabel];
     [self.bgView addSubview:self.timeLabel];
+    [self.bgView addSubview:self.placeLabel];
     [self.bgView addSubview:self.contentLabel];
     [self.contentView addSubview:self.bgView];
     UIImage *image = [UIImage imageNamed:@"bg_background1"];
