@@ -25,6 +25,8 @@
         self.height = self.scNameH;
         self.scNameLabel.numberOfLines = 0;
         
+        self.strScName = [[NSString alloc]init];
+        
         [self addSubview:self.tagWithImgView];
         [self.tagWithImgView addSubview:self.img];
         [self.tagWithImgView addSubview:self.tagLabel];
@@ -40,9 +42,14 @@
     self.timeLabel.font = [UIFont systemFontOfSize:14];
     self.scNameLabel.font = [UIFont systemFontOfSize:14];
 }
-- (void)setScNameLabel:(UILabel *)scNameLabel
+
+- (void)setStrScName:(NSString *)strScName
 {
-    _scNameLabel = scNameLabel;
+    _strScName = strScName;
+    self.scNameLabel.text = strScName;
+    CGFloat scNameW = kScreenWidth - 30 - 75 - self.img.image.size.width - 18 - 30;
+    CGFloat scNameH = [self sizeWithText:self.scNameLabel.text maxSize:CGSizeMake(scNameW, MAXFLOAT) fontSize:14].height;
+    self.height = scNameH + 17 +12 + 12;
 }
 - (void)addSubViewConstraint
 {

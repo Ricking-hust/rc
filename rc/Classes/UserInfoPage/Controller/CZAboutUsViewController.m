@@ -40,7 +40,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 2;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -74,12 +74,9 @@
     if (indexPath.row == 0)
     {
         cell.textLabel.text = @"产品介绍";
-    }else if (indexPath.row ==1)
-    {
-        cell.textLabel.text = @"微信平台";
     }else
     {
-        cell.textLabel.text = @"检查更新";
+        cell.textLabel.text = @"微信平台";
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
