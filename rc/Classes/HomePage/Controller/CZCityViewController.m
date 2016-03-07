@@ -50,8 +50,6 @@
     long int count = self.navigationController.viewControllers.count;
     CZHomeViewController *homePage = (CZHomeViewController *)self.navigationController.viewControllers[count - 2];
     homePage.city = self.city;
-    
-    
     [self.navigationController popViewControllerAnimated:YES];
 }
 
