@@ -27,7 +27,7 @@
 
 @property (nonatomic, strong) Activity *activity;
 @property (nonatomic,strong) ActivityModel *activitymodel;
-@property (nonatomic, assign) CGFloat cellHeight;
+@property (nonatomic, assign) CGFloat cellHeight;//cell的高度
 
 /**
  *  类方法 创建可重用的自定义的cell对象

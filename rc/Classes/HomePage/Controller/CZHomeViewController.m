@@ -202,7 +202,6 @@
     
 }
 //给单元格进行赋值
-
 - (void) setCellValue:(CZActivitycell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
     ActivityModel *ac = self.activityList.list[indexPath.section];
