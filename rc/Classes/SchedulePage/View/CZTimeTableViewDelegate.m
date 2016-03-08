@@ -12,7 +12,7 @@
 #import "CZTestData.h"
 
 @interface CZTimeTableViewDelegate ()
-@property (nonatomic, strong) CZTimeNodeCell *cell;
+
 @end
 @implementation CZTimeTableViewDelegate
 
@@ -23,7 +23,6 @@
         self.height = 0;
         self.isUp = NO;
         self.isDefualt = YES;
-        self.cell = [[CZTimeNodeCell alloc]init];
     }
     return self;
 }
@@ -212,14 +211,12 @@
 
     [cell layoutIfNeeded];
 
-    self.cell = cell;
-
 }
 - (void)setForwardStateOfCell
 {
     [self.timeNodeTableView reloadData];
     CZTimeNodeCell *cell = self.timeNodeTableView.visibleCells.firstObject;
-    self.cell = self.timeNodeTableView.visibleCells[1];
+
     cell.selectedPoint.hidden = NO;
     [cell.upLineView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.bottom.equalTo(cell.point.mas_top).offset(-10);
@@ -229,19 +226,6 @@
         make.top.equalTo(cell.point.mas_bottom).offset(10);
     }];
     [cell layoutIfNeeded];
-
-//    [self.cell.upLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.bottom.equalTo(cell.point.mas_top);
-//    }];
-//
-//
-//    self.cell.selectedPoint.hidden = YES;
-//    [cell.downLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(cell.point.mas_bottom);
-//
-//    }];
-//    [self.cell layoutIfNeeded];
-    
 }
 /**
  *  调整scTableView的宽度
