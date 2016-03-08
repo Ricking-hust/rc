@@ -24,14 +24,12 @@
     
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     [self setNavigation];
-    [self createCityView];
+    [self addSubViewToSuperView];
 }
 - (void)setNavigation
 {
     UIBarButtonItem *leftButton =[[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"close"] style:UIBarButtonItemStylePlain target:self action:@selector(didCancelSelection)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
-    UIBarButtonItem *rigthButton =[[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(didSelectCity)];
-    [self.navigationItem setRightBarButtonItem:rigthButton];
     
 }
 #pragma mark - 刷新数据
@@ -43,11 +41,6 @@
 - (void)didCancelSelection
 {
     [self.navigationController popViewControllerAnimated:YES];
-}
-//确定城市选择
-- (void)didSelectCity
-{
-
 }
 
 #pragma mark - 城市选择按钮点击事件
@@ -119,8 +112,11 @@
         self.guangzhou = [[CZCityView alloc]initName:@"广州" WithImageString:@"Guangzhou_Icon"];;
         self.wuhan = [[CZCityView alloc]initName:@"武汉" WithImageString:@"Wuhan_Icon"];;
         self.device = [self currentDeviceSize];
+        [self.shanghai.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
+        [self.guangzhou.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
+        [self.wuhan.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
+        [self.beijing.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
     }
-    [self addSubViewToSuperView];
     return self;
 }
 - (void)addSubViewToSuperView
@@ -130,104 +126,48 @@
     [self.bgView addSubview:self.shanghai];
     [self.bgView addSubview:self.guangzhou];
     [self.bgView addSubview:self.wuhan];
-}
-- (void)createCityView
-{
     //创建赋值
     self.bgView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:self.bgView];
     [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view.mas_top).with.offset(74);
         make.left.and.right.bottom.equalTo(self.view);
     }];
-    //布局
-//    NSString *str;
-//    UIImage *img;
-//
-//    _bgView = [[UIView alloc]init];
-//    _bgView.backgroundColor = [UIColor whiteColor];
-//    [self.view addSubview:_bgView];
-//    [_bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.view.mas_top).with.offset(74);
-//        make.left.and.right.bottom.equalTo(self.view);
-//    }];
-//    //city -- 北京
-//    _beijing = [CZCityView cityView];
-//    str = [NSString stringWithFormat:@"city_%d",1];
-//    img = [UIImage imageNamed:str];
-//    _beijing.locationImage.image = [UIImage imageNamed:@"location"];
-//    [_beijing.cityBtn setBackgroundImage:img forState:UIControlStateNormal];
-//
-//    [self.beijing.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
-//    _beijing.cityNameLabel.text = @"北京";
-//    [_beijing setConstraints];
-//    [_bgView addSubview:_beijing];
-//    
-//    //city -- 广州
-//    _guangzhou = [CZCityView cityView];
-//    str = [NSString stringWithFormat:@"city_%d",2];
-//    img = [UIImage imageNamed:str];
-//    _guangzhou.locationImage.image = [UIImage imageNamed:@"location"];
-//    [_guangzhou.cityBtn setBackgroundImage:img forState:UIControlStateNormal];
-//
-//    _guangzhou.cityNameLabel.text = @"广州";
-//    [_guangzhou setConstraints];
-//    [_bgView addSubview:_guangzhou];
-//    [self.guangzhou.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
-//
-//    //city -- 上海
-//    _shanghai = [CZCityView cityView];
-//    str = [NSString stringWithFormat:@"city_%d",3];
-//    img = [UIImage imageNamed:str];
-//    _shanghai.locationImage.image = [UIImage imageNamed:@"location"];
-//    [_shanghai.cityBtn setBackgroundImage:img forState:UIControlStateNormal];
-//
-//    _shanghai.cityNameLabel.text = @"上海";
-//    [_shanghai setConstraints];
-//    [_bgView addSubview:_shanghai];
-//    [self.shanghai.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    //city -- 武汉
-//    _wuhan = [CZCityView cityView];
-//    str = [NSString stringWithFormat:@"city_%d",4];
-//    img = [UIImage imageNamed:str];
-//    _wuhan.locationImage.image = [UIImage imageNamed:@"location"];
-//    [_wuhan.cityBtn setBackgroundImage:img forState:UIControlStateNormal];
-//
-//    _wuhan.cityNameLabel.text = @"武汉";
-//    [_wuhan setConstraints];
-//    [_bgView addSubview:_wuhan];
-//    [self.wuhan.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
-//
-//    CGSize screenSize = [[UIScreen mainScreen]bounds].size;
-//    CGFloat leftPaddig = 58.0/2.0;
-//    CGFloat topPadding = 56.0/2.0 + 64;
-//    CGFloat paddingX = screenSize.width * 0.10;
-//    CGFloat paddingY = screenSize.width * 0.09;
-//    CGFloat cityViewW = screenSize.width * 0.21;
-//    CGFloat cityViewH = cityViewW + cityViewW * 0.5;
-//    CGSize size = CGSizeMake(cityViewW, cityViewH);
-//    
-//    [_beijing mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(_bgView.mas_left).with.offset(leftPaddig);
-//        make.top.equalTo(_bgView.mas_top).with.offset(topPadding-64);
-//        make.size.mas_equalTo(size);
-//    }];
-//    [_guangzhou mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(_beijing.mas_right).with.offset(paddingX);
-//        make.top.equalTo(_beijing.mas_top);
-//        make.size.mas_equalTo(size);
-//    }];
-//    [_shanghai mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(_guangzhou.mas_right).with.offset(paddingX);
-//        make.top.equalTo(_beijing.mas_top);
-//        make.size.mas_equalTo(size);
-//    }];
-//    [_wuhan mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(_beijing.mas_left);
-//        make.top.equalTo(_beijing.mas_bottom).with.offset(paddingY);
-//        make.size.mas_equalTo(size);
-//    }];
+    CGFloat wuhanH = self.wuhan.cityBtn.imageView.image.size.height + 18 + 11 +10;
+    CGFloat padding = (kScreenWidth - 240)/4;
+    [self.wuhan mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.bgView.mas_left).offset(padding);
+        make.top.equalTo(self.bgView.mas_top).offset(28);
+        make.height.mas_equalTo(wuhanH);
+        make.width.mas_equalTo(80);
+    }];
+    [self.wuhan setConstraints];
+    
+    CGFloat beijingH = self.beijing.cityBtn.imageView.image.size.height + 18 + 11 +10;
+    [self.beijing mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.wuhan.mas_right).offset(padding);
+        make.top.equalTo(self.wuhan.mas_top);
+        make.height.mas_equalTo(beijingH);
+        make.width.mas_equalTo(80);
+    }];
+    [self.beijing setConstraints];
+    
+    CGFloat shanghaiH = self.beijing.cityBtn.imageView.image.size.height + 18 + 11 +10;
+    [self.shanghai mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.beijing.mas_right).offset(padding);
+        make.top.equalTo(self.wuhan.mas_top);
+        make.height.mas_equalTo(shanghaiH);
+        make.width.mas_equalTo(80);
+    }];
+    [self.shanghai setConstraints];
+    
+    CGFloat guangzhouH = self.beijing.cityBtn.imageView.image.size.height + 18 + 11 +10;
+    [self.guangzhou mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.wuhan.mas_bottom).offset(35);
+        make.left.equalTo(self.bgView.mas_left).offset(padding);
+        make.height.mas_equalTo(guangzhouH);
+        make.width.mas_equalTo(80);
+    }];
+    [self.guangzhou setConstraints];
 }
 //获取当前设备
 - (CurrentDevice)currentDeviceSize
