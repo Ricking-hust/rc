@@ -107,9 +107,6 @@
     CGSize tagSize = [self sizeWithText:self.ac_tags.text maxSize:CGSizeMake(maxfW, MAXFLOAT) fontSize:TAG_FONTSIZE];
     //标签的下边距
     CGFloat tagBottomPadding = 12;
-    //图片的高度
-    
-    //图片的上边距与下边距，左边距
     
     //cell高度
     self.cellHeight = tittleTopPadding + nameSize.height + timeSize.height + placeSize.height + tagSize.height + timePaddingToName + tagPaddingToPlace + 15;

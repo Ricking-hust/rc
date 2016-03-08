@@ -42,10 +42,11 @@
         self.height = 105;
 
     }
+
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.array.count;
+    return self.array.count+(int)((kScreenHeight - 64 -35 -49)/self.height)-1;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -53,22 +54,32 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CZTimeNodeCell *cell = [[CZTimeNodeCell alloc]init];
-    NSArray *tempArray = self.array[indexPath.row];
-    PlanModel *plmodel = tempArray[0];
-    
-    //对cell进行赋值
-    NSString *str = [NSString stringWithFormat:@"%@:%@",[plmodel.planTime substringWithRange:NSMakeRange(5, 2)],[plmodel.planTime substringWithRange:NSMakeRange(8, 2)]];
-    cell.dayLabel.text = str;
-    cell.weekLabel.text = @"星期一";
-    
-    //对cell进行布局
-    [self addCellConstraint:cell AtIndexPath:indexPath];
-    return cell;
+    if (indexPath.row < self.array.count)
+    {
+        CZTimeNodeCell *cell = [[CZTimeNodeCell alloc]init];
+        NSArray *tempArray = self.array[indexPath.row];
+        PlanModel *plmodel = tempArray[0];
+        
+        //对cell进行赋值
+        NSString *str = [NSString stringWithFormat:@"%@:%@",[plmodel.planTime substringWithRange:NSMakeRange(5, 2)],[plmodel.planTime substringWithRange:NSMakeRange(8, 2)]];
+        cell.dayLabel.text = str;
+        cell.weekLabel.text = @"星期一";
+        
+        //对cell进行布局
+        [self addCellConstraint:cell AtIndexPath:indexPath];
+        return cell;
+    }else
+    {
+        UITableViewCell *cell = [[UITableViewCell alloc]init];
+        cell.backgroundColor = [UIColor clearColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    }
+
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
+
     return self.height;
 }
 
@@ -161,7 +172,7 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     int index = (int)scrollView.contentOffsetY / self.height;
-    if (index > self.indexAtCell)
+    if (index > self.indexAtCell && index < self.array.count)
     {//上拉显示下一个时间点
         self.indexAtCell++;
         self.isUp = NO;
@@ -172,12 +183,12 @@
         [self setNextStateOfCell];
     }
     int flag = scrollView.contentOffsetY / self.height;
-    if (flag < self.indexAtCell)
+    if (flag < self.indexAtCell  && flag < self.array.count)
     {
         self.isUp = YES;
     }
 
-    if ((int)scrollView.contentOffsetY % (int)self.height == 0 && self.isUp)
+    if ((int)scrollView.contentOffsetY % (int)self.height == 0 && self.isUp && (int)scrollView.contentOffsetY % (int)self.height < self.array.count)
     {//下拉显示上一个时间点
         self.indexAtCell = (int)scrollView.contentOffsetY / (int)self.height;
         if (self.indexAtCell == 0)
