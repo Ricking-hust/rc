@@ -108,7 +108,7 @@
     [self.timeNodeTableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.imgView.mas_bottom);
         make.left.equalTo(self.view.mas_left);
-        make.width.mas_equalTo(75);
+        make.width.mas_equalTo(80);
         make.height.mas_equalTo(kScreenHeight - 64 - self.imgView.image.size.height - 49);
     }];
     [self.scTableView mas_makeConstraints:^(MASConstraintMaker *make) {

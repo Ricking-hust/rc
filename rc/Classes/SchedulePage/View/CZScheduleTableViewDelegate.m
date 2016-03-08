@@ -155,7 +155,7 @@
     [cell.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(cell.contentView.mas_left).offset(10);
         make.right.equalTo(cell.contentView.mas_right).offset(-10);
-        make.centerY.equalTo(cell.contentView.mas_centerY);
+        make.centerY.equalTo(cell.contentView.mas_centerY).offset(-5);
         make.height.mas_equalTo(17 + 12 + size.height + placeSize.height + 12);
     }];
     //17表示timeLabel的高度，12为timeLabel的上边距，size.height表示内容的高度,placeSize.height表示地点的高度,12表示内容的下边距,15表示bgView的上下边距
