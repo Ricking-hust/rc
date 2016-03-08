@@ -58,7 +58,7 @@
     PlanModel *plmodel = tempArray[0];
     
     //对cell进行赋值
-    NSString *str = [NSString stringWithFormat:@"%@.%@",[plmodel.planTime substringWithRange:NSMakeRange(5, 2)],[plmodel.planTime substringWithRange:NSMakeRange(8, 2)]];
+    NSString *str = [NSString stringWithFormat:@"%@:%@",[plmodel.planTime substringWithRange:NSMakeRange(5, 2)],[plmodel.planTime substringWithRange:NSMakeRange(8, 2)]];
     cell.dayLabel.text = str;
     cell.weekLabel.text = @"星期一";
     
@@ -72,7 +72,7 @@
     return self.height;
 }
 
-- (void)addCellConstraint:(CZTimeNodeCell *)cell
+- (void)addCellConstraint:(CZTimeNodeCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0 && self.isDefualt)
     {
