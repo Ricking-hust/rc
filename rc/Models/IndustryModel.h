@@ -15,7 +15,7 @@
 
 @end
 
-@interface industryList : NSObject
+@interface IndustryList : NSObject
 
 @property (nonatomic, strong) NSArray *list;
 

@@ -13,11 +13,14 @@
 #import "CZTestData.h"
 #import "PlanModel.h"
 #include <sys/sysctl.h>
+
 @interface CZScheduleViewController ()
+
 @property (nonatomic, assign) CurrentDevice device;
-@property (nonatomic,strong) planList *planList;
-//@property (nonatomic, strong) NSMutableArray *array;
+@property (nonatomic,strong) PlanList *planList;
+@property (nonatomic, strong) NSMutableArray *planListRanged;
 @property (nonatomic,copy) NSURLSessionDataTask *(^getPlanListBlock)();
+
 @end
 
 @implementation CZScheduleViewController
@@ -28,7 +31,7 @@
     @weakify(self);
     self.getPlanListBlock = ^(){
         @strongify(self);
-        return [[DataManager manager] getPlanWithUserId:@"1" beginDate:@"2016-01-01" endDate:@"2016-10-08" success:^(planList *plList) {
+        return [[DataManager manager] getPlanWithUserId:@"1" beginDate:@"2016-01-01" endDate:@"2016-12-31" success:^(PlanList *plList) {
             @strongify(self);
             self.planList = plList;
         } failure:^(NSError *error) {
@@ -37,10 +40,17 @@
     };
 }
 
--(void)setPlanList:(planList *)planList{
+-(void)setPlanList:(PlanList *)planList{
     _planList = planList;
     
     [self displayTimeNode];
+}
+
+-(NSMutableArray *)planListRanged{
+    if (!_planListRanged) {
+        _planListRanged = [[NSMutableArray alloc]init];
+    }
+    return _planListRanged;
 }
 
 - (CurrentDevice)device
@@ -51,6 +61,8 @@
     }
     return _device;
 }
+
+#pragma mark - View
 
 - (void)viewDidLoad
 {
@@ -75,10 +87,11 @@
 }
 - (void)displayTimeNode
 {
-    self.timeDelegate.array = self.planList.list;
+    [self rangePlanList:self.planList];
+    self.timeDelegate.array = self.planListRanged;
     self.timeDelegate.device = self.device;
     self.timeDelegate.indexAtCell = 0;
-    self.scDelegate.array = self.planList.list;
+    self.scDelegate.array = self.planListRanged[0];
     self.scDelegate.device = self.device;
     self.timeDelegate.timeNodeTableView = self.timeNodeTableView;
     
@@ -147,6 +160,27 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
+
+#pragma mark - private methods
+
+//sequence the plan by date
+-(void)rangePlanList:(PlanList *)planList{
+    PlanModel *rPlModel = planList.list[0];
+    NSString *defaultStr = [rPlModel.planTime substringWithRange:NSMakeRange(5, 5)];
+    int i = 0;
+    self.planListRanged[0] = [[NSMutableArray alloc]init];
+    for (PlanModel *planModel in planList.list) {
+        if ([planModel.planTime substringWithRange:NSMakeRange(5, 5)] == defaultStr) {
+            [self.planListRanged[i] addObject:planModel];
+        }else{
+            i = i+1;
+            self.planListRanged[i] = [[NSMutableArray alloc]init];
+            defaultStr = [planModel.planTime substringWithRange:NSMakeRange(5, 5)];
+            [self.planListRanged[i] addObject:planModel];
+        }
+    }
+}
+
 //获取当前设备
 - (CurrentDevice)currentDeviceSize
 {

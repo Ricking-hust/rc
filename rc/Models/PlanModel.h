@@ -11,7 +11,7 @@
 #import "ActivityModel.h"
 #import "ThemeModel.h"
 
-@interface planModel : BaseModel
+@interface PlanModel : BaseModel
 
 @property (nonatomic,copy) NSString *planId;
 @property (nonatomic,copy) NSString *planContent;
@@ -26,7 +26,7 @@
 
 @end
 
-@interface planList : NSObject
+@interface PlanList : NSObject
 
 @property (nonatomic, strong) NSArray *list;
 

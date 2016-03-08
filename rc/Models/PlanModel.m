@@ -9,7 +9,7 @@
 #import "PlanModel.h"
 #import "NSDictionary+NotNullKey.h"
 
-@implementation planModel
+@implementation PlanModel
 
 -(instancetype) initWithDictionary:(NSDictionary *)dict{
     if (self = [super initWithDictionary:dict]) {
@@ -29,14 +29,14 @@
 
 @end
 
-@implementation planList
+@implementation PlanList
 
 -(instancetype) initWithArray:(NSArray *)array{
     if (self = [super init]) {
         NSMutableArray *list = [[NSMutableArray alloc] init];
         
         for (NSDictionary *dict in array) {
-            planModel *model = [[planModel alloc] initWithDictionary:dict];
+            PlanModel *model = [[PlanModel alloc] initWithDictionary:dict];
             [list addObject:model];
         }
         self.list = list;

@@ -22,6 +22,7 @@
     }
     return self;
 }
+
 - (void)setDevice:(CurrentDevice)device
 {
     _device = device;
@@ -77,10 +78,9 @@
 }
 - (void)setValueToCell:(CZScheduleInfoCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-    planModel *plmodel = self.array[indexPath.row-1];
-    cell.tagImageView.image = [UIImage imageNamed:@""];
+    PlanModel *plmodel = self.array[indexPath.row-1];
+    cell.tagImageView.image = [UIImage imageNamed:@"businessSmallIcon"];
     cell.tagLabel.text = plmodel.themeName;
-    NSLog(@"TimeLabel:%@",plmodel.planTime);
     NSString *timeText = [plmodel.planTime substringWithRange:NSMakeRange(11, 5)];
     cell.timeLabel.text = timeText;
     cell.contentLabel.text = plmodel.planContent;

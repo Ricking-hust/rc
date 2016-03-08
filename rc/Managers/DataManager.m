@@ -326,10 +326,10 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
 }
 
 #pragma mark - Public Request Methods - Industry
--(NSURLSessionDataTask *) getAllIndustriesWithSuccess:(void (^)(industryList *indList))success
+-(NSURLSessionDataTask *) getAllIndustriesWithSuccess:(void (^)(IndustryList *indList))success
                                               failure:(void (^)(NSError *error))failure{
     return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Industry/getAllIndustries" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
-        industryList *indList = [[industryList alloc] initWithArray:[responseObject objectForKey:@"data"]];
+        IndustryList *indList = [[IndustryList alloc] initWithArray:[responseObject objectForKey:@"data"]];
         success(indList);
     } failure:^(NSError *error) {
         failure(error);
@@ -359,7 +359,7 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
 -(NSURLSessionDataTask *) getPlanWithUserId:(NSString *)userId
                                   beginDate:(NSString *)beginDate
                                     endDate:(NSString *)endDate
-                                    success:(void (^)(planList *plList))success
+                                    success:(void (^)(PlanList *plList))success
                                     failure:(void (^)(NSError *error))failure{
     NSDictionary *parameters = @{
                                  @"usr_id":userId,
@@ -367,7 +367,7 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
                                  @"end_date":endDate,
                                  };
     return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Plan/getPlan" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
-        planList *plList = [[planList alloc] initWithArray:[responseObject objectForKey:@"data"]];
+        PlanList *plList = [[PlanList alloc] initWithArray:[responseObject objectForKey:@"data"]];
         success(plList);
     } failure:^(NSError *error) {
         failure(error);
@@ -490,13 +490,13 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
 }
 
 -(NSURLSessionDataTask *) getUserPlanWithUserId:(NSString *)userId
-                                        success:(void (^)(planList *plList))success
+                                        success:(void (^)(PlanList *plList))success
                                         failure:(void (^)(NSError *error))failure{
     NSDictionary *parameters = @{
                                  @"usr_id":userId,
                                  };
     return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app-rc.dingdewen.com/Home/Person/getUserPlan" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
-        planList *plList = [[planList alloc] initWithArray:[responseObject objectForKey:@"data"]];
+        PlanList *plList = [[PlanList alloc] initWithArray:[responseObject objectForKey:@"data"]];
         success(plList);
     } failure:^(NSError *error) {
         failure(error);

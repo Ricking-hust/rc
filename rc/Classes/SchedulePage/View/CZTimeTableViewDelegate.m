@@ -10,6 +10,7 @@
 #import "CZTimeNodeCell.h"
 #import "Masonry.h"
 #import "CZTestData.h"
+#import "PlanModel.h"
 
 @implementation CZTimeTableViewDelegate
 
@@ -40,7 +41,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 30;
+    return self.array.count;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -49,8 +50,14 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CZTimeNodeCell *cell = [[CZTimeNodeCell alloc]init];
+    NSArray *tempArray = self.array[indexPath.row];
+    PlanModel *plmodel = tempArray[0];
+    
     //对cell进行赋值
-    [self setValueToCell:cell];
+    NSString *str = [NSString stringWithFormat:@"%@.%@",[plmodel.planTime substringWithRange:NSMakeRange(5, 2)],[plmodel.planTime substringWithRange:NSMakeRange(8, 2)]];
+    cell.dayLabel.text = str;
+    cell.weekLabel.text = @"星期一";
+    
     //对cell进行布局
     [self addCellConstraint:cell];
     return cell;
@@ -60,11 +67,7 @@
     
     return self.height;
 }
-- (void)setValueToCell:(CZTimeNodeCell *)cell
-{
-    cell.dayLabel.text = @"12.14";
-    cell.weekLabel.text = @"星期一";
-}
+
 - (void)addCellConstraint:(CZTimeNodeCell *)cell
 {
     [cell.upLineView mas_makeConstraints:^(MASConstraintMaker *make) {

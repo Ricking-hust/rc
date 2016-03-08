@@ -87,7 +87,7 @@ typedef NS_ENUM(NSInteger,RcErrorType) {
 
 #pragma mark - Public Request Methods - Industry
 
--(NSURLSessionDataTask *) getAllIndustriesWithSuccess:(void (^)(industryList *indList))success
+-(NSURLSessionDataTask *) getAllIndustriesWithSuccess:(void (^)(IndustryList *indList))success
                                               failure:(void (^)(NSError *))failure;
 
 -(NSURLSessionDataTask *) checkIndustryWithCityId:(NSString *)cityId
@@ -101,7 +101,7 @@ typedef NS_ENUM(NSInteger,RcErrorType) {
 -(NSURLSessionDataTask *) getPlanWithUserId:(NSString *)userId
                                   beginDate:(NSString *)beginDate
                                     endDate:(NSString *)endDate
-                                    success:(void (^)(planList *plList))success
+                                    success:(void (^)(PlanList *plList))success
                                     failure:(void (^)(NSError *error))failure;
 
 -(NSURLSessionDataTask *) addPlanWithOpType:(NSString *)opType
@@ -149,7 +149,7 @@ typedef NS_ENUM(NSInteger,RcErrorType) {
                                             failure:(void (^)(NSError *error))failure;
 
 -(NSURLSessionDataTask *) getUserPlanWithUserId:(NSString *)userId
-                                        success:(void (^)(planList *plList))success
+                                        success:(void (^)(PlanList *plList))success
                                         failure:(void (^)(NSError *error))failure;
 
 #pragma mark - Login & Profile
