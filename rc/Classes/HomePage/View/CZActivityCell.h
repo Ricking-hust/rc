@@ -13,12 +13,10 @@
 
 @interface CZActivitycell : UITableViewCell
 @property (nonatomic, weak) UIImageView *ac_poster;
-@property (nonatomic, assign) CGSize posterSize;  //存储活动海报的大小
 @property (nonatomic, weak) UILabel *ac_title;
 @property (nonatomic, weak) UILabel *ac_time;
 @property (nonatomic, weak) UILabel *ac_place;
 @property (nonatomic, weak) UIImageView *ac_imageTag;
-@property (nonatomic, assign) CGSize tagSize;   //存储活动标签图片的大小
 @property (nonatomic, weak) UILabel *ac_tags;
 
 //目前不实现浏览量
