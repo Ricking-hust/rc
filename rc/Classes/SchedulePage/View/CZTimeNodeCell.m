@@ -41,6 +41,7 @@
     self.weekLabel.font = [UIFont systemFontOfSize:10];
     self.dayLabel.font = [UIFont systemFontOfSize:13];
     self.point.layer.cornerRadius = 7;
+    self.selectedPoint.image = [UIImage imageNamed:@"currentPoint"];
     [self.contentView addSubview:self.upLineView];
     [self.contentView addSubview:self.downLineView];
     [self.contentView addSubview:self.point];

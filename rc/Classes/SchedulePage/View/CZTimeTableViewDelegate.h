@@ -16,4 +16,5 @@
 @property (nonatomic, assign) int indexAtCell;
 @property (nonatomic, assign) CGFloat height;
 @property (nonatomic, assign) BOOL isUp;
+@property (nonatomic, assign) BOOL isDefualt;
 @end

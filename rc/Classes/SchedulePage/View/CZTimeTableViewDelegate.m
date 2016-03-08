@@ -12,6 +12,9 @@
 #import "CZTestData.h"
 #import "PlanModel.h"
 
+@interface CZTimeTableViewDelegate ()
+
+@end
 @implementation CZTimeTableViewDelegate
 
 - (id)init
@@ -20,6 +23,7 @@
     {
         self.height = 0;
         self.isUp = NO;
+        self.isDefualt = YES;
     }
     return self;
 }
@@ -59,7 +63,7 @@
     cell.weekLabel.text = @"星期一";
     
     //对cell进行布局
-    [self addCellConstraint:cell];
+    [self addCellConstraint:cell AtIndexPath:indexPath];
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -70,38 +74,88 @@
 
 - (void)addCellConstraint:(CZTimeNodeCell *)cell
 {
-    [cell.upLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(cell.contentView.mas_top);
-        make.left.equalTo(cell.contentView.mas_left).offset(62);
-        make.width.mas_equalTo(3);
-        make.bottom.equalTo(cell.point.mas_top);
-    }];
-    [cell.point mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(cell.contentView.mas_centerY);
-        make.left.equalTo(cell.upLineView.mas_left).offset(-6);
-        make.width.mas_equalTo(14);
-        make.height.mas_equalTo(14);
-    }];
-    [cell.downLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(cell.point.mas_bottom);
-        make.left.equalTo(cell.upLineView.mas_left);
-        make.width.equalTo(cell.upLineView.mas_width);
-        make.bottom.equalTo(cell.contentView.mas_bottom);
-    }];
-
-    [cell.dayLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(cell.point.mas_top).offset(-6);
-        make.right.equalTo(cell.point.mas_left).offset(-10);
-        make.width.mas_equalTo(35);
-        make.height.mas_equalTo(16);
-    }];
-    [cell.weekLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(cell.dayLabel.mas_bottom);
-        make.centerX.equalTo(cell.dayLabel.mas_centerX);
-        make.width.mas_equalTo(30);
-        make.height.mas_equalTo(12);
-    }];
-
+    if (indexPath.row == 0 && self.isDefualt)
+    {
+        [cell.upLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(cell.contentView.mas_top);
+            make.left.equalTo(cell.contentView.mas_left).offset(62);
+            make.width.mas_equalTo(3);
+            make.bottom.equalTo(cell.selectedPoint.mas_top).offset(-4);
+        }];
+        [cell.point mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(cell.contentView.mas_centerY);
+            make.left.equalTo(cell.upLineView.mas_left).offset(-6);
+            make.width.mas_equalTo(14);
+            make.height.mas_equalTo(14);
+        }];
+        
+        [cell.selectedPoint mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(cell.point.mas_top).offset(-8);
+            make.left.equalTo(cell.point.mas_left).offset(-8);
+            make.size.mas_equalTo(cell.selectedPoint.image.size);
+        }];
+        [cell.downLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(cell.selectedPoint.mas_bottom).offset(4);
+            make.left.equalTo(cell.upLineView.mas_left);
+            make.width.equalTo(cell.upLineView.mas_width);
+            make.bottom.equalTo(cell.contentView.mas_bottom);
+        }];
+        
+        [cell.dayLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(cell.point.mas_top).offset(-6);
+            make.right.equalTo(cell.point.mas_left).offset(-10);
+            make.width.mas_equalTo(35);
+            make.height.mas_equalTo(16);
+        }];
+        [cell.weekLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(cell.dayLabel.mas_bottom);
+            make.centerX.equalTo(cell.dayLabel.mas_centerX);
+            make.width.mas_equalTo(30);
+            make.height.mas_equalTo(12);
+        }];
+        self.isDefualt = NO;
+    }else
+    {
+        [cell.upLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(cell.contentView.mas_top);
+            make.left.equalTo(cell.contentView.mas_left).offset(62);
+            make.width.mas_equalTo(3);
+            make.bottom.equalTo(cell.point.mas_top);
+        }];
+        [cell.point mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(cell.contentView.mas_centerY);
+            make.left.equalTo(cell.upLineView.mas_left).offset(-6);
+            make.width.mas_equalTo(14);
+            make.height.mas_equalTo(14);
+        }];
+        
+        [cell.selectedPoint mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(cell.point.mas_top).offset(-8);
+            make.left.equalTo(cell.point.mas_left).offset(-8);
+            make.size.mas_equalTo(cell.selectedPoint.image.size);
+        }];
+        cell.selectedPoint.hidden = YES;
+        [cell.downLineView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(cell.point.mas_bottom);
+            make.left.equalTo(cell.upLineView.mas_left);
+            make.width.equalTo(cell.upLineView.mas_width);
+            make.bottom.equalTo(cell.contentView.mas_bottom);
+        }];
+        
+        [cell.dayLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(cell.point.mas_top).offset(-6);
+            make.right.equalTo(cell.point.mas_left).offset(-10);
+            make.width.mas_equalTo(35);
+            make.height.mas_equalTo(16);
+        }];
+        [cell.weekLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(cell.dayLabel.mas_bottom);
+            make.centerX.equalTo(cell.dayLabel.mas_centerX);
+            make.width.mas_equalTo(30);
+            make.height.mas_equalTo(12);
+        }];
+    }
+    
 }
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
@@ -114,6 +168,8 @@
         //NSLog(@"上拉 %d",self.indexAtCell);
         //reflesh scTableView---------
         [self updateDataSoucre:self.array AtTableView:self.scTableView];
+        //设置cell的选中状态
+        [self setNextStateOfCell];
     }
     int flag = scrollView.contentOffsetY / self.height;
     if (flag < self.indexAtCell)
@@ -131,6 +187,8 @@
         //NSLog(@"下拉 %d",self.indexAtCell);
         //reflesh scTableView---------
         [self updateDataSoucre:self.array AtTableView:self.scTableView];
+        //设置cell的选中状态
+        [self setForwardStateOfCell];
     }
 }
 - (void)updateDataSoucre:(NSArray *)array AtTableView:(UITableView *)tableView
@@ -138,6 +196,38 @@
     //[self adjustScTableViewHeight];
     [tableView reloadData];
     
+}
+- (void)setNextStateOfCell
+{
+    [self.timeNodeTableView reloadData];
+    CZTimeNodeCell *cell = self.timeNodeTableView.visibleCells.firstObject;
+    cell.selectedPoint.hidden = NO;
+    
+    [cell.upLineView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(cell.point.mas_top).offset(-10);
+    }];
+    
+    [cell.downLineView mas_updateConstraints:^(MASConstraintMaker *make){
+        make.top.equalTo(cell.point.mas_bottom).offset(10);
+    }];
+
+    [cell layoutIfNeeded];
+
+}
+- (void)setForwardStateOfCell
+{
+    [self.timeNodeTableView reloadData];
+    CZTimeNodeCell *cell = self.timeNodeTableView.visibleCells.firstObject;
+
+    cell.selectedPoint.hidden = NO;
+    [cell.upLineView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(cell.point.mas_top).offset(-10);
+    }];
+    
+    [cell.downLineView mas_updateConstraints:^(MASConstraintMaker *make){
+        make.top.equalTo(cell.point.mas_bottom).offset(10);
+    }];
+    [cell layoutIfNeeded];
 }
 /**
  *  调整scTableView的宽度

@@ -1,5 +1,3 @@
-
-
 //
 //  CZScheduleInfoCell.m
 //  rc
@@ -36,6 +34,7 @@
     self.timeLabel.font = [UIFont systemFontOfSize:14];
     self.placeLabel.font = [UIFont systemFontOfSize:14];
     self.contentLabel.numberOfLines = 0;
+    self.placeLabel.numberOfLines = 0;
     [self.bgView addSubview:self.tagImageView];
     [self.bgView addSubview:self.tagLabel];
     [self.bgView addSubview:self.timeLabel];

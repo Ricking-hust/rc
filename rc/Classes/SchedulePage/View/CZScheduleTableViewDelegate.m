@@ -86,6 +86,35 @@
     cell.contentLabel.text = plmodel.planContent;
     cell.placeLabel.text = plmodel.acPlace;
 }
+- (UIImage *)getTagImageFormNString:(NSString *)str
+{
+    if ([str isEqualToString:@"运动"])
+    {
+        return [UIImage imageNamed:@"sportSmallIcon"];
+    }else if ([str isEqualToString:@"约会"])
+    {
+        return [UIImage imageNamed:@"appointmentSmallIcon"];
+    }else if ([str isEqualToString:@"出差"])
+    {
+        return [UIImage imageNamed:@"businessSmallIcon"];
+    }else if ([str isEqualToString:@"会议"])
+    {
+        return [UIImage imageNamed:@"meetingSmallIcon"];
+    }else if ([str isEqualToString:@"购物"])
+    {
+        return [UIImage imageNamed:@"shoppingSmallIcon"];
+    }else if ([str isEqualToString:@"娱乐"])
+    {
+        return [UIImage imageNamed:@"entertainmentSmallIcon"];
+    }else if ([str isEqualToString:@"聚会"])
+    {
+        return [UIImage imageNamed:@"partSmallIcon"];
+    }else
+    {
+        return [UIImage imageNamed:@"otherSmallIcon"];
+    }
+    
+}
 - (void)addCellConstraint:(CZScheduleInfoCell *)cell
 {
     //75表示界面左侧的tableView的宽度, 60表示cell中的各项间距
@@ -127,7 +156,7 @@
     [cell.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(cell.contentView.mas_left).offset(10);
         make.right.equalTo(cell.contentView.mas_right).offset(-10);
-        make.centerY.equalTo(cell.contentView.mas_centerY);
+        make.centerY.equalTo(cell.contentView.mas_centerY).offset(-5);
         make.height.mas_equalTo(17 + 12 + size.height + placeSize.height + 12);
     }];
     //17表示timeLabel的高度，12为timeLabel的上边距，size.height表示内容的高度,placeSize.height表示地点的高度,12表示内容的下边距,15表示bgView的上下边距

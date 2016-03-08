@@ -11,38 +11,34 @@
 
 @implementation CZCityView
 
-+ (instancetype)cityView
+- (id)initName:(NSString *)cityName WithImageString:(NSString *)imageString
 {
-    CZCityView *cityView = [[CZCityView alloc]init];
-    cityView.cityBtn = [[UIButton alloc]init];
-    cityView.locationImage = [[UIImageView alloc]init];
-    cityView.locationImage.tag = 11;
-    cityView.locationImage.hidden = YES;
-    cityView.cityNameLabel = [[UILabel alloc]init];
-    [cityView.cityNameLabel setTag:10];
-    [cityView addSubview:cityView.cityBtn];
-    [cityView addSubview:cityView.locationImage];
-    [cityView addSubview:cityView.cityNameLabel];
-    
-    [cityView.cityBtn.layer setMasksToBounds:YES];//设置按钮的圆角半径不会被遮挡
-    [cityView.cityBtn.layer setCornerRadius:10];
-    cityView.cityNameLabel.font = [UIFont systemFontOfSize:15];
+    if (self = [super init])
+    {
+        self.cityBtn = [[UIButton alloc]init];
+        self.locationImage = [[UIImageView alloc]init];
+        self.locationImage.tag = 11;
+        self.locationImage.hidden = YES;
+        self.cityNameLabel = [[UILabel alloc]init];
+        [self.cityNameLabel setTag:10];
+        [self addSubview:self.cityBtn];
+        [self addSubview:self.locationImage];
+        [self addSubview:self.cityNameLabel];
+        self.locationImage.image = [UIImage imageNamed:@"location"];
+        [self.cityBtn.layer setMasksToBounds:YES];//设置按钮的圆角半径不会被遮挡
+        [self.cityBtn.layer setCornerRadius:10];
+        self.cityNameLabel.font = [UIFont systemFontOfSize:15];
+        [self.cityBtn setImage:[UIImage imageNamed:imageString] forState:UIControlStateNormal];
+        self.cityNameLabel.text = cityName;
+    }
 
-    return cityView;
+    return self;
 }
 - (void)setConstraints
 {
-    CGRect rect = [[UIScreen mainScreen]bounds];
-    CGFloat cityViewW = rect.size.width * 0.21;
-    CGFloat cityViewH = rect.size.width * 0.30;
-    CGFloat btnW = cityViewW;
-    CGFloat btnH = cityViewW;
-    CGSize loactionImgSize = self.locationImage.image.size;
-    CGSize labelSize = [self.cityNameLabel.text boundingRectWithSize:CGSizeMake(MAXFLOAT, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]} context:nil].size;
-    [self mas_makeConstraints:^(MASConstraintMaker *make) {
-        //make.left.and.top.equalTo(self);
-        make.size.mas_equalTo(CGSizeMake(cityViewW, cityViewH));
-    }];
+    CGFloat selfW = 80;
+    CGFloat btnW = selfW;
+    CGFloat btnH = self.cityBtn.imageView.image.size.height;
     
     [self.cityBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left);
@@ -50,14 +46,15 @@
         make.size.mas_equalTo(CGSizeMake(btnW, btnH));
     }];
     [self.locationImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.cityBtn.mas_left).with.offset(5);
+        make.right.equalTo(self.cityNameLabel.mas_left).offset(-6);
         make.top.equalTo(self.cityBtn.mas_bottom).with.offset(22/2);
-        make.size.mas_equalTo(loactionImgSize);
+        make.size.mas_equalTo(self.locationImage.image.size);
     }];
     [self.cityNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.locationImage.mas_right).with.offset(10/2);
+        make.centerX.equalTo(self.cityBtn.mas_centerX).offset(-4);
         make.top.equalTo(self.locationImage);
-        make.size.mas_equalTo(labelSize);
+        make.width.mas_equalTo(30);
+        make.height.mas_equalTo(18);
     }];
 }
 @end
