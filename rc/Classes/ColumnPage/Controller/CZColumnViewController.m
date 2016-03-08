@@ -24,7 +24,7 @@
 @property (nonatomic, strong) UIScrollView *toolScrollView;
 @property (nonatomic, strong) NSMutableArray *toolButtonArray;
 
-@property (nonatomic,strong) industryList *indList;
+@property (nonatomic,strong) IndustryList *indList;
 @property (nonatomic,strong) ActivityList *activityList;
 
 @property (nonatomic,copy) NSURLSessionDataTask *(^getIndListBlock)();
@@ -65,7 +65,7 @@ static NSString * const reuseIdentifier = @"Cell";
     @weakify(self);
     self.getIndListBlock = ^(){
         @strongify(self);
-        return [[DataManager manager] getAllIndustriesWithSuccess:^(industryList *indList) {
+        return [[DataManager manager] getAllIndustriesWithSuccess:^(IndustryList *indList) {
             @strongify(self)
             self.indList = indList;
         } failure:^(NSError *error) {
@@ -74,7 +74,7 @@ static NSString * const reuseIdentifier = @"Cell";
     };
 }
 
--(void)setIndList:(industryList *)indList{
+-(void)setIndList:(IndustryList *)indList{
     _indList = indList;
     
     //创建工具条按钮

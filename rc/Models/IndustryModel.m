@@ -20,7 +20,7 @@
 
 @end
 
-@implementation industryList
+@implementation IndustryList
 
 -(instancetype)initWithArray:(NSArray *)array{
     if (self = [super init]) {

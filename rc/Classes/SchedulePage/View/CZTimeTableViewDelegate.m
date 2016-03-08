@@ -10,6 +10,7 @@
 #import "CZTimeNodeCell.h"
 #import "Masonry.h"
 #import "CZTestData.h"
+#import "PlanModel.h"
 
 @interface CZTimeTableViewDelegate ()
 
@@ -44,7 +45,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 30;
+    return self.array.count;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -53,8 +54,14 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CZTimeNodeCell *cell = [[CZTimeNodeCell alloc]init];
+    NSArray *tempArray = self.array[indexPath.row];
+    PlanModel *plmodel = tempArray[0];
+    
     //对cell进行赋值
-    [self setValueToCell:cell AtIndexPath:indexPath];
+    NSString *str = [NSString stringWithFormat:@"%@:%@",[plmodel.planTime substringWithRange:NSMakeRange(5, 2)],[plmodel.planTime substringWithRange:NSMakeRange(8, 2)]];
+    cell.dayLabel.text = str;
+    cell.weekLabel.text = @"星期一";
+    
     //对cell进行布局
     [self addCellConstraint:cell AtIndexPath:indexPath];
     return cell;
@@ -64,12 +71,7 @@
     
     return self.height;
 }
-- (void)setValueToCell:(CZTimeNodeCell *)cell AtIndexPath:(NSIndexPath *)indexPath
-{
-    NSString *str = [NSString stringWithFormat:@"N%ld",indexPath.row];
-    cell.dayLabel.text = str;
-    cell.weekLabel.text = @"星期一";
-}
+
 - (void)addCellConstraint:(CZTimeNodeCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0 && self.isDefualt)
