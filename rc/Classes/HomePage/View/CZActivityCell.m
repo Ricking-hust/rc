@@ -10,12 +10,10 @@
 #import "Masonry.h"
 #import "ActivityModel.h"
 
-#define TITLE_FONTSIZE  14  //活动主题字体大小
-#define TIME_FONTSIZE   10  //活动时间字体大小
-#define PLACE_FONTSIZE  10  //活动地点字体大小
+#define TITLE_FONTSIZE  15  //活动主题字体大小
+#define TIME_FONTSIZE   12  //活动时间字体大小
+#define PLACE_FONTSIZE  12  //活动地点字体大小
 #define TAG_FONTSIZE    10  //活动标签字体大小
-#define POSTERIMAGE_WIDTH      120 //Poster的宽度
-#define POSTERIMAGE_HEIGHT     120 //poster的高度
 
 @interface CZActivitycell()
 
@@ -27,10 +25,10 @@
 + (instancetype)activitycellWithTableView:(UITableView*)tableView
 {
     static NSString *reuseId = @"activityCell";
-    CZActivitycell * cell = (CZActivitycell*)[tableView dequeueReusableCellWithIdentifier:reuseId];
+    CZActivitycell * cell = (CZActivitycell*)[tableView dequeueReusableCellWithIdentifier:nil];
     if (!cell)
     {
-        cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
+        cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
     }
     
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;//去掉Cell之间的分割线
@@ -60,6 +58,7 @@
         self.ac_time.numberOfLines = 0;
         self.ac_time.font = [UIFont systemFontOfSize:TIME_FONTSIZE];
         [self.contentView addSubview:self.ac_time];
+        self.ac_time.alpha = 0.8;
         
         //4.创建ac_place(UILable)
         UILabel *placeLabel = [[UILabel alloc]init];
@@ -67,13 +66,13 @@
         self.ac_place.numberOfLines = 0;
         self.ac_place.font = [UIFont systemFontOfSize:PLACE_FONTSIZE];
         [self.contentView addSubview:self.ac_place];
+        self.ac_place.alpha = 0.8;
         
         //5.创建ac_imageTag(UIImageView)
         UIImageView *tagImage = [[UIImageView alloc]init];
         self.ac_imageTag = tagImage;
         UIImage *Image = [UIImage imageNamed:@"tagImage"];
         self.ac_imageTag.image = Image;
-        self.tagSize = Image.size;
         [self.contentView addSubview:self.ac_imageTag];
         
         //6.创建ac_tags(UILable)
@@ -82,8 +81,7 @@
         self.ac_tags.numberOfLines = 0;
         self.ac_tags.font = [UIFont systemFontOfSize:TAG_FONTSIZE];
         [self.contentView addSubview:self.ac_tags];
-        
-        self.posterSize = CGSizeMake(POSTERIMAGE_WIDTH, POSTERIMAGE_HEIGHT);
+        self.ac_tags.alpha = 0.8;
     }
     return self;
 }
@@ -91,66 +89,61 @@
 //设置子控件的Constraint
 - (void)setSubViewsConstraint
 {
-    //设置cell大小和行高
-    [self.contentView setFrame: CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, self.posterSize.height + 20)];
-    self.cellHeight = self.posterSize.height + 20;
+    //最大宽度
+    CGFloat maxfW = kScreenWidth - 120 - 60;
+    //名字的上边距
+    CGFloat tittleTopPadding = 12;
+    //1.名字的高度
+    CGSize nameSize = [self sizeWithText:self.ac_title.text maxSize:CGSizeMake(maxfW, MAXFLOAT) fontSize:TITLE_FONTSIZE];
+        //1.1时间与名字之间的间距
+    CGFloat timePaddingToName = 10;
+    //2.时间的高度
+    CGSize timeSize = [self sizeWithText:self.ac_time.text maxSize:CGSizeMake(maxfW, MAXFLOAT) fontSize:TIME_FONTSIZE];
+    //3.地点的高度
+    CGSize placeSize = [self sizeWithText:self.ac_place.text maxSize:CGSizeMake(maxfW, MAXFLOAT) fontSize:PLACE_FONTSIZE];
+        //3.1标签与地点之间的间距
+    CGFloat tagPaddingToPlace = 10;
+    //4.标签的高度
+    CGSize tagSize = [self sizeWithText:self.ac_tags.text maxSize:CGSizeMake(maxfW, MAXFLOAT) fontSize:TAG_FONTSIZE];
+    //标签的下边距
+    CGFloat tagBottomPadding = 12;
     
-    CGSize textSize;
-    //活动主题标签的最大长度
-    CGFloat width = [[UIScreen mainScreen]bounds].size.width * 0.48;
-    
-    CGSize maxSize = CGSizeMake(width, MAXFLOAT);
-    
-    //add ac_poster constraints
+    //cell高度
+    self.cellHeight = tittleTopPadding + nameSize.height + timeSize.height + placeSize.height + tagSize.height + timePaddingToName + tagPaddingToPlace + 15;
     [self.ac_poster mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(self.posterSize);
-        make.left.and.top.equalTo(self).with.offset(10);
+        make.left.equalTo(self.contentView.mas_left).offset(10);
+        make.top.equalTo(self.contentView.mas_top).offset(10);
+        make.bottom.equalTo(self.contentView.mas_bottom).offset(-10);
+        make.width.mas_equalTo(120);
     }];
-    
-    //add ac_titile constraints
-    
-    //计算文本的大小
-    textSize = [self sizeWithText:self.ac_title.text maxSize:maxSize fontSize:TITLE_FONTSIZE];
     [self.ac_title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(textSize.width + 1, textSize.height+1));
-        make.left.equalTo(self.ac_poster.mas_right).with.offset(50.0f/2);
-        make.top.equalTo(self.mas_top).with.offset(10);
+        make.top.equalTo(self.contentView.mas_top).offset(tittleTopPadding);
+        make.left.equalTo(self.ac_poster.mas_right).offset(25);
+        make.width.mas_equalTo(nameSize.width+1);
+        make.height.mas_equalTo(nameSize.height+1);
     }];
-    
-    //add ac_time constraints
-
-    textSize = [self sizeWithText:self.ac_title.text maxSize:maxSize fontSize:TIME_FONTSIZE];
-
     [self.ac_time mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.ac_poster.mas_right).with.offset(50.0f/2);
-        make.top.equalTo(self.ac_title.mas_bottom).with.offset(10);
-        make.size.mas_equalTo(CGSizeMake(150,12));
+        make.top.equalTo(self.ac_title.mas_bottom).offset(timePaddingToName);
+        make.left.equalTo(self.ac_title.mas_left);
+        make.width.mas_equalTo(timeSize.width+1);
+        make.height.mas_equalTo(timeSize.height+1);
     }];
-    
-    //add ac_place constraints
-    textSize = [self sizeWithText:self.ac_place.text maxSize:maxSize fontSize:PLACE_FONTSIZE];
     [self.ac_place mas_makeConstraints:^(MASConstraintMaker *make) {
-        
-        make.size.mas_equalTo(CGSizeMake(150, textSize.height+1));
-        make.left.equalTo(self.ac_poster.mas_right).with.offset(50.0f/2);
-        make.top.equalTo(self.ac_time.mas_bottom).with.offset(5);
+        make.top.equalTo(self.ac_time.mas_bottom);
+        make.left.equalTo(self.ac_time.mas_left);
+        make.width.mas_equalTo(placeSize.width+1);
+        make.height.mas_equalTo(placeSize.height+1);
     }];
-    
-    //add ac_imageTag constraints
     [self.ac_imageTag mas_makeConstraints:^(MASConstraintMaker *make) {
-        
-        make.size.mas_equalTo(CGSizeMake(self.tagSize.width, self.tagSize.height));
-        make.left.equalTo(self.ac_poster.mas_right).with.offset(50.0f/2);
-        make.top.equalTo(self.ac_place.mas_bottom).with.offset(10);
+        make.top.equalTo(self.ac_place.mas_bottom).offset(tagPaddingToPlace);
+        make.left.equalTo(self.ac_time.mas_left);
+        make.size.mas_equalTo(self.ac_imageTag.image.size);
     }];
-    
-    //add ac_tags constraints
-    textSize = [self sizeWithText:self.ac_tags.text maxSize:textSize fontSize:TAG_FONTSIZE];
     [self.ac_tags mas_makeConstraints:^(MASConstraintMaker *make) {
-        
-        make.size.mas_equalTo(CGSizeMake(150, textSize.height+1));
-        make.left.equalTo(self.ac_imageTag.mas_right).with.offset(14.0f/2);
-        make.top.equalTo(self.ac_place.mas_bottom).with.offset(12);
+        make.top.equalTo(self.ac_imageTag.mas_top).offset(-2);
+        make.left.equalTo(self.ac_imageTag.mas_right).offset(7);
+        make.width.mas_equalTo(tagSize.width+1);
+        make.height.mas_equalTo(tagSize.height+1);
     }];
 }
 
