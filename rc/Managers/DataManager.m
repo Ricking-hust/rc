@@ -18,8 +18,6 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
 
 @interface DataManager ()
 
-//@property (nonatomic, strong) AFHTTPSessionManager *manager;
-
 @end
 
 @implementation DataManager
@@ -43,15 +41,15 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
     if (user) {
         self.user.login = YES;
         
-        [[NSUserDefaults standardUserDefaults] setObject:user.userName forKey:@"usr_name"];
-        [[NSUserDefaults standardUserDefaults] setObject:user.userId forKey:@"user_id"];
-        [[NSUserDefaults standardUserDefaults] setObject:user.userPhone forKey:@"usr_phone"];
+        [[NSUserDefaults standardUserDefaults] setObject:user.userName forKey:@"usrName"];
+        [[NSUserDefaults standardUserDefaults] setObject:user.userId forKey:@"userId"];
+        [[NSUserDefaults standardUserDefaults] setObject:user.userPhone forKey:@"usrPhone"];
         [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:@"userIsLogin"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     } else {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"usr_name"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"user_id"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"usr_phone"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"usrName"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userId"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"usrPhone"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userIsLogin"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
