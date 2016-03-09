@@ -29,8 +29,9 @@
         self.acHtml             = [dict objectForSafeKey:@"ac_html"];
         self.acCollect          = [dict objectForSafeKey:@"ac_collect"];
         self.plan               = [dict objectForSafeKey:@"plan"];
+        NSLog(@"acTag:%@",[dict objectForSafeKey:@"ac_tags"]);
         
-        if ([dict objectForSafeKey:@"ac_tags"]) {
+        if ([[dict objectForSafeKey:@"ac_tags"] isKindOfClass:[NSArray class]]) {
             NSMutableArray *tagList = [[NSMutableArray alloc] initWithArray:[dict objectForSafeKey:@"ac_tags"]];
             self.tagsList            = [[TagsList alloc] initWithArray:tagList];
         }else{
