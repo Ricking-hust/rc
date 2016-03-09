@@ -18,7 +18,7 @@
 
 @property (nonatomic, assign) CurrentDevice device;
 @property (nonatomic,strong) PlanList *planList;
-@property (nonatomic, copy) NSMutableArray *planListRanged;
+@property (nonatomic,strong) NSMutableArray *planListRanged;
 @property (nonatomic,copy) NSURLSessionDataTask *(^getPlanListBlock)();
 
 @end
@@ -164,37 +164,35 @@
 #pragma mark - private methods
 
 //sequence the plan by date
-//-(void)rangePlanList:(PlanList *)planList{
-//    PlanModel *rPlModel = planList.list[0];
-//    NSString *defaultStr = [rPlModel.planTime substringWithRange:NSMakeRange(5, 5)];
-//    int i = 0;
-//    self.planListRanged[0] = [[NSMutableArray alloc]init];
-//    for (PlanModel *planModel in planList.list) {
-//        if ([planModel.planTime substringWithRange:NSMakeRange(5, 5)] == defaultStr) {
-//            [self.planListRanged[i] addObject:planModel];
-//        }else{
-//            i = i+1;
-//            self.planListRanged[i] = [[NSMutableArray alloc]init];
-//            defaultStr = [planModel.planTime substringWithRange:NSMakeRange(5, 5)];
-//            [self.planListRanged[i] addObject:planModel];
-//        }
-//    }
-//}
-
 -(void)rangePlanList:(PlanList *)planList{
     PlanModel *rPlModel = planList.list[0];
     NSString *defaultStr = [rPlModel.planTime substringWithRange:NSMakeRange(5, 5)];
-    NSMutableArray *templist = [[NSMutableArray alloc]init];
+    int i = 0;
+    self.planListRanged[0] = [[NSMutableArray alloc]init];
     for (PlanModel *planModel in planList.list) {
         if ([planModel.planTime substringWithRange:NSMakeRange(5, 5)] == defaultStr) {
-            [templist addObject:planModel];
+            [self.planListRanged[i] addObject:planModel];
         }else{
+            i = i+1;
+            self.planListRanged[i] = [[NSMutableArray alloc]init];
             defaultStr = [planModel.planTime substringWithRange:NSMakeRange(5, 5)];
-            [self.planListRanged addObject:templist];
-            [templist removeAllObjects];
-            [templist addObject:planModel];
+            [self.planListRanged[i] addObject:planModel];
         }
     }
+    //若使用此方法，需将planListRanged改为copy类型
+//    PlanModel *rPlModel = planList.list[0];
+//    NSString *defaultStr = [rPlModel.planTime substringWithRange:NSMakeRange(5, 5)];
+//    NSMutableArray *templist = [[NSMutableArray alloc]init];
+//    for (PlanModel *planModel in planList.list) {
+//        if ([planModel.planTime substringWithRange:NSMakeRange(5, 5)] == defaultStr) {
+//            [templist addObject:planModel];
+//        }else{
+//            defaultStr = [planModel.planTime substringWithRange:NSMakeRange(5, 5)];
+//            [self.planListRanged addObject:templist];
+//            [templist removeAllObjects];
+//            [templist addObject:planModel];
+//        }
+//    }
 }
 
 //获取当前设备
