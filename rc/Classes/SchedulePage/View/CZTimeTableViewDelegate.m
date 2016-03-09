@@ -38,8 +38,8 @@
         self.height = 103.8;
     }else
     {
-        //self.height = 117.6;
-        self.height = 105;
+        self.height = 117.6;
+        //self.height = 105;
 
     }
 
@@ -183,12 +183,12 @@
         [self setNextStateOfCell];
     }
     int flag = scrollView.contentOffsetY / self.height;
-    if (flag < self.indexAtCell  && flag < self.array.count)
+    if (flag < self.indexAtCell)
     {
         self.isUp = YES;
     }
 
-    if ((int)scrollView.contentOffsetY % (int)self.height == 0 && self.isUp && (int)scrollView.contentOffsetY % (int)self.height < self.array.count)
+    if ((int)scrollView.contentOffsetY % (int)self.height == 0 && self.isUp)
     {//下拉显示上一个时间点
         self.indexAtCell = (int)scrollView.contentOffsetY / (int)self.height;
         if (self.indexAtCell == 0)
