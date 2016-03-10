@@ -168,7 +168,16 @@
     }
     
 }
-
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
+{
+    if (!decelerate)
+    {
+        
+    }
+}
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+}
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     int index = (int)scrollView.contentOffsetY / self.height;

@@ -11,5 +11,9 @@
 @implementation CZTableView
 
 
-
+- (void)reloadData
+{
+    [super reloadData];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"ContentSize" object:self];
+}
 @end

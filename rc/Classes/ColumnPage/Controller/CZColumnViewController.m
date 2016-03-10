@@ -10,14 +10,22 @@
 #import "Masonry.h"
 #import "RCActivityCollectionViewCell.h"
 #import "CZActivityOfColumn.h"
-#import "CZTagViewController.h"
 #include <sys/sysctl.h>
 #import "CZButtonView.h"
 #import "IndustryModel.h"
 #import "ActivityModel.h"
 #import "DataManager.h"
+#import "CZTableView.h"
+#import "CZLeftTableViewDelegate.h"
+#import "CZRightTableViewDelegate.h"
 
 @interface CZColumnViewController ()
+@property (nonatomic, strong) CZTableView *leftTableView;
+@property (nonatomic, strong) CZLeftTableViewDelegate *leftDelegate;
+@property (nonatomic, strong) CZTableView *rightTableView;
+@property (nonatomic, strong) CZRightTableViewDelegate *rightDelegate;
+@property (assign, nonatomic) CGFloat leftH;
+@property (assign, nonatomic) CGFloat rightH;
 
 @property (nonatomic, strong) UIColor *selectedColor;
 
@@ -34,26 +42,117 @@
 
 @implementation CZColumnViewController
 
-static NSString * const reuseIdentifier = @"Cell";
-
-#pragma mark - View
-
+- (CZTableView *)leftTableView
+{
+    if (!_leftTableView)
+    {
+        _leftTableView = [[CZTableView alloc]init];
+    }
+    return _leftTableView;
+}
+- (CZLeftTableViewDelegate *)leftDelegate
+{
+    if (!_leftDelegate)
+    {
+        _leftDelegate = [[CZLeftTableViewDelegate alloc]init];
+    }
+    return _leftDelegate;
+}
+- (CZTableView *)rightTableView
+{
+    if (!_rightTableView)
+    {
+        _rightTableView = [[CZTableView alloc]init];
+    }
+    return _rightTableView;
+}
+- (CZRightTableViewDelegate *)rightDelegate
+{
+    if (!_rightDelegate)
+    {
+        _rightDelegate = [[CZRightTableViewDelegate alloc]init];
+    }
+    return _rightDelegate;
+}
+#pragma mark - ViewDidLoad
 - (void)viewDidLoad {
     [super viewDidLoad];
     UIView *temp = [[UIView alloc]init];
     [self.view addSubview:temp];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-    
+    [self setTableView];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tableViewContentSize:) name:@"ContentSize" object:nil];
     [self configureBlocks];
     self.getIndListBlock();
-    
-    //创建子控件
-    [self createSubView];
-    
-    [self.activityCollectionView registerClass:[RCActivityCollectionViewCell class] forCellWithReuseIdentifier:reuseIdentifier];
-    
-}
 
+}
+- (void)tableViewContentSize:(NSNotification *)notification
+{
+    CZTableView *tableView = [notification object];
+    if (tableView == self.rightTableView) {
+        if (self.rightTableView.contentSize.height != 0)
+        {
+            NSLog(@"self.rightTableView %f",self.rightTableView.contentSize.height);
+            self.rightH =self.rightTableView.contentSize.height;
+            
+        }
+    }else
+    {
+        if (self.leftTableView.contentSize.height != 0)
+        {
+            NSLog(@"self.leftTableView %f",self.leftTableView.contentSize.height);
+            self.leftH =self.leftTableView.contentSize.height;
+            
+        }
+        
+    }
+    
+    if (self.rightH != 0 && self.leftH != 0 )
+    {
+        if (self.rightH - self.leftH > 0)
+        {
+            NSLog(@"sub %f",self.rightH - self.leftH);
+            
+//            [self.array addObject:@"2"];
+//            self.h = self.rightH - self.leftH;
+//            NSLog(@"差%f",self.h);
+//            self.leftDelegate.h = self.h;
+//            [self.leftTable reloadData];
+            
+        }
+    }
+
+}
+- (void)setTableView
+{
+    self.leftTableView.delegate = self.leftDelegate;
+    self.leftTableView.dataSource = self.leftDelegate;
+    self.rightTableView.delegate = self.rightDelegate;
+    self.rightTableView.dataSource = self.rightDelegate;
+    self.leftTableView.showsVerticalScrollIndicator = NO;
+    self.rightTableView.showsVerticalScrollIndicator = NO;
+    
+    self.leftDelegate.leftTableView = self.leftTableView;
+    self.leftDelegate.rightTableView = self.rightTableView;
+    self.rightDelegate.leftTableView = self.leftTableView;
+    self.rightDelegate.rightTableView = self.rightTableView;
+    [self.view addSubview:self.leftTableView];
+    [self.view addSubview:self.rightTableView];
+    self.leftTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.rightTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.leftTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left);
+        make.top.equalTo(self.toolScrollView.mas_bottom).offset(10);
+        make.width.mas_equalTo(kScreenWidth/2);
+        make.bottom.equalTo(self.view.mas_bottom).offset(-49);
+    }];
+    [self.rightTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.view.mas_right);
+        make.top.equalTo(self.leftTableView.mas_top);
+        make.left.equalTo(self.leftTableView.mas_right);
+        make.bottom.equalTo(self.leftTableView.mas_bottom);
+    }];
+}
 -(void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
 }
@@ -116,13 +215,6 @@ static NSString * const reuseIdentifier = @"Cell";
     return _toolButtonArray;
 }
 
-#pragma mark - 创建子控件，显示数据
-- (void) createSubView
-{
-    //将活动添加到滚动条中
-    [self showActivityView];
-
-}
 //创建工具条按钮
 - (void)showToolButtons
 {
@@ -163,18 +255,7 @@ static NSString * const reuseIdentifier = @"Cell";
     }
 }
 
-//处理tagButton收到的更改通知
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-//    if ([keyPath isEqualToString:@"tagButton"])
-//    {
-////        UIView *view = ((UIView *)object).superview;
-////        
-////        UIView *line = [view viewWithTag:12];
-//        ((UIView *)object).hidden = YES;
-//    }
 
-}
 - (void)onClickTooBtn:(UIButton *)btn
 {
     
@@ -199,48 +280,6 @@ static NSString * const reuseIdentifier = @"Cell";
     line.hidden = NO;
 }
 
-- (void)onClickAcView:(UIView *)view
-{
-    CZTagViewController *tagViewController = [[CZTagViewController alloc]init];
-    tagViewController.title = @"专栏";
-    [self.navigationController pushViewController:tagViewController animated:YES];
-}
-
-#pragma mark -将collectionView添加到View
-- (void) showActivityView
-{
-    
-    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc]init];
-    layout.itemSize = CGSizeMake(self.view.width/2, (kScreenHeight-self.toolScrollView.height-64)/2);
-    layout.minimumInteritemSpacing = 0;
-    layout.minimumLineSpacing = 0;
-    self.activityCollectionView = [[UICollectionView alloc]initWithFrame:CGRectMake(0, 68+self.toolScrollView.height, kScreenWidth, kScreenHeight-self.toolScrollView.height-64) collectionViewLayout:layout];
-    [self.view addSubview:self.activityCollectionView];
-    
-    self.activityCollectionView.dataSource = self;
-    self.activityCollectionView.delegate = self;
-    
-
-}
-
-#pragma mark <UICollectionViewDataSource>
-
-- (NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView {
-    return 1;
-}
-
-
-- (NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section {
-    return 6;
-}
-
-- (UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath {
-    RCActivityCollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    
-    // Configure the cell
-    
-    return cell;
-}
 //获得设备型号
 - (NSString *)getCurrentDeviceModel
 {
