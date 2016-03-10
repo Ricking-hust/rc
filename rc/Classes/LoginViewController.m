@@ -51,7 +51,7 @@ static CGFloat const kContainViewYEditing = 60.0;
     
     self.view.backgroundColor = [UIColor whiteColor];
     
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"cross_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(logBackToForwardViewController)];
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"cross_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(logBackToMyInfoViewController)];
     UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithTitle:@"注册" style:UIBarButtonItemStylePlain target:self action:@selector(turnToRegisteViewController)];
     
     [self.navigationItem setLeftBarButtonItem:leftButton];
@@ -239,9 +239,9 @@ static CGFloat const kContainViewYEditing = 60.0;
     [self.passwordField becomeFirstResponder];
 }
 
-- (void)logBackToForwardViewController
+- (void)logBackToMyInfoViewController
 {
-    [self.navigationController popViewControllerAnimated:YES];
+    [self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 -(void)turnToRegisteViewController{

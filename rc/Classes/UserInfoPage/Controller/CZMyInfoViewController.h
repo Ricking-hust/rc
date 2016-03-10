@@ -10,4 +10,6 @@
 
 @interface CZMyInfoViewController : UITableViewController
 
+//@property (nonatomic,strong) UserModel *userModel;
+
 @end

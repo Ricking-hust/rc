@@ -6,6 +6,8 @@
 //  Copyright © 2015年 AlanZhang. All rights reserved.
 //
 
+#define userDefaults [NSUserDefaults standardUserDefaults]
+
 #import "CZMyInfoViewController.h"
 #import "CZMyInfoCell.h"
 #import "Masonry.h"
@@ -17,6 +19,7 @@
 #import "CZFeedbackViewController.h"
 #import "CZSettingViewController.h"
 #import "LoginViewController.h"
+#import "DataManager.h"
 
 @interface CZMyInfoViewController ()
 
@@ -35,6 +38,13 @@
     self.tableView.separatorInset = UIEdgeInsetsMake(10, 10, 10, 10);
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    [self.tableView reloadData];
+}
+
 - (void)back
 {
     
@@ -178,8 +188,14 @@
 {
     if (indexPath.section == 0)
     {
-        cell.imgIcon.image = [UIImage imageNamed:@"city_1"];
-        cell.contentLable.text = @"完美文筱";
+        if (![DataManager manager].user.isLogin) {
+            cell.imgIcon.image = [UIImage imageNamed:@"Beijing_Icon"];
+            cell.contentLable.text = @"未登录";
+        } else {
+            //cell.imgIcon.image = [UIImage imageNamed:@"Beijing_Icon"];
+            [cell.imgIcon sd_setImageWithURL:[NSURL URLWithString:[userDefaults objectForKey:@"userPic"]] placeholderImage:[ UIImage imageNamed:@"20160102.png"]];
+            cell.contentLable.text = [userDefaults objectForKey:@"usrName"];
+        }
 
     }else if (indexPath.section == 1)
     {

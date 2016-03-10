@@ -27,6 +27,7 @@ static CGFloat const kContainViewYEditing = 60.0;
 @property (nonatomic,strong) UIButton *verifyCodeButton;
 @property (nonatomic,strong) UIImageView *leftUsernameView;
 @property (nonatomic,strong) UIImageView *leftPasswdView;
+@property (nonatomic,strong) UIImageView *leftVerifyCodeView;
 @property (nonatomic, strong) UIButton    *registeButton;
 
 @property (nonatomic, assign) BOOL isKeyboardShowing;
@@ -73,25 +74,13 @@ static CGFloat const kContainViewYEditing = 60.0;
     
     self.containView.frame = (CGRect){0,kContainViewYNormal,kScreenWidth,400};
     self.logoLabel.center = (CGPoint){kScreenWidth/2,80};
-    //self.descriptionLabel.frame = (CGRect){20, 60, kScreenWidth - 20,70};
     self.usernameField.frame = (CGRect){50, 184, kScreenWidth - 100, 30};
-    self.passwordField.frame = (CGRect){50, 224, kScreenWidth - 100, 30};
-    self.verifyCodeField.frame = (CGRect){50,264,kScreenWidth-220,30};
-    self.verifyCodeButton.frame = (CGRect){kScreenWidth-140,264,110,30};
+    self.verifyCodeField.frame = (CGRect){50,224,kScreenWidth-220,30};
+    self.verifyCodeButton.frame = (CGRect){kScreenWidth-130,224,90,30};
+    self.passwordField.frame = (CGRect){50, 264, kScreenWidth - 100, 30};
     self.registeButton.center = (CGPoint){kScreenWidth/2, 350};
 }
 
-#pragma mark - private methods
-
-- (void)regBackToForwardViewController
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
--(void)turnToLoginViewController{
-    LoginViewController *loginViewController = [[LoginViewController alloc]init];
-    [self.navigationController pushViewController:loginViewController animated:YES];
-}
 
 #pragma mark - Configure Views
 
@@ -133,6 +122,33 @@ static CGFloat const kContainViewYEditing = 60.0;
     self.usernameField.leftViewMode = UITextFieldViewModeAlways;
     [self.containView addSubview:self.usernameField];
     
+    
+    self.verifyCodeField = [[MyTextField alloc] init];
+    self.verifyCodeField.textAlignment = NSTextAlignmentCenter;
+    self.verifyCodeField.textColor = [UIColor blackColor];
+    self.verifyCodeField.font = [UIFont systemFontOfSize:18];
+    self.verifyCodeField.attributedPlaceholder =[[NSAttributedString alloc] initWithString:@"请输入验证码"
+                                                                                attributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:0.836 alpha:1.000],NSFontAttributeName:[UIFont italicSystemFontOfSize:18]}];
+    self.verifyCodeField.keyboardType = UIKeyboardTypeNumberPad;
+    self.verifyCodeField.returnKeyType = UIReturnKeyNext;
+    self.verifyCodeField.contentVerticalAlignment = UIControlContentVerticalAlignmentCenter;
+    self.verifyCodeField.clearButtonMode = UITextFieldViewModeWhileEditing;
+    self.verifyCodeField.rightViewMode = UITextFieldViewModeWhileEditing;
+    self.leftVerifyCodeView = [[UIImageView alloc]initWithImage:[UIImage imageNamed:@"Pencil_icon"]];
+    self.verifyCodeField.leftView = self.leftVerifyCodeView;
+    self.verifyCodeField.leftViewMode = UITextFieldViewModeAlways;
+    [self.containView addSubview:self.verifyCodeField];
+    
+    self.verifyCodeButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.verifyCodeButton setTitle:@"获取验证码" forState:UIControlStateNormal];
+    [self.verifyCodeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    [self.verifyCodeButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
+    [self.verifyCodeButton setBackgroundColor:RGB(0xFD8529, 1)];
+    self.verifyCodeButton.viewSize = CGSizeMake(110, 30);
+    self.verifyCodeButton.layer.borderColor = [UIColor colorWithWhite:0.000 alpha:0.10].CGColor;
+    self.verifyCodeButton.layer.borderWidth = 0.5;
+    [self.containView addSubview:self.verifyCodeButton];
+    
     self.passwordField = [[MyTextField alloc] init];
     self.passwordField.textAlignment = NSTextAlignmentCenter;
     self.passwordField.textColor = [UIColor blackColor];
@@ -162,6 +178,18 @@ static CGFloat const kContainViewYEditing = 60.0;
     self.registeButton.layer.borderWidth = 0.5;
     [self.containView addSubview:self.registeButton];
     
+}
+
+#pragma mark - private methods
+
+- (void)regBackToForwardViewController
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
+
+-(void)turnToLoginViewController{
+    LoginViewController *loginViewController = [[LoginViewController alloc]init];
+    [self.navigationController pushViewController:loginViewController animated:YES];
 }
 
 @end
