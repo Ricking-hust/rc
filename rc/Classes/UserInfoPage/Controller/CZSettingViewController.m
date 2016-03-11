@@ -23,6 +23,58 @@
     [self.navigationItem setLeftBarButtonItem:leftButton];
     self.tableView.separatorInset = UIEdgeInsetsMake(10, 10, 10, 10);
 }
+//1.获取缓存文件路径
+- (NSString *)getCachesPath{
+    // 获取Caches目录路径
+    NSArray *paths = NSSearchPathForDirectoriesInDomains(NSCachesDirectory, NSUserDomainMask,YES);
+    NSString *cachesDir = [paths objectAtIndex:0];
+    //NSString *filePath = [cachesDir stringByAppendingPathComponent:@"myCache"];
+    return cachesDir;
+}
+//2.计算单个文件的大小
+- (long long)fileSizeAtPath:(NSString*)filePath
+{
+    NSFileManager* manager = [NSFileManager defaultManager];
+    if ([manager fileExistsAtPath:filePath])
+    {
+        return [[manager attributesOfItemAtPath:filePath error:nil] fileSize];
+    }
+    return 0;
+}
+//3.遍历文件夹获得文件夹大小，返回多少M
+- (CGFloat)getCacheSizeAtPath:(NSString*)folderPath
+{
+    NSFileManager* manager = [NSFileManager defaultManager];
+    if (![manager fileExistsAtPath:folderPath]) return 0;
+    NSEnumerator *childFilesEnumerator = [[manager subpathsAtPath:folderPath] objectEnumerator];//从前向后枚举器
+    NSString* fileName;
+    long long folderSize = 0;
+    while ((fileName = [childFilesEnumerator nextObject]) != nil)
+    {
+        //NSLog(@"fileName ==== %@",fileName);
+        NSString* fileAbsolutePath = [folderPath stringByAppendingPathComponent:fileName];
+        //NSLog(@"fileAbsolutePath ==== %@",fileAbsolutePath);
+        folderSize += [self fileSizeAtPath:fileAbsolutePath];
+    }
+    //NSLog(@"folderSize ==== %lld",folderSize);
+    return folderSize/(1024.0*1024.0);
+}
+//4清理缓存
+- (void)clearCacheAtPath:(NSString *)path
+{
+    NSFileManager *fileManager=[NSFileManager defaultManager];
+    if ([fileManager fileExistsAtPath:path])
+    {
+        NSArray *childerFiles=[fileManager subpathsAtPath:path];
+        for (NSString *fileName in childerFiles)
+        {
+            //如有需要，加入条件，过滤掉不想删除的文件
+            NSString *absolutePath=[path stringByAppendingPathComponent:fileName];
+            [fileManager removeItemAtPath:absolutePath error:nil];
+        }
+    }
+}
+
 - (void)backToForwardViewController
 {
     [self.navigationController popViewControllerAnimated:YES];
@@ -66,16 +118,34 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     UITableViewCell *cell = [[UITableViewCell alloc]init];
+
     if (indexPath.section == 0)
     {
         if (indexPath.row == 0)
         {
             cell.textLabel.text = @"新消息通知";
+            cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }else
         {
             cell.textLabel.text = @"清除缓存";
+            UILabel *sizeLabel = [[UILabel alloc]init];
+            sizeLabel.font = [UIFont systemFontOfSize:14];
+            CGFloat size = [self getCacheSizeAtPath:[self getCachesPath]];;
+            NSString *str = [NSString stringWithFormat:@"%0.2fM",size];
+            sizeLabel.text = str;
+            cell.accessoryView = sizeLabel;
+            cell.accessoryView.alpha = 0.8;
+            [cell addSubview:sizeLabel];
+            CGSize bufferLabelSize = [self sizeWithText:str maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:14];
+            [cell.accessoryView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.width.mas_equalTo(bufferLabelSize.width + 1);
+                make.height.mas_equalTo(bufferLabelSize.height + 1);
+                make.right.equalTo(cell.mas_right).offset(-10);
+                make.centerY.equalTo(cell.mas_centerY);
+            }];
+            
         }
-        cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
+        
     }else
     {
         cell.textLabel.text = @"退出登陆";
@@ -93,6 +163,41 @@
     if (indexPath.section == 1) {
         [[DataManager manager] UserLogout];
     }
+    if (indexPath.section == 0 &&indexPath.row == 1)
+    {
+        CGFloat size = [self getCacheSizeAtPath:[self getCachesPath]];;
+        NSString *str = [NSString stringWithFormat:@"确定清除%0.2fM缓存数据吗?",size];
+        UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"清除缓存"
+                                                                       message:str
+                                                                preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            [self clearCacheAtPath:[self getCachesPath]];
+            [tableView reloadData];
+        }];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:nil];
+        [alert addAction:cancelAction];
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+
+    }
     NSLog(@"你点击了第 %ld Cell", indexPath.row);
 }
+/**
+ *  计算文本的大小
+ *
+ *  @param text 待计算大小的字符串
+ *
+ *  @param fontSize 指定绘制字符串所用的字体大小
+ *
+ *  @return 字符串的大小
+ */
+- (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize
+{
+    //计算文本的大小
+    CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
+    return nameSize;
+}
+
+
 @end

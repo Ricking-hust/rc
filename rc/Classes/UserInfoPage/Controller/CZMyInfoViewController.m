@@ -22,12 +22,18 @@
 
 @interface CZMyInfoViewController ()
 
-
-
 @end
 
 @implementation CZMyInfoViewController
 
+- (id)init
+{
+    if (self = [super init])
+    {
+        self.isLogin = NO;
+    }
+    return self;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -137,50 +143,58 @@
 }
 - (void)didSelectCellAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (indexPath.section)
-    {
-        case 0:
+    if (self.isLogin == NO)
+    {//如果用户未登录，则跳至登录界面
+        //to do here ------------------------
+        
+    }else
+    {//如果用户已登录，则跳至相关界面
+        switch (indexPath.section)
         {
-            if (![DataManager manager].user.isLogin) {
-                LoginViewController *loginViewController = [[LoginViewController alloc]init];
-                [self.navigationController pushViewController:loginViewController animated:YES];
-            } else {
-                CZPersonInfoViewController *personInfoViewController = [[CZPersonInfoViewController alloc]init];
-                [self.navigationController pushViewController:personInfoViewController animated:YES];
+            case 0:
+            {
+                if (![DataManager manager].user.isLogin) {
+                    LoginViewController *loginViewController = [[LoginViewController alloc]init];
+                    [self.navigationController pushViewController:loginViewController animated:YES];
+                } else {
+                    CZPersonInfoViewController *personInfoViewController = [[CZPersonInfoViewController alloc]init];
+                    [self.navigationController pushViewController:personInfoViewController animated:YES];
+                }
             }
-        }
-        break;
-            
-        case 1:
-        {
-            if (indexPath.row == 0)
+                break;
+                
+            case 1:
             {
-                CZMyActivityViewContoller *myActivityViewController = [[CZMyActivityViewContoller alloc]init];
-                [self.navigationController pushViewController:myActivityViewController animated:YES];
-            }else if (indexPath.row == 1)
-            {
-                CZMyReleseViewController *myReleseViewController = [[CZMyReleseViewController alloc]init];
-                [self.navigationController pushViewController:myReleseViewController animated:YES];
-            }else
-            {
-                CZMyCollectionViewController *myCollectionViewController = [[CZMyCollectionViewController alloc]init];
-                [self.navigationController pushViewController:myCollectionViewController animated:YES];
+                if (indexPath.row == 0)
+                {
+                    CZMyActivityViewContoller *myActivityViewController = [[CZMyActivityViewContoller alloc]init];
+                    [self.navigationController pushViewController:myActivityViewController animated:YES];
+                }else if (indexPath.row == 1)
+                {
+                    CZMyReleseViewController *myReleseViewController = [[CZMyReleseViewController alloc]init];
+                    [self.navigationController pushViewController:myReleseViewController animated:YES];
+                }else
+                {
+                    CZMyCollectionViewController *myCollectionViewController = [[CZMyCollectionViewController alloc]init];
+                    [self.navigationController pushViewController:myCollectionViewController animated:YES];
+                }
             }
-        }
-        break;
-        default:
-        {
-            if (indexPath.row == 0)
+                break;
+            default:
             {
-                CZAboutUsViewController *aboutUsViewController = [[CZAboutUsViewController alloc]init];
-                [self.navigationController pushViewController:aboutUsViewController animated:YES];
-            }else
-            {
-                CZFeedbackViewController *feedbackViewController = [[CZFeedbackViewController alloc]init];
-                [self.navigationController pushViewController:feedbackViewController animated:YES];
+                if (indexPath.row == 0)
+                {
+                    CZAboutUsViewController *aboutUsViewController = [[CZAboutUsViewController alloc]init];
+                    [self.navigationController pushViewController:aboutUsViewController animated:YES];
+                }else
+                {
+                    CZFeedbackViewController *feedbackViewController = [[CZFeedbackViewController alloc]init];
+                    [self.navigationController pushViewController:feedbackViewController animated:YES];
+                }
             }
+                break;
         }
-        break;
+
     }
 }
 - (void)setCell:(CZMyInfoCell *)cell WithIndexPath:(NSIndexPath *)indexPath
