@@ -9,7 +9,6 @@
 #import "CZColumnViewController.h"
 #import "Masonry.h"
 #import "RCActivityCollectionViewCell.h"
-#import "CZActivityOfColumn.h"
 #include <sys/sysctl.h>
 #import "CZButtonView.h"
 #import "IndustryModel.h"
@@ -26,6 +25,9 @@
 @property (nonatomic, strong) CZRightTableViewDelegate *rightDelegate;
 @property (assign, nonatomic) CGFloat leftH;
 @property (assign, nonatomic) CGFloat rightH;
+@property (assign, nonatomic) CGFloat subHeight;
+@property (nonatomic, strong) NSMutableArray *leftArray;
+@property (nonatomic, strong) NSMutableArray *rightArray;
 
 @property (nonatomic, strong) UIColor *selectedColor;
 
@@ -113,15 +115,32 @@
         {
             NSLog(@"sub %f",self.rightH - self.leftH);
             
-//            [self.array addObject:@"2"];
-//            self.h = self.rightH - self.leftH;
-//            NSLog(@"差%f",self.h);
-//            self.leftDelegate.h = self.h;
-//            [self.leftTable reloadData];
+            [self.leftArray addObject:@"2"];
+            self.subHeight = self.rightH - self.leftH;
+            NSLog(@"差%f",self.subHeight);
+            self.leftDelegate.subHeight = self.subHeight;
+            [self.leftTableView reloadData];
             
         }
     }
 
+}
+
+- (NSMutableArray *)leftArray
+{
+    if (!_leftArray)
+    {
+        _leftArray = [[NSMutableArray alloc]initWithObjects:@"1", @"1",@"1",@"1",@"1",@"1",nil];
+    }
+    return _leftArray;
+}
+- (NSMutableArray *)rightArray
+{
+    if (!_rightArray)
+    {
+        _rightArray = [[NSMutableArray alloc]initWithObjects:@"1", @"1",@"1",@"1",@"1",@"1",nil];
+    }
+    return _rightArray;
 }
 - (void)setTableView
 {
@@ -133,9 +152,12 @@
     self.rightTableView.showsVerticalScrollIndicator = NO;
     
     self.leftDelegate.leftTableView = self.leftTableView;
+    self.leftDelegate.array = self.leftArray;
     self.leftDelegate.rightTableView = self.rightTableView;
     self.rightDelegate.leftTableView = self.leftTableView;
     self.rightDelegate.rightTableView = self.rightTableView;
+    self.rightDelegate.array = self.rightArray;
+    
     [self.view addSubview:self.leftTableView];
     [self.view addSubview:self.rightTableView];
     self.leftTableView.separatorStyle = UITableViewCellSeparatorStyleNone;

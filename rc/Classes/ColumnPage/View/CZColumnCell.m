@@ -23,6 +23,8 @@
         self.tagImageView = [[UIImageView alloc]init];
         self.acTagLabel = [[UILabel alloc]init];
         self.device = [self currentDeviceSize];
+        self.isLeft = NO;
+        self.cellHeight = 44;
     }
     [self setSubViewProperty];
     return self;
@@ -45,17 +47,91 @@
 }
 - (void)setSubviewConstraint
 {
-    //CGFloat cellMaxH;
+    CGFloat acImageW; //图片的最大宽度,活动名的最大宽度
+    CGFloat acImageH; //图片的最大高度
+    CGFloat leftPaddintToContentView;
+    CGFloat rightPaddingToContentView;
     if (self.device == IPhone5)
     {
-//        cellMaxH = 
+        acImageW = 142;
+        acImageH = 110;
+        leftPaddintToContentView = 12;
+        rightPaddingToContentView = leftPaddintToContentView;
+        
     }else if (self.device == IPhone6)
     {
-        
+        acImageW = 165;
+        acImageH = 125;
+        leftPaddintToContentView = 15;
+        rightPaddingToContentView = leftPaddintToContentView;
     }else
     {
-        
+        acImageW = 207;
+        acImageH = 135;
+        leftPaddintToContentView = 20;
+        rightPaddingToContentView = leftPaddintToContentView;
     }
+    
+    //图片的约束
+    if (self.isLeft)
+    {
+        [self.acImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.contentView.mas_left).offset(leftPaddintToContentView);
+            make.top.equalTo(self.contentView.mas_top);
+            make.width.mas_equalTo(acImageW);
+            make.height.mas_equalTo(acImageH);
+        }];
+    }else
+    {
+        [self.acImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self.contentView.mas_right).offset(rightPaddingToContentView);
+            make.top.equalTo(self.contentView.mas_top);
+            make.width.mas_equalTo(acImageW);
+            make.height.mas_equalTo(acImageH);
+        }];
+    }
+    //活动名约束
+    CGSize maxSize = CGSizeMake(acImageW - 20, MAXFLOAT);
+    CGSize acNameSize = [self sizeWithText:self.acNameLabel.text maxSize:maxSize fontSize:14];
+    [self.acNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.acImageView.mas_bottom).offset(10);
+        make.left.equalTo(self.acImageView.mas_left).offset(10);
+        make.width.mas_equalTo(acNameSize.width +1);
+        make.height.mas_equalTo(acNameSize.height+1);
+    }];
+    //活动时间约束
+    CGSize acTimeSize = [self sizeWithText:self.acTimeLabel.text maxSize:maxSize fontSize:12];
+    [self.acTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.acNameLabel.mas_bottom).offset(20);
+        make.left.equalTo(self.acNameLabel.mas_left);
+        make.width.mas_equalTo(acTimeSize.width+1);
+        make.height.mas_equalTo(acTimeSize.height+1);
+    }];
+    //地点约束
+    CGSize acPlaceSize = [self sizeWithText:self.acPlaceLabel.text maxSize:maxSize fontSize:12];
+    [self.acPlaceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.acTimeLabel.mas_bottom);
+        make.left.equalTo(self.acTimeLabel.mas_left);
+        make.width.mas_equalTo(acPlaceSize.width+1);
+        make.height.mas_equalTo(acPlaceSize.height+1);
+    }];
+    //标志图片约束
+    [self.tagImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.acPlaceLabel.mas_left);
+        make.top.equalTo(self.acPlaceLabel.mas_bottom).offset(10);
+        make.size.mas_equalTo(self.tagImageView.image.size);
+    }];
+    //标签约束
+    CGSize acTagSize = [self sizeWithText:self.acTagLabel.text maxSize:maxSize fontSize:10];
+    [self.acTagLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.tagImageView.mas_right).offset(4);
+        make.top.equalTo(self.tagImageView.mas_top);
+        make.width.mas_equalTo(acTagSize.width+1);
+        make.height.mas_equalTo(acTagSize.height+1);
+    }];
+    //cell的高度
+    self.cellHeight = acImageH + 10 + acNameSize.height + 20 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height + 20;
+    
 }
 //获取当前设备
 - (CurrentDevice)currentDeviceSize

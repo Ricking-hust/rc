@@ -16,6 +16,8 @@
 @property (nonatomic, strong) UIImageView *tagImageView;
 @property (nonatomic, strong) UILabel *acTagLabel;
 @property (nonatomic, assign) CurrentDevice device;
+@property (nonatomic, assign) BOOL isLeft;
+@property (nonatomic, assign) CGFloat cellHeight;
 /**
  *  对cell的子控件进行布局
  *
