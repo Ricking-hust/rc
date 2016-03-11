@@ -8,8 +8,9 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CZColumnViewController : UIViewController<UICollectionViewDelegate,UICollectionViewDataSource>
 
-@property (nonatomic,strong) UICollectionView *activityCollectionView;
+@interface CZColumnViewController : UIViewController
+
+
 
 @end
