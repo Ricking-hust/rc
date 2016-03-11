@@ -8,7 +8,6 @@
 
 #import "CZColumnViewController.h"
 #import "Masonry.h"
-#import "RCActivityCollectionViewCell.h"
 #include <sys/sysctl.h>
 #import "CZButtonView.h"
 #import "IndustryModel.h"
