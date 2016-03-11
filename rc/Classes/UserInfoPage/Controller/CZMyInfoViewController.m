@@ -6,7 +6,6 @@
 //  Copyright © 2015年 AlanZhang. All rights reserved.
 //
 
-#define userDefaults [NSUserDefaults standardUserDefaults]
 
 #import "CZMyInfoViewController.h"
 #import "CZMyInfoCell.h"

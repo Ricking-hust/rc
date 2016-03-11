@@ -81,6 +81,31 @@
 {
     return 44;
 }
+
+#pragma mark - 单元格的点击事件
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    [self didSelectCellAtIndexPath:indexPath];
+}
+
+- (void)didSelectCellAtIndexPath:(NSIndexPath *)indexPath{
+    switch (indexPath.section) {
+        case 0:
+        {
+            if (indexPath.row == 0) {
+                
+            } else if(indexPath.row == 1){
+                
+            }
+        }
+            break;
+            
+        default:
+            break;
+    }
+}
+
+#pragma mark - 单元格赋值
+
 - (void)setCell:(CZPersonInfoCell *)cell WithIndexPath:(NSIndexPath *)indexPath
 {
     switch (indexPath.section) {
@@ -89,23 +114,23 @@
             if (indexPath.row == 0)
             {
                 cell.tittle.text = @"头像";
-                cell.personIcon.image = [UIImage imageNamed:@"city_1"];
+                cell.personIcon.image = [UIImage imageNamed:[userDefaults objectForKey:@"userPic"]];
             }else if (indexPath.row == 1)
             {
                 cell.tittle.text = @"昵称";
-                cell.contentLabel.text = @"完美谢幕";
+                cell.contentLabel.text = [userDefaults objectForKey:@"userName"];
             }else if (indexPath.row == 2)
             {
                 cell.tittle.text = @"性别";
-                cell.contentLabel.text = @"男";
+                cell.contentLabel.text = [userDefaults objectForKey:@"userSex"];
             }else if (indexPath.row == 3)
             {
                 cell.tittle.text = @"手机";
-                cell.contentLabel.text = @"12345678901";
+                cell.contentLabel.text = [userDefaults objectForKey:@"userPhone"];
             }else if (indexPath.row == 4)
             {
                 cell.tittle.text = @"邮箱";
-                cell.contentLabel.text =@"121213072@qq.com";
+                cell.contentLabel.text = [userDefaults objectForKey:@"userMail"];
             }
         }
         break;
@@ -113,7 +138,7 @@
         default:
         {
             cell.tittle.text = @"签名";
-            cell.contentLabel.text = @"你是我的小呀小苹果，怎么爱你都不嫌多。";
+            cell.contentLabel.text = [userDefaults objectForKey:@"userSign"];
         }
             break;
     }

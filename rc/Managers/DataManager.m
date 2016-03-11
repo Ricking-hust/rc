@@ -41,9 +41,9 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
     if (user) {
         self.user.login = YES;
         
-        [[NSUserDefaults standardUserDefaults] setObject:user.userName forKey:@"usrName"];
+        [[NSUserDefaults standardUserDefaults] setObject:user.userName forKey:@"userName"];
         [[NSUserDefaults standardUserDefaults] setObject:user.userId forKey:@"userId"];
-        [[NSUserDefaults standardUserDefaults] setObject:user.userPhone forKey:@"usrPhone"];
+        [[NSUserDefaults standardUserDefaults] setObject:user.userPhone forKey:@"userPhone"];
         [[NSUserDefaults standardUserDefaults] setObject:user.userSign forKey:@"userSign"];
         [[NSUserDefaults standardUserDefaults] setObject:user.userPic forKey:@"userPic"];
         [[NSUserDefaults standardUserDefaults] setObject:user.userSex forKey:@"userSex"];
@@ -51,9 +51,9 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
         [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:@"userIsLogin"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     } else {
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"usrName"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userName"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userId"];
-        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"usrPhone"];
+        [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userPhone"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userSign"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userPic"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userSex"];
