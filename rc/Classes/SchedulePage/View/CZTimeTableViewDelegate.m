@@ -46,7 +46,6 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    //return self.array.count+(int)((kScreenHeight - 64 -35 -49)/self.height)-1;
     return self.array.count;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
