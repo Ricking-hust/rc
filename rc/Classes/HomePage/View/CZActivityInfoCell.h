@@ -15,6 +15,7 @@
 @property (nonatomic, strong)UILabel *ac_sizeLabel;
 @property (nonatomic, strong)UILabel *ac_payLabel;
 @property (nonatomic, assign)CGFloat rowHeight;
+@property (nonatomic, assign)BOOL isHaveValue;
 
 /**
  *  类方法 创建可重用的自定义的cell对象

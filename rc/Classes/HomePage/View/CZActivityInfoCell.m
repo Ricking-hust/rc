@@ -25,7 +25,6 @@
     
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
-    cell.rowHeight = 190.0/2;
     
     return cell;
     
@@ -39,18 +38,22 @@
         
         UILabel *placeLabel = [[UILabel alloc]init];
         self.ac_placeLabel = placeLabel;
-        self.ac_placeLabel.font = [UIFont systemFontOfSize:LABEL_FONTSIZE];
+        self.ac_placeLabel.numberOfLines = 0;
+        self.ac_placeLabel.font = [UIFont systemFontOfSize:14];
         [self.contentView addSubview:self.ac_placeLabel];
         
         UILabel *sizeLabel = [[UILabel alloc]init];
         self.ac_sizeLabel = sizeLabel;
-        self.ac_sizeLabel.font = [UIFont systemFontOfSize:LABEL_FONTSIZE];
+        self.ac_sizeLabel.numberOfLines = 0;
+        self.ac_sizeLabel.font = [UIFont systemFontOfSize:14];
         [self.contentView addSubview:self.ac_sizeLabel];
         
         UILabel *payLabel = [[UILabel alloc]init];
         self.ac_payLabel = payLabel;
-        self.ac_payLabel.font = [UIFont systemFontOfSize:LABEL_FONTSIZE];
+        self.ac_payLabel.numberOfLines = 0;
+        self.ac_payLabel.font = [UIFont systemFontOfSize:14];
         [self.contentView addSubview:self.ac_payLabel];
+        self.isHaveValue = NO;
     }
     return self;
     
@@ -58,36 +61,49 @@
 
 - (void)setSubViewsConstraint
 {
-    //添加地点标签约束
-    CGSize placeSize = [self sizeWithText:self.ac_placeLabel.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:LABEL_FONTSIZE];
-    [self.ac_placeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView.mas_left).with.offset(10);
-        make.top.equalTo(self.contentView.mas_top).with.offset(28.0/2);
-        make.size.mas_equalTo(CGSizeMake(150, 20));
-    }];
-    //添加规模标签约束
-    CGSize scaleSize = [self sizeWithText:self.ac_sizeLabel.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:LABEL_FONTSIZE];
-    [self.ac_sizeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.ac_placeLabel.mas_bottom).with.offset(22.0/2);
-        make.left.equalTo(self.ac_placeLabel.mas_left);
-        make.size.mas_equalTo(CGSizeMake(150, 20));
-    }];
-    //添加费用标签约束
-    CGSize paySize = [self sizeWithText:self.ac_payLabel.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:LABEL_FONTSIZE];
-    [self.ac_payLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.ac_placeLabel.mas_left);
-        make.top.equalTo(self.ac_sizeLabel.mas_bottom).with.offset(22.0/2);
-        make.size.mas_equalTo(CGSizeMake(150, 20));
-    }];
+    if (self.model)
+    {
+        //添加地点标签约束
+        CGSize maxSize = CGSizeMake(kScreenWidth - 30, MAXFLOAT);
+        CGSize placeSize = [self sizeWithText:self.ac_placeLabel.text maxSize:maxSize fontSize:14];
+        [self.ac_placeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.contentView.mas_left).offset(10);
+            make.top.equalTo(self.contentView.mas_top).with.offset(11);
+            make.width.mas_equalTo(placeSize.width+1);
+            make.height.mas_equalTo(placeSize.height+1);
+        }];
+        //添加规模标签约束
+        CGSize scaleSize = [self sizeWithText:self.ac_sizeLabel.text maxSize:CGSizeMake(kScreenWidth-20, MAXFLOAT) fontSize:14];
+        [self.ac_sizeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.ac_placeLabel.mas_bottom).with.offset(11);
+            make.left.equalTo(self.ac_placeLabel.mas_left);
+            make.size.mas_equalTo(CGSizeMake(scaleSize.width+1, scaleSize.height+1));
+        }];
+        //添加费用标签约束
+        CGSize paySize = [self sizeWithText:self.ac_payLabel.text maxSize:CGSizeMake(kScreenWidth-20, MAXFLOAT) fontSize:14];
+        [self.ac_payLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.ac_placeLabel.mas_left);
+            make.top.equalTo(self.ac_sizeLabel.mas_bottom).with.offset(11);
+            make.size.mas_equalTo(CGSizeMake(paySize.width+1, paySize.height+1));
+        }];
+        self.rowHeight = placeSize.height+1+scaleSize.height+1+paySize.height+1+44;
+
+    }
 }
 
 - (void) setModel:(ActivityModel *)model
 {
     _model = model;
-    
-    self.ac_placeLabel.text = model.acPlace;
-    self.ac_sizeLabel.text  = model.acSize;
-    self.ac_payLabel.text   = model.acPay;
+
+    if (_model && self.isHaveValue == NO)
+    {
+        self.ac_placeLabel.text = model.acPlace;
+        self.ac_sizeLabel.text  = model.acSize;
+        self.ac_payLabel.text   = model.acPay;
+        self.ac_payLabel.text = @"asdfsdgsa";
+        self.isHaveValue = YES;
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"cellValue" object:self];
+    }
 }
 
 /**
