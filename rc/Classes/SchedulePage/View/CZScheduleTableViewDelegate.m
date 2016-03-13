@@ -18,7 +18,7 @@
 {
     if (self = [super init])
     {
-        
+        self.array = [[NSArray alloc]init];
     }
     return self;
 }
@@ -61,9 +61,10 @@
         [self setValueToCell:cell AtIndexPath:indexPath];
         //对cell进行布局
         [self addCellConstraint:cell];
+        //设置点击事件
+        [self didClickCell:cell];
         return cell;
     }
-
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -75,6 +76,16 @@
         CZScheduleInfoCell *cell = (CZScheduleInfoCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
         return cell.height;
     }
+}
+- (void)didClickCell:(CZScheduleInfoCell *)cell
+{
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didClickSC:)];
+    [cell.bgView addGestureRecognizer:gesture];
+}
+#pragma mark - 行程信息的点击事件
+- (void)didClickSC:(UITapGestureRecognizer *)clickGesture
+{
+    
 }
 - (void)setValueToCell:(CZScheduleInfoCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
@@ -156,7 +167,7 @@
     [cell.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(cell.contentView.mas_left).offset(10);
         make.right.equalTo(cell.contentView.mas_right).offset(-10);
-        make.centerY.equalTo(cell.contentView.mas_centerY).offset(-5);
+        make.centerY.equalTo(cell.contentView.mas_centerY).offset(0);
         make.height.mas_equalTo(17 + 12 + size.height + placeSize.height + 12);
     }];
     //17表示timeLabel的高度，12为timeLabel的上边距，size.height表示内容的高度,placeSize.height表示地点的高度,12表示内容的下边距,15表示bgView的上下边距

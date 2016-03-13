@@ -7,14 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class CZScheduleTableViewDelegate;
 @interface CZTimeTableViewDelegate : UIView<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *timeNodeTableView;
-@property (nonatomic, strong) NSArray *array;    //scTableView的数据源
+@property (nonatomic, strong) CZScheduleTableViewDelegate *scDelegate;
+@property (nonatomic, strong) NSArray *array;
+@property (nonatomic, strong) NSArray *scArray;  //scTableView的数据源
 @property (nonatomic, strong) UITableView *scTableView;
 @property (nonatomic, assign) CurrentDevice device;
-@property (nonatomic, assign) int indexAtCell;
 @property (nonatomic, assign) CGFloat height;
-@property (nonatomic, assign) BOOL isUp;
 @property (nonatomic, assign) BOOL isDefualt;
 @end

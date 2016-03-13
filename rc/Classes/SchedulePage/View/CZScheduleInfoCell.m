@@ -22,13 +22,13 @@
         self.bgView = [[UIView alloc]init];
         self.height = 44;
 
-        [self addsubViewToContentView];
+        [self addSubViewToContentView];
     }
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.backgroundColor = [UIColor clearColor];
     return self;
 }
-- (void)addsubViewToContentView
+- (void)addSubViewToContentView
 {
     self.tagLabel.font = [UIFont systemFontOfSize:12];
     self.contentLabel.font = [UIFont systemFontOfSize:14];
