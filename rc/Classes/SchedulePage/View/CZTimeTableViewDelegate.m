@@ -46,8 +46,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    //
-    return self.array.count;
+    return self.array.count+1;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -195,13 +194,14 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     //刷新数据 to do here --------
-    [self updateDataSoucre:self.array AtTableView:self.scTableView];
+    [self updateDataSoucre:self.array[0] AtTableView:self.scTableView];
     //设置cell的选中状态
     [self setStateOfCurrentCell];
 }
 
 - (void)updateDataSoucre:(NSArray *)array AtTableView:(UITableView *)tableView
 {
+    
     [tableView reloadData];
 }
 /**

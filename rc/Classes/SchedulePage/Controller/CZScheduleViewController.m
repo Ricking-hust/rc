@@ -92,7 +92,7 @@
     self.timeDelegate.array = self.planListRanged;
     self.timeDelegate.device = self.device;
     self.timeDelegate.indexAtCell = 0;
-    self.scDelegate.array = self.planListRanged[0];
+    self.scDelegate.array = self.planListRanged;
     self.scDelegate.device = self.device;
     self.timeDelegate.timeNodeTableView = self.timeNodeTableView;
     
