@@ -59,7 +59,12 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    if (self.array.count-1 == indexPath.row &&self.subHeight != 0)
+    {
+        return self.subHeight;
+    }
     return 100;
+    //return 100;
 //    CZColumnCell *cell = (CZColumnCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
 //    return cell.cellHeight;
 }

@@ -119,7 +119,18 @@
             NSLog(@"差%f",self.subHeight);
             self.leftDelegate.subHeight = self.subHeight;
             [self.leftTableView reloadData];
+        }else if (self.rightH - self.leftH < 0)
+        {
+            NSLog(@"sub %f",self.rightH - self.leftH);
             
+            [self.rightArray addObject:@"2"];
+            self.subHeight = ABS(self.rightH - self.leftH);
+            NSLog(@"差%f",self.subHeight);
+            self.rightDelegate.subHeight = self.subHeight;
+            [self.rightTableView reloadData];
+        }else
+        {
+            ;
         }
     }
 

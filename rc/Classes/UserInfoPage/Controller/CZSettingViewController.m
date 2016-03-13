@@ -181,7 +181,6 @@
         [self presentViewController:alert animated:YES completion:nil];
 
     }
-    NSLog(@"你点击了第 %ld Cell", indexPath.row);
 }
 /**
  *  计算文本的大小

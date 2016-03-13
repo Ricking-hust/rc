@@ -70,7 +70,7 @@
         return self.subHeight;
     }
     return 44;
-//    if (self.array.count == indexPath.row && self.subHeight)
+//    if (self.array.count-1 == indexPath.row && self.subHeight != 0)
 //    {
 //        return self.subHeight;
 //    }else
