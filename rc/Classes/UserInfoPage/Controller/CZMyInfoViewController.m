@@ -30,10 +30,12 @@
 {
     if (self = [super init])
     {
-        self.isLogin = NO;
+        self.isLogin = [DataManager manager].user.isLogin;
     }
     return self;
 }
+
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -143,15 +145,19 @@
 }
 - (void)didSelectCellAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.isLogin == NO)
+    if ([DataManager manager].user.isLogin == NO)
     {//如果用户未登录，则跳至登录界面
         //to do here ------------------------
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"你还没有登录" preferredStyle:UIAlertControllerStyleAlert];
+        LoginViewController *loginViewController = [[LoginViewController alloc]init];
+        [self.navigationController pushViewController:loginViewController animated:YES];
         
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
-
-        [alert addAction:okAction];
-        [self presentViewController:alert animated:YES completion:nil];
+        
+//        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"你还没有登录" preferredStyle:UIAlertControllerStyleAlert];
+//        
+//        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+//
+//        [alert addAction:okAction];
+//        [self presentViewController:alert animated:YES completion:nil];
         
     }else
     {//如果用户已登录，则跳至相关界面
@@ -159,13 +165,8 @@
         {
             case 0:
             {
-                if (![DataManager manager].user.isLogin) {
-                    LoginViewController *loginViewController = [[LoginViewController alloc]init];
-                    [self.navigationController pushViewController:loginViewController animated:YES];
-                } else {
                     CZPersonInfoViewController *personInfoViewController = [[CZPersonInfoViewController alloc]init];
                     [self.navigationController pushViewController:personInfoViewController animated:YES];
-                }
             }
                 break;
                 
@@ -207,13 +208,13 @@
 {
     if (indexPath.section == 0)
     {
-        if (![DataManager manager].user.isLogin) {
+        if ([DataManager manager].user.isLogin == NO) {
             cell.imgIcon.image = [UIImage imageNamed:@"Beijing_Icon"];
             cell.contentLable.text = @"未登录";
         } else {
             //cell.imgIcon.image = [UIImage imageNamed:@"Beijing_Icon"];
             [cell.imgIcon sd_setImageWithURL:[NSURL URLWithString:[userDefaults objectForKey:@"userPic"]] placeholderImage:[ UIImage imageNamed:@"20160102.png"]];
-            cell.contentLable.text = [userDefaults objectForKey:@"usrName"];
+            cell.contentLable.text = [userDefaults objectForKey:@"userName"];
         }
 
     }else if (indexPath.section == 1)
