@@ -15,4 +15,5 @@
 @property (nonatomic, strong) UIImageView *selectedPoint;
 @property (nonatomic, strong) UILabel *dayLabel;
 @property (nonatomic, strong) UILabel *weekLabel;
+@property (nonatomic, assign) long int cellIndex;
 @end

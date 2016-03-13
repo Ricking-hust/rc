@@ -24,6 +24,7 @@
         self.weekLabel = [[UILabel alloc]init];
         self.dayLabel = [[UILabel alloc]init];
         [self addsubViewToContentView];
+        self.cellIndex = 0;
     }
     self.selectionStyle = UITableViewCellSelectionStyleNone;
     self.backgroundColor = [UIColor clearColor];

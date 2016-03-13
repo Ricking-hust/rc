@@ -15,7 +15,7 @@
 #include <sys/sysctl.h>
 
 @interface CZScheduleViewController ()
-
+@property (nonatomic, strong) NSArray *scArray;
 @property (nonatomic, assign) CurrentDevice device;
 @property (nonatomic,strong) PlanList *planList;
 @property (nonatomic,strong) NSMutableArray *planListRanged;
@@ -26,7 +26,14 @@
 @implementation CZScheduleViewController
 
 #pragma mark - data
-
+- (NSArray *)scArray
+{
+    if (!_scArray)
+    {
+        _scArray = [[NSArray alloc]init];
+    }
+    return _scArray;
+}
 -(void)configureBlocks{
     @weakify(self);
     self.getPlanListBlock = ^(){
@@ -89,12 +96,15 @@
 - (void)displayTimeNode
 {
     [self rangePlanList:self.planList];
-    self.timeDelegate.array = self.planListRanged;
     self.timeDelegate.device = self.device;
     self.timeDelegate.indexAtCell = 0;
     self.scDelegate.array = self.planListRanged;
     self.scDelegate.device = self.device;
     self.timeDelegate.timeNodeTableView = self.timeNodeTableView;
+    self.timeDelegate.scTableView = self.scTableView;
+    
+    self.scDelegate.array = self.scArray;
+    self.scDelegate.device =self.device;
     
     [self.timeNodeTableView reloadData];
     [self.scTableView reloadData];

@@ -11,6 +11,7 @@
 #import "Masonry.h"
 #import "CZTestData.h"
 #import "PlanModel.h"
+#import "CZScheduleTableViewDelegate.h"
 
 @interface CZTimeTableViewDelegate ()
 
@@ -22,8 +23,9 @@
     if (self = [super init])
     {
         self.height = 0;
-        self.isUp = NO;
         self.isDefualt = YES;
+        self.scArray = [[NSArray alloc]init];
+        self.scDelegate = [[CZScheduleTableViewDelegate alloc]init];
     }
     return self;
 }
@@ -86,6 +88,7 @@
     PlanModel *plmodel = tempArray[0];
     
     //对cell进行赋值
+    cell.cellIndex = indexPath.row;
     NSString *str = [NSString stringWithFormat:@"%@:%@",[plmodel.planTime substringWithRange:NSMakeRange(5, 2)],[plmodel.planTime substringWithRange:NSMakeRange(8, 2)]];
     cell.dayLabel.text = str;
     NSString *strWeek = [plmodel.planTime substringWithRange:NSMakeRange(0, 10)];
@@ -186,7 +189,7 @@
     if (!decelerate)
     {
         //刷新数据 to do here --------
-        [self updateDataSoucre:self.array AtTableView:self.scTableView];
+        [self updateDataSoucre:self.scArray AtTableView:self.scTableView];
         //设置cell的选中状态
         [self setStateOfCurrentCell];
     }
@@ -225,7 +228,8 @@
 #pragma mark - 更新数据
 - (void)updateUpDataSoucre:(NSMutableArray *)array AtTableView:(UITableView *)tableView
 {
-    
+    CZTimeNodeCell *cell = self.timeNodeTableView.visibleCells.firstObject;
+    self.scArray = self.array[cell.cellIndex];
     [tableView reloadData];
 }
 - (void)setStateOfCurrentCell
