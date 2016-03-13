@@ -342,7 +342,6 @@
     self.acTagLabel.font             = [UIFont systemFontOfSize:12];
     self.acTagLabel.textColor        = self.acTittleLabel.textColor;
     
-    //self.acImageView.image    = [UIImage imageNamed:@"img_1"];
     [self.acImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     self.acTittleLabel.text   = self.activitymodel.acTitle;
     self.acTagImageView.image = [UIImage imageNamed:@"tagImage"];
