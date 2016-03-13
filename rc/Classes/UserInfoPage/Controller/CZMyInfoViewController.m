@@ -26,9 +26,9 @@
 
 @implementation CZMyInfoViewController
 
-- (id)init
+- (id)initWithCoder:(NSCoder *)aDecoder
 {
-    if (self = [super init])
+    if (self = [super initWithCoder:aDecoder])
     {
         self.isLogin = [DataManager manager].user.isLogin;
     }
