@@ -48,6 +48,7 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
+    self.isLogin = [DataManager manager].user.isLogin;
     
     [self.tableView reloadData];
 }
@@ -145,7 +146,7 @@
 }
 - (void)didSelectCellAtIndexPath:(NSIndexPath *)indexPath
 {
-    if ([DataManager manager].user.isLogin == NO)
+    if (self.isLogin == NO)
     {//如果用户未登录，则跳至登录界面
         //to do here ------------------------
         LoginViewController *loginViewController = [[LoginViewController alloc]init];
@@ -208,7 +209,7 @@
 {
     if (indexPath.section == 0)
     {
-        if ([DataManager manager].user.isLogin == NO) {
+        if (self.isLogin == NO) {
             cell.imgIcon.image = [UIImage imageNamed:@"Beijing_Icon"];
             cell.contentLable.text = @"未登录";
         } else {
