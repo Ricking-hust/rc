@@ -11,4 +11,6 @@
 @interface CZRightTableViewDelegate : NSObject<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) CZTableView *leftTableView;
 @property (nonatomic, strong) CZTableView *rightTableView;
+@property (nonatomic, assign) CGFloat subHeight;
+@property (nonatomic, strong) NSMutableArray *array;
 @end

@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface CZMyInfoViewController : UITableViewController
-
+@property (nonatomic, assign) BOOL isLogin;
 //@property (nonatomic,strong) UserModel *userModel;
 
 @end

@@ -48,7 +48,7 @@
     [super viewDidLoad];
     
     [self createSubViews];
-    
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cellValue:) name:@"cellValue" object:nil];
     //设置导航栏
     [self setNavigation];
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
@@ -59,7 +59,11 @@
     [self configureBlocks];
     self.getActivityBlock();
 }
-
+- (void)cellValue:(NSNotification *)notification
+{
+    NSIndexSet *section = [NSIndexSet indexSetWithIndex:1];
+    [self.tableView reloadSections:section withRowAnimation:UITableViewRowAnimationFade];
+}
 -(void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
 }
@@ -262,58 +266,23 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CZTimeCell *cell = (CZTimeCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-    return cell.rowHeight;
-}
-
-//section头部间距
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (section == 0) {
-        return 1;
-    }
-    return 60.0/2;//section头部高度
-}
-//section头部视图
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *view;
-    UIColor *textcolor = [UIColor colorWithRed:131.0/255.0 green:131.0/255.0  blue:131.0/255.0  alpha:1.0];
-    if (section == 0)
+//    CZTimeCell *cell = (CZTimeCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+//    return cell.rowHeight;
+    if (indexPath.section == 0)
     {
-        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 1)];
-    }else if(section == 1)
+        CZTimeCell *cell = (CZTimeCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+        return cell.rowHeight;
+        
+    }else if (indexPath.section == 1)
     {
-        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 60, 30)];
-        label.font = [UIFont systemFontOfSize:14];
-        label.text = @"活动详情";
-        label.textColor = textcolor;
-        [view addSubview:label];
+        CZActivityInfoCell *cell = (CZActivityInfoCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+        return cell.rowHeight;
+        
     }else
     {
-        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 60, 30)];
-        label.font = [UIFont systemFontOfSize:14];
-        label.text = @"活动介绍";
-        label.textColor = textcolor;
-        [view addSubview:label];
+        return 44;
     }
-    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-    return view;
 
-}
-//section底部间距
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 1;
-}
-//section底部视图
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 1)];
-    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-    return view;
 }
 // 配置tableView header UI布局
 - (void)layoutHeaderImageView
@@ -341,6 +310,8 @@
     [self.header addSubview:self.acTittleLabel];
     [self.header addSubview:self.acTagLabel];
     
+    self.acTagImageView.image = [UIImage imageNamed:@"tagImage"];
+    self.acTittleLabel.text = self.activityModelPre.acTitle;
     //对tableView头进行布局
     [self setSubViewsConstraint];
     
@@ -374,6 +345,7 @@
     [self.acImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     self.acTittleLabel.text   = self.activitymodel.acTitle;
     self.acTagImageView.image = [UIImage imageNamed:@"tagImage"];
+    
     NSMutableArray *Artags = [[NSMutableArray alloc]init];
     
     for (TagModel *model in self.activitymodel.tagsList.list) {
@@ -406,7 +378,7 @@
     }];
     [self.acTagLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.acTagImageView.mas_right).with.offset(10);
-        make.top.equalTo(self.acTagImageView.mas_top);
+        make.top.equalTo(self.acTagImageView.mas_top).offset(-5);
         make.size.mas_equalTo(CGSizeMake(150, 20));
     }];
 }
@@ -420,7 +392,15 @@
         
     }else if ([cell isKindOfClass:[CZActivityInfoCell class]])
     {
+        //CZActivityInfoCell *acCell = ((CZActivityInfoCell *)cell);
         ((CZActivityInfoCell *)cell).model = self.activitymodel;
+//        acCell.ac_placeLabel.text = self.activitymodel.acPlace;
+//        acCell.ac_sizeLabel.text  = self.activitymodel.acSize;
+//        acCell.ac_payLabel.text   = self.activitymodel.acPay;
+//        NSLog(@"%@",acCell.ac_placeLabel.text);
+    }else
+    {
+        ;
     }
 }
 //弹出提醒视图
@@ -460,10 +440,16 @@
     [btnArray addObject:[superView viewWithTag:12]];
     [btnArray addObject:[superView viewWithTag:13]];
     
-    [self isSelected:btnArray WithButton:btn];
-#pragma mark - 测试语句
-    NSLog(@"%@",btn.titleLabel.text);
-#pragma mark - 结束
+    //[self isSelected:btnArray WithButton:btn];
+
+    BOOL isSelecte = !btn.selected;
+    if (isSelecte)
+    {
+        btn.selected = YES;
+    }else
+    {
+        btn.selected = NO;
+    }
     
 }
 
@@ -487,10 +473,14 @@
     [btnArray addObject:[superView viewWithTag:12]];
     [btnArray addObject:[superView viewWithTag:13]];
     
-    UIButton *selectedBtn = [self whichButtonSelected:btnArray];
-#pragma mark - 测试语句
-    NSLog(@"选中了%@按钮",selectedBtn.titleLabel.text);
-#pragma mark - 结束
+    for (int i = 0; i <3; i++)
+    {
+        UIButton *button = btnArray[i];
+        if (button.selected)
+        {
+            NSLog(@"选中了%@按钮",button.titleLabel.text);
+        }
+    }
     
     [self lew_dismissPopupView];
 }
@@ -509,6 +499,57 @@
     }
     return selectedBtn;
 }
+
+//section头部间距
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 0) {
+        return 1;
+    }
+    return 60.0/2;//section头部高度
+}
+//section头部视图
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view;
+    UIColor *textcolor = [UIColor colorWithRed:131.0/255.0 green:131.0/255.0  blue:131.0/255.0  alpha:1.0];
+    if (section == 0)
+    {
+        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 1)];
+    }else if(section == 1)
+    {
+        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 60, 30)];
+        label.font = [UIFont systemFontOfSize:14];
+        label.text = @"活动详情";
+        label.textColor = textcolor;
+        [view addSubview:label];
+    }else
+    {
+        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 60, 30)];
+        label.font = [UIFont systemFontOfSize:14];
+        label.text = @"活动介绍";
+        label.textColor = textcolor;
+        [view addSubview:label];
+    }
+    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
+    return view;
+    
+}
+//section底部间距
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 1;
+}
+//section底部视图
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 1)];
+    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
+    return view;
+}
+
 /**
  *  计算字符串的长度
  *

@@ -73,6 +73,7 @@
     self.getPlanListBlock();
     
 }
+
 - (void)setNavigation
 {
     NSDate *senddate=[NSDate date];
