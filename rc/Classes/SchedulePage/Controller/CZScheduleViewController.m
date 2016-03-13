@@ -97,6 +97,10 @@
 {
     [self rangePlanList:self.planList];
     self.timeDelegate.device = self.device;
+    self.scArray = self.planListRanged[0];
+    self.timeDelegate.scArray = self.scArray;
+    self.timeDelegate.array = self.planListRanged;
+    self.timeDelegate.scDelegate = self.scDelegate;
     self.timeDelegate.timeNodeTableView = self.timeNodeTableView;
     self.timeDelegate.scTableView = self.scTableView;
     
