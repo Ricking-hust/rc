@@ -67,6 +67,7 @@
 		565EF6281C48EBA20067C032 /* CityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6211C48EBA20067C032 /* CityModel.m */; };
 		565EF6571C48EC410067C032 /* CZMyInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6331C48EC410067C032 /* CZMyInfoViewController.m */; };
 		565EF66C1C48ED1E0067C032 /* CZTabbarController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF66B1C48ED1E0067C032 /* CZTabbarController.m */; };
+		5661CBE11C96A6490062E979 /* RCColumnInfoView.m in Sources */ = {isa = PBXBuildFile; fileRef = 5661CBE01C96A6490062E979 /* RCColumnInfoView.m */; };
 		56637D721C560DA10000BF46 /* CZCityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56637D711C560DA10000BF46 /* CZCityViewController.m */; };
 		56637D751C5611230000BF46 /* CZCityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56637D741C5611230000BF46 /* CZCityView.m */; };
 		56655EEF1C87189200F4BE9E /* CZDownView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56655EEE1C87189200F4BE9E /* CZDownView.m */; };
@@ -288,6 +289,8 @@
 		565EF6331C48EC410067C032 /* CZMyInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZMyInfoViewController.m; sourceTree = "<group>"; };
 		565EF66A1C48ED1E0067C032 /* CZTabbarController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTabbarController.h; sourceTree = "<group>"; };
 		565EF66B1C48ED1E0067C032 /* CZTabbarController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTabbarController.m; sourceTree = "<group>"; };
+		5661CBDF1C96A6490062E979 /* RCColumnInfoView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCColumnInfoView.h; sourceTree = "<group>"; };
+		5661CBE01C96A6490062E979 /* RCColumnInfoView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCColumnInfoView.m; sourceTree = "<group>"; };
 		56637D701C560DA10000BF46 /* CZCityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCityViewController.h; sourceTree = "<group>"; };
 		56637D711C560DA10000BF46 /* CZCityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCityViewController.m; sourceTree = "<group>"; };
 		56637D731C5611230000BF46 /* CZCityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCityView.h; sourceTree = "<group>"; };
@@ -996,6 +999,8 @@
 				56DF49F81C91AC940071D977 /* CZRightTableViewDelegate.m */,
 				56DF49FA1C91B03C0071D977 /* CZColumnCell.h */,
 				56DF49FB1C91B03C0071D977 /* CZColumnCell.m */,
+				5661CBDF1C96A6490062E979 /* RCColumnInfoView.h */,
+				5661CBE01C96A6490062E979 /* RCColumnInfoView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1227,6 +1232,7 @@
 				5674AF991C70B99100184A31 /* CZActivityCell.m in Sources */,
 				56E523641C75AC1500794B0E /* CZAboutUsViewController.m in Sources */,
 				56E8C6701C8A2BD000435758 /* CZRemintTimeView.m in Sources */,
+				5661CBE11C96A6490062E979 /* RCColumnInfoView.m in Sources */,
 				567586361C8C6349004B6794 /* CZScheduleTableViewDelegate.m in Sources */,
 				56B9CD411C807C4A00914F00 /* UIImage+ImageEffects.m in Sources */,
 				565BCFB41C51CE580031ABBD /* CZTagSelectViewController.m in Sources */,

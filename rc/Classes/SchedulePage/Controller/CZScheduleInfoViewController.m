@@ -9,6 +9,8 @@
 #import "CZScheduleInfoViewController.h"
 #import "Masonry.h"
 #import "CZUpdateScheduleViewController.h"
+#import "CZScheduleViewController.h"
+#import "PlanModel.h"
 
 #define FONTSIZE    14  //字体大小
 #define PADDING     5
@@ -30,29 +32,250 @@
 @property (strong, nonatomic) UILabel *scRemindTimeLabel;
 @property (strong, nonatomic) UILabel *scRemindTime;
 
-@property (strong, nonatomic) UIImage *image;
-@property (copy, nonatomic) NSString *strTheme;
-@property (copy, nonatomic) NSString *strTime;
-@property (copy, nonatomic) NSString *strContent;
-@property (copy, nonatomic) NSString *strRemindTime;
 @end
 
 @implementation CZScheduleInfoViewController
 
-- (void)viewDidLoad {
+- (id)init
+{
+    if (self = [super init])
+    {
+        self.scArray = [[NSArray alloc]init];
+        self.scIndex = 0;
+        self.bgView = [[UIView alloc]init];
+        self.tagImage = [[UIImageView alloc]init];
+        self.scThemeLabel = [[UILabel alloc]init];
+        self.scTheme = [[UILabel alloc]init];
+        self.scTimeLabel = [[UILabel alloc]init];
+        self.scTime = [[UILabel alloc]init];
+        self.scContentLabel = [[UILabel alloc]init];
+        self.scContent = [[UILabel alloc]init];
+        self.scRemindTimeLabel = [[UILabel alloc]init];
+        self.scRemindTime = [[UILabel alloc]init];
+        self.deleteBtn = [[UIButton alloc]init];
+        [self.deleteBtn addTarget:self action:@selector(deleteSC) forControlEvents:UIControlEventTouchUpInside];
+    }
+    return self;
+}
+- (void)deleteSC
+{
+    NSMutableArray *tempArray = [[NSMutableArray alloc]initWithArray:self.scArray];
+    [tempArray removeObjectAtIndex:self.scIndex];
+    long int count = self.navigationController.viewControllers.count;
+    CZScheduleInfoViewController *scViewController = self.navigationController.viewControllers[count - 2];
+    scViewController.scArray = [[NSArray alloc]initWithArray:tempArray];
+    [self.navigationController popViewControllerAnimated:YES];
+}
+- (void)didDisplayInfo
+{
+    PlanModel *model = self.scArray[self.scIndex];
+    self.tagImage.image = [self getTagImageFormNString:model.themeName];
+    self.scTheme.text = model.themeName;
+    self.scTime.text = model.planTime;
+    self.scContent.text = model.planContent;
+    self.scRemindTime.text = model.plAlarmOne;
+}
+
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     
     [self setNavigation];
-#pragma mark - 测试数据
-    self.image = [UIImage imageNamed:@"businessIcon"];
-    self.strTheme = @"出差";
-    self.strTime = @"2012年12月12日 15:00";
-    self.strContent = @"OS 是苹果公司为其移动产品开发的操作系统。它主要给 iPhone、iPod touch、iPad 以及 Apple TV 使用.";
-    self.strRemindTime = @"提前一天";
-    
-    [self createSubViews];
+    [self addSubViewToView];
+    [self didDisplayInfo];
+    [self addConstraint];
+
+    NSLog(@"::");
 
 }
+- (void)addSubViewToView
+{
+    self.scThemeLabel.font = [UIFont systemFontOfSize:FONTSIZE];
+    self.scTheme.font = [UIFont systemFontOfSize:FONTSIZE];
+    self.scTimeLabel.font = [UIFont systemFontOfSize:FONTSIZE];
+    self.scTime.font = [UIFont systemFontOfSize:FONTSIZE];
+    self.scContentLabel.font = [UIFont systemFontOfSize:FONTSIZE];
+    self.scContent.font = [UIFont systemFontOfSize:FONTSIZE];
+    self.scRemindTimeLabel.font = [UIFont systemFontOfSize:FONTSIZE];
+    self.scRemindTime.font = [UIFont systemFontOfSize:FONTSIZE];
+    self.scContent.numberOfLines = 0;
+    self.scRemindTime.numberOfLines = 0;
+    
+    [self.view addSubview:self.bgView];
+    [self.view addSubview:self.tagImage];
+    [self.bgView addSubview:self.scThemeLabel];
+    [self.bgView addSubview:self.scTheme];
+    [self.bgView addSubview:self.scTimeLabel];
+    [self.bgView addSubview:self.scTime];
+    [self.bgView addSubview:self.scContentLabel];
+    [self.bgView addSubview:self.scContent];
+    [self.bgView addSubview:self.scRemindTimeLabel];
+    [self.bgView addSubview:self.scRemindTime];
+    [self.view addSubview:self.deleteBtn];
+}
+- (void)addConstraint
+{
+    [self addTagImageConstraint];
+    [self addscThemeLabelConstraint];
+    [self addscThemeConstraint];
+    [self addscTimeLabelConstraint];
+    [self addsctimeConstraint];
+    [self addscContentlabelCosntraint];
+    [self addscContentConstraint];
+    [self addscRemindTimeLabelConstraint];
+    [self addscRemindTimeConstraint];
+    [self addBgViewConstraint];
+    [self addDeleteBtnConstraint];
+}
+- (void)addTagImageConstraint
+{
+    [self.tagImage mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.bgView.mas_top).with.offset(-self.tagImage.image.size.height/2);
+        make.centerX.equalTo(self.bgView);
+        make.size.mas_equalTo(self.tagImage.image.size);
+    }];
+}
+- (void)addscThemeLabelConstraint
+{
+    CGSize size = [self setLabelStyle:self.scThemeLabel WithContent:@"行程主题:"];
+    [self.scThemeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.bgView.mas_left).with.offset(20);
+        make.top.equalTo(self.bgView.mas_top).with.offset(20);
+        make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
+    }];
+    
+}
+- (void)addscThemeConstraint
+{
+    CGSize size = [self setLabelStyle:self.scTheme WithContent:self.scTheme.text];
+    [self.scTheme mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.scThemeLabel.mas_right).with.offset(5);
+        make.top.equalTo(self.scThemeLabel.mas_top).with.offset(0);
+        make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
+    }];
+    
+}
+- (void)addscTimeLabelConstraint
+{
+    CGSize size = [self setLabelStyle:self.scTimeLabel WithContent:@"提醒时间:"];
+    [self.scTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.scThemeLabel.mas_bottom).with.offset(PADDING);
+        make.left.equalTo(self.scThemeLabel.mas_left);
+        make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
+    }];
+}
+- (void)addsctimeConstraint
+{
+    CGSize size = [self setLabelStyle:self.scTime WithContent:self.scTime.text];
+    [self.scTime mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.scTimeLabel.mas_top);
+        make.left.equalTo(self.scTimeLabel.mas_right).with.offset(5);
+        make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
+    }];
+}
+- (void)addscContentlabelCosntraint
+{
+    CGSize size = [self setLabelStyle:self.scContentLabel WithContent:@"行程内容:"];
+    [self.scContentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.scTimeLabel.mas_bottom).with.offset(PADDING);
+        make.left.equalTo(self.scThemeLabel.mas_left);
+        make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
+    }];
+    
+}
+- (void)addscContentConstraint
+{
+    CGSize size = [self setLabelStyle:self.scContent WithContent:self.scContent.text];
+    [self.scContent mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.scContentLabel.mas_right).with.offset(5);
+        make.top.equalTo(self.scContentLabel.mas_top);
+        make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
+    }];
+}
+- (void)addscRemindTimeLabelConstraint
+{
+    CGSize size = [self setLabelStyle:self.scRemindTimeLabel WithContent:@"提醒时间:"];
+    [self.scRemindTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.scThemeLabel.mas_left);
+        make.top.equalTo(self.scContent.mas_bottom).with.offset(PADDING);
+        make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
+    }];
+}
+- (void)addscRemindTimeConstraint
+{
+    CGSize size = [self setLabelStyle:self.scRemindTime WithContent:self.scRemindTime.text];
+    [self.scRemindTime mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.scRemindTimeLabel.mas_right).with.offset(5);
+        make.top.equalTo(self.scRemindTimeLabel).with.offset(0);
+        make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
+    }];
+}
+- (void)addDeleteBtnConstraint
+{
+    self.deleteBtn.layer.cornerRadius = 2.0f;
+    self.deleteBtn.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:64.0/255.0 blue:0 alpha:1.0];
+    [self.deleteBtn setTitle:@"删除按钮" forState:UIControlStateNormal];
+    [self.deleteBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
+    self.deleteBtn.titleLabel.font = [UIFont systemFontOfSize:14];
+    [self.view addSubview:self.deleteBtn];
+    [self.deleteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.bgView.mas_bottom).offset(10);
+        make.centerX.equalTo(self.bgView.mas_centerX);
+        make.height.mas_equalTo(40);
+        make.width.mas_equalTo(self.view.frame.size.width - 40);
+    }];
+}
+- (void)addBgViewConstraint
+{
+    CGRect rect = [[UIScreen mainScreen]bounds];
+    //设置背景图片------------------------
+    UIImage *image = [UIImage imageNamed:@"bg_background2"];
+    self.bgView.layer.contents = (id) image.CGImage;    // 背景透明
+    self.bgView.layer.backgroundColor = [UIColor clearColor].CGColor;
+    
+    CGFloat bgViewW = rect.size.width * 0.9;            //父视图的宽
+    CGFloat topPadding = bgViewW * 0.12;
+    CGSize scContentSize = [self sizeWithText:self.scContent.text maxSize:CGSizeMake(rect.size.width * 0.55, MAXFLOAT) fontSize:FONTSIZE];
+    
+    CGSize scRemindTimeSize = [self sizeWithText:self.scRemindTime.text maxSize:CGSizeMake(rect.size.width * 0.55, MAXFLOAT) fontSize:FONTSIZE];
+    [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.view);
+        make.top.equalTo(self.view.mas_top).with.offset(40+64);
+        make.width.mas_equalTo(bgViewW);
+        make.height.mas_equalTo(scContentSize.height + scRemindTimeSize.height * 3 + topPadding*2 + 20);
+    }];
+    
+}
+- (UIImage *)getTagImageFormNString:(NSString *)str
+{
+    if ([str isEqualToString:@"运动"])
+    {
+        return [UIImage imageNamed:@"sportSmallIcon"];
+    }else if ([str isEqualToString:@"约会"])
+    {
+        return [UIImage imageNamed:@"appointmentSmallIcon"];
+    }else if ([str isEqualToString:@"出差"])
+    {
+        return [UIImage imageNamed:@"businessSmallIcon"];
+    }else if ([str isEqualToString:@"会议"])
+    {
+        return [UIImage imageNamed:@"meetingSmallIcon"];
+    }else if ([str isEqualToString:@"购物"])
+    {
+        return [UIImage imageNamed:@"shoppingSmallIcon"];
+    }else if ([str isEqualToString:@"娱乐"])
+    {
+        return [UIImage imageNamed:@"entertainmentSmallIcon"];
+    }else if ([str isEqualToString:@"聚会"])
+    {
+        return [UIImage imageNamed:@"partSmallIcon"];
+    }else
+    {
+        return [UIImage imageNamed:@"otherSmallIcon"];
+    }
+    
+}
+
 - (void)setNavigation
 {
     self.title = @"行程详情";
@@ -73,179 +296,6 @@
 - (void)back
 {
     [self.navigationController popViewControllerAnimated:YES];
-}
-#pragma mark - 创建子控件
-- (void) createSubViews
-{
-    
-    [self createBgView];
-    [self createTagImage];
-    
-    [self createScThemeLabel];
-    [self createScTheme];
-    
-    [self createScTimeLabel];
-    [self createScTime];
-    
-    [self createScContentLabel];
-    [self createScContent];
-    
-    [self createScRemindTimeLabel];
-    [self createScRemindTime];
-    //创建删除按钮
-    self.deleteBtn = [[UIButton alloc]init];
-    self.deleteBtn.layer.cornerRadius = 2.0f;
-    self.deleteBtn.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:64.0/255.0 blue:0 alpha:1.0];
-    [self.deleteBtn setTitle:@"删除按钮" forState:UIControlStateNormal];
-    [self.deleteBtn setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
-    self.deleteBtn.titleLabel.font = [UIFont systemFontOfSize:14];
-    [self.view addSubview:self.deleteBtn];
-    [self.deleteBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.bgView.mas_bottom).offset(10);
-        make.centerX.equalTo(self.bgView.mas_centerX);
-        make.height.mas_equalTo(40);
-        make.width.mas_equalTo(self.view.frame.size.width - 40);
-    }];
-
-}
-- (void)createBgView
-{
-    CGRect rect = [[UIScreen mainScreen]bounds];
-    self.bgView = [[UIView alloc]init];
-    //设置背景图片------------------------
-    UIImage *image = [UIImage imageNamed:@"bg_background2"];
-    self.bgView.layer.contents = (id) image.CGImage;    // 背景透明
-    self.bgView.layer.backgroundColor = [UIColor clearColor].CGColor;
-    [self.view addSubview:self.bgView];
-
-    CGFloat bgViewW = rect.size.width * 0.9;            //父视图的宽
-    CGFloat topPadding = bgViewW * 0.12;
-    CGSize scContentSize = [self sizeWithText:self.strContent maxSize:CGSizeMake(rect.size.width * 0.55, MAXFLOAT) fontSize:FONTSIZE];
-
-    CGSize labelSize = [self sizeWithText:self.strRemindTime maxSize:CGSizeMake(rect.size.width * 0.55, MAXFLOAT) fontSize:FONTSIZE];;
-    [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.view);
-        make.top.equalTo(self.view.mas_top).with.offset(40+64);
-        make.width.mas_equalTo(bgViewW);
-        make.height.mas_equalTo(scContentSize.height + labelSize.height * 3 + topPadding*2 + 20);
-    }];
-
-}
-- (void)createTagImage
-{
-    self.tagImage = [[UIImageView alloc]init];
-#pragma mark - 测试数据
-    self.tagImage.image = self.image;
-    [self.bgView addSubview:self.tagImage];
-    [self.tagImage mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.bgView.mas_top).with.offset(-self.tagImage.image.size.height/2);
-        make.centerX.equalTo(self.bgView);
-        make.size.mas_equalTo(self.tagImage.image.size);
-    }];
-    
-}
-- (void)createScThemeLabel
-{
-    self.scThemeLabel = [[UILabel alloc]init];
-    CGSize size = [self setLabelStyle:self.scThemeLabel WithContent:@"行程主题:"];
-    [self.bgView addSubview:self.scThemeLabel];
-    
-    CGRect rect = [[UIScreen mainScreen]bounds];
-    CGFloat bgViewW = rect.size.width * 0.9;            //父视图的宽
-    CGFloat topPadding = bgViewW * 0.12;
-    [self.scThemeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.bgView.mas_left).with.offset(20);
-        make.top.equalTo(self.bgView.mas_top).with.offset(topPadding);
-        make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
-    }];
-}
-- (void)createScTheme
-{
-    self.scTheme = [[UILabel alloc]init];
-    [self.bgView addSubview:self.scTheme];
-#pragma mark - 测试数据
-    CGSize size = [self setLabelStyle:self.scTheme WithContent:self.strTheme];
-    [self.scTheme mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.scThemeLabel.mas_right).with.offset(5);
-        make.top.equalTo(self.scThemeLabel.mas_top).with.offset(0);
-        make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
-    }];
-}
-- (void)createScTimeLabel
-{
-    self.scTimeLabel = [[UILabel alloc]init];
-    [self.bgView addSubview:_scTimeLabel];
-    CGSize size = [self setLabelStyle:self.scTimeLabel WithContent:@"提醒时间:"];
-    
-    [self.scTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.scThemeLabel.mas_bottom).with.offset(PADDING);
-        make.left.equalTo(self.scThemeLabel.mas_left);
-        make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
-    }];
-
-}
-- (void)createScTime
-{
-    self.scTime = [[UILabel alloc]init];
-    [self.bgView addSubview:self.scTime];
-    CGSize size = [self setLabelStyle:self.scTime WithContent:self.strTime];
-    [self.scTime mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.scTimeLabel.mas_top);
-        make.left.equalTo(self.scTimeLabel.mas_right).with.offset(5);
-        make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
-    }];
-
-}
-- (void)createScContentLabel
-{
-    self.scContentLabel = [[UILabel alloc]init];
-    [self.bgView addSubview:self.scContentLabel];
-
-    CGSize size = [self setLabelStyle:self.scContentLabel WithContent:@"行程内容:"];
-    [self.scContentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.scTimeLabel.mas_bottom).with.offset(PADDING);
-        make.left.equalTo(self.scThemeLabel.mas_left);
-        make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
-    }];
-
-}
-- (void)createScContent
-{
-    self.scContent = [[UILabel alloc]init];
-    [self.bgView addSubview:self.scContent];
-#pragma mark - 测试数据
-    CGSize size = [self setLabelStyle:self.scContent WithContent:self.strContent];
-    [self.scContent mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.scContentLabel.mas_right).with.offset(5);
-        make.top.equalTo(self.scContentLabel.mas_top);
-        make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
-    }];
-
-}
-- (void)createScRemindTimeLabel
-{
-    self.scRemindTimeLabel = [[UILabel alloc]init];
-    [self.bgView addSubview:self.scRemindTimeLabel];
-    CGSize size = [self setLabelStyle:self.scRemindTimeLabel WithContent:@"提醒时间:"];
-    [self.scRemindTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.scThemeLabel.mas_left);
-        make.top.equalTo(self.scContent.mas_bottom).with.offset(PADDING);
-        make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
-    }];
-
-}
-- (void)createScRemindTime
-{
-    self.scRemindTime = [[UILabel alloc]init];
-    [self.bgView addSubview:self.scRemindTime];
-#pragma mark - 测试数据
-    CGSize size = [self setLabelStyle:self.scRemindTime WithContent:self.strRemindTime];
-    [self.scRemindTime mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.scRemindTimeLabel.mas_right).with.offset(5);
-        make.top.equalTo(self.scRemindTimeLabel).with.offset(0);
-        make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
-    }];
-
 }
 - (CGSize)setLabelStyle:(UILabel *)label WithContent:(NSString *)content
 {

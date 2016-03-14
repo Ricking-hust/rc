@@ -12,6 +12,7 @@
 #import "CZUpdateScheduleViewController.h"
 #import "CZTestData.h"
 #import "PlanModel.h"
+#import "CZTimeNodeCell.h"
 #include <sys/sysctl.h>
 
 @interface CZScheduleViewController ()
@@ -25,6 +26,21 @@
 
 @implementation CZScheduleViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    //[self displayTimeNode];
+
+//    if (self.scDelegate.scArray.count == 0 && self.timeDelegate.array.count != 0)
+//    {
+//        CZTimeNodeCell *cell = self.timeNodeTableView.visibleCells.firstObject;
+//        NSMutableArray *temp = [[NSMutableArray alloc]initWithArray:self.timeDelegate.array];
+//        [temp removeObjectAtIndex:cell.tag];
+//        self.timeDelegate.array = temp;
+//        [self.timeNodeTableView reloadData];
+//    }
+    self.scDelegate.scArray = self.scArray;
+    [self.scTableView reloadData];
+}
 #pragma mark - data
 - (NSArray *)scArray
 {
@@ -104,7 +120,7 @@
     self.timeDelegate.timeNodeTableView = self.timeNodeTableView;
     self.timeDelegate.scTableView = self.scTableView;
     
-    self.scDelegate.array = self.scArray;
+    self.scDelegate.scArray = self.scArray;
     self.scDelegate.device =self.device;
     
     [self.timeNodeTableView reloadData];
@@ -118,7 +134,7 @@
     [self.view addSubview:self.imgView];
     [self.view addSubview:self.timeNodeTableView];
     [self.view addSubview:self.scTableView];
-
+    self.scDelegate.view = self.view;
 
     self.timeNodeTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.scTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -164,6 +180,18 @@
 }
 - (IBAction)addSchedule:(id)sender
 {
+//
+//    NSMutableArray *temp = [[NSMutableArray alloc]initWithArray:self.timeDelegate.array];
+//    [temp removeObjectAtIndex:0];
+//    self.timeDelegate.array = temp;
+//    self.timeDelegate.isDefualt = YES;
+//    NSMutableArray *tempsc = [[NSMutableArray alloc]initWithArray:self.scArray];
+//    [tempsc removeObjectAtIndex:0];
+//    self.scArray = tempsc;
+//    self.scDelegate.scArray = self.scArray;
+//    [self.timeNodeTableView reloadData];
+//    [self.scTableView reloadData];
+    
     CZUpdateScheduleViewController *updateSc = [[CZUpdateScheduleViewController alloc]init];
     [self.navigationController pushViewController:updateSc animated:YES];
 }

@@ -16,15 +16,15 @@
 #import "CZTableView.h"
 #import "CZLeftTableViewDelegate.h"
 #import "CZRightTableViewDelegate.h"
+#import "RCColumnInfoView.h"
 
 @interface CZColumnViewController ()
-@property (nonatomic, strong) CZTableView *leftTableView;
 @property (nonatomic, strong) CZLeftTableViewDelegate *leftDelegate;
-@property (nonatomic, strong) CZTableView *rightTableView;
 @property (nonatomic, strong) CZRightTableViewDelegate *rightDelegate;
 @property (assign, nonatomic) CGFloat leftH;
 @property (assign, nonatomic) CGFloat rightH;
 @property (assign, nonatomic) CGFloat subHeight;
+@property (nonatomic, strong) NSArray *tagArray;
 @property (nonatomic, strong) NSMutableArray *leftArray;
 @property (nonatomic, strong) NSMutableArray *rightArray;
 
@@ -43,97 +43,162 @@
 
 @implementation CZColumnViewController
 
-- (CZTableView *)leftTableView
+- (id)initWithCoder:(NSCoder *)aDecoder
 {
-    if (!_leftTableView)
+    if (self = [super initWithCoder:aDecoder])
     {
-        _leftTableView = [[CZTableView alloc]init];
+        self.other = [[RCColumnInfoView alloc]init];
+        self.internet = [[RCColumnInfoView alloc]init];
+        self.media = [[RCColumnInfoView alloc]init];
+        self.university = [[RCColumnInfoView alloc]init];
+        self.businessStartups = [[RCColumnInfoView alloc]init];
+        self.finance = [[RCColumnInfoView alloc]init];
+        self.leftDelegate = [[CZLeftTableViewDelegate alloc]init];
+        self.rightDelegate = [[CZRightTableViewDelegate alloc]init];
+        self.tagArray = [[NSArray alloc]initWithObjects:self.other,self.internet,self.media,self.university,self.businessStartups, self.finance, nil];
     }
-    return _leftTableView;
-}
-- (CZLeftTableViewDelegate *)leftDelegate
-{
-    if (!_leftDelegate)
-    {
-        _leftDelegate = [[CZLeftTableViewDelegate alloc]init];
-    }
-    return _leftDelegate;
-}
-- (CZTableView *)rightTableView
-{
-    if (!_rightTableView)
-    {
-        _rightTableView = [[CZTableView alloc]init];
-    }
-    return _rightTableView;
-}
-- (CZRightTableViewDelegate *)rightDelegate
-{
-    if (!_rightDelegate)
-    {
-        _rightDelegate = [[CZRightTableViewDelegate alloc]init];
-    }
-    return _rightDelegate;
+    return self;
 }
 #pragma mark - ViewDidLoad
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     UIView *temp = [[UIView alloc]init];
     [self.view addSubview:temp];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-    [self setTableView];
+    [self addSubviewToView];
+
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tableViewContentSize:) name:@"ContentSize" object:nil];
     [self configureBlocks];
     self.getIndListBlock();
+    //self.other.hidden = NO;
 
 }
-- (void)tableViewContentSize:(NSNotification *)notification
+- (void)onClickTooBtn:(UIButton *)btn
 {
-    CZTableView *tableView = [notification object];
-    if (tableView == self.rightTableView) {
-        if (self.rightTableView.contentSize.height != 0)
+    
+    [self isToolButtonSelected:btn];
+    //此处添加按钮点击事件的处理代码---------------
+    NSString *tagName = btn.titleLabel.text;
+    if ([tagName isEqualToString:@"互联网"])
+    {
+        for (int i = 0; i <self.tagArray.count; i++)
         {
-            NSLog(@"self.rightTableView %f",self.rightTableView.contentSize.height);
-            self.rightH =self.rightTableView.contentSize.height;
-            
+            RCColumnInfoView *infoView = self.tagArray[i];
+            infoView.hidden = YES;
         }
+        self.internet.hidden = NO;
+    }else if ([tagName isEqualToString:@"大学"])
+    {
+        for (int i = 0; i <self.tagArray.count; i++)
+        {
+            RCColumnInfoView *infoView = self.tagArray[i];
+            infoView.hidden = YES;
+        }
+        self.university.hidden = NO;
+    }else if ([tagName isEqualToString:@"传媒"])
+    {
+        for (int i = 0; i <self.tagArray.count; i++)
+        {
+            RCColumnInfoView *infoView = self.tagArray[i];
+            infoView.hidden = YES;
+        }
+        self.media.hidden = NO;
+    }else if ([tagName isEqualToString:@"创业"])
+    {
+        for (int i = 0; i <self.tagArray.count; i++)
+        {
+            RCColumnInfoView *infoView = self.tagArray[i];
+            infoView.hidden = YES;
+        }
+        self.businessStartups.hidden = NO;
+    }else if ([tagName isEqualToString:@"金融"])
+    {
+        for (int i = 0; i <self.tagArray.count; i++)
+        {
+            RCColumnInfoView *infoView = self.tagArray[i];
+            infoView.hidden = YES;
+        }
+        self.finance.hidden = NO;
     }else
     {
-        if (self.leftTableView.contentSize.height != 0)
+        for (int i = 0; i <self.tagArray.count; i++)
         {
-            NSLog(@"self.leftTableView %f",self.leftTableView.contentSize.height);
-            self.leftH =self.leftTableView.contentSize.height;
-            
+            RCColumnInfoView *infoView = self.tagArray[i];
+            infoView.hidden = YES;
         }
-        
+        self.other.hidden = NO;
     }
     
-    if (self.rightH != 0 && self.leftH != 0 )
-    {
-        if (self.rightH - self.leftH > 0)
-        {
-            NSLog(@"sub %f",self.rightH - self.leftH);
-            
-            [self.leftArray addObject:@"2"];
-            self.subHeight = self.rightH - self.leftH;
-            NSLog(@"差%f",self.subHeight);
-            self.leftDelegate.subHeight = self.subHeight;
-            [self.leftTableView reloadData];
-        }else if (self.rightH - self.leftH < 0)
-        {
-            NSLog(@"sub %f",self.rightH - self.leftH);
-            
-            [self.rightArray addObject:@"2"];
-            self.subHeight = ABS(self.rightH - self.leftH);
-            NSLog(@"差%f",self.subHeight);
-            self.rightDelegate.subHeight = self.subHeight;
-            [self.rightTableView reloadData];
-        }else
-        {
-            ;
-        }
-    }
-
+}
+- (void)addSubviewToView
+{
+    self.other.leftTableView.delegate = self.leftDelegate;
+    self.other.leftTableView.dataSource = self.leftDelegate;
+    self.other.rightTableView.delegate = self.rightDelegate;
+    self.other.rightTableView.dataSource = self.rightDelegate;
+    self.leftDelegate.leftTableView = self.other.leftTableView;
+    self.leftDelegate.rightTableView = self.other.rightTableView;
+    self.rightDelegate.rightTableView = self.other.rightTableView;
+    self.rightDelegate.leftTableView = self.other.leftTableView;
+    self.leftDelegate.array = self.leftArray;
+    self.rightDelegate.array = self.rightArray;
+    
+    self.internet.leftTableView.delegate = self.leftDelegate;
+    self.internet.leftTableView.dataSource = self.leftDelegate;
+    self.internet.rightTableView.delegate = self.rightDelegate;
+    self.internet.rightTableView.dataSource = self.rightDelegate;
+    
+    self.media.leftTableView.delegate = self.leftDelegate;
+    self.media.leftTableView.dataSource = self.leftDelegate;
+    self.media.rightTableView.delegate = self.rightDelegate;
+    self.media.rightTableView.dataSource = self.rightDelegate;
+    
+    self.university.leftTableView.delegate = self.leftDelegate;
+    self.university.leftTableView.dataSource = self.leftDelegate;
+    self.university.rightTableView.dataSource = self.rightDelegate;
+    self.university.rightTableView.delegate = self.rightDelegate;
+    
+    self.finance.leftTableView.dataSource = self.leftDelegate;
+    self.finance.leftTableView.delegate = self.leftDelegate;
+    self.finance.rightTableView.delegate = self.rightDelegate;
+    self.finance.rightTableView.dataSource = self.rightDelegate;
+    
+    [self.view addSubview:self.other];
+    [self.view addSubview:self.internet];
+    [self.view addSubview:self.media];
+    [self.view addSubview:self.university];
+    [self.view addSubview:self.finance];
+    [self.other mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.toolScrollView.mas_bottom).offset(10);
+        make.right.equalTo(self.view.mas_right);
+        make.left.equalTo(self.view.mas_left);
+        make.bottom.equalTo(self.view.mas_bottom).offset(-49);
+    }];
+    [self.internet mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.other.mas_top);
+        make.right.equalTo(self.view.mas_right);
+        make.left.equalTo(self.view.mas_left);
+        make.bottom.equalTo(self.other.mas_bottom);
+    }];
+    [self.media mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.other.mas_top);
+        make.right.equalTo(self.view.mas_right);
+        make.left.equalTo(self.view.mas_left);
+        make.bottom.equalTo(self.other.mas_bottom);
+    }];
+    [self.university mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.other.mas_top);
+        make.right.equalTo(self.view.mas_right);
+        make.left.equalTo(self.view.mas_left);
+        make.bottom.equalTo(self.other.mas_bottom);
+    }];
+    [self.finance mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.other.mas_top);
+        make.right.equalTo(self.view.mas_right);
+        make.left.equalTo(self.view.mas_left);
+        make.bottom.equalTo(self.other.mas_bottom);
+    }];
 }
 
 - (NSMutableArray *)leftArray
@@ -152,39 +217,7 @@
     }
     return _rightArray;
 }
-- (void)setTableView
-{
-    self.leftTableView.delegate = self.leftDelegate;
-    self.leftTableView.dataSource = self.leftDelegate;
-    self.rightTableView.delegate = self.rightDelegate;
-    self.rightTableView.dataSource = self.rightDelegate;
-    self.leftTableView.showsVerticalScrollIndicator = NO;
-    self.rightTableView.showsVerticalScrollIndicator = NO;
-    
-    self.leftDelegate.leftTableView = self.leftTableView;
-    self.leftDelegate.array = self.leftArray;
-    self.leftDelegate.rightTableView = self.rightTableView;
-    self.rightDelegate.leftTableView = self.leftTableView;
-    self.rightDelegate.rightTableView = self.rightTableView;
-    self.rightDelegate.array = self.rightArray;
-    
-    [self.view addSubview:self.leftTableView];
-    [self.view addSubview:self.rightTableView];
-    self.leftTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.rightTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [self.leftTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.view.mas_left);
-        make.top.equalTo(self.toolScrollView.mas_bottom).offset(10);
-        make.width.mas_equalTo(kScreenWidth/2);
-        make.bottom.equalTo(self.view.mas_bottom).offset(-49);
-    }];
-    [self.rightTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.view.mas_right);
-        make.top.equalTo(self.leftTableView.mas_top);
-        make.left.equalTo(self.leftTableView.mas_right);
-        make.bottom.equalTo(self.leftTableView.mas_bottom);
-    }];
-}
+
 -(void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
 }
@@ -287,15 +320,6 @@
     }
 }
 
-
-- (void)onClickTooBtn:(UIButton *)btn
-{
-    
-    [self isToolButtonSelected:btn];
-    //此处添加按钮点击事件的处理代码---------------
-    
-
-}
 - (void)isToolButtonSelected:(UIButton *)btn
 {
     for (int i = 0; i < self.toolButtonArray.count; ++i)
@@ -347,6 +371,50 @@
     if ([platform isEqualToString:@"i386"])      return @"iPhone Simulator";
     if ([platform isEqualToString:@"x86_64"])    return @"iPhone Simulator";
     return platform;
+}
+- (void)tableViewContentSize:(NSNotification *)notification
+{
+    CZTableView *tableView = [notification object];
+    if (tableView.tag == 12)
+    {
+        if (tableView.contentSize.height != 0)
+        {
+            self.rightH =tableView.contentSize.height;
+            
+        }
+    }else
+    {
+        if (tableView.contentSize.height != 0)
+        {
+            self.leftH =tableView.contentSize.height;
+            
+        }
+    }
+    if (self.rightH != 0 && self.leftH != 0 )
+    {
+        if (self.rightH - self.leftH > 0)
+        {
+            
+            [self.leftArray addObject:@"2"];
+            self.subHeight = self.rightH - self.leftH;
+
+            self.leftDelegate.subHeight = self.subHeight;
+            CZTableView *left = [tableView.superview viewWithTag:11];
+            [left reloadData];
+        }else if (self.rightH - self.leftH < 0)
+        {
+            [self.rightArray addObject:@"2"];
+            self.subHeight = ABS(self.rightH - self.leftH);
+
+            self.rightDelegate.subHeight = self.subHeight;
+            CZTableView *right = [tableView.superview viewWithTag:12];
+            [right reloadData];
+        }else
+        {
+            ;
+        }
+    }
+    
 }
 
 ////设置界面顶部的工具栏

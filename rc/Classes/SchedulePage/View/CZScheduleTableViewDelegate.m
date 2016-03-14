@@ -11,6 +11,7 @@
 #import "Masonry.h"
 #import "CZTestData.h"
 #import "PlanModel.h"
+#import "CZScheduleInfoViewController.h"
 
 @implementation CZScheduleTableViewDelegate
 
@@ -18,7 +19,8 @@
 {
     if (self = [super init])
     {
-        self.array = [[NSArray alloc]init];
+        self.scArray = [[NSArray alloc]init];
+        self.view = [[UIView alloc]init];
     }
     return self;
 }
@@ -41,7 +43,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.array.count+1;
+    return self.scArray.count+1;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -85,17 +87,40 @@
 #pragma mark - 行程信息的点击事件
 - (void)didClickSC:(UITapGestureRecognizer *)clickGesture
 {
+    //UIView *view = clickGesture.view;
+    CZScheduleInfoViewController *info = [[CZScheduleInfoViewController alloc]init];
+    info.scIndex = (int)clickGesture.view.tag;
+    info.scArray = self.scArray;
+    [[self viewController].navigationController pushViewController:info animated:YES];
+}
+- (UIViewController *)viewController {
+    /// Finds the view's view controller.
     
+    // Traverse responder chain. Return first found view controller, which will be the view's view controller.
+    UIResponder *responder = self;
+    while ((responder = [responder nextResponder]))
+        if ([responder isKindOfClass: [UIViewController class]])
+            return (UIViewController *)responder;
+    
+    // If the view controller isn't found, return nil.
+    return nil;
+}
+- (UIResponder *)nextResponder
+{
+    [super nextResponder];
+    return self.view;
 }
 - (void)setValueToCell:(CZScheduleInfoCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-    PlanModel *plmodel = self.array[indexPath.row-1];
-    cell.tagImageView.image = [UIImage imageNamed:@"businessSmallIcon"];
+
+    PlanModel *plmodel = self.scArray[indexPath.row-1];
+    cell.tagImageView.image = [self getTagImageFormNString:plmodel.themeName];
     cell.tagLabel.text = plmodel.themeName;
     NSString *timeText = [plmodel.planTime substringWithRange:NSMakeRange(11, 5)];
     cell.timeLabel.text = timeText;
     cell.contentLabel.text = plmodel.planContent;
     cell.placeLabel.text = plmodel.acPlace;
+    cell.bgView.tag = indexPath.row - 1;
 }
 - (UIImage *)getTagImageFormNString:(NSString *)str
 {

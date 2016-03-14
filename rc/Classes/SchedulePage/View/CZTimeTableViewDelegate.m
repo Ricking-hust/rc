@@ -63,7 +63,7 @@
         [self setValueOfCell:cell AtIndexPath:indexPath];
         //对cell进行布局
         [self addCellConstraint:cell AtIndexPath:indexPath];
-        
+        cell.tag = indexPath.row;
         return cell;
     }else
     {
@@ -206,10 +206,10 @@
 {
     self.scArray = nil;
     CZTimeNodeCell *cell = self.timeNodeTableView.visibleCells.firstObject;
-    NSLog(@"%ld",cell.cellIndex);
+
     self.scArray = self.array[cell.cellIndex];
-    self.scDelegate.array = self.scArray;
-    NSLog(@"%@",self.array);
+    self.scDelegate.scArray = self.scArray;
+
     [tableView reloadData];
 }
 /**

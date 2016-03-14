@@ -40,6 +40,7 @@
     UITableViewCell *cell = [[UITableViewCell alloc]init];
     NSString *str = [NSString stringWithFormat:@"text %ld",indexPath.row];
     cell.textLabel.text = str;
+    cell.backgroundColor = [UIColor clearColor];
     if (indexPath.row == self.array.count - 1)
     {
         cell.backgroundColor = [UIColor redColor];
