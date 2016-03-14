@@ -197,7 +197,7 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     //刷新数据 to do here --------
-    [self updateDataSoucre:self.scArray AtTableView:self.scTableView];
+    [self updateDataSoucre:self.array[0] AtTableView:self.scTableView];
     //设置cell的选中状态
     [self setStateOfCurrentCell];
 }
@@ -209,6 +209,7 @@
 
     self.scArray = self.array[cell.cellIndex];
     self.scDelegate.scArray = self.scArray;
+
 
     [tableView reloadData];
 }
