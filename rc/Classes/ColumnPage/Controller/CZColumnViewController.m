@@ -17,7 +17,7 @@
 #import "CZLeftTableViewDelegate.h"
 #import "CZRightTableViewDelegate.h"
 #import "RCColumnInfoView.h"
-
+#import "UINavigationBar+Awesome.h"
 @interface CZColumnViewController ()
 @property (nonatomic, strong) CZLeftTableViewDelegate *leftDelegate;
 @property (nonatomic, strong) CZRightTableViewDelegate *rightDelegate;
@@ -43,7 +43,14 @@
 
 @implementation CZColumnViewController
 
+- (void)viewWillAppear:(BOOL)animated
+{
+    [super viewWillAppear:animated];
+    
+    [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
+    
 
+}
 - (void)createSubview
 {
     self.other = [[RCColumnInfoView alloc]init];
@@ -55,6 +62,9 @@
     self.leftDelegate = [[CZLeftTableViewDelegate alloc]init];
     self.rightDelegate = [[CZRightTableViewDelegate alloc]init];
     self.tagArray = [[NSArray alloc]initWithObjects:self.other,self.internet,self.media,self.university,self.businessStartups, self.finance, nil];
+    
+    self.leftDelegate.view = self.view;
+    self.rightDelegate.view = self.view;
 }
 #pragma mark - ViewDidLoad
 - (void)viewDidLoad
