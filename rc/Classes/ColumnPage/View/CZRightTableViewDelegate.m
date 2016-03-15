@@ -40,16 +40,10 @@
 {
 
     //1 创建可重用的自定义cell
-   // static NSString *reuseId = @"columnCell";
-//    CZColumnCell * cell = (CZColumnCell*)[tableView dequeueReusableCellWithIdentifier:reuseId];
-//    if (!cell)
-//    {
-//        cell = [[CZColumnCell alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
-//    }
-    CZColumnCell * cell = [[CZColumnCell alloc]init];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;    //清除cell的点击状态
+    //CZColumnCell *cell = [CZColumnCell cellWithTableView:tableView];
+    CZColumnCell *cell = [[CZColumnCell alloc]init];
     cell.isLeft = NO;
-    cell.backgroundColor = [UIColor clearColor];
+    
     //对cell内的控件进行赋值
     [self setCellValue:cell AtIndexPath:indexPath];
     

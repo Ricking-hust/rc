@@ -12,6 +12,40 @@
 
 @implementation CZColumnCell
 
++ (instancetype)cellWithTableView:(UITableView*)tableView
+{
+    static NSString *reuseId = @"columnCell";
+    CZColumnCell * cell = (CZColumnCell*)[tableView dequeueReusableCellWithIdentifier:reuseId];
+    if (!cell)
+    {
+        cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
+    
+    return cell;
+    
+}
+- (instancetype) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])
+    {
+        self.acImageView = [[UIImageView alloc]init];
+        self.acNameLabel = [[UILabel alloc]init];
+        self.acTimeLabel = [[UILabel alloc]init];
+        self.acPlaceLabel = [[UILabel alloc]init];
+        self.tagImageView = [[UIImageView alloc]init];
+        self.acTagLabel = [[UILabel alloc]init];
+        self.device = [self currentDeviceSize];
+        self.isLeft = NO;
+        self.cellHeight = 44;
+        self.bgView = [[UIView alloc]init];
+    }
+    [self setSubViewProperty];
+    return self;
+    
+}
+
 - (id)init
 {
     if (self = [super init])
@@ -28,16 +62,22 @@
         self.bgView = [[UIView alloc]init];
     }
     [self setSubViewProperty];
+    self.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
     return self;
 }
 - (void)setSubViewProperty
 {
+    self.selectionStyle = UITableViewCellSelectionStyleNone;    //清除cell的点击状态
+    self.backgroundColor = [UIColor clearColor];
     self.acNameLabel.font = [UIFont systemFontOfSize:14];
     self.acTimeLabel.font = [UIFont systemFontOfSize:12];
     self.acPlaceLabel.font = [UIFont systemFontOfSize:12];
     self.acTagLabel.font = [UIFont systemFontOfSize:10];
     self.acTimeLabel.alpha = 0.8;
     self.acPlaceLabel.alpha = 0.8;
+    self.acNameLabel.numberOfLines = 0;
+    self.acTimeLabel.numberOfLines = 0;
+    self.acPlaceLabel.numberOfLines = 0;
     [self.contentView addSubview:self.bgView];
     [self.bgView addSubview:self.acImageView];
     [self.bgView addSubview:self.acNameLabel];

@@ -65,6 +65,7 @@
     
     self.leftDelegate.view = self.view;
     self.rightDelegate.view = self.view;
+    
 }
 #pragma mark - ViewDidLoad
 - (void)viewDidLoad
@@ -78,11 +79,6 @@
     [self configureBlocks];
     self.getIndListBlock();
     self.other.hidden = NO;
-}
-
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-    
 }
 
 - (void)onClickTooBtn:(UIButton *)btn
