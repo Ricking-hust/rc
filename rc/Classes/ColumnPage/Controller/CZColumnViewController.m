@@ -35,10 +35,10 @@
 
 @property (nonatomic,strong) IndustryList *indList;
 @property (nonatomic,strong) ActivityList *activityList;
+@property (nonatomic,strong) NSMutableDictionary *activityDic;
 
 @property (nonatomic,copy) NSURLSessionDataTask *(^getIndListBlock)();
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)();
-
 @end
 
 @implementation CZColumnViewController
@@ -66,14 +66,19 @@
     UIView *temp = [[UIView alloc]init];
     [self.view addSubview:temp];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-    [self addSubviewToView];
 
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tableViewContentSize:) name:@"ContentSize" object:nil];
     [self configureBlocks];
     self.getIndListBlock();
+    self.getActivityListWithIndBlock();
     //self.other.hidden = NO;
-
 }
+
+-(void)viewDidAppear:(BOOL)animated{
+    [super viewDidAppear:animated];
+    
+}
+
 - (void)onClickTooBtn:(UIButton *)btn
 {
     
@@ -141,8 +146,6 @@
     self.leftDelegate.rightTableView = self.other.rightTableView;
     self.rightDelegate.rightTableView = self.other.rightTableView;
     self.rightDelegate.leftTableView = self.other.leftTableView;
-    self.leftDelegate.array = self.leftArray;
-    self.rightDelegate.array = self.rightArray;
     
     self.internet.leftTableView.delegate = self.leftDelegate;
     self.internet.leftTableView.dataSource = self.leftDelegate;
@@ -163,6 +166,9 @@
     self.finance.leftTableView.delegate = self.leftDelegate;
     self.finance.rightTableView.delegate = self.rightDelegate;
     self.finance.rightTableView.dataSource = self.rightDelegate;
+    
+    self.leftDelegate.array = [self.leftArray initWithArray:self.activityList.list];
+    self.rightDelegate.array = [self.leftArray initWithArray:self.activityList.list];
     
     [self.view addSubview:self.other];
     [self.view addSubview:self.internet];
@@ -201,23 +207,6 @@
     }];
 }
 
-- (NSMutableArray *)leftArray
-{
-    if (!_leftArray)
-    {
-        _leftArray = [[NSMutableArray alloc]initWithObjects:@"1", @"1",@"1",@"1",@"1",@"1",nil];
-    }
-    return _leftArray;
-}
-- (NSMutableArray *)rightArray
-{
-    if (!_rightArray)
-    {
-        _rightArray = [[NSMutableArray alloc]initWithObjects:@"1", @"1",@"1",@"1",@"1",@"1",nil];
-    }
-    return _rightArray;
-}
-
 -(void)didReceiveMemoryWarning{
     [super didReceiveMemoryWarning];
 }
@@ -236,14 +225,34 @@
             NSLog(@"Error:%@",error);
         }];
     };
+    
+    self.getActivityListWithIndBlock = ^(){
+        @strongify(self);
+        return [[DataManager manager] checkIndustryWithCityId:@"1" industryId:@"1" startId:@"0" success:^(ActivityList *acList) {
+            @strongify(self);
+            self.activityList = acList;
+        } failure:^(NSError *error) {
+            NSLog(@"Error:%@",error);
+        }];
+    };
 }
+
+
 
 -(void)setIndList:(IndustryList *)indList{
     _indList = indList;
-    
     //创建工具条按钮
     [self showToolButtons];
+}
+
+-(void)setActivityList:(ActivityList *)activityList{
+    _activityList = activityList;
     
+    [self addSubviewToView];
+}
+
+-(void)setActivityDic:(NSMutableDictionary *)activityDic{
+    _activityDic =activityDic;
 }
 
 #pragma mark - 懒加载，创建主题色

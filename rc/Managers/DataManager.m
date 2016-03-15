@@ -126,7 +126,6 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
         manager.responseSerializer = responseSerializer;
         manager.responseSerializer.acceptableContentTypes =  [NSSet setWithObject:@"text/html"];
         task = [manager POST:URL.absoluteString parameters:parameters progress:nil success:^(NSURLSessionDataTask * _Nonnull task, id  _Nullable responseObject) {
-            //NSDictionary *usrdic = [[NSDictionary alloc] initWithDictionary:[responseObject objectForKey:@"data"]];
             responseHandleBlock(task,responseObject);
         } failure:^(NSURLSessionDataTask * _Nullable task, NSError * _Nonnull error) {
             [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
