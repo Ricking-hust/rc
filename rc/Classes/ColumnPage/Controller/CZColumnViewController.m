@@ -35,7 +35,7 @@
 
 @property (nonatomic,strong) IndustryList *indList;
 @property (nonatomic,strong) ActivityList *activityList;
-@property (nonatomic,strong) NSMutableDictionary *activityDic;
+@property (nonatomic,copy) NSMutableDictionary *activityDic;
 
 @property (nonatomic,copy) NSURLSessionDataTask *(^getIndListBlock)();
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)(IndustryModel *model);
@@ -164,7 +164,7 @@
 //    self.finance.rightTableView.delegate = self.rightDelegate;
 //    self.finance.rightTableView.dataSource = self.rightDelegate;
     
-    self.leftDelegate.array = self.activityList.list;
+    self.leftDelegate.array = [self.activityDic objectForKey:@"互联网"];
     self.rightDelegate.array = self.activityList.list;
     
     [self.view addSubview:self.other];
@@ -218,8 +218,9 @@
         return [[DataManager manager] getAllIndustriesWithSuccess:^(IndustryList *indList) {
             @strongify(self)
             self.indList = indList;
-            IndustryModel *model = self.indList.list[0];
-            self.getActivityListWithIndBlock(model);
+            for (IndustryModel *model in self.indList.list) {
+                self.getActivityListWithIndBlock(model);
+            }
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];
@@ -245,6 +246,7 @@
 }
 
 -(void)setActivityList:(ActivityList *)activityList{
+    
     _activityList = activityList;
     
     [self addSubviewToView];
