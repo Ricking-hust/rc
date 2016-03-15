@@ -12,5 +12,5 @@
 @property (nonatomic, strong) CZTableView *leftTableView;
 @property (nonatomic, strong) CZTableView *rightTableView;
 @property (nonatomic, assign) CGFloat subHeight;
-@property (nonatomic, strong) NSMutableArray *array;
+@property (nonatomic, strong) NSArray *array;
 @end

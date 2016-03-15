@@ -167,8 +167,8 @@
     self.finance.rightTableView.delegate = self.rightDelegate;
     self.finance.rightTableView.dataSource = self.rightDelegate;
     
-    self.leftDelegate.array = [self.leftArray initWithArray:self.activityList.list];
-    self.rightDelegate.array = [self.leftArray initWithArray:self.activityList.list];
+    self.leftDelegate.array = self.activityList.list;
+    self.rightDelegate.array = self.activityList.list;
     
     [self.view addSubview:self.other];
     [self.view addSubview:self.internet];

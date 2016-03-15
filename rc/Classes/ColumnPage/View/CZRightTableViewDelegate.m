@@ -16,6 +16,7 @@
     {
         self.leftTableView = [[CZTableView alloc]init];
         self.rightTableView = [[CZTableView alloc]init];
+        self.array = [[NSArray alloc]init];
     }
     return self;
 }
