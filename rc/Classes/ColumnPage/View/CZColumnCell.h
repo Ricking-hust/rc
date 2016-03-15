@@ -18,6 +18,7 @@
 @property (nonatomic, assign) CurrentDevice device;
 @property (nonatomic, assign) BOOL isLeft;
 @property (nonatomic, assign) CGFloat cellHeight;
+@property (nonatomic, strong) UIView *bgView;
 /**
  *  对cell的子控件进行布局
  *

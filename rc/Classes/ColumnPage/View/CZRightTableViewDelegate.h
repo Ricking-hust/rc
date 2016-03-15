@@ -8,9 +8,11 @@
 
 #import <Foundation/Foundation.h>
 @class CZTableView;
-@interface CZRightTableViewDelegate : NSObject<UITableViewDelegate, UITableViewDataSource>
+@interface CZRightTableViewDelegate : UIView<UITableViewDelegate, UITableViewDataSource>
 @property (nonatomic, strong) CZTableView *leftTableView;
 @property (nonatomic, strong) CZTableView *rightTableView;
 @property (nonatomic, assign) CGFloat subHeight;
 @property (nonatomic, strong) NSArray *array;
+@property (nonatomic, strong) UIView *view;
 @end
+

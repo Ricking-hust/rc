@@ -25,6 +25,7 @@
         self.device = [self currentDeviceSize];
         self.isLeft = NO;
         self.cellHeight = 44;
+        self.bgView = [[UIView alloc]init];
     }
     [self setSubViewProperty];
     return self;
@@ -37,12 +38,17 @@
     self.acTagLabel.font = [UIFont systemFontOfSize:10];
     self.acTimeLabel.alpha = 0.8;
     self.acPlaceLabel.alpha = 0.8;
-    [self.contentView addSubview:self.acImageView];
-    [self.contentView addSubview:self.acNameLabel];
-    [self.contentView addSubview:self.acTimeLabel];
-    [self.contentView addSubview:self.acPlaceLabel];
-    [self.contentView addSubview:self.tagImageView];
-    [self.contentView addSubview:self.acTagLabel];
+    [self.contentView addSubview:self.bgView];
+    [self.bgView addSubview:self.acImageView];
+    [self.bgView addSubview:self.acNameLabel];
+    [self.bgView addSubview:self.acTimeLabel];
+    [self.bgView addSubview:self.acPlaceLabel];
+    [self.bgView addSubview:self.tagImageView];
+    [self.bgView addSubview:self.acTagLabel];
+    self.bgView.backgroundColor = [UIColor whiteColor];
+    [self.bgView.layer setShadowColor:[UIColor blackColor].CGColor];//设置View的阴影颜色
+    [self.bgView.layer setShadowOpacity:0.8f];//设置阴影的透明度
+    [self.bgView.layer setShadowOffset:CGSizeMake(2.0, 1.0)];//设置View Shadow的偏移量
     
 }
 - (void)setSubviewConstraint
@@ -71,25 +77,12 @@
         leftPaddintToContentView = 20;
         rightPaddingToContentView = leftPaddintToContentView;
     }
-    
-    //图片的约束
-    if (self.isLeft)
-    {
-        [self.acImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).offset(leftPaddintToContentView);
-            make.top.equalTo(self.contentView.mas_top);
-            make.width.mas_equalTo(acImageW);
-            make.height.mas_equalTo(acImageH);
-        }];
-    }else
-    {
-        [self.acImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.contentView.mas_right).offset(rightPaddingToContentView);
-            make.top.equalTo(self.contentView.mas_top);
-            make.width.mas_equalTo(acImageW);
-            make.height.mas_equalTo(acImageH);
-        }];
-    }
+    [self.acImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.bgView.mas_left);
+        make.top.equalTo(self.bgView.mas_top);
+        make.right.equalTo(self.bgView.mas_right);
+        make.height.mas_equalTo(acImageH);
+    }];
     //活动名约束
     CGSize maxSize = CGSizeMake(acImageW - 20, MAXFLOAT);
     CGSize acNameSize = [self sizeWithText:self.acNameLabel.text maxSize:maxSize fontSize:14];
@@ -130,8 +123,26 @@
         make.height.mas_equalTo(acTagSize.height+1);
     }];
     //cell的高度
-    self.cellHeight = acImageH + 10 + acNameSize.height + 20 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height + 20;
-    
+    self.cellHeight = acImageH + 10 + acNameSize.height + 20 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height + 20 + 10;
+
+    if (self.isLeft == YES)
+    {
+        [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.contentView.mas_left).offset(leftPaddintToContentView);
+            make.top.equalTo(self.contentView.mas_top);
+            make.width.mas_equalTo(acImageW);
+            make.height.mas_equalTo(self.cellHeight - 10);
+        }];
+    }else
+    {
+        [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.right.equalTo(self.contentView.mas_right).offset(-rightPaddingToContentView);
+            make.top.equalTo(self.contentView.mas_top);
+            make.width.mas_equalTo(acImageW);
+            make.height.mas_equalTo(self.cellHeight - 10);
+        }];
+    }
+
 }
 //获取当前设备
 - (CurrentDevice)currentDeviceSize
@@ -141,7 +152,8 @@
     {
         return IPhone5;
         
-    }else if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 6"])
+    }else if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 6"] ||
+              [[self getCurrentDeviceModel] isEqualToString:@"iPhone Simulator"])
     {
         return IPhone6;
     }else
