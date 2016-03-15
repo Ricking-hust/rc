@@ -14,6 +14,9 @@
 - (void)reloadData
 {
     [super reloadData];
+//    NSLog(@"%ld",self.tag);
+//    NSLog(@"%f",self.contentSize.height);
+//    NSLog(@"self %@",self);
     [[NSNotificationCenter defaultCenter] postNotificationName:@"ContentSize" object:self];
 }
 @end

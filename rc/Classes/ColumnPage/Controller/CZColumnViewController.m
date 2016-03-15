@@ -43,21 +43,18 @@
 
 @implementation CZColumnViewController
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+
+- (void)createSubview
 {
-    if (self = [super initWithCoder:aDecoder])
-    {
-        self.other = [[RCColumnInfoView alloc]init];
-        self.internet = [[RCColumnInfoView alloc]init];
-        self.media = [[RCColumnInfoView alloc]init];
-        self.university = [[RCColumnInfoView alloc]init];
-        self.businessStartups = [[RCColumnInfoView alloc]init];
-        self.finance = [[RCColumnInfoView alloc]init];
-        self.leftDelegate = [[CZLeftTableViewDelegate alloc]init];
-        self.rightDelegate = [[CZRightTableViewDelegate alloc]init];
-        self.tagArray = [[NSArray alloc]initWithObjects:self.other,self.internet,self.media,self.university,self.businessStartups, self.finance, nil];
-    }
-    return self;
+    self.other = [[RCColumnInfoView alloc]init];
+    self.internet = [[RCColumnInfoView alloc]init];
+    self.media = [[RCColumnInfoView alloc]init];
+    self.university = [[RCColumnInfoView alloc]init];
+    self.businessStartups = [[RCColumnInfoView alloc]init];
+    self.finance = [[RCColumnInfoView alloc]init];
+    self.leftDelegate = [[CZLeftTableViewDelegate alloc]init];
+    self.rightDelegate = [[CZRightTableViewDelegate alloc]init];
+    self.tagArray = [[NSArray alloc]initWithObjects:self.other,self.internet,self.media,self.university,self.businessStartups, self.finance, nil];
 }
 #pragma mark - ViewDidLoad
 - (void)viewDidLoad
@@ -66,7 +63,7 @@
     UIView *temp = [[UIView alloc]init];
     [self.view addSubview:temp];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-
+    [self createSubview];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tableViewContentSize:) name:@"ContentSize" object:nil];
     [self configureBlocks];
     self.getIndListBlock();
@@ -141,30 +138,31 @@
     self.other.leftTableView.dataSource = self.leftDelegate;
     self.other.rightTableView.delegate = self.rightDelegate;
     self.other.rightTableView.dataSource = self.rightDelegate;
+    
     self.leftDelegate.leftTableView = self.other.leftTableView;
     self.leftDelegate.rightTableView = self.other.rightTableView;
     self.rightDelegate.rightTableView = self.other.rightTableView;
     self.rightDelegate.leftTableView = self.other.leftTableView;
     
-    self.internet.leftTableView.delegate = self.leftDelegate;
-    self.internet.leftTableView.dataSource = self.leftDelegate;
-    self.internet.rightTableView.delegate = self.rightDelegate;
-    self.internet.rightTableView.dataSource = self.rightDelegate;
-    
-    self.media.leftTableView.delegate = self.leftDelegate;
-    self.media.leftTableView.dataSource = self.leftDelegate;
-    self.media.rightTableView.delegate = self.rightDelegate;
-    self.media.rightTableView.dataSource = self.rightDelegate;
-    
-    self.university.leftTableView.delegate = self.leftDelegate;
-    self.university.leftTableView.dataSource = self.leftDelegate;
-    self.university.rightTableView.dataSource = self.rightDelegate;
-    self.university.rightTableView.delegate = self.rightDelegate;
-    
-    self.finance.leftTableView.dataSource = self.leftDelegate;
-    self.finance.leftTableView.delegate = self.leftDelegate;
-    self.finance.rightTableView.delegate = self.rightDelegate;
-    self.finance.rightTableView.dataSource = self.rightDelegate;
+//    self.internet.leftTableView.delegate = self.leftDelegate;
+//    self.internet.leftTableView.dataSource = self.leftDelegate;
+//    self.internet.rightTableView.delegate = self.rightDelegate;
+//    self.internet.rightTableView.dataSource = self.rightDelegate;
+//    
+//    self.media.leftTableView.delegate = self.leftDelegate;
+//    self.media.leftTableView.dataSource = self.leftDelegate;
+//    self.media.rightTableView.delegate = self.rightDelegate;
+//    self.media.rightTableView.dataSource = self.rightDelegate;
+//    
+//    self.university.leftTableView.delegate = self.leftDelegate;
+//    self.university.leftTableView.dataSource = self.leftDelegate;
+//    self.university.rightTableView.dataSource = self.rightDelegate;
+//    self.university.rightTableView.delegate = self.rightDelegate;
+//    
+//    self.finance.leftTableView.dataSource = self.leftDelegate;
+//    self.finance.leftTableView.delegate = self.leftDelegate;
+//    self.finance.rightTableView.delegate = self.rightDelegate;
+//    self.finance.rightTableView.dataSource = self.rightDelegate;
     
     self.leftDelegate.array = self.activityList.list;
     self.rightDelegate.array = self.activityList.list;
@@ -180,30 +178,30 @@
         make.left.equalTo(self.view.mas_left);
         make.bottom.equalTo(self.view.mas_bottom).offset(-49);
     }];
-    [self.internet mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.other.mas_top);
-        make.right.equalTo(self.view.mas_right);
-        make.left.equalTo(self.view.mas_left);
-        make.bottom.equalTo(self.other.mas_bottom);
-    }];
-    [self.media mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.other.mas_top);
-        make.right.equalTo(self.view.mas_right);
-        make.left.equalTo(self.view.mas_left);
-        make.bottom.equalTo(self.other.mas_bottom);
-    }];
-    [self.university mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.other.mas_top);
-        make.right.equalTo(self.view.mas_right);
-        make.left.equalTo(self.view.mas_left);
-        make.bottom.equalTo(self.other.mas_bottom);
-    }];
-    [self.finance mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.other.mas_top);
-        make.right.equalTo(self.view.mas_right);
-        make.left.equalTo(self.view.mas_left);
-        make.bottom.equalTo(self.other.mas_bottom);
-    }];
+//    [self.internet mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.other.mas_top);
+//        make.right.equalTo(self.view.mas_right);
+//        make.left.equalTo(self.view.mas_left);
+//        make.bottom.equalTo(self.other.mas_bottom);
+//    }];
+//    [self.media mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.other.mas_top);
+//        make.right.equalTo(self.view.mas_right);
+//        make.left.equalTo(self.view.mas_left);
+//        make.bottom.equalTo(self.other.mas_bottom);
+//    }];
+//    [self.university mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.other.mas_top);
+//        make.right.equalTo(self.view.mas_right);
+//        make.left.equalTo(self.view.mas_left);
+//        make.bottom.equalTo(self.other.mas_bottom);
+//    }];
+//    [self.finance mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.other.mas_top);
+//        make.right.equalTo(self.view.mas_right);
+//        make.left.equalTo(self.view.mas_left);
+//        make.bottom.equalTo(self.other.mas_bottom);
+//    }];
 }
 
 -(void)didReceiveMemoryWarning{
@@ -385,6 +383,8 @@
 - (void)tableViewContentSize:(NSNotification *)notification
 {
     CZTableView *tableView = [notification object];
+//    NSLog(@"%f",tableView.contentSize.height);
+//    NSLog(@"%ld",tableView.tag);
     if (tableView.tag == 12)
     {
         if (tableView.contentSize.height != 0)
@@ -410,7 +410,7 @@
 
             self.leftDelegate.subHeight = self.subHeight;
             CZTableView *left = [tableView.superview viewWithTag:11];
-            [left reloadData];
+            //[left reloadData];
         }else if (self.rightH - self.leftH < 0)
         {
             [self.rightArray addObject:@"2"];
@@ -418,7 +418,7 @@
 
             self.rightDelegate.subHeight = self.subHeight;
             CZTableView *right = [tableView.superview viewWithTag:12];
-            [right reloadData];
+            //[right reloadData];
         }else
         {
             ;
