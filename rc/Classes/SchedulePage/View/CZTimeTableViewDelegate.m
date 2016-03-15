@@ -101,7 +101,7 @@
 }
 - (void)addCellConstraint:(CZTimeNodeCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.row == 0 && self.isDefualt)
+    if (indexPath.row == 0 && self.isDefualt == YES)
     {
         [cell.upLineView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(cell.contentView.mas_top);

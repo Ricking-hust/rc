@@ -149,6 +149,7 @@
     if (self.isLogin == NO)
     {//如果用户未登录，则跳至登录界面
         //to do here ------------------------
+
         LoginViewController *loginViewController = [[LoginViewController alloc]init];
         [self.navigationController pushViewController:loginViewController animated:YES];
         

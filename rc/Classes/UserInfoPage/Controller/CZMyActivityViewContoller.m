@@ -7,7 +7,7 @@
 //
 
 #import "CZMyActivityViewContoller.h"
-#import "CZActivityCell.h"
+#import "RCMyActivityCell.h"
 #import "Activity.h"
 
 @interface CZMyActivityViewContoller()
@@ -75,8 +75,11 @@
 {
     [super viewDidLoad];
     
-    self.tableView.dataSource = self;
-
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self setNavigation];
+}
+- (void)setNavigation
+{
     self.navigationItem.title = @"我的活动";
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     
@@ -119,18 +122,31 @@
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    
-    //1 创建可重用的自定义cell
-    CZActivitycell *cell = (CZActivitycell*)[CZActivitycell activitycellWithTableView:tableView];
-    cell.activity = (Activity*)self.activity[indexPath.section];
-    
-    
-    //2 返回cell
+    static NSString *reuseId = @"myActivity";
+    RCMyActivityCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseId];
+    if (!cell)
+    {
+        cell = [[RCMyActivityCell alloc]init];
+    }
+    //对cell赋值
+    [self setValueOfCell:cell AtIndexPath:indexPath];
+    //对cell布局
+    [cell setSubViewConstraint];
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CZActivitycell *cell = (CZActivitycell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-    return cell.cellHeight;
+    RCMyActivityCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+    return cell.rowHeight;
+    
+}
+- (void)setValueOfCell:(RCMyActivityCell *)cell AtIndexPath:(NSIndexPath *)indexPath
+{
+    Activity *ac = self.activity[indexPath.section];
+    cell.acImageView.image = [UIImage imageNamed:ac.ac_poster];
+    cell.acName.text = ac.ac_title;
+    cell.acTime.text = ac.ac_time;
+    cell.acPlace.text = ac.ac_place;
+    cell.acTag.text = ac.ac_tags;
 }
 @end
