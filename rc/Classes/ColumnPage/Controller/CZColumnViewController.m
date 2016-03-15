@@ -67,7 +67,7 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tableViewContentSize:) name:@"ContentSize" object:nil];
     [self configureBlocks];
     self.getIndListBlock();
-    //self.other.hidden = NO;
+    self.other.hidden = NO;
 }
 
 -(void)viewDidAppear:(BOOL)animated{
