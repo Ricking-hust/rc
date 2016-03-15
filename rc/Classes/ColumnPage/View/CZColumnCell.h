@@ -19,7 +19,6 @@
 @property (nonatomic, assign) BOOL isLeft;
 @property (nonatomic, assign) CGFloat cellHeight;
 @property (nonatomic, strong) UIView *bgView;
-
 /**
  *  类方法 创建可重用的自定义的cell对象
  *

@@ -91,6 +91,7 @@
     [self.bgView.layer setShadowOffset:CGSizeMake(2.0, 1.0)];//设置View Shadow的偏移量
     
 }
+
 - (void)setSubviewConstraint
 {
     CGFloat acImageW; //图片的最大宽度,活动名的最大宽度
@@ -135,7 +136,7 @@
     //活动时间约束
     CGSize acTimeSize = [self sizeWithText:self.acTimeLabel.text maxSize:maxSize fontSize:12];
     [self.acTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.acNameLabel.mas_bottom).offset(20);
+        make.top.equalTo(self.acNameLabel.mas_bottom).offset(10);
         make.left.equalTo(self.acNameLabel.mas_left);
         make.width.mas_equalTo(acTimeSize.width+1);
         make.height.mas_equalTo(acTimeSize.height+1);
@@ -163,13 +164,14 @@
         make.height.mas_equalTo(acTagSize.height+1);
     }];
     //cell的高度
-    self.cellHeight = acImageH + 10 + acNameSize.height + 20 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height + 20 + 10;
+    self.cellHeight = acImageH + 10 + acNameSize.height + 10 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height+20;
 
     if (self.isLeft == YES)
     {
         [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(leftPaddintToContentView);
-            make.top.equalTo(self.contentView.mas_top);
+            //make.top.equalTo(self.contentView.mas_top);
+            make.centerY.equalTo(self.contentView.mas_centerY);
             make.width.mas_equalTo(acImageW);
             make.height.mas_equalTo(self.cellHeight - 10);
         }];
@@ -177,7 +179,8 @@
     {
         [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.contentView.mas_right).offset(-rightPaddingToContentView);
-            make.top.equalTo(self.contentView.mas_top);
+            //make.top.equalTo(self.contentView.mas_top);
+            make.centerY.equalTo(self.contentView.mas_centerY);
             make.width.mas_equalTo(acImageW);
             make.height.mas_equalTo(self.cellHeight - 10);
         }];
