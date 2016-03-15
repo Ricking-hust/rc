@@ -345,7 +345,7 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
                                        industryId:(NSString *)industryId
                                           startId:(NSString *)startId
                                           success:(void (^)(ActivityList *acList))success
-                                          failure:(void (^)(NSError *))failure{
+                                          failure:(void (^)(NSError *error))failure{
     NSDictionary *parameters = @{
                                  @"ct_id":cityId,
                                  @"ind_id":industryId,

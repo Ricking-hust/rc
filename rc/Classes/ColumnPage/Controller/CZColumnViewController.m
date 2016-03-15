@@ -38,7 +38,7 @@
 @property (nonatomic,strong) NSMutableDictionary *activityDic;
 
 @property (nonatomic,copy) NSURLSessionDataTask *(^getIndListBlock)();
-@property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)();
+@property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)(IndustryModel *model);
 @end
 
 @implementation CZColumnViewController
@@ -70,7 +70,6 @@
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tableViewContentSize:) name:@"ContentSize" object:nil];
     [self configureBlocks];
     self.getIndListBlock();
-    self.getActivityListWithIndBlock();
     //self.other.hidden = NO;
 }
 
@@ -221,14 +220,16 @@
         return [[DataManager manager] getAllIndustriesWithSuccess:^(IndustryList *indList) {
             @strongify(self)
             self.indList = indList;
+            IndustryModel *model = self.indList.list[0];
+            self.getActivityListWithIndBlock(model);
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];
     };
     
-    self.getActivityListWithIndBlock = ^(){
+    self.getActivityListWithIndBlock = ^(IndustryModel *model){
         @strongify(self);
-        return [[DataManager manager] checkIndustryWithCityId:@"1" industryId:@"1" startId:@"0" success:^(ActivityList *acList) {
+        return [[DataManager manager] checkIndustryWithCityId:@"1" industryId:model.indId startId:@"0" success:^(ActivityList *acList) {
             @strongify(self);
             self.activityList = acList;
         } failure:^(NSError *error) {
