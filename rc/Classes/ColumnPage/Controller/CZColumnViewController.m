@@ -142,6 +142,7 @@
     self.other.leftTableView.dataSource = self.leftDelegate;
     self.other.rightTableView.delegate = self.rightDelegate;
     self.other.rightTableView.dataSource = self.rightDelegate;
+    
     self.leftDelegate.leftTableView = self.other.leftTableView;
     self.leftDelegate.rightTableView = self.other.rightTableView;
     self.rightDelegate.rightTableView = self.other.rightTableView;
