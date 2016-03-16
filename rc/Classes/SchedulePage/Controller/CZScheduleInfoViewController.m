@@ -11,6 +11,8 @@
 #import "CZUpdateScheduleViewController.h"
 #import "CZScheduleViewController.h"
 #import "PlanModel.h"
+#import "CZTimeNodeCell.h"
+#import "CZTimeTableViewDelegate.h"
 
 #define FONTSIZE    14  //字体大小
 #define PADDING     5
@@ -51,9 +53,16 @@
     }
     return _planListRanged;
 }
+- (UITableView *)timeNodeTableView
+{
+    if (!_timeNodeTableView)
+    {
+        _timeNodeTableView = [[UITableView alloc]init];
+    }
+    return _timeNodeTableView;
+}
 - (void)createSubView
 {
-    self.scIndex = 0;
     self.bgView = [[UIView alloc]init];
     self.tagImage = [[UIImageView alloc]init];
     self.scThemeLabel = [[UILabel alloc]init];
@@ -72,17 +81,46 @@
 {
     NSMutableArray *tempArray = [[NSMutableArray alloc]initWithArray:self.scArray];
     [tempArray removeObjectAtIndex:self.scIndex];
-//    long int count = self.navigationController.viewControllers.count;
-//    CZScheduleInfoViewController *scViewController = self.navigationController.viewControllers[count - 2];
+
     if (tempArray.count == 0)
     {
         [self.planListRanged removeObjectAtIndex:self.timeNodeIndex];
+        long int count = self.navigationController.viewControllers.count;
+        CZScheduleViewController *sc = self.navigationController.viewControllers[count - 2];
+        CZTimeNodeCell *cell = self.timeNodeTableView.visibleCells.firstObject;
+        NSLog(@"%@",cell.dayLabel.text);
+        [self setStateOfCurrentCell:self.timeNodeTableView.visibleCells.firstObject];
+        [self.timeNodeTableView reloadData];
+        sc.scIndex = self.timeNodeTableView.visibleCells.firstObject.tag;
+        
         [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"scArray" object:self.scArray];
+        
+    }else
+    {
+        [self.planListRanged removeObjectAtIndex:self.timeNodeIndex];
+        self.scArray = [[NSArray alloc]initWithArray:tempArray];
+        [self.planListRanged insertObject:self.scArray atIndex:self.timeNodeIndex];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"scArray" object:self.scArray];
     }
 
     [self.navigationController popViewControllerAnimated:YES];
 }
-
+- (void)setStateOfCurrentCell:(CZTimeNodeCell *)cell
+{
+    [self.timeNodeTableView reloadData];
+    cell.selectedPoint.hidden = NO;
+    
+    [cell.upLineView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(cell.point.mas_top).offset(-10);
+    }];
+    
+    [cell.downLineView mas_updateConstraints:^(MASConstraintMaker *make){
+        make.top.equalTo(cell.point.mas_bottom).offset(10);
+    }];
+    
+    [cell layoutIfNeeded];
+}
 - (void)didDisplayInfo
 {
     PlanModel *model = self.scArray[self.scIndex];

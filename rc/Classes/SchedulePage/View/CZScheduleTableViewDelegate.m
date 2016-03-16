@@ -99,6 +99,7 @@
     info.scIndex = (int)clickGesture.view.tag;
     info.scArray = self.scArray;
     info.planListRanged = self.planListRanged;
+    info.timeNodeTableView = self.timeNodeTableView;
     info.timeNodeIndex = self.timeNodeTableView.visibleCells.firstObject.tag;
     [[self viewController].navigationController pushViewController:info animated:YES];
 }

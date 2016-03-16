@@ -80,9 +80,9 @@
 {
 
     self.timeDelegate.isDefualt = YES;
-    self.scDelegate.scArray = self.planListRanged[0];
+    self.scDelegate.scArray = self.planListRanged[self.scIndex];
     [self.scTableView reloadData];
-    [self.timeNodeTableView reloadData];
+    //[self.timeNodeTableView reloadData];
     //将行程的更新上传到服务器---------
     
 }

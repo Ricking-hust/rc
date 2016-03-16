@@ -217,19 +217,19 @@
     self.scDelegate.timeNodeIndex = cell.cellIndex;
     self.scDelegate.scArray = self.scArray;
     
-    NSLog(@"count of visiable cell %ld",self.timeNodeTableView.visibleCells.count);
-    NSLog(@"first cell day %@",cell.dayLabel.text);
-    for (int i = 0; i < self.timeNodeTableView.visibleCells.count; i++)
-    {
-        CZTimeNodeCell *testcell = self.timeNodeTableView.visibleCells[i];
-        if ([testcell isKindOfClass:[CZTimeNodeCell class]])
-        {
-            NSLog(@"timenode cell %d %@",i,testcell.dayLabel.text);
-        }else
-        {
-            NSLog(@"system cell %d",i);
-        }
-    }
+//    NSLog(@"count of visiable cell %ld",self.timeNodeTableView.visibleCells.count);
+//    NSLog(@"first cell day %@",cell.dayLabel.text);
+//    for (int i = 0; i < self.timeNodeTableView.visibleCells.count; i++)
+//    {
+//        CZTimeNodeCell *testcell = self.timeNodeTableView.visibleCells[i];
+//        if ([testcell isKindOfClass:[CZTimeNodeCell class]])
+//        {
+//            NSLog(@"timenode cell %d %@",i,testcell.dayLabel.text);
+//        }else
+//        {
+//            NSLog(@"system cell %d",i);
+//        }
+//    }
     [tableView reloadData];
 }
 - (void)setStateOfCurrentCell

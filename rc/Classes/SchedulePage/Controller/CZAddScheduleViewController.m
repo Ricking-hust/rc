@@ -20,7 +20,7 @@
 
 @interface CZAddScheduleViewController ()
 @property (nonatomic, strong)PlanModel *model;
-
+@property (nonatomic, assign)BOOL isNewDay;
 
 @end
 
@@ -32,6 +32,14 @@
         _scArray = [[NSArray alloc]init];
     }
     return _scArray;
+}
+- (BOOL)isNewDay
+{
+    if (!_isNewDay)
+    {
+        _isNewDay = YES;
+    }
+    return _isNewDay;
 }
 - (NSMutableArray *)planListRanged
 {
@@ -79,7 +87,9 @@
         model.acId = @"1";
         model.themeName = self.upView.themeNameLabel.text;
         model.acPlace = @"";
-
+        long int count = self.navigationController.viewControllers.count;
+        CZScheduleViewController *sc = self.navigationController.viewControllers[count -2];
+        sc.scIndex = self.timeNodeIndex;
         [self insertSC:model];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"scArray" object:self.scArray];
         [self.navigationController popViewControllerAnimated:YES];
@@ -114,6 +124,7 @@
                 newModel.planTime = strCurrentDate;
                 [newscArray addObject:newModel];
                 [self.planListRanged insertObject:newscArray atIndex:i];
+                [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
                 break;
             }
         }else if (currentDate > dataCmp)
@@ -135,6 +146,7 @@
         newModel.planTime = strCurrentDate;
         [newscArray addObject:newModel];
         [self.planListRanged addObject:newscArray];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
     }
 
     
