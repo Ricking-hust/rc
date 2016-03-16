@@ -8,6 +8,8 @@
 
 #import "CZUpdateScheduleViewController.h"
 
-@interface CZAddScheduleViewController : CZUpdateScheduleViewController 
-
+@interface CZAddScheduleViewController : CZUpdateScheduleViewController
+@property (nonatomic, strong) NSArray *scArray;
+@property (nonatomic,strong) NSMutableArray *planListRanged;
+@property (nonatomic, assign) long int timeNodeIndex;
 @end

@@ -21,10 +21,17 @@
     {
         self.scArray = [[NSArray alloc]init];
         self.view = [[UIView alloc]init];
+        self.timeNodeIndex = 0;
+        self.tempArray = [[NSMutableArray alloc]init];
+        self.timeNodeTableView = [[UITableView alloc]init];
     }
     return self;
 }
-
+- (void)setScArray:(NSArray *)scArray
+{
+    _scArray = scArray;
+    _tempArray = [[NSMutableArray alloc]initWithArray:_scArray];
+}
 - (void)setDevice:(CurrentDevice)device
 {
     _device = device;
@@ -91,6 +98,8 @@
     CZScheduleInfoViewController *info = [[CZScheduleInfoViewController alloc]init];
     info.scIndex = (int)clickGesture.view.tag;
     info.scArray = self.scArray;
+    info.planListRanged = self.planListRanged;
+    info.timeNodeIndex = self.timeNodeTableView.visibleCells.firstObject.tag;
     [[self viewController].navigationController pushViewController:info animated:YES];
 }
 - (UIViewController *)viewController {

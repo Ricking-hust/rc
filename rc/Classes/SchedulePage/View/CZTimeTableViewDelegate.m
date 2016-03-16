@@ -48,7 +48,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.array.count+1;
+    return self.array.count+2;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -64,6 +64,7 @@
         //对cell进行布局
         [self addCellConstraint:cell AtIndexPath:indexPath];
         cell.tag = indexPath.row;
+
         return cell;
     }else
     {
@@ -73,12 +74,17 @@
         return cell;
     }
 
+
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.array.count == indexPath.row)
     {
         return kScreenHeight - self.height - 64 -35 - 49;
+    }
+    if (self.array.count + 1 == indexPath.row)
+    {
+        return 1;
     }
     return self.height;
 }
@@ -197,7 +203,7 @@
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     //刷新数据 to do here --------
-    [self updateDataSoucre:self.array[0] AtTableView:self.scTableView];
+    [self updateDataSoucre:self.scArray AtTableView:self.scTableView];
     //设置cell的选中状态
     [self setStateOfCurrentCell];
 }
@@ -206,13 +212,43 @@
 {
     self.scArray = nil;
     CZTimeNodeCell *cell = self.timeNodeTableView.visibleCells.firstObject;
-
+    
     self.scArray = self.array[cell.cellIndex];
+    self.scDelegate.timeNodeIndex = cell.cellIndex;
     self.scDelegate.scArray = self.scArray;
-
-
+    
+    NSLog(@"count of visiable cell %ld",self.timeNodeTableView.visibleCells.count);
+    NSLog(@"first cell day %@",cell.dayLabel.text);
+    for (int i = 0; i < self.timeNodeTableView.visibleCells.count; i++)
+    {
+        CZTimeNodeCell *testcell = self.timeNodeTableView.visibleCells[i];
+        if ([testcell isKindOfClass:[CZTimeNodeCell class]])
+        {
+            NSLog(@"timenode cell %d %@",i,testcell.dayLabel.text);
+        }else
+        {
+            NSLog(@"system cell %d",i);
+        }
+    }
     [tableView reloadData];
 }
+- (void)setStateOfCurrentCell
+{
+    [self.timeNodeTableView reloadData];
+    CZTimeNodeCell *cell = self.timeNodeTableView.visibleCells.firstObject;
+    cell.selectedPoint.hidden = NO;
+    
+    [cell.upLineView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(cell.point.mas_top).offset(-10);
+    }];
+    
+    [cell.downLineView mas_updateConstraints:^(MASConstraintMaker *make){
+        make.top.equalTo(cell.point.mas_bottom).offset(10);
+    }];
+    
+    [cell layoutIfNeeded];
+}
+
 /**
  *  根据日期返回星期
  *
@@ -230,32 +266,6 @@
     NSDateComponents *components = [calendar components:calendarUnit fromDate:date];
     return [weeks objectAtIndex:components.weekday];
 }
-
-#pragma mark - 更新数据
-- (void)updateUpDataSoucre:(NSMutableArray *)array AtTableView:(UITableView *)tableView
-{
-    CZTimeNodeCell *cell = self.timeNodeTableView.visibleCells.firstObject;
-    self.scArray = self.array[cell.cellIndex];
-    [tableView reloadData];
-}
-- (void)setStateOfCurrentCell
-{
-    [self.timeNodeTableView reloadData];
-    CZTimeNodeCell *cell = self.timeNodeTableView.visibleCells.firstObject;
-    cell.selectedPoint.hidden = NO;
-    
-    [cell.upLineView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(cell.point.mas_top).offset(-10);
-    }];
-    
-    [cell.downLineView mas_updateConstraints:^(MASConstraintMaker *make){
-        make.top.equalTo(cell.point.mas_bottom).offset(10);
-    }];
-
-    [cell layoutIfNeeded];
-
-}
-
 
 - (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize
 {

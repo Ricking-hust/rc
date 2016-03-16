@@ -10,13 +10,13 @@
 #import "CZTimeTableViewDelegate.h"
 #import "CZScheduleTableViewDelegate.h"
 #import "CZUpdateScheduleViewController.h"
-#import "CZTestData.h"
 #import "PlanModel.h"
 #import "CZTimeNodeCell.h"
+#import "CZAddScheduleViewController.h"
 #include <sys/sysctl.h>
 
 @interface CZScheduleViewController ()
-@property (nonatomic, strong) NSArray *scArray;
+
 @property (nonatomic, assign) CurrentDevice device;
 @property (nonatomic,strong) PlanList *planList;
 @property (nonatomic,strong) NSMutableArray *planListRanged;
@@ -26,30 +26,6 @@
 
 @implementation CZScheduleViewController
 
-- (void)viewWillAppear:(BOOL)animated
-{
-    //[self displayTimeNode];
-
-//    if (self.scDelegate.scArray.count == 0 && self.timeDelegate.array.count != 0)
-//    {
-//        CZTimeNodeCell *cell = self.timeNodeTableView.visibleCells.firstObject;
-//        NSMutableArray *temp = [[NSMutableArray alloc]initWithArray:self.timeDelegate.array];
-//        [temp removeObjectAtIndex:cell.tag];
-//        self.timeDelegate.array = temp;
-//        [self.timeNodeTableView reloadData];
-//    }
-    self.scDelegate.scArray = self.scArray;
-    [self.scTableView reloadData];
-}
-#pragma mark - data
-- (NSArray *)scArray
-{
-    if (!_scArray)
-    {
-        _scArray = [[NSArray alloc]init];
-    }
-    return _scArray;
-}
 -(void)configureBlocks{
     @weakify(self);
     self.getPlanListBlock = ^(){
@@ -91,12 +67,34 @@
 {
     [super viewDidLoad];
     [self setNavigation];
+    [self createSubView];
     [self addSubViews];
     [self configureBlocks];
     self.getPlanListBlock();
+    //注册通知，监听行程数据的改变
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(scArrayDidChanged:) name:@"scArray" object:nil];
+    //注册通知，监听时间节点的改变
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(timeNodeDidChanged:) name:@"timeNode" object:nil];
+}
+- (void)scArrayDidChanged:(NSNotification *)notification
+{
+
+    self.timeDelegate.isDefualt = YES;
+    self.scDelegate.scArray = self.planListRanged[0];
+    [self.scTableView reloadData];
+    [self.timeNodeTableView reloadData];
+    //将行程的更新上传到服务器---------
     
 }
-
+- (void)timeNodeDidChanged:(NSNotification *)notification
+{
+    self.timeDelegate.array = notification.object;
+    self.timeDelegate.isDefualt = YES;
+    self.scDelegate.scArray = self.timeDelegate.array.firstObject;
+    [self.timeNodeTableView reloadData];
+    [self.scTableView reloadData];
+    //将行程的更新上传到服务器--------------
+}
 - (void)setNavigation
 {
     NSDate *senddate=[NSDate date];
@@ -113,16 +111,16 @@
 {
     [self rangePlanList:self.planList];
     self.timeDelegate.device = self.device;
-    self.scArray = self.planListRanged[0];
-    self.timeDelegate.scArray = self.scArray;
+    self.timeDelegate.scArray = self.planListRanged[0];
     self.timeDelegate.array = self.planListRanged;
     self.timeDelegate.scDelegate = self.scDelegate;
     self.timeDelegate.timeNodeTableView = self.timeNodeTableView;
     self.timeDelegate.scTableView = self.scTableView;
     
-    self.scDelegate.scArray = self.scArray;
+    self.scDelegate.scArray = self.planListRanged[0];
     self.scDelegate.device =self.device;
-    
+    self.scDelegate.planListRanged = self.planListRanged;
+    self.scDelegate.timeNodeTableView = self.timeNodeTableView;
     [self.timeNodeTableView reloadData];
     [self.scTableView reloadData];
 }
@@ -160,40 +158,30 @@
     }];
     
 }
-- (id)initWithCoder:(NSCoder *)aDecoder
+- (void)createSubView
 {
-    if (self = [super initWithCoder:aDecoder])
-    {
-        self.timeNodeTableView = [[UITableView alloc]init];
-        self.scTableView = [[UITableView alloc]init];
-        self.imgView = [[UIImageView alloc]init];
-        self.imgView.image = [UIImage imageNamed:@"more"];
-        self.timeDelegate = [[CZTimeTableViewDelegate alloc]init];
-        self.timeNodeTableView.delegate = self.timeDelegate;
-        self.timeNodeTableView.dataSource = self.timeDelegate;
-        self.scDelegate = [[CZScheduleTableViewDelegate alloc]init];
-        self.scTableView.delegate = self.scDelegate;
-        self.scTableView.dataSource = self.scDelegate;
-        self.timeDelegate.scTableView = self.scTableView;
-    }
-    return self;
+    self.timeNodeTableView = [[UITableView alloc]init];
+    self.scTableView = [[UITableView alloc]init];
+    self.imgView = [[UIImageView alloc]init];
+    self.imgView.image = [UIImage imageNamed:@"more"];
+    self.timeDelegate = [[CZTimeTableViewDelegate alloc]init];
+    self.timeNodeTableView.delegate = self.timeDelegate;
+    self.timeNodeTableView.dataSource = self.timeDelegate;
+    self.scDelegate = [[CZScheduleTableViewDelegate alloc]init];
+    self.scTableView.delegate = self.scDelegate;
+    self.scTableView.dataSource = self.scDelegate;
+    self.timeDelegate.scTableView = self.scTableView;
 }
+#pragma mark - 添加行程
 - (IBAction)addSchedule:(id)sender
 {
-//
-//    NSMutableArray *temp = [[NSMutableArray alloc]initWithArray:self.timeDelegate.array];
-//    [temp removeObjectAtIndex:0];
-//    self.timeDelegate.array = temp;
-//    self.timeDelegate.isDefualt = YES;
-//    NSMutableArray *tempsc = [[NSMutableArray alloc]initWithArray:self.scArray];
-//    [tempsc removeObjectAtIndex:0];
-//    self.scArray = tempsc;
-//    self.scDelegate.scArray = self.scArray;
-//    [self.timeNodeTableView reloadData];
-//    [self.scTableView reloadData];
+    CZAddScheduleViewController *addSC = [[CZAddScheduleViewController alloc]init];
+    addSC.title = @"添加行程";
+    addSC.scArray = self.scDelegate.scArray;
+    addSC.planListRanged = self.planListRanged;
+    addSC.timeNodeIndex = self.scDelegate.timeNodeIndex;
+    [self.navigationController pushViewController:addSC animated:YES];
     
-    CZUpdateScheduleViewController *updateSc = [[CZUpdateScheduleViewController alloc]init];
-    [self.navigationController pushViewController:updateSc animated:YES];
 }
 - (void)didReceiveMemoryWarning
 {

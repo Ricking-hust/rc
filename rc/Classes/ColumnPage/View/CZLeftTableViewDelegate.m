@@ -51,6 +51,12 @@
     //对cell内的控件进行布局
     [cell setSubviewConstraint];
 
+    if (indexPath.row == 4)
+    {
+        cell.backgroundColor = [UIColor blackColor];
+    }
+    
+
     //2 返回cell
     return cell;
 }
@@ -91,10 +97,10 @@
     CGSize maxSize = CGSizeMake(acImageW - 20, MAXFLOAT);
     CGSize acNameSize = [self sizeWithText:model.acTitle maxSize:maxSize fontSize:14];
     CGSize acTimeSize = [self sizeWithText:model.acTime maxSize:maxSize fontSize:12];
-    CGSize acPlaceSize = [self sizeWithText:model.acPlace maxSize:maxSize fontSize:12];
-    CGSize acTagSize = [self sizeWithText:model.acPlace maxSize:maxSize fontSize:12];
+    CGSize acPlaceSize = [self sizeWithText:@"光谷体育馆" maxSize:maxSize fontSize:12];
+    CGSize acTagSize = [self sizeWithText:@"求职" maxSize:maxSize fontSize:12];
     
-    return acImageH + 10 + acNameSize.height + 10 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height ;
+    return acImageH + 10 + acNameSize.height + 10 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height +20+10;
 }
 //给单元格进行赋值
 - (void) setCellValue:(CZColumnCell *)cell AtIndexPath:(NSIndexPath *)indexPath
@@ -105,7 +111,9 @@
     [cell.acImageView sd_setImageWithURL:[NSURL URLWithString:model.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     cell.acNameLabel.text = model.acTitle;
     cell.acTimeLabel.text = model.acTime;
-    cell.acTagLabel.text = model.acTime;
+    cell.acPlaceLabel.text = model.acPlace;
+
+    cell.acTagLabel.text = @"求职";
     
     //添加手势
     UITapGestureRecognizer *clickGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(displayInfo:)];

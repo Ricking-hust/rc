@@ -12,4 +12,6 @@
 @property (nonatomic, strong) UIButton *deleteBtn;
 @property (nonatomic, strong) NSArray *scArray;
 @property (nonatomic, assign) int scIndex;
+@property (nonatomic,strong) NSMutableArray *planListRanged;
+@property (nonatomic, assign) long int timeNodeIndex;
 @end

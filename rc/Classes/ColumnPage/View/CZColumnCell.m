@@ -89,6 +89,8 @@
     [self.bgView.layer setShadowColor:[UIColor blackColor].CGColor];//设置View的阴影颜色
     [self.bgView.layer setShadowOpacity:0.8f];//设置阴影的透明度
     [self.bgView.layer setShadowOffset:CGSizeMake(2.0, 1.0)];//设置View Shadow的偏移量
+
+    self.tagImageView.image = [UIImage imageNamed:@"tagImage"];
     
 }
 
@@ -156,15 +158,16 @@
         make.size.mas_equalTo(self.tagImageView.image.size);
     }];
     //标签约束
-    CGSize acTagSize = [self sizeWithText:self.acTagLabel.text maxSize:maxSize fontSize:10];
+    CGSize acTagSize = [self sizeWithText:@"求职" maxSize:maxSize fontSize:10];
     [self.acTagLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.tagImageView.mas_right).offset(4);
         make.top.equalTo(self.tagImageView.mas_top);
         make.width.mas_equalTo(acTagSize.width+1);
         make.height.mas_equalTo(acTagSize.height+1);
     }];
+    
     //cell的高度
-    self.cellHeight = acImageH + 10 + acNameSize.height + 10 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height+20;
+    self.cellHeight = acImageH + 10 + acNameSize.height + 10 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height +10+10;
 
     if (self.isLeft == YES)
     {

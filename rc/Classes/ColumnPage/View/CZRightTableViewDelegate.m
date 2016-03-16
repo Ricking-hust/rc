@@ -100,12 +100,14 @@
 - (void) setCellValue:(CZColumnCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
     cell.bgView.tag = indexPath.row;
-
+    
     ActivityModel *model = self.array[indexPath.row];
     [cell.acImageView sd_setImageWithURL:[NSURL URLWithString:model.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     cell.acNameLabel.text = model.acTitle;
     cell.acTimeLabel.text = model.acTime;
-    cell.acTagLabel.text = model.acTime;
+    cell.acPlaceLabel.text = model.acPlace;
+    
+    cell.acTagLabel.text = @"求职";
     
     //添加手势
     UITapGestureRecognizer *clickGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(displayInfo:)];

@@ -35,37 +35,54 @@
 @end
 
 @implementation CZScheduleInfoViewController
-
-- (id)init
+- (NSArray *)scArray
 {
-    if (self = [super init])
+    if (!_scArray)
     {
-        self.scArray = [[NSArray alloc]init];
-        self.scIndex = 0;
-        self.bgView = [[UIView alloc]init];
-        self.tagImage = [[UIImageView alloc]init];
-        self.scThemeLabel = [[UILabel alloc]init];
-        self.scTheme = [[UILabel alloc]init];
-        self.scTimeLabel = [[UILabel alloc]init];
-        self.scTime = [[UILabel alloc]init];
-        self.scContentLabel = [[UILabel alloc]init];
-        self.scContent = [[UILabel alloc]init];
-        self.scRemindTimeLabel = [[UILabel alloc]init];
-        self.scRemindTime = [[UILabel alloc]init];
-        self.deleteBtn = [[UIButton alloc]init];
-        [self.deleteBtn addTarget:self action:@selector(deleteSC) forControlEvents:UIControlEventTouchUpInside];
+        _scArray = [[NSArray alloc]init];
     }
-    return self;
+    return _scArray;
 }
+- (NSMutableArray *)planListRanged
+{
+    if (!_planListRanged)
+    {
+        _planListRanged = [[NSMutableArray alloc]init];
+    }
+    return _planListRanged;
+}
+- (void)createSubView
+{
+    self.scIndex = 0;
+    self.bgView = [[UIView alloc]init];
+    self.tagImage = [[UIImageView alloc]init];
+    self.scThemeLabel = [[UILabel alloc]init];
+    self.scTheme = [[UILabel alloc]init];
+    self.scTimeLabel = [[UILabel alloc]init];
+    self.scTime = [[UILabel alloc]init];
+    self.scContentLabel = [[UILabel alloc]init];
+    self.scContent = [[UILabel alloc]init];
+    self.scRemindTimeLabel = [[UILabel alloc]init];
+    self.scRemindTime = [[UILabel alloc]init];
+    self.deleteBtn = [[UIButton alloc]init];
+    [self.deleteBtn addTarget:self action:@selector(deleteSC) forControlEvents:UIControlEventTouchUpInside];
+}
+#pragma mark - 删除行程
 - (void)deleteSC
 {
     NSMutableArray *tempArray = [[NSMutableArray alloc]initWithArray:self.scArray];
     [tempArray removeObjectAtIndex:self.scIndex];
-    long int count = self.navigationController.viewControllers.count;
-    CZScheduleInfoViewController *scViewController = self.navigationController.viewControllers[count - 2];
-    scViewController.scArray = [[NSArray alloc]initWithArray:tempArray];
+//    long int count = self.navigationController.viewControllers.count;
+//    CZScheduleInfoViewController *scViewController = self.navigationController.viewControllers[count - 2];
+    if (tempArray.count == 0)
+    {
+        [self.planListRanged removeObjectAtIndex:self.timeNodeIndex];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
+    }
+
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 - (void)didDisplayInfo
 {
     PlanModel *model = self.scArray[self.scIndex];
@@ -81,11 +98,10 @@
     [super viewDidLoad];
     
     [self setNavigation];
+    [self createSubView];
     [self addSubViewToView];
     [self didDisplayInfo];
     [self addConstraint];
-
-    NSLog(@"::");
 
 }
 - (void)addSubViewToView

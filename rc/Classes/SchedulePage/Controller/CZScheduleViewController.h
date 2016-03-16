@@ -15,5 +15,5 @@
 @property (nonatomic, strong) UITableView *scTableView;
 @property (nonatomic, strong) CZTimeTableViewDelegate *timeDelegate;
 @property (nonatomic, strong) CZScheduleTableViewDelegate *scDelegate;
-
+//@property (nonatomic, strong) NSArray *scArray;
 @end
