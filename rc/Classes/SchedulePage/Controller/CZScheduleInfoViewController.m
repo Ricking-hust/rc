@@ -139,13 +139,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.isContentUpdate = NO;
     [self setNavigation];
     [self createSubView];
     [self addSubViewToView];
     [self didDisplayInfo];
     [self addConstraint];
-
+    //注册通知，监听内容的改变
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentUpdate:) name:@"cotentUpdate" object:nil];
+}
+- (void)contentUpdate:(NSNotification *)notification
+{
+    self.scArray = [[NSArray alloc]initWithArray:notification.object];
+    
 }
 - (void)addSubViewToView
 {
@@ -245,7 +251,7 @@
 - (void)addscContentConstraint
 {
     CGSize size = [self setLabelStyle:self.scContent WithContent:self.scContent.text];
-    [self.scContent mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.scContent mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.scContentLabel.mas_right).with.offset(5);
         make.top.equalTo(self.scContentLabel.mas_top);
         make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
@@ -346,10 +352,26 @@
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(back)];
     [self.navigationItem setLeftBarButtonItem:leftItem];
 }
+#pragma mark - viewAppear
+- (void)viewWillAppear:(BOOL)animated
+{
+    if (self.isContentUpdate == YES)
+    {
+        [self didDisplayInfo];
+        [self addscContentConstraint];
+        [self.view layoutIfNeeded];
+        self.isContentUpdate = NO;
+    }
+
+}
 - (void)edit
 {
     CZUpdateScheduleViewController *updateScheduleViewController = [[CZUpdateScheduleViewController alloc]init];
     updateScheduleViewController.title = @"修改行程";
+    updateScheduleViewController.updateIndex = self.scIndex;
+    updateScheduleViewController.updatescArray = self.scArray;
+    updateScheduleViewController.timeNodeIndexUpdate = self.timeNodeIndex;
+    updateScheduleViewController.planListRangedUpdate = self.planListRanged;
     [self.navigationController pushViewController:updateScheduleViewController animated:YES];
 }
 - (void)back

@@ -28,6 +28,9 @@
 @property (strong, nonatomic) NSMutableArray *months;
 @property (strong, nonatomic) NSMutableArray *days;
 @property (strong, nonatomic) NSMutableArray *times;
-
+@property (assign, nonatomic) int updateIndex;
+@property (strong, nonatomic) NSArray *updatescArray;
+@property (nonatomic,strong) NSMutableArray *planListRangedUpdate;
+@property (assign, nonatomic) long int timeNodeIndexUpdate;
 
 @end

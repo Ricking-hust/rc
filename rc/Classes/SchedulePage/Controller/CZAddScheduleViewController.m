@@ -57,6 +57,10 @@
 
 
 }
+- (void)viewWillAppear:(BOOL)animated
+{
+    
+}
 - (void)setNavigation
 {
     UIImage *image = [UIImage imageNamed:@"backIcon"];
@@ -93,7 +97,14 @@
         [self insertSC:model];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"scArray" object:self.scArray];
         [self.navigationController popViewControllerAnimated:YES];
-        
+    }else
+    {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入内容" preferredStyle:UIAlertControllerStyleAlert];
+
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
     }
     
 }
