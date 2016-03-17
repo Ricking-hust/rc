@@ -64,21 +64,6 @@
     [super viewWillAppear:animated];
     
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
-    
-//    Activity *activity = [Activity activity];
-//    activity.ac_id = 11111;
-//    activity.ac_poster = @"img_4";
-//    activity.ac_title = @"2015年沸雪北京世界单板滑雪赛与现场音乐会";
-//    activity.ac_time = @"时间：2015.1.1 14:00 AM";
-//    activity.ac_place = @"地点：光谷体育馆";
-//    activity.ac_tags = @"相亲 单身";
-//    activity.ac_collect_num = 11111;
-//    activity.ac_praise_num = 22222;
-//    activity.ac_read_num = 33333;
-//
-//    for (int i = 0; i<10; i++) {
-//        [self.testArray addObject:activity];
-//    }
 
 }
 
@@ -108,7 +93,6 @@
     [super didReceiveMemoryWarning];
 }
 
-
 #pragma mark - get data
 
 - (void)configureBlocks{
@@ -121,10 +105,9 @@
             for (IndustryModel *model in self.indList.list) {
                 self.indModel = model;
                 self.getActivityListWithIndBlock(model);
-                
+            
             }
-//            IndustryModel *model = self.indList.list[1];
-//            self.getActivityListWithIndBlock(model);
+
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];
@@ -171,6 +154,7 @@
     rcColumn.rightArray = self.activityList.list;
     rcColumn.view = self.view;
 }
+
 #pragma mark - 懒加载，创建主题色
 
 - (UIColor *)selectedColor
