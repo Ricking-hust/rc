@@ -23,8 +23,12 @@
 
 @interface CZHomeViewController ()
 @property (nonatomic,strong) ActivityList *activityList;
+@property (nonatomic,strong) CityList *cityList;
+@property (nonatomic,strong) NSString *cityId;
+@property (nonatomic,strong) NSMutableArray *cityNameList;
 @property (nonatomic,strong)  ActivityModel *activitymodel;
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListBlock)();
+@property (nonatomic,copy) NSURLSessionDataTask *(^getCityListBlock)();
 @property (weak, nonatomic) IBOutlet CZCityButton *leftButton;
 
 @end
@@ -41,21 +45,26 @@
 
     //刷新数据
     [self refleshDataByCity];
+    [self startget];
 }
 - (void)refleshDataByCity
 {
     if (self.city == Wuhan)
     {
         [self.leftButton setTitle:@"武汉" forState:UIControlStateNormal];
+        self.cityId = @"1";
     }else if (self.city == Shanghai)
     {
         [self.leftButton setTitle:@"上海" forState:UIControlStateNormal];
+        self.cityId = @"2";
     }else if (self.city == Guangzhou)
     {
         [self.leftButton setTitle:@"广州" forState:UIControlStateNormal];
+        self.cityId = @"3";
     }else
     {
         [self.leftButton setTitle:@"北京" forState:UIControlStateNormal];
+        self.cityId = @"4";
     }
     //刷新
     
@@ -78,6 +87,7 @@
     if (self == [super init])
     {
         self.city = Wuhan;
+        self.cityId =@"1";
     }
     return self;
 }
@@ -94,6 +104,7 @@
     self.tableView.tableHeaderView = headerView;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.city = Wuhan;
+    self.cityId = @"1";
 }
 
 - (void)didReceiveMemoryWarning
@@ -108,16 +119,29 @@
     @weakify(self);
     self.getActivityListBlock = ^(){
         @strongify(self);
-        return [[DataManager manager] getActivityRecommendWithCityId:@"1" startId:@"0" num:@"20" userId:@"1" success:^(ActivityList *acList) {
+        return [[DataManager manager] getActivityRecommendWithCityId:self.cityId startId:@"0" num:@"20" userId:@"1" success:^(ActivityList *acList) {
             @strongify(self);
             self.activityList = acList;
         } failure:^(NSError *error) {
             NSLog(@"error:%@",error);
         }];
     };
+    
+    self.getCityListBlock = ^(){
+        @strongify(self);
+        return [[DataManager manager] getCityListSuccess:^(CityList *ctList) {
+            self.cityList = ctList;
+        } failure:^(NSError *error) {
+            NSLog(@"Error:%@",error);
+        }];
+    };
 }
 
 - (void)startget{
+    if (self.getCityListBlock) {
+        self.getCityListBlock();
+    }
+    
     if (self.getActivityListBlock) {
         self.getActivityListBlock();
     }
@@ -128,6 +152,10 @@
     _activityList = activityList;
     
     [self.tableView reloadData];
+}
+
+-(void) setCityList:(CityList *)cityList{
+    _cityList = cityList;
 }
 
 #pragma mark - Tableview 数据源

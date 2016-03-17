@@ -198,6 +198,13 @@ static CGFloat const kContainViewYEditing = 60.0;
             } else {
                 reasonString = @"请检查用户名或密码";
             }
+            UIAlertController *alterLgnFailControl = [UIAlertController alertControllerWithTitle:@"登录失败" message:reasonString preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *configureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self endLogin];
+            }];
+            [alterLgnFailControl addAction:configureAction];
+            [self presentViewController:alterLgnFailControl animated:YES completion:nil];
+            
         }];
 
     }

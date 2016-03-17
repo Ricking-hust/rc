@@ -11,6 +11,13 @@
 #import "Masonry.h"
 #import "RegisteViewController.h"
 #import "LoginViewController.h"
+#import "MBProgressHUD.h"
+
+@interface CZPersonInfoViewController()
+
+@property (nonatomic, strong) MBProgressHUD    *HUD;
+
+@end
 
 @implementation CZPersonInfoViewController
 
@@ -93,9 +100,18 @@
         {
             if (indexPath.row == 0) {
                 
-            } else if(indexPath.row == 1){
-                
+            } else if (indexPath.row == 1){
+                [self showNameEditAlertViewWitText:[userDefaults objectForKey:@"userName"]];
+            } else if (indexPath.row == 2){
+                [self showSexEditAlertView];
+            } else if (indexPath.row == 4){
+                [self showMailEditAlertViewWithText:[userDefaults objectForKey:@"userMail"]];
             }
+        }
+            break;
+        case 1:
+        {
+            [self showSignEditAlertViewWithText:[userDefaults objectForKey:@"userSign"]];
         }
             break;
             
@@ -114,7 +130,7 @@
             if (indexPath.row == 0)
             {
                 cell.tittle.text = @"头像";
-                cell.personIcon.image = [UIImage imageNamed:[userDefaults objectForKey:@"userPic"]];
+                [cell.personIcon sd_setImageWithURL:[userDefaults objectForKey:@"userPic"] placeholderImage:[UIImage imageNamed:@"about_icon"]];
             }else if (indexPath.row == 1)
             {
                 cell.tittle.text = @"昵称";
@@ -122,7 +138,11 @@
             }else if (indexPath.row == 2)
             {
                 cell.tittle.text = @"性别";
-                cell.contentLabel.text = [userDefaults objectForKey:@"userSex"];
+                if ([[userDefaults objectForKey:@"userSex"] isEqualToString:@"1"]) {
+                    cell.contentLabel.text = @"男";
+                } else {
+                    cell.contentLabel.text = @"女";
+                }
             }else if (indexPath.row == 3)
             {
                 cell.tittle.text = @"手机";
@@ -195,6 +215,9 @@
         break;
     }
 }
+
+#pragma mark - private methods
+
 /**
  *  计算字体的长和宽
  *
@@ -209,6 +232,196 @@
     //计算文本的大小
     CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
     return nameSize;
+}
+
+-(void)showNameEditAlertViewWitText:(NSString *)text{
+    @weakify(self)
+    
+    UIAlertController *editControl = [UIAlertController alertControllerWithTitle:@"请输入昵称" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    [editControl addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.text = text;
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        
+    }];
+    UIAlertAction *configureAction = [UIAlertAction actionWithTitle:@"保存" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        @strongify(self);
+        
+        UITextField *textField = editControl.textFields[0];
+        
+        self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        self.HUD.removeFromSuperViewOnHide = YES;
+        [self.view addSubview:self.HUD];
+        [self.HUD showAnimated:YES];
+        
+        [[DataManager manager] modifyAccountWithUserId:[userDefaults objectForKey:@"userId"] opType:@"2" userPwdO:@"" userPwdN:@"" username:textField.text userSign:@"" userPic:@"" userSex:@"" userMail:@"" cityId:@"1" success:^(NSString *msg) {
+            @strongify(self);
+            
+            [userDefaults setObject:textField.text forKey:@"userName"];
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"修改成功";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+            [self.tableView reloadData];
+        } failure:^(NSError *error) {
+            @strongify(self);
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"修改失败";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+        }];
+    }];
+    
+    [editControl addAction:cancelAction];
+    [editControl addAction:configureAction];
+    
+    [self presentViewController:editControl animated:YES completion:nil];
+}
+
+-(void)showSexEditAlertView{
+    @weakify(self)
+    
+    UIAlertController *editControl = [UIAlertController alertControllerWithTitle:@"请选择性别" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+    UIAlertAction *maleAction = [UIAlertAction actionWithTitle:@"男" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        @strongify(self);
+        
+        self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        self.HUD.removeFromSuperViewOnHide = YES;
+        [self.view addSubview:self.HUD];
+        [self.HUD showAnimated:YES];
+        
+        [[DataManager manager] modifyAccountWithUserId:[userDefaults objectForKey:@"userId"] opType:@"2" userPwdO:@"" userPwdN:@"" username:@"" userSign:@"" userPic:@"" userSex:@"1" userMail:@"" cityId:@"1" success:^(NSString *msg) {
+            @strongify(self)
+            
+            [userDefaults setObject:@"1" forKey:@"userSex"];
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"修改成功";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+            [self.tableView reloadData];
+            
+        } failure:^(NSError *error) {
+            @strongify(self);
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"修改失败";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+        }];
+    }];
+    UIAlertAction *femaleAction = [UIAlertAction actionWithTitle:@"女" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        @strongify(self);
+        
+        self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        self.HUD.removeFromSuperViewOnHide = YES;
+        [self.view addSubview:self.HUD];
+        [self.HUD showAnimated:YES];
+        
+        [[DataManager manager] modifyAccountWithUserId:[userDefaults objectForKey:@"userId"] opType:@"2" userPwdO:@"" userPwdN:@"" username:@"" userSign:@"" userPic:@"" userSex:@"2" userMail:@"" cityId:@"1" success:^(NSString *msg) {
+            @strongify(self)
+            
+            [userDefaults setObject:@"2" forKey:@"userSex"];
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"修改成功";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+            [self.tableView reloadData];
+        } failure:^(NSError *error) {
+            @strongify(self);
+            
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"修改失败";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+
+        }];
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        
+    }];
+    
+    [editControl addAction:maleAction];
+    [editControl addAction:femaleAction];
+    [editControl addAction:cancelAction];
+    
+    [self presentViewController:editControl animated:YES completion:nil];
+}
+
+-(void)showMailEditAlertViewWithText:(NSString *)text{
+    @weakify(self)
+    
+    UIAlertController *editControl = [UIAlertController alertControllerWithTitle:@"请输入新邮箱" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    [editControl addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.text = text;
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        
+    }];
+    UIAlertAction *configureController = [UIAlertAction actionWithTitle:@"保存" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        @strongify(self);
+        
+        self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        self.HUD.removeFromSuperViewOnHide = YES;
+        [self.view addSubview:self.HUD];
+        [self.HUD showAnimated:YES];
+        UITextField *textField = editControl.textFields[0];
+        [[DataManager manager] modifyAccountWithUserId:[userDefaults objectForKey:@"userId"] opType:@"2" userPwdO:@"" userPwdN:@"" username:@"" userSign:@"" userPic:@"" userSex:@"" userMail:textField.text cityId:@"1" success:^(NSString *msg) {
+            @strongify(self)
+            
+            [userDefaults setObject:textField.text forKey:@"userMail"];
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"修改成功";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+            [self.tableView reloadData];
+        } failure:^(NSError *error) {
+            @strongify(self);
+            
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"修改失败";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+
+        }];
+    }];
+    
+    [editControl addAction:cancelAction];
+    [editControl addAction:configureController];
+    
+    [self presentViewController:editControl animated:YES completion:nil];
+}
+
+-(void)showSignEditAlertViewWithText:(NSString *)text{
+    @weakify(self)
+    
+    UIAlertController *editControl = [UIAlertController alertControllerWithTitle:@"输入新的个性签名" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+    [editControl addTextFieldWithConfigurationHandler:^(UITextField * _Nonnull textField) {
+        textField.text = text;
+    }];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        
+    }];
+    UIAlertAction *configureController = [UIAlertAction actionWithTitle:@"保存" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        @strongify(self);
+        
+        self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        self.HUD.removeFromSuperViewOnHide = YES;
+        [self.view addSubview:self.HUD];
+        [self.HUD showAnimated:YES];
+        UITextField *textField = editControl.textFields[0];
+        [[DataManager manager] modifyAccountWithUserId:[userDefaults objectForKey:@"userId"] opType:@"2" userPwdO:@"" userPwdN:@"" username:@"" userSign:textField.text userPic:@"" userSex:@"" userMail:@"" cityId:@"1" success:^(NSString *msg) {
+            @strongify(self)
+            
+            [userDefaults setObject:textField.text forKey:@"userSign"];
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"修改成功";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+            [self.tableView reloadData];
+        } failure:^(NSError *error) {
+            @strongify(self);
+            
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"修改失败";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+
+        }];
+    }];
+    
+    [editControl addAction:cancelAction];
+    [editControl addAction:configureController];
+    
+    [self presentViewController:editControl animated:YES completion:nil];
 }
 
 @end

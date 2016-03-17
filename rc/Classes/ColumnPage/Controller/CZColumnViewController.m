@@ -35,7 +35,7 @@
 
 @property (nonatomic,strong) IndustryList *indList;
 @property (nonatomic,strong) ActivityList *activityList;
-@property (nonatomic,copy) NSMutableDictionary *activityDic;
+@property (nonatomic,copy) NSMutableArray *activityDic;
 
 @property (nonatomic,copy) NSURLSessionDataTask *(^getIndListBlock)();
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)(IndustryModel *model);
@@ -174,7 +174,7 @@
 //    self.finance.rightTableView.delegate = self.rightDelegate;
 //    self.finance.rightTableView.dataSource = self.rightDelegate;
     
-    self.leftDelegate.array = [self.activityDic objectForKey:@"互联网"];
+    self.leftDelegate.array = self.activityList.list;
     self.rightDelegate.array = self.activityList.list;
     
     [self.view addSubview:self.other];
@@ -228,9 +228,12 @@
         return [[DataManager manager] getAllIndustriesWithSuccess:^(IndustryList *indList) {
             @strongify(self)
             self.indList = indList;
-            for (IndustryModel *model in self.indList.list) {
-                self.getActivityListWithIndBlock(model);
-            }
+//            for (IndustryModel *model in self.indList.list) {
+//                self.getActivityListWithIndBlock(model);
+            
+//            }
+            IndustryModel *model = self.indList.list[1];
+            self.getActivityListWithIndBlock(model);
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];
@@ -248,7 +251,6 @@
 }
 
 
-
 -(void)setIndList:(IndustryList *)indList{
     _indList = indList;
     //创建工具条按钮
@@ -262,9 +264,28 @@
     [self addSubviewToView];
 }
 
--(void)setActivityDic:(NSMutableDictionary *)activityDic{
+-(void)setActivityDic:(NSMutableArray *)activityDic{
+    
     _activityDic =activityDic;
 }
+
+//-(NSMutableArray *)rangeLAcList:(ActivityList *)acList{
+//    NSMutableArray *array = [[NSMutableArray alloc]init];
+//    for (int i=0; i<=acList.list.count/2; i++) {
+//        ActivityModel *model = acList.list[i];
+//        [array addObject:model];
+//    }
+//    return array;
+//}
+//
+//-(NSMutableArray *)rangeRAcList:(ActivityList *)acList{
+//    NSMutableArray *array = [[NSMutableArray alloc]init];
+//    for (int i=0; acList.list.count/2<i<=acList.list.count; i++) {
+//        ActivityModel *model = acList.list[i];
+//        [array addObject:model];
+//    }
+//    return array;
+//}
 
 #pragma mark - 懒加载，创建主题色
 

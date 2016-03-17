@@ -180,7 +180,71 @@ static CGFloat const kContainViewYEditing = 60.0;
     
 }
 
+-(void)registe{
+    if (!self.isRegisting) {
+        [self hideKeyboard];
+        
+        [[DataManager manager] UserLoginOrRegisteWithUserphone:self.usernameField.text password:self.passwordField.text op_type:@"2" success:^(UserModel *user) {
+            [DataManager manager].user = user;
+            //[self endLogin];
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        } failure:^(NSError *error) {
+            NSString *reasonString;
+            
+            if (error.code < 700) {
+                reasonString = @"请检查网络状态";
+            } else {
+                reasonString = @"请检查用户名或密码";
+            }
+            UIAlertController *alterLgnFailControl = [UIAlertController alertControllerWithTitle:@"登录失败" message:reasonString preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *configureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                //[self endLogin];
+            }];
+            [alterLgnFailControl addAction:configureAction];
+            [self presentViewController:alterLgnFailControl animated:YES completion:nil];
+            
+        }];
+        
+    }
+}
+
 #pragma mark - private methods
+
+- (void)showKeyboard {
+    
+    if (self.isKeyboardShowing) {
+        ;
+    } else {
+        [UIView animateWithDuration:0.3 animations:^{
+            self.containView.y      = kContainViewYEditing;
+            self.usernameField.y    -= 10;
+            self.passwordField.y    -= 12;
+            self.verifyCodeField.y  -= 12;
+            self.verifyCodeButton.y -= 12;
+            self.registeButton.y      -= 14;
+        }];
+        self.isKeyboardShowing = YES;
+    }
+    
+}
+
+- (void)hideKeyboard {
+    
+    if (self.isKeyboardShowing) {
+        self.isKeyboardShowing = NO;
+        [[UIApplication sharedApplication].keyWindow endEditing:YES];
+        [UIView animateWithDuration:0.3 animations:^{
+            self.containView.y      = kContainViewYNormal;
+            self.usernameField.y    += 10;
+            self.passwordField.y    += 12;
+            self.verifyCodeField.y  += 12;
+            self.verifyCodeButton.y += 12;
+            self.registeButton.y      += 14;
+        } completion:^(BOOL finished) {
+        }];
+    }
+    
+}
 
 - (void)regBackToForwardViewController
 {
