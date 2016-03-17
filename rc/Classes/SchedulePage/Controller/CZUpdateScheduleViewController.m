@@ -176,9 +176,10 @@
     NSString *day = [self.model.planTime substringWithRange:NSMakeRange(8, 2)];
     NSString *time = [self.model.planTime substringWithRange:NSMakeRange(11, 5)];
     self.downView.timeInfoLabel.text = [NSString stringWithFormat:@"%@年%@月%@日 %@",year,month,day,time];
-//    [self.downView.timeInfoLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-//        make.width.mas_equalTo(150);
-//    }];
+    CGSize timeSize = [self sizeWithText:self.downView.timeInfoLabel.text maxSize:CGSizeMake(MAXFLOAT, 20) fontSize:14];
+    [self.downView.timeInfoLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(timeSize.width+1, timeSize.height+1));
+    }];
 }
 #pragma mark - 提交修改
 - (void)commintModify
@@ -509,7 +510,7 @@
         make.size.mas_equalTo(self.downView.moreTimeImg.image.size);
     }];
     CGSize timeSize = [self sizeWithText:self.downView.timeInfoLabel.text maxSize:CGSizeMake(MAXFLOAT, 20) fontSize:14];
-    self.downView.timeInfoLabel.frame = CGRectMake(kScreenWidth - 180, VIEWH/2 - 7, 150, 17);
+    //self.downView.timeInfoLabel.frame = CGRectMake(kScreenWidth - 180, VIEWH/2 - 7, 150, 17);
 //    [self.downView.timeInfoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
 //        make.centerY.equalTo(self.downView.timeView.mas_centerY);
 //        make.right.equalTo(self.downView.moreTimeImg.mas_left).offset(-10);
@@ -517,6 +518,13 @@
 //        make.width.mas_equalTo(150);
 //        make.height.mas_equalTo(17);
 //    }];
+    [self.downView.timeInfoLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.downView.timeView.mas_centerY);
+        make.right.equalTo(self.downView.moreTimeImg.mas_left).offset(-10);
+        make.size.mas_equalTo(CGSizeMake(timeSize.width+1, timeSize.height + 1));
+//        make.width.mas_equalTo(150);
+//        make.height.mas_equalTo(17);
+    }];
 }
 - (void)setSubViewOfRemindView
 {
