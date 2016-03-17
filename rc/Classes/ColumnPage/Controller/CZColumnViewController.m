@@ -39,6 +39,7 @@
 @property (nonatomic,copy) NSURLSessionDataTask *(^getIndListBlock)();
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)(IndustryModel *model);
 @property (nonatomic,strong) NSMutableDictionary *dict;
+@property (nonatomic,strong) IndustryModel *indModel;
 @end
 
 @implementation CZColumnViewController
@@ -49,6 +50,14 @@
         _dict = [[NSMutableDictionary alloc]init];
     }
     return _dict;
+}
+- (IndustryModel *)indModel
+{
+    if (!_indModel)
+    {
+        _indModel = [[IndustryModel alloc]init];
+    }
+    return _indModel;
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -93,11 +102,6 @@
     NSString *tagName = btn.titleLabel.text;
     
 }
-- (void)addSubviewToView
-{
-
-
-}
 
 -(void)didReceiveMemoryWarning
 {
@@ -114,12 +118,13 @@
         return [[DataManager manager] getAllIndustriesWithSuccess:^(IndustryList *indList) {
             @strongify(self)
             self.indList = indList;
-//            for (IndustryModel *model in self.indList.list) {
-//                self.getActivityListWithIndBlock(model);
-            
-//            }
-            IndustryModel *model = self.indList.list[1];
-            self.getActivityListWithIndBlock(model);
+            for (IndustryModel *model in self.indList.list) {
+                self.indModel = model;
+                self.getActivityListWithIndBlock(model);
+                
+            }
+//            IndustryModel *model = self.indList.list[1];
+//            self.getActivityListWithIndBlock(model);
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];
@@ -146,13 +151,25 @@
 -(void)setActivityList:(ActivityList *)activityList{
     
     _activityList = activityList;
+    [self createInfoView:activityList];
     
-    [self addSubviewToView];
 }
-
--(void)setActivityDic:(NSMutableArray *)activityDic{
+- (void)createInfoView:(ActivityList *)activityList
+{
+    RCColumnInfoView *rcColumn = [[RCColumnInfoView alloc]init];
+    [self.view addSubview:rcColumn];
+    [rcColumn mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.toolScrollView.mas_bottom).offset(10);
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        make.bottom.equalTo(self.view.mas_bottom).offset(-49);
+    }];
     
-    _activityDic =activityDic;
+    rcColumn.backgroundColor = [UIColor whiteColor];
+    
+    rcColumn.leftArray = self.activityList.list;
+    rcColumn.rightArray = self.activityList.list;
+    rcColumn.view = self.view;
 }
 #pragma mark - 懒加载，创建主题色
 

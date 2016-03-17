@@ -120,16 +120,17 @@
         leftPaddintToContentView = 20;
         rightPaddingToContentView = leftPaddintToContentView;
     }
-    [self.acImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.acImageView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.bgView.mas_left);
         make.top.equalTo(self.bgView.mas_top);
         make.right.equalTo(self.bgView.mas_right);
         make.height.mas_equalTo(acImageH);
     }];
+
     //活动名约束
     CGSize maxSize = CGSizeMake(acImageW - 20, MAXFLOAT);
     CGSize acNameSize = [self sizeWithText:self.acNameLabel.text maxSize:maxSize fontSize:14];
-    [self.acNameLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.acNameLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.acImageView.mas_bottom).offset(10);
         make.left.equalTo(self.acImageView.mas_left).offset(10);
         make.width.mas_equalTo(acNameSize.width +1);
@@ -137,7 +138,7 @@
     }];
     //活动时间约束
     CGSize acTimeSize = [self sizeWithText:self.acTimeLabel.text maxSize:maxSize fontSize:12];
-    [self.acTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.acTimeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.acNameLabel.mas_bottom).offset(10);
         make.left.equalTo(self.acNameLabel.mas_left);
         make.width.mas_equalTo(acTimeSize.width+1);
@@ -145,21 +146,21 @@
     }];
     //地点约束
     CGSize acPlaceSize = [self sizeWithText:self.acPlaceLabel.text maxSize:maxSize fontSize:12];
-    [self.acPlaceLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.acPlaceLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.acTimeLabel.mas_bottom);
         make.left.equalTo(self.acTimeLabel.mas_left);
         make.width.mas_equalTo(acPlaceSize.width+1);
         make.height.mas_equalTo(acPlaceSize.height+1);
     }];
     //标志图片约束
-    [self.tagImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.tagImageView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.acPlaceLabel.mas_left);
         make.top.equalTo(self.acPlaceLabel.mas_bottom).offset(10);
         make.size.mas_equalTo(self.tagImageView.image.size);
     }];
     //标签约束
     CGSize acTagSize = [self sizeWithText:@"求职" maxSize:maxSize fontSize:10];
-    [self.acTagLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.acTagLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.tagImageView.mas_right).offset(4);
         make.top.equalTo(self.tagImageView.mas_top);
         make.width.mas_equalTo(acTagSize.width+1);
@@ -171,7 +172,7 @@
 
     if (self.isLeft == YES)
     {
-        [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        [self.bgView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(leftPaddintToContentView);
             //make.top.equalTo(self.contentView.mas_top);
             make.centerY.equalTo(self.contentView.mas_centerY);
@@ -180,7 +181,7 @@
         }];
     }else
     {
-        [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        [self.bgView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.contentView.mas_right).offset(-rightPaddingToContentView);
             //make.top.equalTo(self.contentView.mas_top);
             make.centerY.equalTo(self.contentView.mas_centerY);
