@@ -112,38 +112,39 @@
     self.cellHeight = tittleTopPadding + nameSize.height + timeSize.height + placeSize.height + tagSize.height + timePaddingToName + tagPaddingToPlace + 15;
     [self.ac_poster mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_left).offset(10);
-        make.top.equalTo(self.contentView.mas_top).offset(10);
-        make.bottom.equalTo(self.contentView.mas_bottom).offset(-10);
+        make.centerY.equalTo(self.contentView.mas_centerY);
+        //make.bottom.equalTo(self.contentView.mas_bottom).offset(-10);
         make.width.mas_equalTo(120);
+        make.height.mas_equalTo(120);
     }];
     [self.ac_title mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView.mas_top).offset(tittleTopPadding);
+        make.top.equalTo(self.contentView.mas_top).offset(13);
         make.left.equalTo(self.ac_poster.mas_right).offset(25);
-        make.width.mas_equalTo(nameSize.width+1);
-        make.height.mas_equalTo(nameSize.height+1);
+        make.width.mas_equalTo(maxfW);
+        make.height.mas_equalTo(20);
     }];
     [self.ac_time mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.ac_title.mas_bottom).offset(timePaddingToName);
+        make.top.equalTo(self.ac_title.mas_bottom).offset(20);
         make.left.equalTo(self.ac_title.mas_left);
-        make.width.mas_equalTo(timeSize.width+1);
-        make.height.mas_equalTo(timeSize.height+1);
+        make.width.mas_equalTo(maxfW);
+        make.height.mas_equalTo(17);
     }];
     [self.ac_place mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.ac_time.mas_bottom);
         make.left.equalTo(self.ac_time.mas_left);
-        make.width.mas_equalTo(placeSize.width+1);
-        make.height.mas_equalTo(placeSize.height+1);
+        make.width.mas_equalTo(maxfW);
+        make.height.mas_equalTo(17);
     }];
     [self.ac_imageTag mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.ac_place.mas_bottom).offset(tagPaddingToPlace);
+        make.top.equalTo(self.ac_place.mas_bottom).offset(20);
         make.left.equalTo(self.ac_time.mas_left);
         make.size.mas_equalTo(self.ac_imageTag.image.size);
     }];
     [self.ac_tags mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.ac_imageTag.mas_top).offset(-2);
+        make.top.equalTo(self.ac_imageTag.mas_top).offset(-3);
         make.left.equalTo(self.ac_imageTag.mas_right).offset(7);
-        make.width.mas_equalTo(tagSize.width+1);
-        make.height.mas_equalTo(tagSize.height+1);
+        make.width.mas_equalTo(maxfW);
+        make.height.mas_equalTo(15);
     }];
 }
 

@@ -91,7 +91,7 @@
         model.acId = @"1";
         model.themeName = self.upView.themeNameLabel.text;
         model.acPlace = @"";
-        NSLog(@"%ld",self.planListRangedUpdate.count);
+ 
         if (self.planListRanged.count != 0)
         {
             long int count = self.navigationController.viewControllers.count;

@@ -13,6 +13,7 @@
 #import "CZCityViewController.h"
 #import "CZActivityInfoViewController.h"
 #import "CZTagSelectViewController.h"
+#import "RCSettingTagTableViewController.h"
 #import "CZSearchViewController.h"
 #import "CZActivitycell.h"
 #import "ActivityModel.h"
@@ -190,8 +191,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CZActivitycell *cell = (CZActivitycell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-    return cell.cellHeight;
+    return 140;
 }
 
 //section头部间距
@@ -330,8 +330,10 @@
 }
 - (IBAction)toTagSelectViewController:(id)sender
 {
-    CZTagSelectViewController *tagSelcteViewController = [[CZTagSelectViewController alloc]init];
-    [self.navigationController pushViewController:tagSelcteViewController animated:YES];
+//    CZTagSelectViewController *tagSelcteViewController = [[CZTagSelectViewController alloc]init];
+//    [self.navigationController pushViewController:tagSelcteViewController animated:YES];
+    RCSettingTagTableViewController *tagVC = [[RCSettingTagTableViewController alloc]init];
+    [self.navigationController pushViewController:tagVC animated:YES];
 }
 #pragma mark - 首页搜索框点击事件
 - (void) onClickSearch:(UIView *)view
