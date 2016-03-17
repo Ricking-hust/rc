@@ -73,14 +73,15 @@
 {
     [super viewDidAppear:animated];
     
-    @weakify(self);
-    static dispatch_once_t onceToken;
-    dispatch_once(&onceToken, ^{
-        @strongify(self);
-        
-        [self startget];
-        
-    });
+//    @weakify(self);
+//    static dispatch_once_t onceToken;
+//    dispatch_once(&onceToken, ^{
+//        @strongify(self);
+//        
+//        [self startget];
+//        
+//    });
+    
 }
 - (id)init
 {

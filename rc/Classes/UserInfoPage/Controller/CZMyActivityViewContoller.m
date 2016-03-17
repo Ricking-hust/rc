@@ -8,75 +8,29 @@
 
 #import "CZMyActivityViewContoller.h"
 #import "RCMyActivityCell.h"
-#import "Activity.h"
 
 @interface CZMyActivityViewContoller()
 
-@property(nonatomic, strong) NSMutableArray *activity;
+@property(nonatomic, strong) ActivityList *acList;
+@property (nonatomic, copy) NSURLSessionDataTask *(^getUserActivityBlock)();
 
 @end
 
-//@property(nonatomic, strong) NSMutableArray *activity;
-
 @implementation CZMyActivityViewContoller
-
-
-/**
- *  对象方法,模拟从服务器取得数据
- *
- *  @return 返回实例对象
- */
-- (void) getActivityFromServer
-{
-    self.activity = [NSMutableArray array];
-    
-    Activity *activity = [Activity activity];
-    activity.ac_id = 11111;
-    activity.ac_poster = @"img_4";
-    activity.ac_title = @"2015年沸雪北京世界单板滑雪赛与现场音乐会";
-    activity.ac_time = @"时间：2015.1.1 14:00 AM";
-    activity.ac_place = @"地点：光谷体育馆";
-    activity.ac_tags = @"相亲 单身";
-    activity.ac_collect_num = 11111;
-    activity.ac_praise_num = 22222;
-    activity.ac_read_num = 33333;
-    [self.activity addObject:activity];
-    
-    Activity *activity2 = [Activity activity];
-    [activity2 setSubViewsContent];
-    [self.activity addObject:activity2];
-    
-    Activity *activity3 = [Activity activity];
-    activity3.ac_id = 11111;
-    
-    activity3.ac_poster = @"img_2";
-    activity3.ac_title = @"2015年沸雪北京世界单板滑雪赛与现场音乐会";
-    activity3.ac_time = @"时间：2015.1.1 14:00 AM";
-    activity3.ac_place = @"地点：光谷体育馆";
-    activity3.ac_tags = @"相亲 单身";
-    activity3.ac_collect_num = 11111;
-    activity3.ac_praise_num = 22222;
-    activity3.ac_read_num = 33333;
-    [self.activity addObject:activity3];
-    
-}
 
 - (void)viewWillAppear:(BOOL)animated
 {
-    
-    //模拟从服务器取得数据
-    [self getActivityFromServer];
-    
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
 }
-
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     
+    [self configureBlocks];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self setNavigation];
+    [self startget];
 }
 - (void)setNavigation
 {
@@ -98,7 +52,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
-    return self.activity.count;
+    return self.acList.list.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -136,17 +90,51 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RCMyActivityCell *cell = [self tableView:tableView cellForRowAtIndexPath:indexPath];
+    RCMyActivityCell *cell = (RCMyActivityCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
     return cell.rowHeight;
     
 }
 - (void)setValueOfCell:(RCMyActivityCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-    Activity *ac = self.activity[indexPath.section];
-    cell.acImageView.image = [UIImage imageNamed:ac.ac_poster];
-    cell.acName.text = ac.ac_title;
-    cell.acTime.text = ac.ac_time;
-    cell.acPlace.text = ac.ac_place;
-    cell.acTag.text = ac.ac_tags;
+    ActivityModel *acmodel = self.acList.list[indexPath.section];
+    [cell.acImageView sd_setImageWithURL:[NSURL URLWithString:acmodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
+    cell.acName.text = acmodel.acTitle;
+    cell.acTime.text = acmodel.acTime;
+    cell.acPlace.text = acmodel.acPlace;
+    NSMutableArray *Artags = [[NSMutableArray alloc]init];
+    
+    for (TagModel *model in acmodel.tagsList.list) {
+        [Artags addObject:model.tagName];
+    }
+    NSString *tags = [Artags componentsJoinedByString:@","];
+    cell.acTag.text = tags;
 }
+
+#pragma mark - get data
+
+-(void)configureBlocks{
+    @weakify(self)
+    self.getUserActivityBlock = ^(){
+        @strongify(self)
+        return [[DataManager manager] getUserActivityWithUserId:[userDefaults objectForKey:@"userId"] opType:@"1" success:^(ActivityList *acList) {
+            @strongify(self)
+            self.acList = acList;
+        } failure:^(NSError *error) {
+            NSLog(@"error:%@",error);
+        }];
+    };
+}
+
+-(void)startget{
+    if (self.getUserActivityBlock) {
+        self.getUserActivityBlock();
+    }
+}
+
+- (void) setAcList:(ActivityList *)acList{
+    _acList = acList;
+    
+    [self.tableView reloadData];
+}
+
 @end
