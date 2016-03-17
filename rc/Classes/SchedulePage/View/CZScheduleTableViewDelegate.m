@@ -65,14 +65,18 @@
         return cell;
     }else
     {
-        CZScheduleInfoCell *cell = [[CZScheduleInfoCell alloc]init];
-        //对cell进行赋值
-        [self setValueToCell:cell AtIndexPath:indexPath];
-        //对cell进行布局
-        [self addCellConstraint:cell];
-        //设置点击事件
-        [self didClickCell:cell];
-        return cell;
+        if (self.scArray.count != 0)
+        {
+            CZScheduleInfoCell *cell = [[CZScheduleInfoCell alloc]init];
+            //对cell进行赋值
+            [self setValueToCell:cell AtIndexPath:indexPath];
+            //对cell进行布局
+            [self addCellConstraint:cell];
+            //设置点击事件
+            [self didClickCell:cell];
+            return cell;
+        }
+        return nil;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath

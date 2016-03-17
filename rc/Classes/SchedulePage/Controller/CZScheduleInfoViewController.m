@@ -85,16 +85,21 @@
     if (tempArray.count == 0)
     {
         [self.planListRanged removeObjectAtIndex:self.timeNodeIndex];
+        [self.timeNodeTableView reloadData];
         long int count = self.navigationController.viewControllers.count;
         CZScheduleViewController *sc = self.navigationController.viewControllers[count - 2];
-        CZTimeNodeCell *cell = self.timeNodeTableView.visibleCells.firstObject;
-        NSLog(@"%@",cell.dayLabel.text);
-        [self setStateOfCurrentCell:self.timeNodeTableView.visibleCells.firstObject];
-        [self.timeNodeTableView reloadData];
-        sc.scIndex = self.timeNodeTableView.visibleCells.firstObject.tag;
-        
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"scArray" object:self.scArray];
+        UITableViewCell *cell = self.timeNodeTableView.visibleCells.firstObject;
+        if ([cell isKindOfClass:[CZTimeNodeCell class]])
+        {
+            sc.scIndex = self.timeNodeTableView.visibleCells.firstObject.tag;
+            self.scArray = self.planListRanged[cell.tag];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"scArray" object:self.scArray];
+        }else
+        {
+            self.scArray = nil;
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"scArray" object:self.scArray];
+        }
         
     }else
     {
@@ -108,15 +113,15 @@
 }
 - (void)setStateOfCurrentCell:(CZTimeNodeCell *)cell
 {
-    [self.timeNodeTableView reloadData];
+
     cell.selectedPoint.hidden = NO;
     
     [cell.upLineView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(cell.point.mas_top).offset(-10);
+        make.bottom.equalTo(cell.selectedPoint.mas_top).offset(-4);
     }];
     
     [cell.downLineView mas_updateConstraints:^(MASConstraintMaker *make){
-        make.top.equalTo(cell.point.mas_bottom).offset(10);
+        make.top.equalTo(cell.selectedPoint.mas_bottom).offset(4);
     }];
     
     [cell layoutIfNeeded];

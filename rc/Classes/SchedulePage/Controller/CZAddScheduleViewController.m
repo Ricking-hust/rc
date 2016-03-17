@@ -124,7 +124,14 @@
                 newModel.planTime = strCurrentDate;
                 [newscArray addObject:newModel];
                 [self.planListRanged insertObject:newscArray atIndex:i];
-                [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
+//                [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
+                break;
+            }else
+            {
+                NSMutableArray *newscArray = [[NSMutableArray alloc]init];
+                newModel.planTime = strCurrentDate;
+                [newscArray addObject:newModel];
+                [self.planListRanged insertObject:newscArray atIndex:i];
                 break;
             }
         }else if (currentDate > dataCmp)
@@ -137,6 +144,8 @@
             [newscArray addObject:newModel];
             [self.planListRanged removeObjectAtIndex:i];
             [self.planListRanged insertObject:newscArray atIndex:i];
+            self.scArray = self.planListRanged[i];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"scArray" object:self.scArray];
             break;
         }
     }
@@ -146,9 +155,8 @@
         newModel.planTime = strCurrentDate;
         [newscArray addObject:newModel];
         [self.planListRanged addObject:newscArray];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
     }
-
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
     
 }
 

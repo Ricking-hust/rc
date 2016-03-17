@@ -80,9 +80,9 @@
 {
 
     self.timeDelegate.isDefualt = YES;
-    self.scDelegate.scArray = self.planListRanged[self.scIndex];
+    self.scDelegate.scArray = notification.object;
+
     [self.scTableView reloadData];
-    //[self.timeNodeTableView reloadData];
     //将行程的更新上传到服务器---------
     
 }
@@ -92,8 +92,27 @@
     self.timeDelegate.isDefualt = YES;
     self.scDelegate.scArray = self.timeDelegate.array.firstObject;
     [self.timeNodeTableView reloadData];
+
+    CZTimeNodeCell *cell = self.timeNodeTableView.visibleCells.firstObject;
+    [self setStateOfCurrentCell:cell];
+
     [self.scTableView reloadData];
     //将行程的更新上传到服务器--------------
+}
+- (void)setStateOfCurrentCell:(CZTimeNodeCell *)cell
+{
+    
+    cell.selectedPoint.hidden = NO;
+    
+    [cell.upLineView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(cell.point.mas_top).offset(-12);
+    }];
+
+    [cell.downLineView mas_updateConstraints:^(MASConstraintMaker *make){
+        make.top.equalTo(cell.point.mas_bottom).offset(12);
+    }];
+    
+    [cell layoutIfNeeded];
 }
 - (void)setNavigation
 {

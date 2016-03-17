@@ -84,7 +84,7 @@
     }
     if (self.array.count + 1 == indexPath.row)
     {
-        return 1;
+        return 5;
     }
     return self.height;
 }
@@ -113,7 +113,7 @@
             make.top.equalTo(cell.contentView.mas_top);
             make.left.equalTo(cell.contentView.mas_left).offset(62);
             make.width.mas_equalTo(3);
-            make.bottom.equalTo(cell.selectedPoint.mas_top).offset(-4);
+            make.bottom.equalTo(cell.point.mas_top).offset(-12);
         }];
         [cell.point mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(cell.contentView.mas_centerY);
@@ -125,10 +125,11 @@
         [cell.selectedPoint mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(cell.point.mas_top).offset(-8);
             make.left.equalTo(cell.point.mas_left).offset(-8);
-            make.size.mas_equalTo(cell.selectedPoint.image.size);
+            make.width.mas_equalTo(cell.selectedPoint.image.size.width);
+            make.height.mas_equalTo(cell.selectedPoint.image.size.height);
         }];
         [cell.downLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(cell.selectedPoint.mas_bottom).offset(4);
+            make.top.equalTo(cell.point.mas_bottom).offset(12);
             make.left.equalTo(cell.upLineView.mas_left);
             make.width.equalTo(cell.upLineView.mas_width);
             make.bottom.equalTo(cell.contentView.mas_bottom);
@@ -165,7 +166,8 @@
         [cell.selectedPoint mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(cell.point.mas_top).offset(-8);
             make.left.equalTo(cell.point.mas_left).offset(-8);
-            make.size.mas_equalTo(cell.selectedPoint.image.size);
+            make.width.mas_equalTo(cell.selectedPoint.image.size.width);
+            make.height.mas_equalTo(cell.selectedPoint.image.size.height);
         }];
         cell.selectedPoint.hidden = YES;
         [cell.downLineView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -194,18 +196,28 @@
 {
     if (!decelerate)
     {
+        UITableViewCell *cell = self.timeNodeTableView.visibleCells.firstObject;
+        if ([cell isKindOfClass:[CZTimeNodeCell class]])
+        {
+            //刷新数据 to do here --------
+            [self updateDataSoucre:self.scArray AtTableView:self.scTableView];
+            //设置cell的选中状态
+            [self setStateOfCurrentCell];
+        }
+
+    }
+}
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    UITableViewCell *cell = self.timeNodeTableView.visibleCells.firstObject;
+    if ([cell isKindOfClass:[CZTimeNodeCell class]])
+    {
         //刷新数据 to do here --------
         [self updateDataSoucre:self.scArray AtTableView:self.scTableView];
         //设置cell的选中状态
         [self setStateOfCurrentCell];
     }
-}
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    //刷新数据 to do here --------
-    [self updateDataSoucre:self.scArray AtTableView:self.scTableView];
-    //设置cell的选中状态
-    [self setStateOfCurrentCell];
+    
 }
 
 - (void)updateDataSoucre:(NSArray *)array AtTableView:(UITableView *)tableView
