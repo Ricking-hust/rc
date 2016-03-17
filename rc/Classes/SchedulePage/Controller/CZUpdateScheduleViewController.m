@@ -203,9 +203,7 @@
         [temp removeObjectAtIndex:self.updateIndex];
         [temp insertObject:model atIndex:self.updateIndex];
         info.isContentUpdate = YES;
-//        [self.planListRangedUpdate removeObjectAtIndex:self.timeNodeIndexUpdate];
-//        [self.planListRangedUpdate insertObject:temp atIndex:self.timeNodeIndexUpdate];
-//        [self insertSC:model];
+
         [[NSNotificationCenter defaultCenter] postNotificationName:@"cotentUpdate" object:temp];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRangedUpdate];
         [self.navigationController popViewControllerAnimated:YES];

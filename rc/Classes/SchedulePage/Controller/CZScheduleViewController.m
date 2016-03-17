@@ -94,6 +94,14 @@
     [self.timeNodeTableView reloadData];
 
     CZTimeNodeCell *cell = self.timeNodeTableView.visibleCells.firstObject;
+//    if ([cell isKindOfClass:[UITableViewCell class]])
+//    {
+//        NSLog(@"tableView cell");
+//    }
+//    if ([cell isKindOfClass:[CZTimeNodeCell class]])
+//    {
+//        NSLog(@"timenode cell");
+//    }
     [self setStateOfCurrentCell:cell];
 
     [self.scTableView reloadData];

@@ -26,8 +26,22 @@
         self.isDefualt = YES;
         self.scArray = [[NSArray alloc]init];
         self.scDelegate = [[CZScheduleTableViewDelegate alloc]init];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNode:) name:@"addNode" object:nil];
     }
     return self;
+}
+- (NSMutableArray *)array
+{
+    if (!_array)
+    {
+        _array = [[NSMutableArray alloc]init];
+    }
+    return _array;
+}
+- (void)addNode:(NSNotification *)notification
+{
+    self.array = notification.object;
+    [self.timeNodeTableView reloadData];
 }
 - (void)setDevice:(CurrentDevice)device
 {
@@ -97,7 +111,10 @@
     cell.cellIndex = indexPath.row;
     NSString *str = [NSString stringWithFormat:@"%@:%@",[plmodel.planTime substringWithRange:NSMakeRange(5, 2)],[plmodel.planTime substringWithRange:NSMakeRange(8, 2)]];
     cell.dayLabel.text = str;
-    NSString *strWeek = [plmodel.planTime substringWithRange:NSMakeRange(0, 10)];
+    NSString *year = [plmodel.planTime substringWithRange:NSMakeRange(0, 4)];
+    NSString *month = [plmodel.planTime substringWithRange:NSMakeRange(5, 2)];
+    NSString *day = [plmodel.planTime substringWithRange:NSMakeRange(8, 2)];
+    NSString *strWeek = [NSString stringWithFormat:@"%@-%@-%@",year,month,day];
     NSDateFormatter *dateformat=[[NSDateFormatter alloc]init];
     [dateformat setDateFormat:@"yyyy-MM-dd"];//设置格式
     [dateformat setTimeZone:[[NSTimeZone alloc]initWithName:@"Asia/Beijing"]];//指定时区

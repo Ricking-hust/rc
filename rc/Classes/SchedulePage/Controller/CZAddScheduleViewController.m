@@ -91,11 +91,23 @@
         model.acId = @"1";
         model.themeName = self.upView.themeNameLabel.text;
         model.acPlace = @"";
-        long int count = self.navigationController.viewControllers.count;
-        CZScheduleViewController *sc = self.navigationController.viewControllers[count -2];
-        sc.scIndex = self.timeNodeIndex;
-        [self insertSC:model];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"scArray" object:self.scArray];
+        NSLog(@"%ld",self.planListRangedUpdate.count);
+        if (self.planListRanged.count != 0)
+        {
+            long int count = self.navigationController.viewControllers.count;
+            CZScheduleViewController *sc = self.navigationController.viewControllers[count -2];
+            sc.scIndex = self.timeNodeIndex;
+            [self insertSC:model];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"scArray" object:self.planListRanged[self.timeNodeIndex]];
+        }else
+        {
+            NSArray *newsc = [[NSArray alloc]initWithObjects:model, nil];
+            [self.planListRanged addObject:newsc];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"scArray" object:self.planListRanged.firstObject];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"addNode" object:self.planListRanged];
+        }
+
         [self.navigationController popViewControllerAnimated:YES];
     }else
     {
@@ -135,7 +147,6 @@
                 newModel.planTime = strCurrentDate;
                 [newscArray addObject:newModel];
                 [self.planListRanged insertObject:newscArray atIndex:i];
-//                [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
                 break;
             }else
             {
@@ -170,25 +181,6 @@
     [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
     
 }
-
--(int)compareDate:(NSDate *)currentDate date:(NSDate *)date
-{
-    NSDateFormatter *dateFormatter = [[NSDateFormatter alloc] init];
-    [dateFormatter setDateFormat:@"yyyy-MM-dd"];
-    //比较准确度为“日”，如果提高比较准确度，可以在此修改时间格式
-    NSString *stringDate1 = [dateFormatter stringFromDate:currentDate];
-    NSString *stringDate2 = [dateFormatter stringFromDate:date];
-    NSDate *dateA = [dateFormatter dateFromString:stringDate1];
-    NSDate *dateB = [dateFormatter dateFromString:stringDate2];
-    NSComparisonResult result = [dateA compare:dateB];
-    if (result == NSOrderedDescending) {
-        return 1;  //currentDate 比 date 晚
-    } else if (result == NSOrderedAscending){
-        return -1; //currentDate 比 date 早
-    }
-    return 0; //在当前准确度下，两个时间一致
-}
-
 
 - (NSString *)getTag
 {
