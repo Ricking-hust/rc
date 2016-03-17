@@ -38,11 +38,18 @@
 
 @property (nonatomic,copy) NSURLSessionDataTask *(^getIndListBlock)();
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)(IndustryModel *model);
-@property (nonatomic,strong) NSMutableArray *testArray;
+@property (nonatomic,strong) NSMutableDictionary *dict;
 @end
 
 @implementation CZColumnViewController
-
+- (NSMutableDictionary *)dict
+{
+    if (!_dict)
+    {
+        _dict = [[NSMutableDictionary alloc]init];
+    }
+    return _dict;
+}
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
