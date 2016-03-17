@@ -18,6 +18,7 @@
 #import "CZRightTableViewDelegate.h"
 #import "RCColumnInfoView.h"
 #import "UINavigationBar+Awesome.h"
+#import "Activity.h"
 @interface CZColumnViewController ()
 @property (nonatomic, strong) CZLeftTableViewDelegate *leftDelegate;
 @property (nonatomic, strong) CZRightTableViewDelegate *rightDelegate;
@@ -39,6 +40,7 @@
 
 @property (nonatomic,copy) NSURLSessionDataTask *(^getIndListBlock)();
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)(IndustryModel *model);
+@property (nonatomic,strong) NSMutableArray *testArray;
 @end
 
 @implementation CZColumnViewController
@@ -49,10 +51,25 @@
     
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
     
+    Activity *activity = [Activity activity];
+    activity.ac_id = 11111;
+    activity.ac_poster = @"img_4";
+    activity.ac_title = @"2015年沸雪北京世界单板滑雪赛与现场音乐会";
+    activity.ac_time = @"时间：2015.1.1 14:00 AM";
+    activity.ac_place = @"地点：光谷体育馆";
+    activity.ac_tags = @"相亲 单身";
+    activity.ac_collect_num = 11111;
+    activity.ac_praise_num = 22222;
+    activity.ac_read_num = 33333;
+
+    for (int i = 0; i<10; i++) {
+        [self.testArray addObject:activity];
+    }
 
 }
 - (void)createSubview
 {
+    self.testArray = [[NSMutableArray alloc]init];
     self.other = [[RCColumnInfoView alloc]init];
     self.internet = [[RCColumnInfoView alloc]init];
     self.media = [[RCColumnInfoView alloc]init];
@@ -65,6 +82,7 @@
     
     self.leftDelegate.view = self.view;
     self.rightDelegate.view = self.view;
+    
 }
 #pragma mark - ViewDidLoad
 - (void)viewDidLoad
@@ -78,11 +96,6 @@
     [self configureBlocks];
     self.getIndListBlock();
     self.other.hidden = NO;
-}
-
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-    
 }
 
 - (void)onClickTooBtn:(UIButton *)btn

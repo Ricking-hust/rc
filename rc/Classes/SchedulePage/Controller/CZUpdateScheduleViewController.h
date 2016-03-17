@@ -22,18 +22,15 @@
 @property (nonatomic, strong) CZTagWithLabelView *entertainmentTag;
 @property (nonatomic, strong) CZTagWithLabelView *partTag;
 @property (nonatomic, strong) CZTagWithLabelView *otherTag;
-#pragma mark - 测试数据
-@property (copy, nonatomic) NSString *strThemelabel;
-@property (copy, nonatomic) NSString *strContent;
-@property (copy, nonatomic) NSString *strTime;
-@property (copy, nonatomic) NSString *strRemind;
-@property (copy, nonatomic) NSString *strTagImg;
 
 #pragma mark - 选择器数据
 @property (strong, nonatomic) NSMutableArray *years;
 @property (strong, nonatomic) NSMutableArray *months;
 @property (strong, nonatomic) NSMutableArray *days;
 @property (strong, nonatomic) NSMutableArray *times;
-
+@property (assign, nonatomic) int updateIndex;
+@property (strong, nonatomic) NSArray *updatescArray;
+@property (nonatomic,strong) NSMutableArray *planListRangedUpdate;
+@property (assign, nonatomic) long int timeNodeIndexUpdate;
 
 @end

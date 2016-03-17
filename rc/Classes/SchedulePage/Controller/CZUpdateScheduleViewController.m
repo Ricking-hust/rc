@@ -17,7 +17,8 @@
 #import "CZUpView.h"
 #import "CZDownView.h"
 #import "CZTagWithLabelView.h"
-
+#import "PlanModel.h"
+#import "CZScheduleInfoViewController.h"
 #define FONTSIZE    14  //字体大小
 #define MAXLENGTH   90  //contentTextView的最大字数
 #define VIEWH self.view.frame.size.width * 0.12
@@ -27,11 +28,29 @@
 @property (nonatomic, assign) BOOL isShow;
 @property (nonatomic, assign, readonly) CGFloat paddingAtDownViewH; //downView内的子控件之间的纵向间距
 @property (nonatomic, assign, readonly) CGFloat textViewH;          //textView的高度
+@property (nonatomic, strong) NSString *localTime;
+@property (nonatomic, strong) PlanModel *model;
 @end
 
 @implementation CZUpdateScheduleViewController
 
 #pragma mark - 懒加载选择器的数据
+- (PlanModel *)model
+{
+    if (!_model)
+    {
+        _model = [[PlanModel alloc]init];
+    }
+    return _model;
+}
+- (NSString *)localTime
+{
+    if (!_localTime)
+    {
+        _localTime = [[NSString alloc]init];
+    }
+    return _localTime;
+}
 - (NSMutableArray *)years
 {
     if (!_years)
@@ -145,6 +164,136 @@
     }
     return _times;
 }
+- (void)viewWillAppear:(BOOL)animated
+{
+    self.model = self.updatescArray[self.updateIndex];
+    self.upView.themeNameLabel.text = self.model.themeName;
+    self.upView.tagImgView.image = [self getThemeImage:self.model.themeName];
+    self.downView.textView.text = self.model.planContent;
+    self.downView.textView.alpha = 1.0;
+    NSString *year = [self.model.planTime substringWithRange:NSMakeRange(0, 4)];
+    NSString *month = [self.model.planTime substringWithRange:NSMakeRange(5, 2)];
+    NSString *day = [self.model.planTime substringWithRange:NSMakeRange(8, 2)];
+    NSString *time = [self.model.planTime substringWithRange:NSMakeRange(11, 5)];
+    self.downView.timeInfoLabel.text = [NSString stringWithFormat:@"%@年%@月%@日 %@",year,month,day,time];
+    CGSize timeSize = [self sizeWithText:self.downView.timeInfoLabel.text maxSize:CGSizeMake(MAXFLOAT, 20) fontSize:14];
+    [self.downView.timeInfoLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(timeSize.width+1, timeSize.height+1));
+    }];
+}
+#pragma mark - 提交修改
+- (void)commintModify
+{
+    
+    if (![self.downView.textView.text isEqualToString:@"请输入行程地点+内容(40字以内)"])
+    {
+        PlanModel *model = [[PlanModel alloc]init];
+        model.themeName = self.upView.themeNameLabel.text;
+        model.planContent = self.downView.textView.text;
+        model.planTime = self.downView.timeInfoLabel.text;
+        NSString *year = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(0, 4)];
+        NSString *month = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(5, 2)];
+        NSString *day = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(8, 2)];
+        NSString *time = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(11, 6)];
+        model.planTime = [NSString stringWithFormat:@"%@-%@-%@ %@",year,month,day,time];
+        [self sortByDay:model];
+        long int count = self.navigationController.viewControllers.count;
+        CZScheduleInfoViewController *info = self.navigationController.viewControllers[count - 2];
+        NSMutableArray *temp = [[NSMutableArray alloc]initWithArray:info.scArray];
+        [temp removeObjectAtIndex:self.updateIndex];
+        [temp insertObject:model atIndex:self.updateIndex];
+        info.isContentUpdate = YES;
+
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"cotentUpdate" object:temp];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRangedUpdate];
+        [self.navigationController popViewControllerAnimated:YES];
+    }else
+    {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入内容" preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+    
+}
+#pragma mark - 对行程重新排序
+//如果修改了行程的时间，则要对行程重新排序
+- (void)sortByDay:(PlanModel *)model
+{
+    if ([self.planListRangedUpdate[self.timeNodeIndexUpdate] count] == 1)
+    {
+        [self.planListRangedUpdate removeObjectAtIndex:self.timeNodeIndexUpdate];
+        [self insertSC:model];
+    }else
+    {
+        NSMutableArray *temp = [[NSMutableArray alloc]initWithArray:self.planListRangedUpdate[self.timeNodeIndexUpdate]];
+        [temp removeObjectAtIndex:self.updateIndex];
+        [self.planListRangedUpdate removeObjectAtIndex:self.timeNodeIndexUpdate];
+        [self.planListRangedUpdate insertObject:temp atIndex:self.timeNodeIndexUpdate];
+        [self insertSC:model];
+    }
+}
+- (void)insertSC:(PlanModel *)newModel
+{
+    int i;
+    NSString *year = [newModel.planTime substringWithRange:NSMakeRange(0, 4)];
+    NSString *month = [newModel.planTime substringWithRange:NSMakeRange(5, 2)];
+    NSString *day = [newModel.planTime substringWithRange:NSMakeRange(8, 2)];
+    NSString *time = [newModel.planTime substringWithRange:NSMakeRange(12, 5)];
+    int currentDate = [[NSString stringWithFormat:@"%@%@%@",year, month, day] intValue];
+    NSString *strCurrentDate = [NSString stringWithFormat:@"%@-%@-%@ %@",year,month,day,time];
+    for (i = 0; i < self.planListRangedUpdate.count; i++)
+    {
+        NSMutableArray *array = self.planListRangedUpdate[i];
+        PlanModel *model = [[PlanModel alloc]init];
+        model = array.firstObject;
+        
+        NSString *year = [model.planTime substringWithRange:NSMakeRange(0, 4)];
+        NSString *month = [model.planTime substringWithRange:NSMakeRange(5, 2)];
+        NSString *day = [model.planTime substringWithRange:NSMakeRange(8, 2)];
+        int dataCmp = [[NSString stringWithFormat:@"%@%@%@",year, month, day] intValue];
+        if (currentDate < dataCmp)
+        {//比当前时间早
+            if (i == 0)
+            {
+                NSMutableArray *newscArray = [[NSMutableArray alloc]init];
+                newModel.planTime = strCurrentDate;
+                [newscArray addObject:newModel];
+                [self.planListRangedUpdate insertObject:newscArray atIndex:i];
+                break;
+            }else
+            {
+                NSMutableArray *newscArray = [[NSMutableArray alloc]init];
+                newModel.planTime = strCurrentDate;
+                [newscArray addObject:newModel];
+                [self.planListRangedUpdate insertObject:newscArray atIndex:i];
+                break;
+            }
+        }else if (currentDate > dataCmp)
+        {//比当前时间晚
+            //continue;
+        }else
+        {
+            NSMutableArray *newscArray = [[NSMutableArray alloc]initWithArray:self.planListRangedUpdate[i]];
+            newModel.planTime = strCurrentDate;
+            [newscArray addObject:newModel];
+            [self.planListRangedUpdate removeObjectAtIndex:i];
+            [self.planListRangedUpdate insertObject:newscArray atIndex:i];
+            break;
+        }
+    }
+    if (i == self.self.planListRangedUpdate.count)
+    {
+        NSMutableArray *newscArray = [[NSMutableArray alloc]init];
+        newModel.planTime = strCurrentDate;
+        [newscArray addObject:newModel];
+        [self.planListRangedUpdate addObject:newscArray];
+    }
+    
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -153,16 +302,46 @@
     self.isShow = NO;
     _paddingAtDownViewH = 10;
     _textViewH = self.view.frame.size.width * 0.23;
-#pragma mar - 测试数据
-    self.strThemelabel = @"出差";
-    self.strContent = @"你是我的小呀小苹果，怎么爱你都不嫌多，啊啊啊啊啊你你欠工工工工";
-    self.strTime = @"2012年12月12日 22:22";
-    self.strRemind = @"提前一天";
-    self.strTagImg = @"businessSmallIcon";
+
+    NSDate *date = [NSDate date];
+    NSDateFormatter *dateformat=[[NSDateFormatter alloc]init];
+    [dateformat setDateFormat:@"yyyy年MM月dd日 HH:mm:ss"];//设置格式
+    [dateformat setTimeZone:[[NSTimeZone alloc]initWithName:@"Asia/Beijing"]];//指定时区
+    NSString *localDate = [dateformat stringFromDate:date];
+    NSRange range = NSMakeRange(0, 14);
+    NSString *str = [NSString stringWithFormat:@"%@:00",[localDate substringWithRange:range]];
     
+    self.localTime = str;
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     //设置导航栏的左右按钮
     [self setNavigationBarItem];
+    [self createSubView];
+ 
+    [self setSubViewsOfUpView];
+    [self setSubViewsOfDownView];
+    
+    [self initMoreTagView];
+}
+#pragma mark - 初始化
+- (void)createSubView
+{
+    self.upView = [[CZUpView alloc]init];
+    self.downView = [[CZDownView alloc]init];
+    
+    self.meetingTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"meetingIcon"] andTittle:@"会议"];
+    
+    self.appointmentTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"appointmentIcon"] andTittle:@"约会"];
+    
+    self.businessTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"businessIcon"] andTittle:@"出差"];
+    
+    self.sportTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"sportIcon"] andTittle:@"运动"];
+    self.shoppingTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"shoppingIcon"] andTittle:@"购物"];
+    
+    self.entertainmentTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"entertainmentIcon"] andTittle:@"娱乐"];
+    
+    self.partTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"partIcon"] andTittle:@"聚会"];
+    
+    self.otherTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"otherIcon"] andTittle:@"其他"];
     [self.view addSubview:self.upView];
     [self.view addSubview:self.downView];
     [self.upView addSubview:self.meetingTag];
@@ -173,43 +352,13 @@
     [self.upView addSubview:self.entertainmentTag];
     [self.upView addSubview:self.partTag];
     [self.upView addSubview:self.otherTag];
- 
-    [self setSubViewsOfUpView];
-    [self setSubViewsOfDownView];
-    
-    [self initMoreTagView];
 }
 
-#pragma mark - 初始化
-- (id)init
-{
-    if (self = [super init])
-    {
-        self.upView = [[CZUpView alloc]init];
-        self.downView = [[CZDownView alloc]init];
-        
-        self.meetingTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"meetingIcon"] andTittle:@"会议"];
-        
-        self.appointmentTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"appointmentIcon"] andTittle:@"约会"];
-        
-        self.businessTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"businessIcon"] andTittle:@"出差"];
-        
-        self.sportTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"sportIcon"] andTittle:@"运动"];
-        self.shoppingTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"shoppingIcon"] andTittle:@"购物"];
-        
-        self.entertainmentTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"entertainmentIcon"] andTittle:@"娱乐"];
-        
-        self.partTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"partIcon"] andTittle:@"聚会"];
-        
-        self.otherTag = [[CZTagWithLabelView alloc]initWithImage:[UIImage imageNamed:@"otherIcon"] andTittle:@"其他"];
-    }
-    return self;
-}
 #pragma mark - 对upView的子控件进行赋值
 - (void)setSubViewsOfUpView
 {
-    self.upView.tagImgView.image = [UIImage imageNamed:self.strTagImg];
-    self.upView.themeNameLabel.text = self.strThemelabel;
+    self.upView.tagImgView.image = [UIImage imageNamed:@"businessSmallIcon"];
+    self.upView.themeNameLabel.text = @"出差";
     self.upView.img.image = [UIImage imageNamed:@"moreTagbuttonIcon"];
     //对upView的子控件themeView添加点击事件
     UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickMoreTag)];
@@ -332,7 +481,7 @@
 - (void)setSubViewOfTimeView
 {
     self.downView.moreTimeImg.image = [UIImage imageNamed:@"moreTagbuttonIcon"];
-    self.downView.timeInfoLabel.text = self.strTime;
+    self.downView.timeInfoLabel.text = self.localTime;
     UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickTimeView)];
     [self.downView.timeView addGestureRecognizer:gesture];
     //对行程时间框的子控件进行赋值
@@ -359,15 +508,25 @@
         make.size.mas_equalTo(self.downView.moreTimeImg.image.size);
     }];
     CGSize timeSize = [self sizeWithText:self.downView.timeInfoLabel.text maxSize:CGSizeMake(MAXFLOAT, 20) fontSize:14];
-    [self.downView.timeInfoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+    //self.downView.timeInfoLabel.frame = CGRectMake(kScreenWidth - 180, VIEWH/2 - 7, 150, 17);
+//    [self.downView.timeInfoLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerY.equalTo(self.downView.timeView.mas_centerY);
+//        make.right.equalTo(self.downView.moreTimeImg.mas_left).offset(-10);
+//        //make.size.mas_equalTo(CGSizeMake(150, timeSize.height + 1));
+//        make.width.mas_equalTo(150);
+//        make.height.mas_equalTo(17);
+//    }];
+    [self.downView.timeInfoLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.downView.timeView.mas_centerY);
         make.right.equalTo(self.downView.moreTimeImg.mas_left).offset(-10);
-        make.size.mas_equalTo(CGSizeMake(timeSize.width + 1, timeSize.height + 1));
+        make.size.mas_equalTo(CGSizeMake(timeSize.width+1, timeSize.height + 1));
+//        make.width.mas_equalTo(150);
+//        make.height.mas_equalTo(17);
     }];
 }
 - (void)setSubViewOfRemindView
 {
-    self.downView.remindTimeLabel.text = self.strRemind;
+    self.downView.remindTimeLabel.text = @"不提醒";
     UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickRemindView)];
     [self.downView.remindView addGestureRecognizer:gesture];
     [self addRemindViewConstraint];
@@ -433,9 +592,9 @@
     
     self.downView.timeInfoLabel.text = [NSString stringWithFormat:@"%@年%@月%@日 %@", year, month, day, time];
     CGSize timeInfoSize = [self sizeWithText:self.downView.timeInfoLabel.text maxSize:CGSizeMake(MAXFLOAT, 20) fontSize:14];
-    [self.downView.timeInfoLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(timeInfoSize.width+1, timeInfoSize.height+1));
-    }];
+//    [self.downView.timeInfoLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.size.mas_equalTo(CGSizeMake(timeInfoSize.width+1, timeInfoSize.height+1));
+//    }];
     [self lew_dismissPopupView];
 }
 
@@ -548,11 +707,6 @@
 - (void)back
 {
     [self.navigationController popViewControllerAnimated:YES];
-}
-//提交修改
-- (void)commintModify
-{
-    
 }
 #pragma mark - 上方upView的点击事件
 - (void)onClickMoreTag
@@ -761,7 +915,35 @@
     }];
 //    [self.view layoutIfNeeded];
 }
+- (UIImage *)getThemeImage:(NSString *)theme
+{
+    if ([theme isEqualToString:@"运动"])
+    {
+        return [UIImage imageNamed:@"sportSmallIcon"];
+    }else if ([theme isEqualToString:@"约会"])
+    {
+        return [UIImage imageNamed:@"appointmentSmallIcon"];
+    }else if ([theme isEqualToString:@"出差"])
+    {
+        return [UIImage imageNamed:@"businessSmallIcon"];
+    }else if ([theme isEqualToString:@"会议"])
+    {
+        return [UIImage imageNamed:@"meetingSmallIcon"];
+    }else if ([theme isEqualToString:@"购物"])
+    {
+        return [UIImage imageNamed:@"shoppingSmallIcon"];
+    }else if ([theme isEqualToString:@"娱乐"])
+    {
+        return [UIImage imageNamed:@"entertainmentSmallIcon"];
+    }else if ([theme isEqualToString:@"聚会"])
+    {
+        return [UIImage imageNamed:@"partSmallIcon"];
+    }else
+    {
+        return [UIImage imageNamed:@"otherSmallIcon"];
+    }
 
+}
 
 #pragma mark - PickView代理
 

@@ -11,7 +11,7 @@
 @interface CZTimeTableViewDelegate : UIView<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView *timeNodeTableView;
 @property (nonatomic, strong) CZScheduleTableViewDelegate *scDelegate;
-@property (nonatomic, strong) NSArray *array;
+@property (nonatomic, strong) NSMutableArray *array;
 @property (nonatomic, strong) NSArray *scArray;  //scTableView的数据源
 @property (nonatomic, strong) UITableView *scTableView;
 @property (nonatomic, assign) CurrentDevice device;

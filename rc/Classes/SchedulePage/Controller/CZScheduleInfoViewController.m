@@ -11,6 +11,8 @@
 #import "CZUpdateScheduleViewController.h"
 #import "CZScheduleViewController.h"
 #import "PlanModel.h"
+#import "CZTimeNodeCell.h"
+#import "CZTimeTableViewDelegate.h"
 
 #define FONTSIZE    14  //字体大小
 #define PADDING     5
@@ -35,36 +37,94 @@
 @end
 
 @implementation CZScheduleInfoViewController
-
-- (id)init
+- (NSArray *)scArray
 {
-    if (self = [super init])
+    if (!_scArray)
     {
-        self.scArray = [[NSArray alloc]init];
-        self.scIndex = 0;
-        self.bgView = [[UIView alloc]init];
-        self.tagImage = [[UIImageView alloc]init];
-        self.scThemeLabel = [[UILabel alloc]init];
-        self.scTheme = [[UILabel alloc]init];
-        self.scTimeLabel = [[UILabel alloc]init];
-        self.scTime = [[UILabel alloc]init];
-        self.scContentLabel = [[UILabel alloc]init];
-        self.scContent = [[UILabel alloc]init];
-        self.scRemindTimeLabel = [[UILabel alloc]init];
-        self.scRemindTime = [[UILabel alloc]init];
-        self.deleteBtn = [[UIButton alloc]init];
-        [self.deleteBtn addTarget:self action:@selector(deleteSC) forControlEvents:UIControlEventTouchUpInside];
+        _scArray = [[NSArray alloc]init];
     }
-    return self;
+    return _scArray;
 }
+- (NSMutableArray *)planListRanged
+{
+    if (!_planListRanged)
+    {
+        _planListRanged = [[NSMutableArray alloc]init];
+    }
+    return _planListRanged;
+}
+- (UITableView *)timeNodeTableView
+{
+    if (!_timeNodeTableView)
+    {
+        _timeNodeTableView = [[UITableView alloc]init];
+    }
+    return _timeNodeTableView;
+}
+- (void)createSubView
+{
+    self.bgView = [[UIView alloc]init];
+    self.tagImage = [[UIImageView alloc]init];
+    self.scThemeLabel = [[UILabel alloc]init];
+    self.scTheme = [[UILabel alloc]init];
+    self.scTimeLabel = [[UILabel alloc]init];
+    self.scTime = [[UILabel alloc]init];
+    self.scContentLabel = [[UILabel alloc]init];
+    self.scContent = [[UILabel alloc]init];
+    self.scRemindTimeLabel = [[UILabel alloc]init];
+    self.scRemindTime = [[UILabel alloc]init];
+    self.deleteBtn = [[UIButton alloc]init];
+    [self.deleteBtn addTarget:self action:@selector(deleteSC) forControlEvents:UIControlEventTouchUpInside];
+}
+#pragma mark - 删除行程
 - (void)deleteSC
 {
     NSMutableArray *tempArray = [[NSMutableArray alloc]initWithArray:self.scArray];
     [tempArray removeObjectAtIndex:self.scIndex];
-    long int count = self.navigationController.viewControllers.count;
-    CZScheduleInfoViewController *scViewController = self.navigationController.viewControllers[count - 2];
-    scViewController.scArray = [[NSArray alloc]initWithArray:tempArray];
+
+    if (tempArray.count == 0)
+    {
+        [self.planListRanged removeObjectAtIndex:self.timeNodeIndex];
+        [self.timeNodeTableView reloadData];
+        long int count = self.navigationController.viewControllers.count;
+        CZScheduleViewController *sc = self.navigationController.viewControllers[count - 2];
+        UITableViewCell *cell = self.timeNodeTableView.visibleCells.firstObject;
+        if ([cell isKindOfClass:[CZTimeNodeCell class]])
+        {
+            sc.scIndex = self.timeNodeTableView.visibleCells.firstObject.tag;
+            self.scArray = self.planListRanged[cell.tag];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"scArray" object:self.scArray];
+        }else
+        {
+            self.scArray = nil;
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"scArray" object:self.scArray];
+        }
+        
+    }else
+    {
+        [self.planListRanged removeObjectAtIndex:self.timeNodeIndex];
+        self.scArray = [[NSArray alloc]initWithArray:tempArray];
+        [self.planListRanged insertObject:self.scArray atIndex:self.timeNodeIndex];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"scArray" object:self.scArray];
+    }
+
     [self.navigationController popViewControllerAnimated:YES];
+}
+- (void)setStateOfCurrentCell:(CZTimeNodeCell *)cell
+{
+
+    cell.selectedPoint.hidden = NO;
+    
+    [cell.upLineView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(cell.selectedPoint.mas_top).offset(-4);
+    }];
+    
+    [cell.downLineView mas_updateConstraints:^(MASConstraintMaker *make){
+        make.top.equalTo(cell.selectedPoint.mas_bottom).offset(4);
+    }];
+    
+    [cell layoutIfNeeded];
 }
 - (void)didDisplayInfo
 {
@@ -79,14 +139,19 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.isContentUpdate = NO;
     [self setNavigation];
+    [self createSubView];
     [self addSubViewToView];
     [self didDisplayInfo];
     [self addConstraint];
-
-    NSLog(@"::");
-
+    //注册通知，监听内容的改变
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(contentUpdate:) name:@"cotentUpdate" object:nil];
+}
+- (void)contentUpdate:(NSNotification *)notification
+{
+    self.scArray = [[NSArray alloc]initWithArray:notification.object];
+    
 }
 - (void)addSubViewToView
 {
@@ -186,7 +251,7 @@
 - (void)addscContentConstraint
 {
     CGSize size = [self setLabelStyle:self.scContent WithContent:self.scContent.text];
-    [self.scContent mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.scContent mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.scContentLabel.mas_right).with.offset(5);
         make.top.equalTo(self.scContentLabel.mas_top);
         make.size.mas_equalTo(CGSizeMake(size.width+1, size.height+1));
@@ -287,10 +352,26 @@
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(back)];
     [self.navigationItem setLeftBarButtonItem:leftItem];
 }
+#pragma mark - viewAppear
+- (void)viewWillAppear:(BOOL)animated
+{
+    if (self.isContentUpdate == YES)
+    {
+        [self didDisplayInfo];
+        [self addscContentConstraint];
+        [self.view layoutIfNeeded];
+        self.isContentUpdate = NO;
+    }
+
+}
 - (void)edit
 {
     CZUpdateScheduleViewController *updateScheduleViewController = [[CZUpdateScheduleViewController alloc]init];
     updateScheduleViewController.title = @"修改行程";
+    updateScheduleViewController.updateIndex = self.scIndex;
+    updateScheduleViewController.updatescArray = self.scArray;
+    updateScheduleViewController.timeNodeIndexUpdate = self.timeNodeIndex;
+    updateScheduleViewController.planListRangedUpdate = self.planListRanged;
     [self.navigationController pushViewController:updateScheduleViewController animated:YES];
 }
 - (void)back

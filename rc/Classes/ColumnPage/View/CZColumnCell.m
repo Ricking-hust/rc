@@ -12,6 +12,40 @@
 
 @implementation CZColumnCell
 
++ (instancetype)cellWithTableView:(UITableView*)tableView
+{
+    static NSString *reuseId = @"columnCell";
+    CZColumnCell * cell = (CZColumnCell*)[tableView dequeueReusableCellWithIdentifier:reuseId];
+    if (!cell)
+    {
+        cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
+    }
+    cell.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
+    
+    return cell;
+    
+}
+- (instancetype) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
+{
+    
+    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])
+    {
+        self.acImageView = [[UIImageView alloc]init];
+        self.acNameLabel = [[UILabel alloc]init];
+        self.acTimeLabel = [[UILabel alloc]init];
+        self.acPlaceLabel = [[UILabel alloc]init];
+        self.tagImageView = [[UIImageView alloc]init];
+        self.acTagLabel = [[UILabel alloc]init];
+        self.device = [self currentDeviceSize];
+        self.isLeft = NO;
+        self.cellHeight = 44;
+        self.bgView = [[UIView alloc]init];
+    }
+    [self setSubViewProperty];
+    return self;
+    
+}
+
 - (id)init
 {
     if (self = [super init])
@@ -28,16 +62,22 @@
         self.bgView = [[UIView alloc]init];
     }
     [self setSubViewProperty];
+    self.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
     return self;
 }
 - (void)setSubViewProperty
 {
+    self.selectionStyle = UITableViewCellSelectionStyleNone;    //清除cell的点击状态
+    self.backgroundColor = [UIColor clearColor];
     self.acNameLabel.font = [UIFont systemFontOfSize:14];
     self.acTimeLabel.font = [UIFont systemFontOfSize:12];
     self.acPlaceLabel.font = [UIFont systemFontOfSize:12];
     self.acTagLabel.font = [UIFont systemFontOfSize:10];
     self.acTimeLabel.alpha = 0.8;
     self.acPlaceLabel.alpha = 0.8;
+    self.acNameLabel.numberOfLines = 0;
+    self.acTimeLabel.numberOfLines = 0;
+    self.acPlaceLabel.numberOfLines = 0;
     [self.contentView addSubview:self.bgView];
     [self.bgView addSubview:self.acImageView];
     [self.bgView addSubview:self.acNameLabel];
@@ -49,8 +89,11 @@
     [self.bgView.layer setShadowColor:[UIColor blackColor].CGColor];//设置View的阴影颜色
     [self.bgView.layer setShadowOpacity:0.8f];//设置阴影的透明度
     [self.bgView.layer setShadowOffset:CGSizeMake(2.0, 1.0)];//设置View Shadow的偏移量
+
+    self.tagImageView.image = [UIImage imageNamed:@"tagImage"];
     
 }
+
 - (void)setSubviewConstraint
 {
     CGFloat acImageW; //图片的最大宽度,活动名的最大宽度
@@ -95,7 +138,7 @@
     //活动时间约束
     CGSize acTimeSize = [self sizeWithText:self.acTimeLabel.text maxSize:maxSize fontSize:12];
     [self.acTimeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.acNameLabel.mas_bottom).offset(20);
+        make.top.equalTo(self.acNameLabel.mas_bottom).offset(10);
         make.left.equalTo(self.acNameLabel.mas_left);
         make.width.mas_equalTo(acTimeSize.width+1);
         make.height.mas_equalTo(acTimeSize.height+1);
@@ -115,21 +158,23 @@
         make.size.mas_equalTo(self.tagImageView.image.size);
     }];
     //标签约束
-    CGSize acTagSize = [self sizeWithText:self.acTagLabel.text maxSize:maxSize fontSize:10];
+    CGSize acTagSize = [self sizeWithText:@"求职" maxSize:maxSize fontSize:10];
     [self.acTagLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.tagImageView.mas_right).offset(4);
         make.top.equalTo(self.tagImageView.mas_top);
         make.width.mas_equalTo(acTagSize.width+1);
         make.height.mas_equalTo(acTagSize.height+1);
     }];
+    
     //cell的高度
-    self.cellHeight = acImageH + 10 + acNameSize.height + 20 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height + 20 + 10;
+    self.cellHeight = acImageH + 10 + acNameSize.height + 10 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height +10+10;
 
     if (self.isLeft == YES)
     {
         [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(leftPaddintToContentView);
-            make.top.equalTo(self.contentView.mas_top);
+            //make.top.equalTo(self.contentView.mas_top);
+            make.centerY.equalTo(self.contentView.mas_centerY);
             make.width.mas_equalTo(acImageW);
             make.height.mas_equalTo(self.cellHeight - 10);
         }];
@@ -137,7 +182,8 @@
     {
         [self.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.contentView.mas_right).offset(-rightPaddingToContentView);
-            make.top.equalTo(self.contentView.mas_top);
+            //make.top.equalTo(self.contentView.mas_top);
+            make.centerY.equalTo(self.contentView.mas_centerY);
             make.width.mas_equalTo(acImageW);
             make.height.mas_equalTo(self.cellHeight - 10);
         }];

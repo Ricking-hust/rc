@@ -26,8 +26,22 @@
         self.isDefualt = YES;
         self.scArray = [[NSArray alloc]init];
         self.scDelegate = [[CZScheduleTableViewDelegate alloc]init];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(addNode:) name:@"addNode" object:nil];
     }
     return self;
+}
+- (NSMutableArray *)array
+{
+    if (!_array)
+    {
+        _array = [[NSMutableArray alloc]init];
+    }
+    return _array;
+}
+- (void)addNode:(NSNotification *)notification
+{
+    self.array = notification.object;
+    [self.timeNodeTableView reloadData];
 }
 - (void)setDevice:(CurrentDevice)device
 {
@@ -48,7 +62,7 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.array.count+1;
+    return self.array.count+2;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -64,6 +78,7 @@
         //对cell进行布局
         [self addCellConstraint:cell AtIndexPath:indexPath];
         cell.tag = indexPath.row;
+
         return cell;
     }else
     {
@@ -73,12 +88,17 @@
         return cell;
     }
 
+
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (self.array.count == indexPath.row)
     {
         return kScreenHeight - self.height - 64 -35 - 49;
+    }
+    if (self.array.count + 1 == indexPath.row)
+    {
+        return 5;
     }
     return self.height;
 }
@@ -91,7 +111,10 @@
     cell.cellIndex = indexPath.row;
     NSString *str = [NSString stringWithFormat:@"%@:%@",[plmodel.planTime substringWithRange:NSMakeRange(5, 2)],[plmodel.planTime substringWithRange:NSMakeRange(8, 2)]];
     cell.dayLabel.text = str;
-    NSString *strWeek = [plmodel.planTime substringWithRange:NSMakeRange(0, 10)];
+    NSString *year = [plmodel.planTime substringWithRange:NSMakeRange(0, 4)];
+    NSString *month = [plmodel.planTime substringWithRange:NSMakeRange(5, 2)];
+    NSString *day = [plmodel.planTime substringWithRange:NSMakeRange(8, 2)];
+    NSString *strWeek = [NSString stringWithFormat:@"%@-%@-%@",year,month,day];
     NSDateFormatter *dateformat=[[NSDateFormatter alloc]init];
     [dateformat setDateFormat:@"yyyy-MM-dd"];//设置格式
     [dateformat setTimeZone:[[NSTimeZone alloc]initWithName:@"Asia/Beijing"]];//指定时区
@@ -107,7 +130,7 @@
             make.top.equalTo(cell.contentView.mas_top);
             make.left.equalTo(cell.contentView.mas_left).offset(62);
             make.width.mas_equalTo(3);
-            make.bottom.equalTo(cell.selectedPoint.mas_top).offset(-4);
+            make.bottom.equalTo(cell.point.mas_top).offset(-12);
         }];
         [cell.point mas_makeConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(cell.contentView.mas_centerY);
@@ -119,10 +142,11 @@
         [cell.selectedPoint mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(cell.point.mas_top).offset(-8);
             make.left.equalTo(cell.point.mas_left).offset(-8);
-            make.size.mas_equalTo(cell.selectedPoint.image.size);
+            make.width.mas_equalTo(cell.selectedPoint.image.size.width);
+            make.height.mas_equalTo(cell.selectedPoint.image.size.height);
         }];
         [cell.downLineView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(cell.selectedPoint.mas_bottom).offset(4);
+            make.top.equalTo(cell.point.mas_bottom).offset(12);
             make.left.equalTo(cell.upLineView.mas_left);
             make.width.equalTo(cell.upLineView.mas_width);
             make.bottom.equalTo(cell.contentView.mas_bottom);
@@ -159,7 +183,8 @@
         [cell.selectedPoint mas_makeConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(cell.point.mas_top).offset(-8);
             make.left.equalTo(cell.point.mas_left).offset(-8);
-            make.size.mas_equalTo(cell.selectedPoint.image.size);
+            make.width.mas_equalTo(cell.selectedPoint.image.size.width);
+            make.height.mas_equalTo(cell.selectedPoint.image.size.height);
         }];
         cell.selectedPoint.hidden = YES;
         [cell.downLineView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -188,31 +213,71 @@
 {
     if (!decelerate)
     {
+        UITableViewCell *cell = self.timeNodeTableView.visibleCells.firstObject;
+        if ([cell isKindOfClass:[CZTimeNodeCell class]])
+        {
+            //刷新数据 to do here --------
+            [self updateDataSoucre:self.scArray AtTableView:self.scTableView];
+            //设置cell的选中状态
+            [self setStateOfCurrentCell];
+        }
+
+    }
+}
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+{
+    UITableViewCell *cell = self.timeNodeTableView.visibleCells.firstObject;
+    if ([cell isKindOfClass:[CZTimeNodeCell class]])
+    {
         //刷新数据 to do here --------
         [self updateDataSoucre:self.scArray AtTableView:self.scTableView];
         //设置cell的选中状态
         [self setStateOfCurrentCell];
     }
-}
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
-{
-    //刷新数据 to do here --------
-    [self updateDataSoucre:self.array[0] AtTableView:self.scTableView];
-    //设置cell的选中状态
-    [self setStateOfCurrentCell];
+    
 }
 
 - (void)updateDataSoucre:(NSArray *)array AtTableView:(UITableView *)tableView
 {
     self.scArray = nil;
     CZTimeNodeCell *cell = self.timeNodeTableView.visibleCells.firstObject;
-
+    
     self.scArray = self.array[cell.cellIndex];
+    self.scDelegate.timeNodeIndex = cell.cellIndex;
     self.scDelegate.scArray = self.scArray;
-
-
+    
+//    NSLog(@"count of visiable cell %ld",self.timeNodeTableView.visibleCells.count);
+//    NSLog(@"first cell day %@",cell.dayLabel.text);
+//    for (int i = 0; i < self.timeNodeTableView.visibleCells.count; i++)
+//    {
+//        CZTimeNodeCell *testcell = self.timeNodeTableView.visibleCells[i];
+//        if ([testcell isKindOfClass:[CZTimeNodeCell class]])
+//        {
+//            NSLog(@"timenode cell %d %@",i,testcell.dayLabel.text);
+//        }else
+//        {
+//            NSLog(@"system cell %d",i);
+//        }
+//    }
     [tableView reloadData];
 }
+- (void)setStateOfCurrentCell
+{
+    [self.timeNodeTableView reloadData];
+    CZTimeNodeCell *cell = self.timeNodeTableView.visibleCells.firstObject;
+    cell.selectedPoint.hidden = NO;
+    
+    [cell.upLineView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.bottom.equalTo(cell.point.mas_top).offset(-10);
+    }];
+    
+    [cell.downLineView mas_updateConstraints:^(MASConstraintMaker *make){
+        make.top.equalTo(cell.point.mas_bottom).offset(10);
+    }];
+    
+    [cell layoutIfNeeded];
+}
+
 /**
  *  根据日期返回星期
  *
@@ -230,32 +295,6 @@
     NSDateComponents *components = [calendar components:calendarUnit fromDate:date];
     return [weeks objectAtIndex:components.weekday];
 }
-
-#pragma mark - 更新数据
-- (void)updateUpDataSoucre:(NSMutableArray *)array AtTableView:(UITableView *)tableView
-{
-    CZTimeNodeCell *cell = self.timeNodeTableView.visibleCells.firstObject;
-    self.scArray = self.array[cell.cellIndex];
-    [tableView reloadData];
-}
-- (void)setStateOfCurrentCell
-{
-    [self.timeNodeTableView reloadData];
-    CZTimeNodeCell *cell = self.timeNodeTableView.visibleCells.firstObject;
-    cell.selectedPoint.hidden = NO;
-    
-    [cell.upLineView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.bottom.equalTo(cell.point.mas_top).offset(-10);
-    }];
-    
-    [cell.downLineView mas_updateConstraints:^(MASConstraintMaker *make){
-        make.top.equalTo(cell.point.mas_bottom).offset(10);
-    }];
-
-    [cell layoutIfNeeded];
-
-}
-
 
 - (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize
 {

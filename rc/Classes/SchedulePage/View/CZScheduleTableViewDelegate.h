@@ -13,4 +13,8 @@
 @property (nonatomic, strong) NSArray *scArray;
 @property (nonatomic, assign) CGFloat height;
 @property (nonatomic, strong) UIView *view;
+@property (nonatomic, assign) long int timeNodeIndex;
+@property (nonatomic, strong) NSMutableArray *tempArray;
+@property (nonatomic,strong) NSMutableArray *planListRanged;
+@property (nonatomic, strong) UITableView *timeNodeTableView;
 @end

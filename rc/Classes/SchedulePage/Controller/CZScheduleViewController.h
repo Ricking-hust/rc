@@ -10,10 +10,11 @@
 @class CZTimeTableViewDelegate;
 @class CZScheduleTableViewDelegate;
 @interface CZScheduleViewController : UIViewController
+@property (nonatomic, assign) long int scIndex;
 @property (nonatomic, strong) UIImageView *imgView;
 @property (nonatomic, strong) UITableView *timeNodeTableView;
 @property (nonatomic, strong) UITableView *scTableView;
 @property (nonatomic, strong) CZTimeTableViewDelegate *timeDelegate;
 @property (nonatomic, strong) CZScheduleTableViewDelegate *scDelegate;
-
+//@property (nonatomic, strong) NSArray *scArray;
 @end

@@ -14,63 +14,172 @@
 #import "Masonry.h"
 #import "CZUpView.h"
 #import "CZDownView.h"
+#import "PlanModel.h"
+#import "CZScheduleTableViewDelegate.h"
 #define FONTSIZE    14  //字体大小
 
 @interface CZAddScheduleViewController ()
-
+@property (nonatomic, strong)PlanModel *model;
+@property (nonatomic, assign)BOOL isNewDay;
 
 @end
 
 @implementation CZAddScheduleViewController
-
+- (NSArray *)scArray
+{
+    if (!_scArray)
+    {
+        _scArray = [[NSArray alloc]init];
+    }
+    return _scArray;
+}
+- (BOOL)isNewDay
+{
+    if (!_isNewDay)
+    {
+        _isNewDay = YES;
+    }
+    return _isNewDay;
+}
+- (NSMutableArray *)planListRanged
+{
+    if (!_planListRanged)
+    {
+        _planListRanged = [[NSMutableArray alloc]init];
+    }
+    return _planListRanged;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
+
+    [self setNavigation];
+
+
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    
+}
+- (void)setNavigation
+{
     UIImage *image = [UIImage imageNamed:@"backIcon"];
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(back)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
     
     UIBarButtonItem *rigthButton = [[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(addSchedule)];
     [self.navigationItem setRightBarButtonItem:rigthButton];
-    
 }
 - (void)back
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
-//行程添加的确认按钮
+#pragma mark - 行程添加的确认按钮
 - (void)addSchedule
 {
 
     if (![self.downView.textView.text isEqualToString:@"请输入行程地点+内容(40字以内)"])
     {
-        CZScheduleViewController *schedule = [self.navigationController.viewControllers objectAtIndex:self.navigationController.viewControllers.count-2];
-        
-        //[schedule.datas addObject:[self getSchedule]];
-        
+        PlanModel *model = [[PlanModel alloc]init];
+        model.planId = [NSString stringWithFormat:@"%ld",self.scArray.count];
+        model.planContent = self.downView.textView.text;
+        model.planTime = self.downView.timeInfoLabel.text;
+        model.plAlarmOne = @"1";
+        model.plAlarmTwo = @"1";
+        model.plAlarmThree = @"1";
+        model.userId = @"1";
+        model.acId = @"1";
+        model.themeName = self.upView.themeNameLabel.text;
+        model.acPlace = @"";
+        NSLog(@"%ld",self.planListRangedUpdate.count);
+        if (self.planListRanged.count != 0)
+        {
+            long int count = self.navigationController.viewControllers.count;
+            CZScheduleViewController *sc = self.navigationController.viewControllers[count -2];
+            sc.scIndex = self.timeNodeIndex;
+            [self insertSC:model];
+            
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"scArray" object:self.planListRanged[self.timeNodeIndex]];
+        }else
+        {
+            NSArray *newsc = [[NSArray alloc]initWithObjects:model, nil];
+            [self.planListRanged addObject:newsc];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"scArray" object:self.planListRanged.firstObject];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"addNode" object:self.planListRanged];
+        }
+
         [self.navigationController popViewControllerAnimated:YES];
+    }else
+    {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入内容" preferredStyle:UIAlertControllerStyleAlert];
+
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
     }
     
 }
-
-- (CZData *)getSchedule
+- (void)insertSC:(PlanModel *)newModel
 {
-    CZData *data = [CZData data];
+    int i;
+    NSString *year = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(0, 4)];
+    NSString *month = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(5, 2)];
+    NSString *day = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(8, 2)];
+    NSString *time = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(12, 5)];
+    int currentDate = [[NSString stringWithFormat:@"%@%@%@",year, month, day] intValue];
+    NSString *strCurrentDate = [NSString stringWithFormat:@"%@-%@-%@ %@",year,month,day,time];
+    for (i = 0; i < self.planListRanged.count; i++)
+    {
+        NSMutableArray *array = self.planListRanged[i];
+        PlanModel *model = [[PlanModel alloc]init];
+        model = array.firstObject;
+
+        NSString *year = [model.planTime substringWithRange:NSMakeRange(0, 4)];
+        NSString *month = [model.planTime substringWithRange:NSMakeRange(5, 2)];
+        NSString *day = [model.planTime substringWithRange:NSMakeRange(8, 2)];
+        int dataCmp = [[NSString stringWithFormat:@"%@%@%@",year, month, day] intValue];
+        if (currentDate < dataCmp)
+        {//比当前时间早
+            if (i == 0)
+            {
+                NSMutableArray *newscArray = [[NSMutableArray alloc]init];
+                newModel.planTime = strCurrentDate;
+                [newscArray addObject:newModel];
+                [self.planListRanged insertObject:newscArray atIndex:i];
+                break;
+            }else
+            {
+                NSMutableArray *newscArray = [[NSMutableArray alloc]init];
+                newModel.planTime = strCurrentDate;
+                [newscArray addObject:newModel];
+                [self.planListRanged insertObject:newscArray atIndex:i];
+                break;
+            }
+        }else if (currentDate > dataCmp)
+        {//比当前时间晚
+            //continue;
+        }else
+        {
+            NSMutableArray *newscArray = [[NSMutableArray alloc]initWithArray:self.planListRanged[i]];
+            newModel.planTime = strCurrentDate;
+            [newscArray addObject:newModel];
+            [self.planListRanged removeObjectAtIndex:i];
+            [self.planListRanged insertObject:newscArray atIndex:i];
+            self.scArray = self.planListRanged[i];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"scArray" object:self.scArray];
+            break;
+        }
+    }
+    if (i == self.planListRanged.count)
+    {
+        NSMutableArray *newscArray = [[NSMutableArray alloc]init];
+        newModel.planTime = strCurrentDate;
+        [newscArray addObject:newModel];
+        [self.planListRanged addObject:newscArray];
+    }
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
     
-    data.timeStr = [self getTime];
-    
-    data.tagStr = [self getTag];
-    
-    data.contentStr = self.downView.textView.text;
-    
-    data.dayStr = [self getDay];
-    
-    data.weekStr = [self getWeek];
-    
-    data.taglabel = self.upView.themeNameLabel.text;
-    
-    return data;
 }
 
 - (NSString *)getTag

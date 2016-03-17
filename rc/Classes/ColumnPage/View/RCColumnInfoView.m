@@ -17,6 +17,8 @@
     {
         self.leftTableView = [[CZTableView alloc]init];
         self.rightTableView = [[CZTableView alloc]init];
+        self.leftTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        self.rightTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     }
     [self setConstraint];
     return self;
