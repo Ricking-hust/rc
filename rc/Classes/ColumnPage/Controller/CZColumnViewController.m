@@ -20,8 +20,7 @@
 #import "UINavigationBar+Awesome.h"
 #import "Activity.h"
 @interface CZColumnViewController ()
-@property (nonatomic, strong) CZLeftTableViewDelegate *leftDelegate;
-@property (nonatomic, strong) CZRightTableViewDelegate *rightDelegate;
+
 @property (assign, nonatomic) CGFloat leftH;
 @property (assign, nonatomic) CGFloat rightH;
 @property (assign, nonatomic) CGFloat subHeight;
@@ -30,7 +29,6 @@
 @property (nonatomic, strong) NSMutableArray *rightArray;
 
 @property (nonatomic, strong) UIColor *selectedColor;
-
 @property (nonatomic, strong) UIScrollView *toolScrollView;
 @property (nonatomic, strong) NSMutableArray *toolButtonArray;
 
@@ -51,39 +49,23 @@
     
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
     
-    Activity *activity = [Activity activity];
-    activity.ac_id = 11111;
-    activity.ac_poster = @"img_4";
-    activity.ac_title = @"2015年沸雪北京世界单板滑雪赛与现场音乐会";
-    activity.ac_time = @"时间：2015.1.1 14:00 AM";
-    activity.ac_place = @"地点：光谷体育馆";
-    activity.ac_tags = @"相亲 单身";
-    activity.ac_collect_num = 11111;
-    activity.ac_praise_num = 22222;
-    activity.ac_read_num = 33333;
-
-    for (int i = 0; i<10; i++) {
-        [self.testArray addObject:activity];
-    }
+//    Activity *activity = [Activity activity];
+//    activity.ac_id = 11111;
+//    activity.ac_poster = @"img_4";
+//    activity.ac_title = @"2015年沸雪北京世界单板滑雪赛与现场音乐会";
+//    activity.ac_time = @"时间：2015.1.1 14:00 AM";
+//    activity.ac_place = @"地点：光谷体育馆";
+//    activity.ac_tags = @"相亲 单身";
+//    activity.ac_collect_num = 11111;
+//    activity.ac_praise_num = 22222;
+//    activity.ac_read_num = 33333;
+//
+//    for (int i = 0; i<10; i++) {
+//        [self.testArray addObject:activity];
+//    }
 
 }
-- (void)createSubview
-{
-    self.testArray = [[NSMutableArray alloc]init];
-    self.other = [[RCColumnInfoView alloc]init];
-    self.internet = [[RCColumnInfoView alloc]init];
-    self.media = [[RCColumnInfoView alloc]init];
-    self.university = [[RCColumnInfoView alloc]init];
-    self.businessStartups = [[RCColumnInfoView alloc]init];
-    self.finance = [[RCColumnInfoView alloc]init];
-    self.leftDelegate = [[CZLeftTableViewDelegate alloc]init];
-    self.rightDelegate = [[CZRightTableViewDelegate alloc]init];
-    self.tagArray = [[NSArray alloc]initWithObjects:self.other,self.internet,self.media,self.university,self.businessStartups, self.finance, nil];
-    
-    self.leftDelegate.view = self.view;
-    self.rightDelegate.view = self.view;
-    
-}
+
 #pragma mark - ViewDidLoad
 - (void)viewDidLoad
 {
@@ -91,11 +73,9 @@
     UIView *temp = [[UIView alloc]init];
     [self.view addSubview:temp];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-    [self createSubview];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tableViewContentSize:) name:@"ContentSize" object:nil];
     [self configureBlocks];
     self.getIndListBlock();
-    self.other.hidden = NO;
 }
 
 - (void)onClickTooBtn:(UIButton *)btn
@@ -104,130 +84,16 @@
     [self isToolButtonSelected:btn];
     //此处添加按钮点击事件的处理代码---------------
     NSString *tagName = btn.titleLabel.text;
-    if ([tagName isEqualToString:@"互联网"])
-    {
-        for (int i = 0; i <self.tagArray.count; i++)
-        {
-            RCColumnInfoView *infoView = self.tagArray[i];
-            infoView.hidden = YES;
-        }
-        self.internet.hidden = NO;
-    }else if ([tagName isEqualToString:@"大学"])
-    {
-        for (int i = 0; i <self.tagArray.count; i++)
-        {
-            RCColumnInfoView *infoView = self.tagArray[i];
-            infoView.hidden = YES;
-        }
-        self.university.hidden = NO;
-    }else if ([tagName isEqualToString:@"传媒"])
-    {
-        for (int i = 0; i <self.tagArray.count; i++)
-        {
-            RCColumnInfoView *infoView = self.tagArray[i];
-            infoView.hidden = YES;
-        }
-        self.media.hidden = NO;
-    }else if ([tagName isEqualToString:@"创业"])
-    {
-        for (int i = 0; i <self.tagArray.count; i++)
-        {
-            RCColumnInfoView *infoView = self.tagArray[i];
-            infoView.hidden = YES;
-        }
-        self.businessStartups.hidden = NO;
-    }else if ([tagName isEqualToString:@"金融"])
-    {
-        for (int i = 0; i <self.tagArray.count; i++)
-        {
-            RCColumnInfoView *infoView = self.tagArray[i];
-            infoView.hidden = YES;
-        }
-        self.finance.hidden = NO;
-    }else
-    {
-        for (int i = 0; i <self.tagArray.count; i++)
-        {
-            RCColumnInfoView *infoView = self.tagArray[i];
-            infoView.hidden = YES;
-        }
-        self.other.hidden = NO;
-    }
     
 }
 - (void)addSubviewToView
 {
-    self.other.leftTableView.delegate = self.leftDelegate;
-    self.other.leftTableView.dataSource = self.leftDelegate;
-    self.other.rightTableView.delegate = self.rightDelegate;
-    self.other.rightTableView.dataSource = self.rightDelegate;
-    
-    self.leftDelegate.leftTableView = self.other.leftTableView;
-    self.leftDelegate.rightTableView = self.other.rightTableView;
-    self.rightDelegate.rightTableView = self.other.rightTableView;
-    self.rightDelegate.leftTableView = self.other.leftTableView;
-    
-//    self.internet.leftTableView.delegate = self.leftDelegate;
-//    self.internet.leftTableView.dataSource = self.leftDelegate;
-//    self.internet.rightTableView.delegate = self.rightDelegate;
-//    self.internet.rightTableView.dataSource = self.rightDelegate;
-//    
-//    self.media.leftTableView.delegate = self.leftDelegate;
-//    self.media.leftTableView.dataSource = self.leftDelegate;
-//    self.media.rightTableView.delegate = self.rightDelegate;
-//    self.media.rightTableView.dataSource = self.rightDelegate;
-//    
-//    self.university.leftTableView.delegate = self.leftDelegate;
-//    self.university.leftTableView.dataSource = self.leftDelegate;
-//    self.university.rightTableView.dataSource = self.rightDelegate;
-//    self.university.rightTableView.delegate = self.rightDelegate;
-//    
-//    self.finance.leftTableView.dataSource = self.leftDelegate;
-//    self.finance.leftTableView.delegate = self.leftDelegate;
-//    self.finance.rightTableView.delegate = self.rightDelegate;
-//    self.finance.rightTableView.dataSource = self.rightDelegate;
-    
-    self.leftDelegate.array = self.activityList.list;
-    self.rightDelegate.array = self.activityList.list;
-    
-    [self.view addSubview:self.other];
-    [self.view addSubview:self.internet];
-    [self.view addSubview:self.media];
-    [self.view addSubview:self.university];
-    [self.view addSubview:self.finance];
-    [self.other mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.toolScrollView.mas_bottom).offset(10);
-        make.right.equalTo(self.view.mas_right);
-        make.left.equalTo(self.view.mas_left);
-        make.bottom.equalTo(self.view.mas_bottom).offset(-49);
-    }];
-//    [self.internet mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.other.mas_top);
-//        make.right.equalTo(self.view.mas_right);
-//        make.left.equalTo(self.view.mas_left);
-//        make.bottom.equalTo(self.other.mas_bottom);
-//    }];
-//    [self.media mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.other.mas_top);
-//        make.right.equalTo(self.view.mas_right);
-//        make.left.equalTo(self.view.mas_left);
-//        make.bottom.equalTo(self.other.mas_bottom);
-//    }];
-//    [self.university mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.other.mas_top);
-//        make.right.equalTo(self.view.mas_right);
-//        make.left.equalTo(self.view.mas_left);
-//        make.bottom.equalTo(self.other.mas_bottom);
-//    }];
-//    [self.finance mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.other.mas_top);
-//        make.right.equalTo(self.view.mas_right);
-//        make.left.equalTo(self.view.mas_left);
-//        make.bottom.equalTo(self.other.mas_bottom);
-//    }];
+
+
 }
 
--(void)didReceiveMemoryWarning{
+-(void)didReceiveMemoryWarning
+{
     [super didReceiveMemoryWarning];
 }
 
@@ -281,25 +147,6 @@
     
     _activityDic =activityDic;
 }
-
-//-(NSMutableArray *)rangeLAcList:(ActivityList *)acList{
-//    NSMutableArray *array = [[NSMutableArray alloc]init];
-//    for (int i=0; i<=acList.list.count/2; i++) {
-//        ActivityModel *model = acList.list[i];
-//        [array addObject:model];
-//    }
-//    return array;
-//}
-//
-//-(NSMutableArray *)rangeRAcList:(ActivityList *)acList{
-//    NSMutableArray *array = [[NSMutableArray alloc]init];
-//    for (int i=0; acList.list.count/2<i<=acList.list.count; i++) {
-//        ActivityModel *model = acList.list[i];
-//        [array addObject:model];
-//    }
-//    return array;
-//}
-
 #pragma mark - 懒加载，创建主题色
 
 - (UIColor *)selectedColor
@@ -350,8 +197,6 @@
     {
         IndustryModel *indModel = self.indList.list[i];
         CZButtonView *btnView = [[CZButtonView alloc]initWithTittle:indModel.indName];
-        //添加tagButton的观察者
-        //[self addObserver:btnView.tagButton forKeyPath:@"tagButton" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:nil];
         if (i == 0)
         {
             btnView.tagButton.selected = YES;
@@ -454,129 +299,22 @@
             [self.leftArray addObject:@"2"];
             self.subHeight = self.rightH - self.leftH;
 
-            self.leftDelegate.subHeight = self.subHeight;
-            CZTableView *left = [tableView.superview viewWithTag:11];
+            //self.leftDelegate.subHeight = self.subHeight;
+            //CZTableView *left = [tableView.superview viewWithTag:11];
             //[left reloadData];
         }else if (self.rightH - self.leftH < 0)
         {
             [self.rightArray addObject:@"2"];
             self.subHeight = ABS(self.rightH - self.leftH);
 
-            self.rightDelegate.subHeight = self.subHeight;
-            CZTableView *right = [tableView.superview viewWithTag:12];
+            //self.rightDelegate.subHeight = self.subHeight;
+            //CZTableView *right = [tableView.superview viewWithTag:12];
             //[right reloadData];
         }else
         {
             ;
         }
     }
-    
 }
-
-////设置界面顶部的工具栏
-//- (void)createToolView
-//{
-////    //添加四个边阴影
-////    CGColorSpaceRef colorSpaceRef = CGColorSpaceCreateDeviceRGB();
-////    CGColorRef color = CGColorCreate(colorSpaceRef, (CGFloat[]){200/255 ,199/255,204/255,0.8});
-////    self.toolView.layer.shadowColor = color;//阴影颜色
-////    self.toolView.layer.shadowOffset = CGSizeMake(0, 0);//偏移距离
-////    self.toolView.layer.shadowOpacity = 0.7;//不透明度
-////    self.toolView.layer.shadowRadius = 5.0;//半径
-//    
-//    self.all = [CZToolView toolView:@"全部"];
-//    [self.all.btn setTag:0];
-//    [self.all.btn addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
-//    self.all.btn.selected = YES;
-//    self.all.btn.tintColor = self.selectedColor;
-//    self.all.segmentView.hidden = NO;
-//    [self.toolView addSubview:self.all];
-//    
-//    self.finance = [CZToolView toolView:@"金融"];
-//    [self.finance.btn setTag:1];
-//    [self.finance.btn addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.toolView addSubview:self.finance];
-//    
-//    self.media = [CZToolView toolView:@"传媒"];
-//    [self.media .btn setTag:2];
-//    [self.media .btn addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.toolView addSubview:self.media ];
-//    
-//    
-//    self.bStarup = [CZToolView toolView:@"创业"];
-//    [self.bStarup.btn setTag:3];
-//    [self.bStarup.btn addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.toolView addSubview:self.bStarup];
-//    
-//    self.net = [CZToolView toolView:@"互联网"];
-//    [self.net.btn setTag:4];
-//    [self.net.btn addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.toolView addSubview:self.net];
-//    
-//    self.design = [CZToolView toolView:@"设计"];
-//    [self.design.btn setTag:5];
-//    [self.design.btn addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.toolView addSubview:self.design];
-//    
-//    self.more = [CZToolView toolView:@""];
-//    [self.more.btn setTag:6];
-//    [self.more.btn setImage:[UIImage imageNamed:@"moreTag"] forState:UIControlStateNormal];
-//    [self.more .btn addTarget:self action:@selector(onClick:) forControlEvents:UIControlEventTouchUpInside];
-//    [self.toolView addSubview:self.more ];
-//}
-//- (void)addConstraints
-//{
-//    CGFloat padding;
-//    if ([[self getCurrentDeviceModel]isEqualToString:@"iPhone 4"] ||
-//        [[self getCurrentDeviceModel]isEqualToString:@"iPhone 5"] )
-//    {
-//        padding = 45;
-//    }else if ([[self getCurrentDeviceModel]isEqualToString:@"iPhone 6"] ||
-//              [[self getCurrentDeviceModel]isEqualToString:@"iPhone Simulator"])
-//    {
-//        padding = 52;
-//    }else
-//    {
-//        padding = 60;
-//    }
-//
-//    [self.all mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.toolView.mas_top);
-//        make.left.equalTo(self.toolView.mas_left).with.offset(10);
-//    }];
-//    
-//    [self.finance mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.all.mas_top);
-//        make.left.equalTo(self.all.mas_right).with.offset(padding);
-//    }];
-//    [self.media mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.all.mas_top);
-//        make.left.equalTo(self.finance.mas_right).with.offset(padding);
-//    }];
-//    [self.bStarup mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.all.mas_top);
-//        make.left.equalTo(self.media.mas_right).with.offset(padding);
-//    }];
-//    [self.design mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.all.mas_top);
-//        make.left.equalTo(self.bStarup.mas_right).with.offset(padding);
-//    }];
-//    [self.net mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.all.mas_top);
-//        make.left.equalTo(self.design.mas_right).with.offset(padding - 10);
-//        //make.size.mas_equalTo(CGSizeMake(45, 30));
-//    }];
-//    [self.more mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.top.equalTo(self.all.mas_top);
-//        make.left.equalTo(self.net.mas_right).with.offset(padding - 10);
-//    }];
-//
-//}
-//- (void)onClick:(UIButton *)btn
-//{
-//    if (btn.selected == YES) {
-//        NSLog(@"selected");
-//    }
-//}
 
 @end
