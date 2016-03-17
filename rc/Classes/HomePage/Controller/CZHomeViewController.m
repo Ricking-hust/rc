@@ -12,7 +12,6 @@
 #import "CZCityButton.h"
 #import "CZCityViewController.h"
 #import "CZActivityInfoViewController.h"
-#import "CZTagSelectViewController.h"
 #import "RCSettingTagTableViewController.h"
 #import "CZSearchViewController.h"
 #import "CZActivitycell.h"
@@ -330,8 +329,6 @@
 }
 - (IBAction)toTagSelectViewController:(id)sender
 {
-//    CZTagSelectViewController *tagSelcteViewController = [[CZTagSelectViewController alloc]init];
-//    [self.navigationController pushViewController:tagSelcteViewController animated:YES];
     RCSettingTagTableViewController *tagVC = [[RCSettingTagTableViewController alloc]init];
     [self.navigationController pushViewController:tagVC animated:YES];
 }

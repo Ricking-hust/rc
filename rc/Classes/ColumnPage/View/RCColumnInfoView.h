@@ -8,7 +8,12 @@
 
 #import <UIKit/UIKit.h>
 @class CZTableView;
+@class CZLeftTableViewDelegate;
+@class CZRightTableViewDelegate;
 @interface RCColumnInfoView : UIView
 @property(nonatomic, strong) CZTableView *leftTableView;
 @property(nonatomic, strong) CZTableView *rightTableView;
+@property(nonatomic, strong) CZLeftTableViewDelegate *leftDelegate;
+@property(nonatomic, strong) CZRightTableViewDelegate *rightDelegate;
+@property(nonatomic, strong) UIView *view;
 @end
