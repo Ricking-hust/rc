@@ -41,8 +41,8 @@
 {
 
     //1 创建可重用的自定义cell
-    //CZColumnCell *cell = [CZColumnCell cellWithTableView:tableView];
-    CZColumnCell *cell = [[CZColumnCell alloc]init];
+    CZColumnCell *cell = [CZColumnCell cellWithTableView:tableView];
+    //CZColumnCell *cell = [[CZColumnCell alloc]init];
     cell.isLeft = NO;
     
     //对cell内的控件进行赋值

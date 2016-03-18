@@ -157,7 +157,7 @@
         <!--Title-->
         <scene sceneID="MmR-ZB-41h">
             <objects>
-                <viewController id="0ED-vl-k5j" customClass="CZScheduleViewController" sceneMemberID="viewController">
+                <viewController id="0ED-vl-k5j" customClass="RCScheduleViewController" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="n7W-XU-qpR"/>
                         <viewControllerLayoutGuide type="bottom" id="oy2-W9-jCH"/>
@@ -170,7 +170,7 @@
                     <navigationItem key="navigationItem" title="Title" id="OKz-JJ-HLh">
                         <barButtonItem key="rightBarButtonItem" image="addIcon" id="Z1C-ic-UNB">
                             <connections>
-                                <action selector="addSchedule:" destination="0ED-vl-k5j" id="1oJ-nA-Z9t"/>
+                                <action selector="addSC:" destination="0ED-vl-k5j" id="LGJ-yf-OSQ"/>
                             </connections>
                         </barButtonItem>
                     </navigationItem>

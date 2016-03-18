@@ -42,20 +42,14 @@
 {
 
     //1 创建可重用的自定义cell
-    //CZColumnCell *cell = [CZColumnCell cellWithTableView:tableView];
-    CZColumnCell *cell = [[CZColumnCell alloc]init];
+    CZColumnCell *cell = [CZColumnCell cellWithTableView:tableView];
+    //CZColumnCell *cell = [[CZColumnCell alloc]init];
     cell.isLeft = YES;
 
     //对cell内的控件进行赋值
     [self setCellValue:cell AtIndexPath:indexPath];
     //对cell内的控件进行布局
     [cell setSubviewConstraint];
-
-    if (indexPath.row == 4)
-    {
-        cell.backgroundColor = [UIColor blackColor];
-    }
-    
 
     //2 返回cell
     return cell;

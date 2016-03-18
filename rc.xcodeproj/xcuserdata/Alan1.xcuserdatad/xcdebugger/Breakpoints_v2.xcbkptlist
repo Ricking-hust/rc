@@ -6,32 +6,16 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
-            shouldBeEnabled = "No"
+            shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "rc/Classes/ColumnPage/Controller/CZColumnViewController.m"
-            timestampString = "479916435.252508"
+            filePath = "rc/Classes/SchedulePage/Controller/RCAddScheduleViewController.m"
+            timestampString = "480014254.050826"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "168"
-            endingLineNumber = "168"
-            landmarkName = "@implementation CZColumnViewController"
-            landmarkType = "3">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "rc/Classes/ColumnPage/Controller/CZColumnViewController.m"
-            timestampString = "479915698.73191"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "153"
-            endingLineNumber = "153"
-            landmarkName = "-createInfoView:"
+            startingLineNumber = "85"
+            endingLineNumber = "85"
+            landmarkName = "-addSchedule"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,14 +25,14 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "rc/Classes/ColumnPage/Controller/CZColumnViewController.m"
-            timestampString = "479916516.950418"
+            filePath = "rc/Classes/SchedulePage/Controller/RCAddScheduleViewController.m"
+            timestampString = "480014254.050826"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "301"
-            endingLineNumber = "301"
-            landmarkName = "@implementation CZColumnViewController"
-            landmarkType = "3">
+            startingLineNumber = "98"
+            endingLineNumber = "98"
+            landmarkName = "-addSchedule"
+            landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
    </Breakpoints>

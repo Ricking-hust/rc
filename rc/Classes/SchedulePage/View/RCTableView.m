@@ -1,61 +1,74 @@
 //
-//  CZScheduleTableViewDelegate.m
+//  RCTableView.m
 //  rc
 //
-//  Created by AlanZhang on 16/3/6.
+//  Created by AlanZhang on 16/3/18.
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
 
-#import "CZScheduleTableViewDelegate.h"
+#import "RCTableView.h"
 #import "CZScheduleInfoCell.h"
+#import "RCScheduleInfoViewController.h"
 #import "Masonry.h"
-#import "CZTestData.h"
-#import "PlanModel.h"
-#import "CZScheduleInfoViewController.h"
+#import "RCScrollView.h"
 
-@implementation CZScheduleTableViewDelegate
-
+@interface RCTableView ()
+@property (nonatomic, strong) NSNumber *nodeIndex;
+@end
+@implementation RCTableView
 - (id)init
 {
     if (self = [super init])
     {
-        self.scArray = [[NSArray alloc]init];
+        self.planListRanged = [[NSMutableArray alloc]init];
+        self.scArray = [[NSMutableArray alloc]init];
         self.view = [[UIView alloc]init];
-        self.timeNodeIndex = 0;
-        self.tempArray = [[NSMutableArray alloc]init];
-        self.timeNodeTableView = [[UITableView alloc]init];
+        self.timeNodeSV = [[RCScrollView alloc]init];
+        self.nodeIndex = [[NSNumber alloc]initWithInt:0];
+        //注册通知，拿到响应链上的view
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getSuperView:) name:@"getView" object:nil];
+        //注册通知，刷新数据
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refleshData:) name:@"refleshSC" object:nil];
+        //注册通知，拿到nodeIndex
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getTimeNodeScrollView:) name:@"sendTimeNodeScrollView" object:nil];
+        //注册通知，拿到timeNodeSV
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getTimeNodeSV:) name:@"timeNodeSV" object:nil];
+        
     }
+    self.separatorStyle = UITableViewCellSeparatorStyleNone;
     return self;
 }
-- (void)setScArray:(NSArray *)scArray
+- (void)getTimeNodeSV:(NSNotification *)notification
 {
-    _scArray = scArray;
-    _tempArray = [[NSMutableArray alloc]initWithArray:_scArray];
+    self.timeNodeSV = notification.object;
 }
-- (void)setDevice:(CurrentDevice)device
+- (void)getTimeNodeScrollView:(NSNotification *)notification
 {
-    _device = device;
-    if (_device == IPhone5)
-    {
-        self.height = 105;
-    }else if(_device == IPhone6)
-    {
-        self.height = 103.8;
-    }else
-    {
-        self.height = 117.6;
-        //self.height = 105;
-    }
+    self.nodeIndex = notification.object;
+}
+- (void)refleshData:(NSNotification *)notification
+{
+    NSNumber *timeNode = notification.object;
+    self.nodeIndex = notification.object;
+    self.scArray = self.planListRanged[[timeNode intValue]];
+    [self reloadData];
+}
+- (void)getSuperView:(NSNotification *)notification
+{
+    self.view = notification.object;
+}
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    
+    return 1;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.scArray.count+1;
+    return self.scArray.count + 1;
 }
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    return 1;
-}
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.row == 0)
@@ -94,18 +107,21 @@
 {
     UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didClickSC:)];
     [cell.bgView addGestureRecognizer:gesture];
+    
 }
 #pragma mark - 行程信息的点击事件
 - (void)didClickSC:(UITapGestureRecognizer *)clickGesture
 {
-    //UIView *view = clickGesture.view;
-    CZScheduleInfoViewController *info = [[CZScheduleInfoViewController alloc]init];
-    info.scIndex = (int)clickGesture.view.tag;
-    info.scArray = self.scArray;
-    info.planListRanged = self.planListRanged;
-    info.timeNodeTableView = self.timeNodeTableView;
-    info.timeNodeIndex = self.timeNodeTableView.visibleCells.firstObject.tag;
-    [[self viewController].navigationController pushViewController:info animated:YES];
+    RCScheduleInfoViewController *sc = [[RCScheduleInfoViewController alloc]init];
+    self.showdDelegate = sc;
+    [self.showdDelegate show:self.scArray[clickGesture.view.tag]];
+    [self.showdDelegate passScIndex:(int)clickGesture.view.tag];
+    [self.showdDelegate passScArray:self.scArray];
+    [self.showdDelegate passTableView:self];
+    [self.showdDelegate passTimeNodeScrollView:self.timeNodeSV];
+    [self.showdDelegate passNodeIndex:self.nodeIndex];
+    [self.showdDelegate passPlanListRanged:self.planListRanged];
+    [[self viewController].navigationController pushViewController:sc animated:YES];
 }
 - (UIViewController *)viewController {
     /// Finds the view's view controller.
@@ -124,9 +140,10 @@
     [super nextResponder];
     return self.view;
 }
+
 - (void)setValueToCell:(CZScheduleInfoCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-
+    
     PlanModel *plmodel = self.scArray[indexPath.row-1];
     cell.tagImageView.image = [self getTagImageFormNString:plmodel.themeName];
     cell.tagLabel.text = plmodel.themeName;
@@ -135,6 +152,60 @@
     cell.contentLabel.text = plmodel.planContent;
     cell.placeLabel.text = plmodel.acPlace;
     cell.bgView.tag = indexPath.row - 1;
+}
+- (void)addCellConstraint:(CZScheduleInfoCell *)cell
+{
+    //75表示界面左侧的tableView的宽度, 60表示cell中的各项间距
+    CGFloat maxW = kScreenWidth - 75 - 60 - cell.tagImageView.image.size.width;
+    CGSize size = [self sizeWithText:cell.contentLabel.text maxSize:CGSizeMake(maxW, MAXFLOAT) fontSize:14];
+    
+    [cell.tagImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(cell.bgView.mas_left).offset(18);
+        make.centerY.equalTo(cell.bgView.mas_centerY).offset(-10);
+        make.size.mas_equalTo(cell.tagImageView.image.size);
+    }];
+    
+    [cell.tagLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(cell.tagImageView.mas_bottom);
+        make.centerX.equalTo(cell.tagImageView.mas_centerX);
+        make.width.mas_equalTo(24);
+        make.height.mas_equalTo(25);
+    }];
+    
+    [cell.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(cell.bgView.mas_top).offset(12);
+        make.left.equalTo(cell.tagImageView.mas_right).offset(12);
+        make.width.mas_equalTo(70);
+        make.height.mas_equalTo(17);
+    }];
+    CGSize  placeSize = [self sizeWithText:cell.placeLabel.text maxSize:CGSizeMake(maxW, MAXFLOAT) fontSize:14];
+    [cell.placeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(cell.timeLabel.mas_bottom);
+        make.left.equalTo(cell.timeLabel.mas_left);
+        make.width.mas_equalTo(placeSize.width + 1);
+        make.height.mas_equalTo(placeSize.height + 1);
+    }];
+    [cell.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(cell.placeLabel.mas_bottom);
+        make.left.equalTo(cell.timeLabel.mas_left);
+        make.width.mas_equalTo(size.width+1);
+        make.height.mas_equalTo(size.height+1);
+    }];
+    [cell.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(cell.contentView.mas_left).offset(10);
+        make.right.equalTo(cell.contentView.mas_right).offset(-10);
+        make.centerY.equalTo(cell.contentView.mas_centerY).offset(0);
+        make.height.mas_equalTo(17 + 12 + size.height + placeSize.height + 12);
+    }];
+    //17表示timeLabel的高度，12为timeLabel的上边距，size.height表示内容的高度,placeSize.height表示地点的高度,12表示内容的下边距,15表示bgView的上下边距
+    cell.height = 17 + 12 + size.height + placeSize.height + 12 + 15+15;
+    
+}
+- (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize
+{
+    //计算文本的大小
+    CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
+    return nameSize;
 }
 - (UIImage *)getTagImageFormNString:(NSString *)str
 {
@@ -165,58 +236,13 @@
     }
     
 }
-- (void)addCellConstraint:(CZScheduleInfoCell *)cell
-{
-    //75表示界面左侧的tableView的宽度, 60表示cell中的各项间距
-    CGFloat maxW = kScreenWidth - 75 - 60 - cell.tagImageView.image.size.width;
-    CGSize size = [self sizeWithText:cell.contentLabel.text maxSize:CGSizeMake(maxW, MAXFLOAT) fontSize:14];
 
-    [cell.tagImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(cell.bgView.mas_left).offset(18);
-        make.centerY.equalTo(cell.bgView.mas_centerY).offset(-10);
-        make.size.mas_equalTo(cell.tagImageView.image.size);
-    }];
-
-    [cell.tagLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(cell.tagImageView.mas_bottom);
-        make.centerX.equalTo(cell.tagImageView.mas_centerX);
-        make.width.mas_equalTo(24);
-        make.height.mas_equalTo(25);
-    }];
-
-    [cell.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(cell.bgView.mas_top).offset(12);
-        make.left.equalTo(cell.tagImageView.mas_right).offset(12);
-        make.width.mas_equalTo(70);
-        make.height.mas_equalTo(17);
-    }];
-    CGSize  placeSize = [self sizeWithText:cell.placeLabel.text maxSize:CGSizeMake(maxW, MAXFLOAT) fontSize:14];
-    [cell.placeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(cell.timeLabel.mas_bottom);
-        make.left.equalTo(cell.timeLabel.mas_left);
-        make.width.mas_equalTo(placeSize.width + 1);
-        make.height.mas_equalTo(placeSize.height + 1);
-    }];
-    [cell.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(cell.placeLabel.mas_bottom);
-        make.left.equalTo(cell.timeLabel.mas_left);
-        make.width.mas_equalTo(size.width+1);
-        make.height.mas_equalTo(size.height+1);
-    }];
-    [cell.bgView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(cell.contentView.mas_left).offset(10);
-        make.right.equalTo(cell.contentView.mas_right).offset(-10);
-        make.centerY.equalTo(cell.contentView.mas_centerY).offset(0);
-        make.height.mas_equalTo(17 + 12 + size.height + placeSize.height + 12);
-    }];
-    //17表示timeLabel的高度，12为timeLabel的上边距，size.height表示内容的高度,placeSize.height表示地点的高度,12表示内容的下边距,15表示bgView的上下边距
-    cell.height = 17 + 12 + size.height + placeSize.height + 12 + 15+15;
-
+/*
+// Only override drawRect: if you perform custom drawing.
+// An empty implementation adversely affects performance during animation.
+- (void)drawRect:(CGRect)rect {
+    // Drawing code
 }
-- (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize
-{
-    //计算文本的大小
-    CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
-    return nameSize;
-}
+*/
+
 @end

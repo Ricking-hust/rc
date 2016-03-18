@@ -1,16 +1,19 @@
 //
-//  CZUpdateScheduleViewController.h
+//  RCUpdateScheduleViewController.h
 //  rc
 //
-//  Created by AlanZhang on 16/2/6.
+//  Created by AlanZhang on 16/3/18.
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
 
 #import <UIKit/UIKit.h>
+#import "RCModifyScheduleDelegate.h"
 @class CZUpView;
 @class CZDownView;
 @class CZTagWithLabelView;
-@interface CZUpdateScheduleViewController : UIViewController
+@class RCScrollView;
+@interface RCUpdateScheduleViewController : UIViewController<RCModifyScheduleDelegate>
+
 @property (strong, nonatomic) CZUpView *upView;     //上方View
 @property (strong, nonatomic) CZDownView *downView; //下方View
 
@@ -28,9 +31,11 @@
 @property (strong, nonatomic) NSMutableArray *months;
 @property (strong, nonatomic) NSMutableArray *days;
 @property (strong, nonatomic) NSMutableArray *times;
-@property (assign, nonatomic) int updateIndex;
+
+
 @property (strong, nonatomic) NSArray *updatescArray;
 @property (nonatomic,strong) NSMutableArray *planListRangedUpdate;
-@property (assign, nonatomic) long int timeNodeIndexUpdate;
-
+@property (nonatomic, strong) NSNumber *updateNodeIndex;
+@property (nonatomic, assign) int scIndexUpdate;
+//@property (nonatomic, strong) RCScrollView *timeNodeSVUpdate;
 @end

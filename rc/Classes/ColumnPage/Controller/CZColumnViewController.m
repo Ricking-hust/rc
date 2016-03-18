@@ -20,7 +20,8 @@
 #import "UINavigationBar+Awesome.h"
 #import "Activity.h"
 @interface CZColumnViewController ()
-
+@property (nonatomic, strong) CZTableView *leftTableView;
+@property (nonatomic, strong) CZTableView *rightTableView;
 @property (assign, nonatomic) CGFloat leftH;
 @property (assign, nonatomic) CGFloat rightH;
 @property (assign, nonatomic) CGFloat subHeight;
@@ -43,6 +44,22 @@
 @end
 
 @implementation CZColumnViewController
+- (CZTableView *)leftTableView
+{
+    if (!_leftTableView)
+    {
+        _leftTableView = [[CZTableView alloc]init];
+    }
+    return _leftTableView;
+}
+- (CZTableView *)rightTableView
+{
+    if (!_rightTableView)
+    {
+        _rightTableView = [[CZTableView alloc]init];
+    }
+    return _rightTableView;
+}
 - (NSMutableDictionary *)dict
 {
     if (!_dict)
@@ -153,6 +170,54 @@
     rcColumn.leftArray = self.activityList.list;
     rcColumn.rightArray = self.activityList.list;
     rcColumn.view = self.view;
+}
+#pragma mark - 调整两边的tableview的contentSize
+- (void)tableViewContentSize:(NSNotification *)notification
+{
+    CZTableView *tableView = [notification object];
+    //    NSLog(@"%f",tableView.contentSize.height);
+    //    NSLog(@"%ld",tableView.tag);
+    if (tableView.tag == 12)
+    {
+        self.rightTableView = tableView;
+        if (tableView.contentSize.height != 0)
+        {
+            self.rightH =tableView.contentSize.height;
+            
+        }
+    }else
+    {
+        self.leftTableView = tableView;
+        if (tableView.contentSize.height != 0)
+        {
+            self.leftH =tableView.contentSize.height;
+            
+        }
+    }
+    if (self.rightH != 0 && self.leftH != 0 )
+    {
+        if (self.rightH - self.leftH > 0)
+        {
+            
+            [self.leftArray addObject:@"2"];
+            self.subHeight = self.rightH - self.leftH;
+            
+            //self.leftDelegate.subHeight = self.subHeight;
+            //CZTableView *left = [tableView.superview viewWithTag:11];
+            //[left reloadData];
+        }else if (self.rightH - self.leftH < 0)
+        {
+            [self.rightArray addObject:@"2"];
+            self.subHeight = ABS(self.rightH - self.leftH);
+            
+            //self.rightDelegate.subHeight = self.subHeight;
+            //CZTableView *right = [tableView.superview viewWithTag:12];
+            //[right reloadData];
+        }else
+        {
+            ;
+        }
+    }
 }
 
 #pragma mark - 懒加载，创建主题色
@@ -278,51 +343,6 @@
     if ([platform isEqualToString:@"i386"])      return @"iPhone Simulator";
     if ([platform isEqualToString:@"x86_64"])    return @"iPhone Simulator";
     return platform;
-}
-- (void)tableViewContentSize:(NSNotification *)notification
-{
-    CZTableView *tableView = [notification object];
-//    NSLog(@"%f",tableView.contentSize.height);
-//    NSLog(@"%ld",tableView.tag);
-    if (tableView.tag == 12)
-    {
-        if (tableView.contentSize.height != 0)
-        {
-            self.rightH =tableView.contentSize.height;
-            
-        }
-    }else
-    {
-        if (tableView.contentSize.height != 0)
-        {
-            self.leftH =tableView.contentSize.height;
-            
-        }
-    }
-    if (self.rightH != 0 && self.leftH != 0 )
-    {
-        if (self.rightH - self.leftH > 0)
-        {
-            
-            [self.leftArray addObject:@"2"];
-            self.subHeight = self.rightH - self.leftH;
-
-            //self.leftDelegate.subHeight = self.subHeight;
-            //CZTableView *left = [tableView.superview viewWithTag:11];
-            //[left reloadData];
-        }else if (self.rightH - self.leftH < 0)
-        {
-            [self.rightArray addObject:@"2"];
-            self.subHeight = ABS(self.rightH - self.leftH);
-
-            //self.rightDelegate.subHeight = self.subHeight;
-            //CZTableView *right = [tableView.superview viewWithTag:12];
-            //[right reloadData];
-        }else
-        {
-            ;
-        }
-    }
 }
 
 @end
