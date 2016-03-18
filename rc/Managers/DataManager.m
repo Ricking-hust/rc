@@ -81,10 +81,10 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
     [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:YES];
     
     //Handle Common Mission, Cache, Data Reading & etc.
-    void (^responseHandleBlock)(NSURLSessionDataTask *task,id responseObject) = ^(NSURLSessionDataTask *task,id reponseObject){
+    void (^responseHandleBlock)(NSURLSessionDataTask *task,id responseObject) = ^(NSURLSessionDataTask *task,id responseObject){
         [[UIApplication sharedApplication] setNetworkActivityIndicatorVisible:NO];
         NSLog(@"URL:\n%@", [task.currentRequest URL].absoluteString);
-        success(task,reponseObject);
+        success(task,responseObject);
     };
     
     // Create HTTPSession
@@ -487,6 +487,7 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
                                  @"op_type":opType,
                                  };
     return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app.myrichang.com/Home/Person/getUserActivity" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        //NSLog(@"responseObject:%@",responseObject);
         ActivityList *acList = [[ActivityList alloc] initWithArray:[responseObject objectForKey:@"data"]];
         success(acList);
     } failure:^(NSError *error) {
