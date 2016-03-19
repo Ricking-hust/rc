@@ -58,7 +58,7 @@
             //设置节点状态----------
             [self restoreNodeState];
             [self setNodeState];
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:self.nodeIndex];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:self.nodeIndex];
         }
     }
 
@@ -77,7 +77,7 @@
             [self setNodeState];
             [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:self.nodeIndex];
         }
-        if (self.nodeIndex == 0)
+        if (([self.nodeIndex intValue]) == 0)
         {
             if (scrollView.contentOffsetY< 10 && scrollView.contentOffsetY >-10)
             {
@@ -128,7 +128,7 @@
     CGFloat location = offsetY/NodeH;
     int index = (int)location;
     CGFloat sub = location - index;
-    if (sub < 0.05 && sub > -0.05 && self.isUpRange)
+    if (sub < 0.1 && sub > -0.12 && self.isUpRange)
     {
         index = (int)location;
         self.isNodeChanged = YES;
@@ -148,7 +148,7 @@
     int index = (int)location;
     CGFloat sub = location - index;
 
-    if (sub > 0.9 && sub < 1.1 && self.isDownRange)
+    if (sub > 0.6 && sub < 1.3 && self.isDownRange)
     {
         index++;
         self.isNodeChanged = YES;
