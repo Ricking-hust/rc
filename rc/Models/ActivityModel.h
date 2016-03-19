@@ -27,6 +27,7 @@
 @property (nonatomic,copy) NSString *acHtml;
 @property (nonatomic,copy) NSString *acCollect;
 @property (nonatomic,copy) NSString *plan;
+@property (nonatomic,copy) NSString *planId;
 
 @property (nonatomic,strong) TagsList *tagsList;
 

@@ -100,7 +100,6 @@
         self.ac_placeLabel.text = model.acPlace;
         self.ac_sizeLabel.text  = model.acSize;
         self.ac_payLabel.text   = model.acPay;
-        self.ac_payLabel.text = @"asdfsdgsa";
         self.isHaveValue = YES;
         [[NSNotificationCenter defaultCenter] postNotificationName:@"cellValue" object:self];
     }

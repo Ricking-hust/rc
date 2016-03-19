@@ -179,10 +179,10 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
 }
 
 -(NSURLSessionDataTask *) setTagsWithUserId:(NSString *)userId
-                                   tagsList:(TagsList *)tagsList
+                                   tagsList:(NSArray *)tagsList
                                     success:(void (^)(NSString *))success
                                     failure:(void (^)(NSError *))failure{
-    NSString *urlString = [NSString stringWithFormat:@"http://app.myrichang.com/Home/PersonalInfo/getAllTags"];
+    NSString *urlString = [NSString stringWithFormat:@"http://app.myrichang.com/Home/PersonalInfo/setTags"];
     NSDictionary *parameters = @{
                                  @"usr_id":userId,
                                  @"tag[]":tagsList,
@@ -196,8 +196,8 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
 }
 
 -(NSURLSessionDataTask *) getUsrTagsWithUserId:(NSString *)userId
-                                       success:(void (^)(TagsList *,NSString *msg))success
-                                       failure:(void (^)(NSError *))failure{
+                                       success:(void (^)(TagsList *tagsList,NSString *msg))success
+                                       failure:(void (^)(NSError *error))failure{
     NSDictionary *parameters = @{
                                  @"usr_id":userId,
                                  };
@@ -301,16 +301,23 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
 -(NSURLSessionDataTask *) joinTripWithUserId:(NSString *)userId
                                         acId:(NSString *)acId
                                       opType:(NSString *)opType
-                                     success:(void (^)(NSString *msg))success
+                                     success:(void (^)(NSString *planId))success
                                      failure:(void (^)(NSError *error))failure{
     NSDictionary *parameters = @{
                                  @"usr_id":userId,
                                  @"ac_id":acId,
-                                 @"op_Type":opType
+                                 @"op_type":opType
                                  };
     return [ self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app.myrichang.com/Home/Activity/joinTrip" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSString *msg = [[NSString alloc] initWithString:[responseObject objectForKey:@"msg"]];
-        success(msg);
+        //NSString *code = [[NSString alloc] initWithString:[responseObject objectForKey:@"code"]];
+        NSString *code = [[NSString alloc] initWithFormat:@"%@",[responseObject objectForKey:@"code"]];
+        if ([code isEqualToString:@"200"]) {
+            NSString *planId = [[NSString alloc] initWithString:[responseObject objectForKey:@"pl_id"]];
+            success(planId);
+        } else if ([code isEqualToString:@"210"]){
+            NSString *planId = @"joined";
+            success(planId);
+        }
     } failure:^(NSError *error) {
         failure(error);
     }];
@@ -467,7 +474,7 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
                                      success:(void (^)(NSDictionary *data))success
                                      failure:(void (^)(NSError *error))failure{
     NSDictionary *parameters = @{
-                                 @"photo":photo,
+                                 @"photo[]":photo,
                                  @"usr_id":userId
                                  };
     return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app.myrichang.com/Home/Person/submitImg" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
@@ -504,6 +511,35 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
     return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app.myrichang.com/Home/Person/getUserPlan" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
         PlanList *plList = [[PlanList alloc] initWithArray:[responseObject objectForKey:@"data"]];
         success(plList);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *)putFeedBackWithUserId:(NSString *)userId
+                                        fbMail:(NSString *)fbMail
+                                       fbPhone:(NSString *)fbPhone
+                                     fbContent:(NSString *)fbContent
+                                       success:(void (^)(NSString *))success
+                                       failure:(void (^)(NSError *))failure{
+    NSDictionary *parameters = @{
+                                 @"usr_id":userId,
+                                 @"fb_mail":fbMail,
+                                 @"fb_phone":fbPhone,
+                                 @"fb_content":fbContent
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app.myrichang.com/Home/Person/putFeedback" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSString *msg = [[NSString alloc] initWithString:[responseObject objectForKey:@"msg"]];
+        success(msg);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *)getVersionWithSuccess:(void (^)(NSString *msg))success failure:(void (^)(NSError *))failure{
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app.myrichang.com/Home/Person/getVersion" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSString *msg = [[NSString alloc] initWithString:[responseObject objectForKey:@"data"]];
+        success(msg);
     } failure:^(NSError *error) {
         failure(error);
     }];

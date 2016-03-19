@@ -45,7 +45,7 @@ typedef NS_ENUM(NSInteger,RcErrorType) {
 
 -(NSURLSessionDataTask *) getUsrTagsWithUserId:(NSString *)userId
                                        success:(void (^)(TagsList *tagsList,NSString *msg))success
-                                       failure:(void (^)(NSError *))failure;
+                                       failure:(void (^)(NSError *error))failure;
 
 -(NSURLSessionDataTask *) getPopularSearchSuccess:(void (^)(NSMutableArray *popSearchList))success
                                           failure:(void (^)(NSError *error))failure;
@@ -73,13 +73,13 @@ typedef NS_ENUM(NSInteger,RcErrorType) {
                                                   acId:(NSString *)acId
                                                 opType:(NSString *)opType
                                                success:(void (^)(NSString *msg))success
-                                               failure:(void (^)(NSError *))failure;
+                                               failure:(void (^)(NSError *error))failure;
 
 -(NSURLSessionDataTask *) joinTripWithUserId:(NSString *)userId
                                         acId:(NSString *)acId
                                       opType:(NSString *)opType
-                                     success:(void (^)(NSString *))success
-                                     failure:(void (^)(NSError *))failure;
+                                     success:(void (^)(NSString *planId))success
+                                     failure:(void (^)(NSError *error))failure;
 
 -(NSURLSessionDataTask *) getMoreActivityWithAcId:(NSString *)acId
                                           success:(void (^)(ActivityList *acList))success
@@ -150,6 +150,16 @@ typedef NS_ENUM(NSInteger,RcErrorType) {
 
 -(NSURLSessionDataTask *) getUserPlanWithUserId:(NSString *)userId
                                         success:(void (^)(PlanList *plList))success
+                                        failure:(void (^)(NSError *error))failure;
+
+-(NSURLSessionDataTask *) putFeedBackWithUserId:(NSString *)userId
+                                         fbMail:(NSString *)fbMail
+                                        fbPhone:(NSString *)fbPhone
+                                      fbContent:(NSString *)fbContent
+                                        success:(void (^)(NSString *msg))success
+                                        failure:(void (^)(NSError *error))failure;
+
+-(NSURLSessionDataTask *) getVersionWithSuccess:(void (^)(NSString *msg))success
                                         failure:(void (^)(NSError *error))failure;
 
 #pragma mark - Login & Profile

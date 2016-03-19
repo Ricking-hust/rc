@@ -15,7 +15,7 @@
 @property(nonatomic, strong) CZTableView *rightTableView;
 @property(nonatomic, strong) CZLeftTableViewDelegate *leftDelegate;
 @property(nonatomic, strong) CZRightTableViewDelegate *rightDelegate;
-@property(nonatomic, strong) NSArray *leftArray;
-@property(nonatomic, strong) NSArray *rightArray;
+@property(nonatomic, strong) NSMutableArray *leftArray;
+@property(nonatomic, strong) NSMutableArray *rightArray;
 @property(nonatomic, strong) UIView *view;
 @end

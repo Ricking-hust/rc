@@ -15,10 +15,10 @@
 #import "CZRemindMeView.h"
 #import "UIViewController+LewPopupViewController.h"
 #import "LewPopupViewAnimationSlide.h"
-#import "ActivityModel.h"
 #import "UIImageView+WebCache.h"
 #import "UINavigationBar+Awesome.h"
 #import "UIImageView+LBBlurredImage.h"
+#import "MBProgressHUD.h"
 
 
 @interface CZActivityInfoViewController ()
@@ -35,6 +35,10 @@
 @property(nonatomic,strong) UIButton *addToSchedule;
 
 @property (nonatomic,strong)  ActivityModel *activitymodel;
+@property (nonatomic, strong) MBProgressHUD    *HUD;
+@property (nonatomic, strong) NSString *isCollect;
+@property (nonatomic,strong) NSString *planId;
+@property (nonatomic,strong) NSMutableArray *plAlarm;
 
 @property (nonatomic, copy) NSURLSessionDataTask* (^getActivityBlock)();
 
@@ -90,7 +94,7 @@
     self.getActivityBlock = ^(){
         @strongify(self);
         
-        return [[DataManager manager] getActivityContentWithAcId:self.activityModelPre.acID userId:@"1" success:^(ActivityModel *activity) {
+        return [[DataManager manager] getActivityContentWithAcId:self.activityModelPre.acID userId:[userDefaults objectForKey:@"userId"] success:^(ActivityModel *activity) {
             @strongify(self);
             self.activitymodel = activity;
         } failure:^(NSError *error) {
@@ -107,9 +111,33 @@
 -(void)setActivitymodel:(ActivityModel *)activitymodel{
     
     _activitymodel = activitymodel;
+    //获取活动收藏情况
+    self.isCollect = activitymodel.acCollect;
+    [self setCollectionBtnStyle];
     //对tableView头进行赋值
     [self setTableViewHeader];
     [self.tableView reloadData];
+}
+
+-(NSString *)isCollect{
+    if (!_isCollect) {
+        _isCollect = @"0";
+    }
+    return _isCollect;
+}
+
+-(NSString *)planId{
+    if (!_planId) {
+        _planId = @"joined";
+    }
+    return _planId;
+}
+
+-(NSMutableArray *)plAlarm{
+    if (!_plAlarm) {
+        _plAlarm = [NSMutableArray arrayWithObjects:@"0",@"0",@"0", nil];
+    }
+    return _plAlarm;
 }
 
 //创建子控件
@@ -133,11 +161,6 @@
     self.tableView.dataSource = self;
     [self.addToSchedule setTitle:@"加入日程" forState:UIControlStateNormal];
     [self.addToSchedule setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:130.0/255.0  blue:5.0/255.0  alpha:1.0]];
-    
-    [self.collectionBtn setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateNormal];
-    [self.collectionBtn setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateHighlighted];
-    [self.collectionBtn setTitle:@"收藏" forState:UIControlStateNormal];
-    [self.collectionBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     
     CGSize size = [[UIScreen mainScreen]bounds].size;
     //add tableView constraints
@@ -171,17 +194,23 @@
         make.right.equalTo(self.view.mas_right);
         make.height.mas_equalTo(50);
     }];
-        
+    
 }
 
-- (void)onClickCollection
+-(void)setCollectionBtnStyle
 {
-//    NSLog(@"collection");
-}
-
-- (void)onClickAdd
-{
-//     NSLog(@"addToSchedule");
+    
+    if ([self.isCollect isEqualToString:@"0"]) {
+        [self.collectionBtn setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateNormal];
+        [self.collectionBtn setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateHighlighted];
+        [self.collectionBtn setTitle:@"收藏" forState:UIControlStateNormal];
+        [self.collectionBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    } else {
+        [self.collectionBtn setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateNormal];
+        [self.collectionBtn setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateHighlighted];
+        [self.collectionBtn setTitle:@"已收藏" forState:UIControlStateNormal];
+        [self.collectionBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+    }
 }
 
 
@@ -194,9 +223,6 @@
     titleLabel.textAlignment= NSTextAlignmentCenter;
     titleLabel.text = @"活动介绍";
     self.navigationItem.titleView = titleLabel;
-    
-    //[self createSubViews];
-    
     
     //设置导航栏的左侧按钮
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(backToForwardViewController)];
@@ -239,7 +265,7 @@
             [self setCellValue:cell AtIndexPath:indexPath];//3
             //对cell的控件进行布局
             [cell setSubViewsConstraint];
-
+            
             return cell;
         }
             break;
@@ -257,7 +283,7 @@
         default:
         {
             CZActivityDetailCell *cell = [CZActivityDetailCell detailCellWithTableView:tableView];
-
+            
             return cell;
         }
             break;
@@ -266,8 +292,6 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    CZTimeCell *cell = (CZTimeCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-//    return cell.rowHeight;
     if (indexPath.section == 0)
     {
         CZTimeCell *cell = (CZTimeCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -282,7 +306,7 @@
     {
         return 44;
     }
-
+    
 }
 // 配置tableView header UI布局
 - (void)layoutHeaderImageView
@@ -392,112 +416,11 @@
         
     }else if ([cell isKindOfClass:[CZActivityInfoCell class]])
     {
-        //CZActivityInfoCell *acCell = ((CZActivityInfoCell *)cell);
         ((CZActivityInfoCell *)cell).model = self.activitymodel;
-//        acCell.ac_placeLabel.text = self.activitymodel.acPlace;
-//        acCell.ac_sizeLabel.text  = self.activitymodel.acSize;
-//        acCell.ac_payLabel.text   = self.activitymodel.acPay;
-//        NSLog(@"%@",acCell.ac_placeLabel.text);
     }else
     {
         ;
     }
-}
-//弹出提醒视图
-- (void)onClickRemindMe:(UIButton *)btn
-{
-    CZRemindMeView *remindMeView = [CZRemindMeView remindMeView];
-    remindMeView.remindBeforeOneDay.selected = YES;
-    
-    [remindMeView.remindBeforeOneDay addTarget:self action:@selector(onClickTimeRemind:) forControlEvents:UIControlEventTouchUpInside];
-    
-    [remindMeView.remindBeforeTwoDay addTarget:self action:@selector(onClickTimeRemind:) forControlEvents:UIControlEventTouchUpInside];
-    [remindMeView.remindBeforeThreeDay addTarget:self action:@selector(onClickTimeRemind:) forControlEvents:UIControlEventTouchUpInside];
-    [remindMeView.OKbtn addTarget:self action:@selector(onClickOK:) forControlEvents:UIControlEventTouchUpInside];
-    remindMeView.parentVC = self;
-    [remindMeView setSubView];
-    
-    LewPopupViewAnimationSlide *animation = [[LewPopupViewAnimationSlide alloc]init];
-    animation.type = LewPopupViewAnimationSlideTypeBottomBottom;
-    [self lew_presentPopupView:remindMeView animation:animation dismissed:^{
-        NSLog(@"提醒视图已弹出");
-    }];
-
-}
-/**
- *  设置提醒时间,获取按钮父视图
- *  按钮对应的tag依次为
- *  提前一天----->11
- *  提前二天----->12
- *  提前三天----->13
- *  确定-------->14
- */
-- (void)onClickTimeRemind:(UIButton *)btn
-{
-    UIView *superView = btn.superview;
-    NSMutableArray *btnArray = [[NSMutableArray alloc]init];
-    [btnArray addObject:[superView viewWithTag:11]];
-    [btnArray addObject:[superView viewWithTag:12]];
-    [btnArray addObject:[superView viewWithTag:13]];
-    
-    //[self isSelected:btnArray WithButton:btn];
-
-    BOOL isSelecte = !btn.selected;
-    if (isSelecte)
-    {
-        btn.selected = YES;
-    }else
-    {
-        btn.selected = NO;
-    }
-    
-}
-
-- (UIButton *)isSelected:(NSMutableArray *)btnArray WithButton:(UIButton *)btn
-{
-    for (int i = 0; i <btnArray.count; i++)
-    {
-        UIButton *btnTemp = (UIButton *)btnArray[i];
-        btnTemp.selected = NO;
-    }
-    btn.selected = YES;
-    return btn;
-}
-
-//确定提醒时间按钮点击事件
-- (void)onClickOK:(UIButton *)btn
-{
-    UIView *superView = btn.superview;
-    NSMutableArray *btnArray = [[NSMutableArray alloc]init];
-    [btnArray addObject:[superView viewWithTag:11]];
-    [btnArray addObject:[superView viewWithTag:12]];
-    [btnArray addObject:[superView viewWithTag:13]];
-    
-    for (int i = 0; i <3; i++)
-    {
-        UIButton *button = btnArray[i];
-        if (button.selected)
-        {
-            NSLog(@"选中了%@按钮",button.titleLabel.text);
-        }
-    }
-    
-    [self lew_dismissPopupView];
-}
-
-//判断哪个按钮选中
-- (UIButton *)whichButtonSelected:(NSMutableArray *)btnArray
-{
-    UIButton *selectedBtn ;
-    for (int i = 0; i <btnArray.count; i++)
-    {
-        selectedBtn = (UIButton *)btnArray[i];
-        if (selectedBtn.selected)
-        {
-            break;
-        }
-    }
-    return selectedBtn;
 }
 
 //section头部间距
@@ -548,6 +471,213 @@
     UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 1)];
     view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     return view;
+}
+
+#pragma mark - Click Event
+
+- (void)onClickCollection
+{
+    self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    self.HUD.removeFromSuperViewOnHide = YES;
+    [self.view addSubview:self.HUD];
+    [self.HUD showAnimated:YES];
+    
+    if ([self.isCollect isEqualToString:@"0"]) {
+        [[DataManager manager] setActivityCollectWithUserID:[userDefaults objectForKey:@"userId"] acId:self.activityModelPre.acID opType:@"1" success:^(NSString *msg) {
+            self.isCollect = @"1";
+            [self.collectionBtn setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateNormal];
+            [self.collectionBtn setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateHighlighted];
+            [self.collectionBtn setTitle:@"已收藏" forState:UIControlStateNormal];
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"收藏成功";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+        } failure:^(NSError *error) {
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"操作失败";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+            NSLog(@"Error:%@",error);
+        }];
+    } else {
+        [[DataManager manager] setActivityCollectWithUserID:[userDefaults objectForKey:@"userId"] acId:self.activityModelPre.acID opType:@"2" success:^(NSString *msg) {
+            self.isCollect = @"0";
+            [self.collectionBtn setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateNormal];
+            [self.collectionBtn setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateHighlighted];
+            [self.collectionBtn setTitle:@"收藏" forState:UIControlStateNormal];
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"取消收藏成功";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+        } failure:^(NSError *error) {
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"操作失败";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+            NSLog(@"Error:%@",error);
+        }];
+    }
+}
+
+- (void)onClickAdd
+{
+    self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    self.HUD.removeFromSuperViewOnHide = YES;
+    [self.view addSubview:self.HUD];
+    [self.HUD showAnimated:YES];
+    
+    [[DataManager manager] joinTripWithUserId:[userDefaults objectForKey:@"userId"] acId:self.activityModelPre.acID opType:@"1" success:^(NSString *planId) {
+        if ([planId isEqualToString:@"joined"]) {
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"该活动已在您的日程中(╯3╰)";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+        } else {
+            self.planId = planId;
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"加入日程成功~(≧▽≦)/~";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+        }
+    } failure:^(NSError *error) {
+        self.HUD.mode = MBProgressHUDModeCustomView;
+        self.HUD.label.text = @"操作失败~>_<~ ";
+        [self.HUD hideAnimated:YES afterDelay:0.6];
+        NSLog(@"Error:%@",error);
+    }];
+}
+
+- (void)onClickRemind{
+    
+    self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    self.HUD.removeFromSuperViewOnHide = YES;
+    [self.view addSubview:self.HUD];
+    [self.HUD showAnimated:YES];
+    
+    [[DataManager manager] joinTripWithUserId:[userDefaults objectForKey:@"userId"] acId:self.activityModelPre.acID opType:@"1" success:^(NSString *planId) {
+        if ([planId isEqualToString:@"joined"]) {
+            [[DataManager manager] addPlanWithOpType:@"2" planId:self.activitymodel.planId userId:[userDefaults objectForKey:@"userId"] themeId:@"" planTime:@"" plAlarmOne:self.plAlarm[0] plAlarmTwo:self.plAlarm[1] plAlarmThree:self.plAlarm[2] planContent:@"" acPlace:@"" success:^(NSString *msg) {
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"修改提醒成功~(≧▽≦)/~";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+            } failure:^(NSError *error) {
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"操作失败~>_<~ ";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+                NSLog(@"Error:%@",error);
+            }];
+        } else {
+            self.planId = planId;
+            [[DataManager manager] addPlanWithOpType:@"1" planId:self.planId userId:[userDefaults objectForKey:@"userId"] themeId:@"" planTime:@"" plAlarmOne:self.plAlarm[0] plAlarmTwo:self.plAlarm[1] plAlarmThree:self.plAlarm[2] planContent:@"" acPlace:@"" success:^(NSString *msg) {
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"加入日程提醒成功~(≧▽≦)/~";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+            } failure:^(NSError *error) {
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"操作失败~>_<~ ";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+                NSLog(@"Error:%@",error);
+            }];
+        }
+    } failure:^(NSError *error) {
+        self.HUD.mode = MBProgressHUDModeCustomView;
+        self.HUD.label.text = @"操作失败~>_<~ ";
+        [self.HUD hideAnimated:YES afterDelay:0.6];
+        NSLog(@"Error:%@",error);
+    }];
+}
+
+//弹出提醒视图
+- (void)onClickRemindMe:(UIButton *)btn
+{
+    CZRemindMeView *remindMeView = [CZRemindMeView remindMeView];
+    remindMeView.remindBeforeOneDay.selected = YES;
+    
+    [remindMeView.remindBeforeOneDay addTarget:self action:@selector(onClickTimeRemind:) forControlEvents:UIControlEventTouchUpInside];
+    [remindMeView.remindBeforeTwoDay addTarget:self action:@selector(onClickTimeRemind:) forControlEvents:UIControlEventTouchUpInside];
+    [remindMeView.remindBeforeThreeDay addTarget:self action:@selector(onClickTimeRemind:) forControlEvents:UIControlEventTouchUpInside];
+    [remindMeView.OKbtn addTarget:self action:@selector(onClickOK:) forControlEvents:UIControlEventTouchUpInside];
+    remindMeView.parentVC = self;
+    [remindMeView setSubView];
+    
+    LewPopupViewAnimationSlide *animation = [[LewPopupViewAnimationSlide alloc]init];
+    animation.type = LewPopupViewAnimationSlideTypeBottomBottom;
+    [self lew_presentPopupView:remindMeView animation:animation dismissed:^{
+        NSLog(@"提醒视图已弹出");
+    }];
+    
+}
+/**
+ *  设置提醒时间,获取按钮父视图
+ *  按钮对应的tag依次为
+ *  提前一天----->11
+ *  提前二天----->12
+ *  提前三天----->13
+ *  确定-------->14
+ */
+- (void)onClickTimeRemind:(UIButton *)btn
+{
+    UIView *superView = btn.superview;
+    NSMutableArray *btnArray = [[NSMutableArray alloc]init];
+    [btnArray addObject:[superView viewWithTag:11]];
+    [btnArray addObject:[superView viewWithTag:12]];
+    [btnArray addObject:[superView viewWithTag:13]];
+    
+    //[self isSelected:btnArray WithButton:btn];
+    
+    BOOL isSelecte = !btn.selected;
+    if (isSelecte)
+    {
+        btn.selected = YES;
+    }else
+    {
+        btn.selected = NO;
+    }
+    
+}
+
+- (UIButton *)isSelected:(NSMutableArray *)btnArray WithButton:(UIButton *)btn
+{
+    for (int i = 0; i <btnArray.count; i++)
+    {
+        UIButton *btnTemp = (UIButton *)btnArray[i];
+        btnTemp.selected = NO;
+    }
+    btn.selected = YES;
+    return btn;
+}
+
+//确定提醒时间按钮点击事件
+- (void)onClickOK:(UIButton *)btn
+{
+    UIView *superView = btn.superview;
+    NSMutableArray *btnArray = [[NSMutableArray alloc]init];
+    [btnArray addObject:[superView viewWithTag:11]];
+    [btnArray addObject:[superView viewWithTag:12]];
+    [btnArray addObject:[superView viewWithTag:13]];
+    
+    for (int i = 0; i <3; i++)
+    {
+        UIButton *button = btnArray[i];
+        if (button.selected)
+        {
+            NSLog(@"选中了%@按钮",button.titleLabel.text);
+            self.plAlarm[i] = @"1";
+        }
+    }
+    
+    [self onClickRemind];
+    
+    [self lew_dismissPopupView];
+}
+
+//判断哪个按钮选中
+- (UIButton *)whichButtonSelected:(NSMutableArray *)btnArray
+{
+    UIButton *selectedBtn ;
+    for (int i = 0; i <btnArray.count; i++)
+    {
+        selectedBtn = (UIButton *)btnArray[i];
+        if (selectedBtn.selected)
+        {
+            break;
+        }
+    }
+    return selectedBtn;
 }
 
 /**

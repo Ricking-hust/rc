@@ -152,8 +152,8 @@
         [self.view addSubview:self.tv];
         
     }
-    self.dwNum=0;
-    [self.view bringSubviewToFront:[self.viewArray objectAtIndex:0]];
+//    self.dwNum=0;
+//    [self.view bringSubviewToFront:[self.viewArray objectAtIndex:0]];
     UISwipeGestureRecognizer *recognizer;
     recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)];
     
@@ -242,8 +242,13 @@
     
     rcColumn.backgroundColor = [UIColor whiteColor];
     
-    rcColumn.leftArray = self.activityList.list;
-    rcColumn.rightArray = self.activityList.list;
+    for (int i = 0; i < self.activityList.list.count; i++) {
+        if (i < (self.activityList.list.count/2)) {
+            [rcColumn.leftArray addObject:self.activityList.list[i]];
+        } else {
+            [rcColumn.rightArray addObject:self.activityList.list[i]];
+        }
+    }
     rcColumn.view = self.view;
 }
 #pragma mark - 调整两边的tableview的contentSize

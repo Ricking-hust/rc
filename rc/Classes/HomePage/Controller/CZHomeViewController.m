@@ -49,21 +49,21 @@
 }
 - (void)refleshDataByCity
 {
-    if (self.city == Wuhan)
+    if (self.city == Beijing)
     {
-        [self.leftButton setTitle:@"武汉" forState:UIControlStateNormal];
+        [self.leftButton setTitle:@"北京" forState:UIControlStateNormal];
         self.cityId = @"1";
     }else if (self.city == Shanghai)
     {
         [self.leftButton setTitle:@"上海" forState:UIControlStateNormal];
         self.cityId = @"2";
-    }else if (self.city == Guangzhou)
+    }else if (self.city == Wuhan)
     {
-        [self.leftButton setTitle:@"广州" forState:UIControlStateNormal];
+        [self.leftButton setTitle:@"武汉" forState:UIControlStateNormal];
         self.cityId = @"3";
     }else
     {
-        [self.leftButton setTitle:@"北京" forState:UIControlStateNormal];
+        [self.leftButton setTitle:@"广州" forState:UIControlStateNormal];
         self.cityId = @"4";
     }
     //刷新
@@ -87,7 +87,7 @@
 {
     if (self == [super init])
     {
-        self.city = Wuhan;
+        self.city = Beijing;
         self.cityId =@"1";
     }
     return self;
@@ -104,7 +104,7 @@
     [headerView setView];
     self.tableView.tableHeaderView = headerView;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.city = Wuhan;
+    self.city = Beijing;
     self.cityId = @"1";
 }
 
@@ -120,6 +120,12 @@
     @weakify(self);
     self.getActivityListBlock = ^(){
         @strongify(self);
+        NSString *userId = [[NSString alloc]init];
+        if ([userDefaults objectForKey:@"userId"]) {
+            userId = [userDefaults objectForKey:@"userId"];
+        } else {
+            userId = @"-1";
+        }
         return [[DataManager manager] getActivityRecommendWithCityId:self.cityId startId:@"0" num:@"20" userId:@"1" success:^(ActivityList *acList) {
             @strongify(self);
             self.activityList = acList;
