@@ -40,6 +40,7 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
+
     [self newNodeIndex:scrollView.contentOffsetY];
     if (self.isNodeChanged == YES)
     {
@@ -50,9 +51,9 @@
         [self setNodeState];
         [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:self.nodeIndex];
     }
-    if (self.nodeIndex == 0)
+    if (([self.nodeIndex intValue]) == 0)
     {
-        if (scrollView.contentOffsetY< 10 && scrollView.contentOffsetY >-10)
+        if (scrollView.contentOffsetY< 20 && scrollView.contentOffsetY >-20)
         {
             [scrollView setContentOffsetY:0];
             //设置节点状态----------
@@ -79,7 +80,7 @@
         }
         if (([self.nodeIndex intValue]) == 0)
         {
-            if (scrollView.contentOffsetY< 10 && scrollView.contentOffsetY >-10)
+            if (scrollView.contentOffsetY< 20 && scrollView.contentOffsetY >-20)
             {
                 [scrollView setContentOffsetY:0];
                 //设置节点状态----------

@@ -57,6 +57,8 @@
                 UIView *upLine = [self createLine];
                 upLine.tag = 1 +i;
                 UIView *point = [[UIView alloc]init];
+                UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didSelectTimeNode:)];
+                [point addGestureRecognizer:gesture];
                 point.tag = 100 + i;
                 point.layer.cornerRadius = 7;
                 point.backgroundColor = color;
@@ -158,7 +160,66 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNodeSV" object:self.timeNodeSV];
     });
 }
+- (void)didSelectTimeNode:(UITapGestureRecognizer *)gesture
+{
+    //设置当前节点状态
+        //1.获取tag
+    NSInteger pointTag = gesture.view.tag;
+    NSInteger upLineTag = pointTag - 100 + 1;
+    NSInteger downLineTag = pointTag - 100 + 1000;
+    UIView *upLine = [self.timeNodeSV viewWithTag:upLineTag];
+    UIView *point = [self.timeNodeSV viewWithTag:pointTag];
+    UIView *downLine = [self.timeNodeSV viewWithTag:downLineTag];
+    [self setNodeState:upLine WithPoint:point AnddownLine:downLine];
+    NSLog(@"tag %ld",gesture.view.tag);
+    //还原上个节点状态
+    [self restoreNodeState:self.timeNodeSV.upLine WithPoint:self.timeNodeSV.point AnddownLine:self.timeNodeSV.downLine];
+    self.timeNodeSV.upLine = upLine;
+    self.timeNodeSV.point = point;
+    self.timeNodeSV.downLine = downLine;
+    //更新行程tableView
+        //1.获取nodeIndex
+    NSInteger index = pointTag - 100;
+        //2.发送刷新数据通知
+    NSNumber *nodexIndex = [[NSNumber alloc]initWithInt:(int)index];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:nodexIndex];
+    //设置scrollView的nodeIndex
+        //1.发送新节点下标通知
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"sendTimeNodeScrollView" object:nodexIndex];
+        //2.设置scrollView的位移
+    [UIView animateWithDuration:0.5 animations:^{
+            [self.timeNodeSV setContentOffsetY:([nodexIndex intValue]) *114];
+    }];
 
+}
+- (void)restoreNodeState:(UIView *)upLine WithPoint:(UIView *)point AnddownLine:(UIView *)downLine
+{
+    [upLine mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(20);
+    }];
+    [downLine mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(point.mas_bottom);
+    }];
+    [point mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(upLine.mas_bottom);
+        
+    }];
+    
+}
+- (void)setNodeState:(UIView *)upLine WithPoint:(UIView *)point AnddownLine:(UIView *)downLine
+{
+
+    [upLine mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(10);
+    }];
+    [downLine mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(point.mas_bottom).offset(10);
+    }];
+    [point mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(upLine.mas_bottom).offset(10);
+        
+    }];
+}
 
 - (NSString *)dayLabelStr:(NSMutableArray *)array AtIndex:(int)i
 {
