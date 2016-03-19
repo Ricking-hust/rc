@@ -113,7 +113,6 @@
 		56E3C0181C9C722000BDAE19 /* CZScheduleInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E3C0171C9C722000BDAE19 /* CZScheduleInfoCell.m */; };
 		56E3C01B1C9C72BD00BDAE19 /* CZRemindView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E3C01A1C9C72BD00BDAE19 /* CZRemindView.m */; };
 		56E470071C5735900056BE17 /* CZCityButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E470061C5735900056BE17 /* CZCityButton.m */; };
-		56E470131C5750720056BE17 /* CZAcitivityModelOfColumn.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E470121C5750720056BE17 /* CZAcitivityModelOfColumn.m */; };
 		56E523551C75909A00794B0E /* CZPersonInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E523541C75909A00794B0E /* CZPersonInfoViewController.m */; };
 		56E523581C75922700794B0E /* CZPersonInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E523571C75922700794B0E /* CZPersonInfoCell.m */; };
 		56E5235B1C759C1F00794B0E /* CZMyActivityViewContoller.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E5235A1C759C1F00794B0E /* CZMyActivityViewContoller.m */; };
@@ -381,8 +380,6 @@
 		56E3C01A1C9C72BD00BDAE19 /* CZRemindView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZRemindView.m; sourceTree = "<group>"; };
 		56E470051C5735900056BE17 /* CZCityButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCityButton.h; sourceTree = "<group>"; };
 		56E470061C5735900056BE17 /* CZCityButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCityButton.m; sourceTree = "<group>"; };
-		56E470111C5750720056BE17 /* CZAcitivityModelOfColumn.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZAcitivityModelOfColumn.h; sourceTree = "<group>"; };
-		56E470121C5750720056BE17 /* CZAcitivityModelOfColumn.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZAcitivityModelOfColumn.m; sourceTree = "<group>"; };
 		56E523531C75909A00794B0E /* CZPersonInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZPersonInfoViewController.h; sourceTree = "<group>"; };
 		56E523541C75909A00794B0E /* CZPersonInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZPersonInfoViewController.m; sourceTree = "<group>"; };
 		56E523561C75922700794B0E /* CZPersonInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZPersonInfoCell.h; sourceTree = "<group>"; };
@@ -555,7 +552,6 @@
 			children = (
 				565EF6081C48EB3B0067C032 /* Controller */,
 				56E46FFC1C57088B0056BE17 /* View */,
-				56E4700D1C574FFD0056BE17 /* Model */,
 			);
 			path = ColumnPage;
 			sourceTree = "<group>";
@@ -1000,15 +996,6 @@
 			path = View;
 			sourceTree = "<group>";
 		};
-		56E4700D1C574FFD0056BE17 /* Model */ = {
-			isa = PBXGroup;
-			children = (
-				56E470111C5750720056BE17 /* CZAcitivityModelOfColumn.h */,
-				56E470121C5750720056BE17 /* CZAcitivityModelOfColumn.m */,
-			);
-			path = Model;
-			sourceTree = "<group>";
-		};
 		C409CFF51C9A7B1C00D01F9D /* MBProgressHUD */ = {
 			isa = PBXGroup;
 			children = (
@@ -1285,7 +1272,6 @@
 				566094561C9BAFEC00433AD8 /* RCScheduleViewController.m in Sources */,
 				561D01FD1C47DA5600E4E013 /* README.md in Sources */,
 				56E3C0141C9C691200BDAE19 /* RCAddScheduleViewController.m in Sources */,
-				56E470131C5750720056BE17 /* CZAcitivityModelOfColumn.m in Sources */,
 				56B9CD341C807A7100914F00 /* SDWebImagePrefetcher.m in Sources */,
 				C4C05EEB1C85C500005E7FEE /* LoginViewController.m in Sources */,
 				56637D721C560DA10000BF46 /* CZCityViewController.m in Sources */,

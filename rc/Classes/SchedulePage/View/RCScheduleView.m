@@ -171,7 +171,7 @@
     UIView *point = [self.timeNodeSV viewWithTag:pointTag];
     UIView *downLine = [self.timeNodeSV viewWithTag:downLineTag];
     [self setNodeState:upLine WithPoint:point AnddownLine:downLine];
-    NSLog(@"tag %ld",gesture.view.tag);
+
     //还原上个节点状态
     [self restoreNodeState:self.timeNodeSV.upLine WithPoint:self.timeNodeSV.point AnddownLine:self.timeNodeSV.downLine];
     self.timeNodeSV.upLine = upLine;

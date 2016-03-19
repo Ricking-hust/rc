@@ -41,6 +41,7 @@
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)(IndustryModel *model);
 @property (nonatomic,strong) NSMutableDictionary *dict;
 @property (nonatomic,strong) IndustryModel *indModel;
+
 @end
 
 @implementation CZColumnViewController
@@ -81,7 +82,44 @@
     [super viewWillAppear:animated];
     
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
-
+//    dispatch_async(dispatch_get_global_queue(0, 0), ^{
+//        // 处理耗时操作的代码块...
+//        @weakify(self);
+//        self.getIndListBlock = ^(){
+//            @strongify(self);
+//            return [[DataManager manager] getAllIndustriesWithSuccess:^(IndustryList *indList) {
+//                @strongify(self)
+//                self.indList = indList;
+//                for (IndustryModel *model in self.indList.list) {
+//                    self.indModel = model;
+//                    self.getActivityListWithIndBlock(model);
+//                    
+//                }
+//                
+//            } failure:^(NSError *error) {
+//                NSLog(@"Error:%@",error);
+//            }];
+//        };
+//        
+//        self.getActivityListWithIndBlock = ^(IndustryModel *model){
+//            @strongify(self);
+//            return [[DataManager manager] checkIndustryWithCityId:@"1" industryId:model.indId startId:@"0" success:^(ActivityList *acList) {
+//                @strongify(self);
+//                self.activityList = acList;
+//            } failure:^(NSError *error) {
+//                NSLog(@"Error:%@",error);
+//            }];
+//        };
+//
+//        //通知主线程刷新
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            //回调或者说是通知主线程刷新，
+////            NSLog(@"data length %d",self.activityList.list.count);
+//            PlanModel *model = self.activityList.list.firstObject;
+//            NSLog(@"%@",model.planTime);
+//        });
+//        
+//    });
 }
 
 #pragma mark - ViewDidLoad
@@ -92,10 +130,46 @@
     [self.view addSubview:temp];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tableViewContentSize:) name:@"ContentSize" object:nil];
+    
     [self configureBlocks];
     self.getIndListBlock();
 }
+- (void)createSubview
+{
 
+    self.tableViewArray = [[NSMutableArray alloc]init];
+    
+    //动态生成视图并添加按钮
+    for (int i=0; i<10; i++)
+    {
+        
+        self.tv = [[UITableView alloc]init];
+        self.tv.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:133.0*i/255.0 blue:14.0*i*3/255.0 alpha:1.0];
+        self.tv.tag=i;
+        
+        [self.tableViewArray addObject:self.tv];
+        
+        [self.view addSubview:self.tv];
+        
+    }
+    self.dwNum=0;
+    [self.view bringSubviewToFront:[self.viewArray objectAtIndex:0]];
+    UISwipeGestureRecognizer *recognizer;
+    recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)];
+    
+    [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
+    
+    [self.view addGestureRecognizer:recognizer];
+    
+    
+    recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)];
+    
+    [recognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
+    
+    [self.view addGestureRecognizer:recognizer];
+    
+
+}
 - (void)onClickTooBtn:(UIButton *)btn
 {
     
@@ -151,12 +225,13 @@
 -(void)setActivityList:(ActivityList *)activityList{
     
     _activityList = activityList;
-    [self createInfoView:activityList];
+    //[self createInfoView:activityList];
     
 }
 - (void)createInfoView:(ActivityList *)activityList
 {
     RCColumnInfoView *rcColumn = [[RCColumnInfoView alloc]init];
+    
     [self.view addSubview:rcColumn];
     [rcColumn mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.toolScrollView.mas_bottom).offset(10);
