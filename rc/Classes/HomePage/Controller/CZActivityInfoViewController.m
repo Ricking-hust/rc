@@ -56,7 +56,7 @@
     //设置导航栏
     [self setNavigation];
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
-    
+    self.navigationController.navigationBarHidden = NO;
     //设置tableView头
     [self layoutHeaderImageView];
     

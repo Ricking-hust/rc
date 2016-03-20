@@ -25,11 +25,10 @@
 @property (assign, nonatomic) CGFloat padding;//按钮之间的间距
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (nonatomic,strong) NSMutableArray *popSearchAry;
-@property (nonatomic,strong) NSMutableArray *searchResult;
+@property (nonatomic,strong) ActivityList *searchResult;
 @property (nonatomic, strong) UITableView *tableView;//显示搜索结果
 
 @property (nonatomic,copy) NSURLSessionDataTask *(^getPopSerchBlock)();
-
 @end
 
 @implementation CZSearchViewController
@@ -54,11 +53,15 @@
     [self addHotSearchConstraint];
 }
 
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    self.navigationController.navigationBarHidden = YES;
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    self.navigationController.navigationBarHidden = YES;
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     self.device = [self currentDeviceSize];
     [self configureBlocks];
@@ -70,14 +73,14 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return 0;
+    return 1;
     
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
     
-    return 0;
+    return self.searchResult.list.count;
 }
 
 
@@ -104,29 +107,29 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-//    CZActivityInfoViewController *activityInfoViewController = [[CZActivityInfoViewController alloc]init];
-//    activityInfoViewController.title = @"活动介绍";
-//    activityInfoViewController.activityModelPre = self.activityList.list[indexPath.section];
-//    [self.navigationController pushViewController:activityInfoViewController animated:YES];
+    CZActivityInfoViewController *activityInfoViewController = [[CZActivityInfoViewController alloc]init];
+    activityInfoViewController.title = @"活动介绍";
+    activityInfoViewController.activityModelPre = self.searchResult.list[indexPath.row];
+    [self.navigationController pushViewController:activityInfoViewController animated:YES];
     
 }
 //给单元格进行赋值
 - (void) setCellValue:(CZActivitycell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-//    ActivityModel *ac = self.activityList.list[indexPath.section];
-//    
-//    [cell.ac_poster sd_setImageWithURL:[NSURL URLWithString:ac.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
-//    cell.ac_title.text = ac.acTitle;
-//    cell.ac_time.text = ac.acTime;
-//    cell.ac_place.text = ac.acPlace;
-//    NSMutableArray *Artags = [[NSMutableArray alloc]init];
-//    
-//    for (TagModel *model in ac.tagsList.list) {
-//        [Artags addObject:model.tagName];
-//    }
-//    
-//    NSString *tags = [Artags componentsJoinedByString:@","];
-//    cell.ac_tags.text = tags;
+    ActivityModel *ac = self.searchResult.list[indexPath.row];
+    
+    [cell.ac_poster sd_setImageWithURL:[NSURL URLWithString:ac.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
+    cell.ac_title.text = ac.acTitle;
+    cell.ac_time.text = ac.acTime;
+    cell.ac_place.text = ac.acPlace;
+    NSMutableArray *Artags = [[NSMutableArray alloc]init];
+    
+    for (TagModel *model in ac.tagsList.list) {
+        [Artags addObject:model.tagName];
+    }
+    
+    NSString *tags = [Artags componentsJoinedByString:@","];
+    cell.ac_tags.text = tags;
     
 }
 - (void)onClickTagBtn:(UIButton *)btn
@@ -147,15 +150,13 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    BOOL isHaveData = YES;
-    if (isHaveData)
-    {
+    [[DataManager manager] getActivitySearchWithKeywords:@"" startId:@"0" num:@"10" cityId:@"1" success:^(ActivityList *acList) {
+        self.searchResult = acList;
+        [self.tableView reloadData];
+    } failure:^(NSError *error) {
+        NSLog(@"Error:%@",error);
+    }];
         self.scrollView.hidden = YES;
-        NSLog(@"%ld",self.tableView.tag);
-    }else
-    {
-        NSLog(@"not find data about :%@",searchBar.text);
-    }
     [searchBar resignFirstResponder];
 }
 
