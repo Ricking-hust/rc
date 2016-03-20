@@ -8,6 +8,8 @@
 
 #import "CZSearchViewController.h"
 #import "Masonry.h"
+#import "CZActivitycell.h"
+#import "CZActivityInfoViewController.h"
 #include <sys/sysctl.h>
 #define buttonSize CGSizeMake(65, 30)
 #define IPHONE5PADDING  12
@@ -15,23 +17,22 @@
 #define IPHONE6PLUSPADDING  30.8
 
 @interface CZSearchViewController ()
-@property (strong, nonatomic) UIView *bgView;
+@property (strong, nonatomic) UIView *bgView;//tag 设为10
 @property (strong, nonatomic) UISearchBar *searchBar;
 @property (strong, nonatomic) UIButton *rightBtn;
 @property (strong, nonatomic) UIView *hotSearchView;
 @property (assign, nonatomic) CurrentDevice device;
-@property (assign, nonatomic) CGFloat padding;
+@property (assign, nonatomic) CGFloat padding;//按钮之间的间距
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (nonatomic,strong) NSMutableArray *popSearchAry;
 @property (nonatomic,strong) NSMutableArray *searchResult;
+@property (nonatomic, strong) UITableView *tableView;//显示搜索结果
 
 @property (nonatomic,copy) NSURLSessionDataTask *(^getPopSerchBlock)();
 
 @end
 
 @implementation CZSearchViewController
-
-
 #pragma mark - get data
 
 -(void)configureBlocks{
@@ -65,7 +66,119 @@
     [self addSearchBarConstraint];
 
 }
+#pragma mark - Tableview 数据源
 
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    return 0;
+    
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    
+    return 0;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    //1 创建可重用的自定义cell
+    CZActivitycell *cell = (CZActivitycell*)[CZActivitycell activitycellWithTableView:tableView];
+    
+    //对cell内的控件进行赋值
+    [self setCellValue:cell AtIndexPath:indexPath];
+    
+    //对cell内的控件进行布局
+    [cell setSubViewsConstraint];
+    
+    //2 返回cell
+    return cell;
+}
+
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 140;
+}
+#pragma mark - 单元格的点击事件
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    
+//    CZActivityInfoViewController *activityInfoViewController = [[CZActivityInfoViewController alloc]init];
+//    activityInfoViewController.title = @"活动介绍";
+//    activityInfoViewController.activityModelPre = self.activityList.list[indexPath.section];
+//    [self.navigationController pushViewController:activityInfoViewController animated:YES];
+    
+}
+//给单元格进行赋值
+- (void) setCellValue:(CZActivitycell *)cell AtIndexPath:(NSIndexPath *)indexPath
+{
+//    ActivityModel *ac = self.activityList.list[indexPath.section];
+//    
+//    [cell.ac_poster sd_setImageWithURL:[NSURL URLWithString:ac.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
+//    cell.ac_title.text = ac.acTitle;
+//    cell.ac_time.text = ac.acTime;
+//    cell.ac_place.text = ac.acPlace;
+//    NSMutableArray *Artags = [[NSMutableArray alloc]init];
+//    
+//    for (TagModel *model in ac.tagsList.list) {
+//        [Artags addObject:model.tagName];
+//    }
+//    
+//    NSString *tags = [Artags componentsJoinedByString:@","];
+//    cell.ac_tags.text = tags;
+    
+}
+- (void)onClickTagBtn:(UIButton *)btn
+{
+    NSLog(@"%@",btn.titleLabel.text);
+}
+#pragma mark - 取消
+- (void)onClick:(UIButton *)btn
+{
+    
+    [self.searchBar resignFirstResponder];
+    [self.navigationController popToRootViewControllerAnimated:YES];
+    self.navigationController.navigationBarHidden = NO;
+    
+}
+
+#pragma mark - search delegate
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
+{
+    BOOL isHaveData = YES;
+    if (isHaveData)
+    {
+        self.scrollView.hidden = YES;
+        NSLog(@"%ld",self.tableView.tag);
+    }else
+    {
+        NSLog(@"not find data about :%@",searchBar.text);
+    }
+    [searchBar resignFirstResponder];
+}
+
+
+- (UITableView *)tableView
+{
+    if (!_tableView)
+    {
+        _tableView = [[UITableView alloc]init];
+        [self.view addSubview:_tableView];
+        [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.view.mas_left);
+            make.top.equalTo(self.bgView.mas_bottom).offset(10);
+            make.right.equalTo(self.view.mas_right);
+            make.bottom.equalTo(self.view.mas_bottom);
+        }];
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView.backgroundColor = [UIColor clearColor];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+    }
+    return _tableView;
+}
 - (UIScrollView *)scrollView
 {
     if (!_scrollView)
@@ -80,6 +193,7 @@
     if (!_bgView) {
         _bgView = [[UIView alloc]init];
         _bgView.backgroundColor = [UIColor whiteColor];
+        _bgView.tag = 10;
         [self.view addSubview:_bgView];
     }
     return _bgView;
@@ -93,14 +207,16 @@
         _searchBar.searchBarStyle = UISearchBarStyleMinimal;
         [_searchBar setTranslucent:YES];
         _searchBar.layer.masksToBounds = YES;
-        
+
         _searchBar.layer.cornerRadius = 13.0;
-        
+        UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 44, kScreenWidth, 20)];
+        view.backgroundColor = [UIColor whiteColor];
         [_bgView addSubview:_searchBar];
         _searchBar.delegate = self;
     }
     return _searchBar;
 }
+
 - (UIButton *)rightBtn
 {
     if (!_rightBtn) {
@@ -163,8 +279,7 @@
     CGRect rect = [[UIScreen mainScreen]bounds];
     [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
-#pragma mark - scrollView上边距要调整
-        make.top.equalTo(self.view.mas_top).offset(100);
+        make.top.equalTo(self.bgView.mas_bottom).offset(10);
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
@@ -279,24 +394,6 @@
     [button.layer setMasksToBounds:YES];//设置按钮的圆角半径不会被遮挡
     [button.layer setCornerRadius:3];   //设置圆角
     
-}
-- (void)onClickTagBtn:(UIButton *)btn
-{
-    NSLog(@"%@",btn.titleLabel.text);
-}
-- (void)onClick:(UIButton *)btn
-{
-    
-    [self.searchBar resignFirstResponder];
-    [self.navigationController popToRootViewControllerAnimated:YES];
-    self.navigationController.navigationBarHidden = NO;
-
-}
-
-#pragma mark - search delegate
-
-- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-    NSLog(@"Fuck");
 }
 
 //获取当前设备

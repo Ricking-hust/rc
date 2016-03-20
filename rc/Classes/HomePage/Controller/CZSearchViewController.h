@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CZSearchViewController : UIViewController <UISearchBarDelegate>
+@interface CZSearchViewController : UIViewController <UISearchBarDelegate, UITableViewDelegate, UITableViewDataSource>
 
 @end
