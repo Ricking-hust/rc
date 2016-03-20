@@ -7,16 +7,29 @@
 //
 
 #import "CZTableView.h"
-
+#import "RCColumnTableView.h"
 @implementation CZTableView
-
 
 - (void)reloadData
 {
     [super reloadData];
-//    NSLog(@"%ld",self.tag);
-//    NSLog(@"%f",self.contentSize.height);
-//    NSLog(@"self %@",self);
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"ContentSize" object:self];
+    
+    if (self.contentSize.height != 0)
+    {
+        RCColumnTableView *rcColumn = (RCColumnTableView *)self.superview;
+        if (self.tag == 11)
+        {//左边tableView
+            NSLog(@"left contentSize %f",self.contentSize.height);
+            [self.contentSizeDelegate passTableView:self];
+            
+        }else
+        {
+            NSLog(@"right contentSize %f",self.contentSize.height);
+            [self.contentSizeDelegate passTableView:self];
+            
+        }
+    }
+
+
 }
 @end

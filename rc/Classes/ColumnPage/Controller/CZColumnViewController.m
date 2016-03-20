@@ -13,21 +13,22 @@
 #import "IndustryModel.h"
 #import "ActivityModel.h"
 #import "DataManager.h"
-#import "CZTableView.h"
+#import "RCLeftTableView.h"
+#import "RCRightTableView.h"
 #import "CZLeftTableViewDelegate.h"
 #import "CZRightTableViewDelegate.h"
 #import "RCColumnInfoView.h"
 #import "UINavigationBar+Awesome.h"
 #import "Activity.h"
+#import "RCColumnTableView.h"
+
 @interface CZColumnViewController ()
-@property (nonatomic, strong) CZTableView *leftTableView;
-@property (nonatomic, strong) CZTableView *rightTableView;
-@property (assign, nonatomic) CGFloat leftH;
-@property (assign, nonatomic) CGFloat rightH;
-@property (assign, nonatomic) CGFloat subHeight;
-@property (nonatomic, strong) NSArray *tagArray;
-@property (nonatomic, strong) NSMutableArray *leftArray;
-@property (nonatomic, strong) NSMutableArray *rightArray;
+
+@property (nonatomic, strong) RCColumnTableView *rcTV;
+
+@property (nonatomic, strong) CZLeftTableViewDelegate *leftDelegate;
+@property (nonatomic, strong) CZRightTableViewDelegate *rightDelegate;
+
 
 @property (nonatomic, strong) UIColor *selectedColor;
 @property (nonatomic, strong) UIScrollView *toolScrollView;
@@ -39,87 +40,41 @@
 
 @property (nonatomic,copy) NSURLSessionDataTask *(^getIndListBlock)();
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)(IndustryModel *model);
-@property (nonatomic,strong) NSMutableDictionary *dict;
-@property (nonatomic,strong) IndustryModel *indModel;
+@property (nonatomic, strong) NSMutableArray *dataArray;
 
 @end
 
 @implementation CZColumnViewController
-- (CZTableView *)leftTableView
+- (NSMutableArray *)dataArray
 {
-    if (!_leftTableView)
+    if (!_dataArray)
     {
-        _leftTableView = [[CZTableView alloc]init];
+        _dataArray = [[NSMutableArray alloc]init];
     }
-    return _leftTableView;
+    return _dataArray;
 }
-- (CZTableView *)rightTableView
+- (CZLeftTableViewDelegate *)leftDelegate
 {
-    if (!_rightTableView)
+    if (!_leftDelegate)
     {
-        _rightTableView = [[CZTableView alloc]init];
+        _leftDelegate = [[CZLeftTableViewDelegate alloc]init];
     }
-    return _rightTableView;
+    return _leftDelegate;
 }
-- (NSMutableDictionary *)dict
+- (CZRightTableViewDelegate *)rightDelegate
 {
-    if (!_dict)
+    if (!_rightDelegate)
     {
-        _dict = [[NSMutableDictionary alloc]init];
+        _rightDelegate = [[CZRightTableViewDelegate alloc]init];
     }
-    return _dict;
+    return _rightDelegate;
 }
-- (IndustryModel *)indModel
-{
-    if (!_indModel)
-    {
-        _indModel = [[IndustryModel alloc]init];
-    }
-    return _indModel;
-}
+
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
-//    dispatch_async(dispatch_get_global_queue(0, 0), ^{
-//        // 处理耗时操作的代码块...
-//        @weakify(self);
-//        self.getIndListBlock = ^(){
-//            @strongify(self);
-//            return [[DataManager manager] getAllIndustriesWithSuccess:^(IndustryList *indList) {
-//                @strongify(self)
-//                self.indList = indList;
-//                for (IndustryModel *model in self.indList.list) {
-//                    self.indModel = model;
-//                    self.getActivityListWithIndBlock(model);
-//                    
-//                }
-//                
-//            } failure:^(NSError *error) {
-//                NSLog(@"Error:%@",error);
-//            }];
-//        };
-//        
-//        self.getActivityListWithIndBlock = ^(IndustryModel *model){
-//            @strongify(self);
-//            return [[DataManager manager] checkIndustryWithCityId:@"1" industryId:model.indId startId:@"0" success:^(ActivityList *acList) {
-//                @strongify(self);
-//                self.activityList = acList;
-//            } failure:^(NSError *error) {
-//                NSLog(@"Error:%@",error);
-//            }];
-//        };
-//
-//        //通知主线程刷新
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            //回调或者说是通知主线程刷新，
-////            NSLog(@"data length %d",self.activityList.list.count);
-//            PlanModel *model = self.activityList.list.firstObject;
-//            NSLog(@"%@",model.planTime);
-//        });
-//        
-//    });
 }
 
 #pragma mark - ViewDidLoad
@@ -129,46 +84,165 @@
     UIView *temp = [[UIView alloc]init];
     [self.view addSubview:temp];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(tableViewContentSize:) name:@"ContentSize" object:nil];
-    
-    [self configureBlocks];
-    self.getIndListBlock();
+    [self createSubView];
+//    [self getData];
+//    [self configureBlocks];
+//    self.getIndListBlock();
+    [self getIndInfo];
+    [self.rcTV.tableViewSate  addObserver:self forKeyPath:@"leftTableView" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    [self.rcTV.tableViewSate  addObserver:self forKeyPath:@"rightTableView" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+
 }
-- (void)createSubview
+- (void)getIndInfo
 {
+    NSOperationQueue *queue = [[NSOperationQueue alloc]init];
+    NSBlockOperation *getData = [NSBlockOperation blockOperationWithBlock:^{
+//        [self configureBlocks];
+//        self.getIndListBlock();
+        @weakify(self);
+        self.getIndListBlock = ^(){
+            @strongify(self);
+            return [[DataManager manager] getAllIndustriesWithSuccess:^(IndustryList *indList) {
+                @strongify(self)
+                self.indList = indList;
+                for (IndustryModel *model in self.indList.list) {
+                    self.getActivityListWithIndBlock(model);
+                    
+                }
+                
+            } failure:^(NSError *error) {
+                NSLog(@"Error:%@",error);
+            }];
+        };
+        
+        NSLog(@"getDate done");
+    }];
 
-    self.tableViewArray = [[NSMutableArray alloc]init];
+    NSBlockOperation *reflestUI = [NSBlockOperation blockOperationWithBlock:^{
+        
+        self.getActivityListWithIndBlock = ^(IndustryModel *model){
+            @strongify(self);
+            return [[DataManager manager] checkIndustryWithCityId:@"1" industryId:model.indId startId:@"0" success:^(ActivityList *acList) {
+                @strongify(self);
+                self.activityList = acList;
+            } failure:^(NSError *error) {
+                NSLog(@"Error:%@",error);
+            }];
+        };
+
+        NSLog(@"reflesh UI");
+    }];
+    [reflestUI addDependency:getData];
+    NSBlockOperation *allDone = [NSBlockOperation blockOperationWithBlock:^{
+        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
+            NSLog(@"回到主线程更新UI");
+            self.rightDelegate.array = [[NSMutableArray alloc]initWithArray:self.activityList.list];
+            self.rightDelegate.array = [[NSMutableArray alloc]initWithArray:self.activityList.list];
+        }];
+        NSLog(@"all thing done");
+    }];
+    [allDone addDependency:getData];
+    [allDone addDependency:reflestUI];
+
+    [queue addOperations:@[getData, reflestUI,allDone] waitUntilFinished:NO];
+
+}
+
+- (void)getData
+{
+    dispatch_queue_t queue = dispatch_queue_create("cloumn", DISPATCH_QUEUE_CONCURRENT);
     
-    //动态生成视图并添加按钮
-    for (int i=0; i<10; i++)
-    {
-        
-        self.tv = [[UITableView alloc]init];
-        self.tv.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:133.0*i/255.0 blue:14.0*i*3/255.0 alpha:1.0];
-        self.tv.tag=i;
-        
-        [self.tableViewArray addObject:self.tv];
-        
-        [self.view addSubview:self.tv];
-        
+    dispatch_async(queue, ^{
+        [self configureBlocks];
+        self.getIndListBlock();
+        sleep(1);
+    });
+    dispatch_async(queue, ^{
+        NSLog(@"task 2");
+
+        sleep(0.5);
+    });
+    
+    dispatch_barrier_async(queue, ^{
+        //NSLog(@"after task 1 and task 2");
+        sleep(0.5);
+    });
+    
+    dispatch_async(queue, ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //更新UI
+            if (self.activityList.list.count != 0 )
+            {
+                self.rightDelegate.array = [[NSMutableArray alloc]initWithArray:self.activityList.list];
+                self.leftDelegate.array = [[NSMutableArray alloc]initWithArray:self.activityList.list];
+
+            }else
+            {
+                //无数据或者网络异常处理
+                NSLog(@"no data");
+            }
+            
+        });
+    });
+}
+-(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
+{
+    NSMutableDictionary *objDict = (NSMutableDictionary *)object;
+    if ([[objDict valueForKey:@"leftTableView"] isEqualToString:@"YES"] && [[objDict valueForKey:@"rightTableView"]isEqualToString:@"YES"]) {
+        CGFloat subHeight = self.rcTV.leftTableView.contentSize.height - self.rcTV.rightTableView.contentSize.height;
+        //NSLog(@"%@",objDict);
+        if (subHeight < 0)
+        {//左低右高
+            PlanModel *model = [[PlanModel alloc]init];
+            model.planId = @"null";
+            [self.leftDelegate.array addObject:model];
+            self.leftDelegate.subHeight = subHeight;
+            [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
+            [self.rcTV.leftTableView reloadData];
+            
+        }else if (subHeight > 0)
+        {//左高右低
+            PlanModel *model = [[PlanModel alloc]init];
+            model.planId = @"null";
+            [self.rightDelegate.array addObject:model];
+            self.rightDelegate.subHeight = subHeight;
+            [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
+            [self.rcTV.rightTableView reloadData];
+        }else
+        {//等高
+            ;
+        }
     }
-//    self.dwNum=0;
-//    [self.view bringSubviewToFront:[self.viewArray objectAtIndex:0]];
-    UISwipeGestureRecognizer *recognizer;
-    recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)];
+}
+- (void)createSubView
+{
+    self.rcTV = [[RCColumnTableView alloc]init];
+    [self.view addSubview:self.rcTV];
+    [self.rcTV mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.toolScrollView.mas_bottom).offset(20);
+        make.left.equalTo(self.view.mas_left);
+        make.right.equalTo(self.view.mas_right);
+        make.bottom.equalTo(self.view.mas_bottom).offset(-49);
+    }];
+    self.rcTV.view = self.view;
+    self.leftDelegate.leftTableView = self.rcTV.leftTableView;
+    self.leftDelegate.rightTableView = self.rcTV.rightTableView;
+    self.rightDelegate.leftTableView = self.rcTV.leftTableView;
+    self.rightDelegate.rightTableView = self.rcTV.rightTableView;
     
-    [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
+    self.rcTV.leftTableView.delegate = self.leftDelegate;
+    self.rcTV.leftTableView.dataSource = self.leftDelegate;
+    self.rcTV.rightTableView.delegate  = self.rightDelegate;
+    self.rcTV.rightTableView.dataSource = self.rightDelegate;
     
-    [self.view addGestureRecognizer:recognizer];
-    
-    
-    recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)];
-    
-    [recognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
-    
-    [self.view addGestureRecognizer:recognizer];
-    
-
+    //将self.view添加到tableView代理的响应链中
+    self.leftDelegate.view = self.view;
+    self.rightDelegate.view = self.view;
+}
+- (void)dealloc
+{
+    [self removeObserver:self forKeyPath:@"leftTableView"];
+    [self removeObserver:self forKeyPath:@"rightTableView"];
 }
 - (void)onClickTooBtn:(UIButton *)btn
 {
@@ -194,11 +268,10 @@
             @strongify(self)
             self.indList = indList;
             for (IndustryModel *model in self.indList.list) {
-                self.indModel = model;
                 self.getActivityListWithIndBlock(model);
-            
+                
             }
-
+            
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];
@@ -225,81 +298,12 @@
 -(void)setActivityList:(ActivityList *)activityList{
     
     _activityList = activityList;
-    //[self createInfoView:activityList];
+//    if (_activityList.list.count != 0)
+//    {
+//        [self test];
+//    }
     
 }
-- (void)createInfoView:(ActivityList *)activityList
-{
-    RCColumnInfoView *rcColumn = [[RCColumnInfoView alloc]init];
-    
-    [self.view addSubview:rcColumn];
-    [rcColumn mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.toolScrollView.mas_bottom).offset(10);
-        make.left.equalTo(self.view.mas_left);
-        make.right.equalTo(self.view.mas_right);
-        make.bottom.equalTo(self.view.mas_bottom).offset(-49);
-    }];
-    
-    rcColumn.backgroundColor = [UIColor whiteColor];
-    
-    for (int i = 0; i < self.activityList.list.count; i++) {
-        if (i < (self.activityList.list.count/2)) {
-            [rcColumn.leftArray addObject:self.activityList.list[i]];
-        } else {
-            [rcColumn.rightArray addObject:self.activityList.list[i]];
-        }
-    }
-    rcColumn.view = self.view;
-}
-#pragma mark - 调整两边的tableview的contentSize
-- (void)tableViewContentSize:(NSNotification *)notification
-{
-    CZTableView *tableView = [notification object];
-    //    NSLog(@"%f",tableView.contentSize.height);
-    //    NSLog(@"%ld",tableView.tag);
-    if (tableView.tag == 12)
-    {
-        self.rightTableView = tableView;
-        if (tableView.contentSize.height != 0)
-        {
-            self.rightH =tableView.contentSize.height;
-            
-        }
-    }else
-    {
-        self.leftTableView = tableView;
-        if (tableView.contentSize.height != 0)
-        {
-            self.leftH =tableView.contentSize.height;
-            
-        }
-    }
-    if (self.rightH != 0 && self.leftH != 0 )
-    {
-        if (self.rightH - self.leftH > 0)
-        {
-            
-            [self.leftArray addObject:@"2"];
-            self.subHeight = self.rightH - self.leftH;
-            
-            //self.leftDelegate.subHeight = self.subHeight;
-            //CZTableView *left = [tableView.superview viewWithTag:11];
-            //[left reloadData];
-        }else if (self.rightH - self.leftH < 0)
-        {
-            [self.rightArray addObject:@"2"];
-            self.subHeight = ABS(self.rightH - self.leftH);
-            
-            //self.rightDelegate.subHeight = self.subHeight;
-            //CZTableView *right = [tableView.superview viewWithTag:12];
-            //[right reloadData];
-        }else
-        {
-            ;
-        }
-    }
-}
-
 #pragma mark - 懒加载，创建主题色
 
 - (UIColor *)selectedColor
@@ -313,7 +317,7 @@
 - (UIScrollView *)toolScrollView
 {
     if (!_toolScrollView) {
-         CGRect rect = [[UIScreen mainScreen]bounds];
+        CGRect rect = [[UIScreen mainScreen]bounds];
         _toolScrollView  = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 68, rect.size.width, 35)];
         _toolScrollView.backgroundColor = [UIColor whiteColor];
         //设置分布滚动，去掉水平和垂直滚动条
@@ -363,12 +367,12 @@
         CGFloat ofButtonPadding = i * (padding + 30) + leftPadding;
         [btnView.tagButton addTarget:self action:@selector(onClickTooBtn:) forControlEvents:UIControlEventTouchUpInside];
         [self.toolScrollView addSubview:btnView];
-
+        
         [btnView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.toolScrollView.mas_left).with.offset(ofButtonPadding);
             make.top.equalTo(self.toolScrollView.mas_top).with.offset(topPadding);
         }];
-
+        
     }
 }
 

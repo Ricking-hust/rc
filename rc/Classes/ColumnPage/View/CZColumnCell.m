@@ -21,7 +21,7 @@
         cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
-    
+    cell.backgroundColor = [UIColor clearColor];
     return cell;
     
 }
@@ -168,14 +168,14 @@
     }];
     
     //cell的高度
-    self.cellHeight = acImageH + 10 + acNameSize.height + 10 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height +10+10;
+    self.cellHeight = acImageH + 10 + acNameSize.height + 20 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height +10;
 
     if (self.isLeft == YES)
     {
         [self.bgView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(leftPaddintToContentView);
-            //make.top.equalTo(self.contentView.mas_top);
-            make.centerY.equalTo(self.contentView.mas_centerY);
+            make.top.equalTo(self.contentView.mas_top);
+            //make.centerY.equalTo(self.contentView.mas_centerY);
             make.width.mas_equalTo(acImageW);
             make.height.mas_equalTo(self.cellHeight - 10);
         }];
@@ -183,8 +183,8 @@
     {
         [self.bgView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.contentView.mas_right).offset(-rightPaddingToContentView);
-            //make.top.equalTo(self.contentView.mas_top);
-            make.centerY.equalTo(self.contentView.mas_centerY);
+            make.top.equalTo(self.contentView.mas_top);
+            //make.centerY.equalTo(self.contentView.mas_centerY);
             make.width.mas_equalTo(acImageW);
             make.height.mas_equalTo(self.cellHeight - 10);
         }];

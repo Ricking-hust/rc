@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-@interface CZColumnViewController : UIViewController
-@property (nonatomic, strong) UITableView *tv;
-@property (nonatomic, strong) NSMutableArray *tableViewArray;
-@property (nonatomic, assign) int tvNumber;
+#import "RCTableVieContentSizeDelegate.h"
+@class RCColumnInfoView;
+@interface CZColumnViewController : UIViewController<RCTableVieContentSizeDelegate>
+
 @end

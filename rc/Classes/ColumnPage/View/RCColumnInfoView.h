@@ -18,4 +18,6 @@
 @property(nonatomic, strong) NSMutableArray *leftArray;
 @property(nonatomic, strong) NSMutableArray *rightArray;
 @property(nonatomic, strong) UIView *view;
+@property (nonatomic, assign) BOOL isLeftLoaded;
+@property (nonatomic, assign) BOOL isRightLoaded;
 @end
