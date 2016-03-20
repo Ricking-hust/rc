@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "RCTableVieContentSizeDelegate.h"
 @interface CZTableView : UITableView
-
+@property (nonatomic, weak) id<RCTableVieContentSizeDelegate> contentSizeDelegate;
 @end

@@ -1,4 +1,4 @@
-//
+ //
 //  CZLeftTableViewDelegate.m
 //  rc
 //
@@ -7,7 +7,8 @@
 //
 
 #import "CZLeftTableViewDelegate.h"
-#import "CZTableView.h"
+#import "RCLeftTableView.h"
+#import "RCRightTableView.h"
 #import "CZColumnCell.h"
 #import "ActivityModel.h"
 #import "CZActivityInfoViewController.h"
@@ -17,14 +18,18 @@
 {
     if (self = [super init])
     {
-        self.leftTableView = [[CZTableView alloc]init];
-        self.rightTableView = [[CZTableView alloc]init];
-        self.array = [[NSArray alloc]init];
+        self.leftTableView = [[RCLeftTableView alloc]init];
+        self.rightTableView = [[RCRightTableView alloc]init];
+        self.array = [[NSMutableArray alloc]init];
         self.view  = [[UIView alloc]init];
     }
     return self;
 }
-
+- (void)setArray:(NSMutableArray *)array
+{
+    _array = array;
+    [self.leftTableView reloadData];
+}
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -40,27 +45,54 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+//    tableView.backgroundColor = [UIColor greenColor];
+    ActivityModel *model = self.array[indexPath.row];
+//    long int index = indexPath.row;
+//    NSLog(@"index %ld",index);
+    if ([model.planId isEqualToString:@"null"])
+    {
+        UITableViewCell *cell = [[UITableViewCell alloc]init];
+        cell.backgroundColor = [UIColor redColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+        
 
-    //1 创建可重用的自定义cell
-    CZColumnCell *cell = [CZColumnCell cellWithTableView:tableView];
-    //CZColumnCell *cell = [[CZColumnCell alloc]init];
-    cell.isLeft = YES;
+    }else
+    {
 
-    //对cell内的控件进行赋值
-    [self setCellValue:cell AtIndexPath:indexPath];
-    //对cell内的控件进行布局
-    [cell setSubviewConstraint];
+        //1 创建可重用的自定义cell
+        CZColumnCell *cell = [CZColumnCell cellWithTableView:tableView];
+        //CZColumnCell *cell = [[CZColumnCell alloc]init];
+        cell.isLeft = YES;
+        
+        //对cell内的控件进行赋值
+        [self setCellValue:cell AtIndexPath:indexPath];
+        //对cell内的控件进行布局
+        [cell setSubviewConstraint];
+        
+        //2 返回cell
+//        if (indexPath.row == 4)
+//        {
+//            cell.backgroundColor = [UIColor redColor];
+//        }
+        return cell;
+    }
 
-    //2 返回cell
-    return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.array.count-1 == indexPath.row &&self.subHeight != 0)
+    ActivityModel *model = self.array[indexPath.row];
+//    long int index = indexPath.row;
+//    NSLog(@"index %ld",index);
+    if ([model.planId isEqualToString:@"null"])
     {
         return self.subHeight;
+    }else
+    {
+        CGFloat height = [self ContacterTableCell:self.array[indexPath.row]];
+        //NSLog(@"index.row %ld,height %f",indexPath.row,height);
+        return height;
     }
-    return [self ContacterTableCell:self.array[indexPath.row]];
 }
 - (CGFloat)ContacterTableCell:(ActivityModel *)model
 {
@@ -91,10 +123,11 @@
     CGSize maxSize = CGSizeMake(acImageW - 20, MAXFLOAT);
     CGSize acNameSize = [self sizeWithText:model.acTitle maxSize:maxSize fontSize:14];
     CGSize acTimeSize = [self sizeWithText:model.acTime maxSize:maxSize fontSize:12];
-    CGSize acPlaceSize = [self sizeWithText:@"光谷体育馆" maxSize:maxSize fontSize:12];
+    CGSize acPlaceSize = [self sizeWithText:model.acPlace maxSize:maxSize fontSize:12];
     CGSize acTagSize = [self sizeWithText:@"求职" maxSize:maxSize fontSize:12];
     
-    return acImageH + 10 + acNameSize.height + 10 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height +20+10;
+    //NSLog(@"name %f time %f place %f",acNameSize.height, acTimeSize.height, acPlaceSize.height);
+    return acImageH + 10 + acNameSize.height + 20 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height +10+10;
 }
 //给单元格进行赋值
 - (void) setCellValue:(CZColumnCell *)cell AtIndexPath:(NSIndexPath *)indexPath
@@ -116,12 +149,14 @@
 
 - (void)displayInfo:(UITapGestureRecognizer *)gesture
 {
-    UIView *view = gesture.view;
-    CZActivityInfoViewController *info = [[CZActivityInfoViewController alloc]init];
-    info.title = @"活动介绍";
-    info.activityModelPre = self.array[view.tag];
+//    UIView *view = gesture.view;
+//    CZActivityInfoViewController *info = [[CZActivityInfoViewController alloc]init];
+//    info.title = @"活动介绍";
+//    info.activityModelPre = self.array[view.tag];
+    UIViewController *vc = [[UIViewController alloc]init];
+    vc.view.backgroundColor = [UIColor whiteColor];
 
-    [[self viewController].navigationController pushViewController:info animated:YES];
+    [[self viewController].navigationController pushViewController:vc animated:YES];
 }
 - (UIViewController *)viewController
 {
