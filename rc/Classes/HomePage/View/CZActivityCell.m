@@ -25,10 +25,10 @@
 + (instancetype)activitycellWithTableView:(UITableView*)tableView
 {
     static NSString *reuseId = @"activityCell";
-    CZActivitycell * cell = (CZActivitycell*)[tableView dequeueReusableCellWithIdentifier:nil];
+    CZActivitycell * cell = (CZActivitycell*)[tableView dequeueReusableCellWithIdentifier:reuseId];
     if (!cell)
     {
-        cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:nil];
+        cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
     }
     
     tableView.separatorStyle = UITableViewCellSeparatorStyleNone;//去掉Cell之间的分割线

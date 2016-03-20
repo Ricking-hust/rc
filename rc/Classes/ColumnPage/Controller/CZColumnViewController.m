@@ -36,22 +36,21 @@
 
 @property (nonatomic,strong) IndustryList *indList;
 @property (nonatomic,strong) ActivityList *activityList;
-@property (nonatomic,copy) NSMutableArray *activityDic;
 
 @property (nonatomic,copy) NSURLSessionDataTask *(^getIndListBlock)();
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)(IndustryModel *model);
-@property (nonatomic, strong) NSMutableArray *dataArray;
-
+@property (nonatomic,copy) NSMutableDictionary *acByind;
 @end
 
 @implementation CZColumnViewController
-- (NSMutableArray *)dataArray
+- (NSMutableDictionary *)acByind
 {
-    if (!_dataArray)
+    if (!_acByind)
     {
-        _dataArray = [[NSMutableArray alloc]init];
+        _acByind = [[NSMutableDictionary alloc]init];
     }
-    return _dataArray;
+    return _acByind;
+
 }
 - (CZLeftTableViewDelegate *)leftDelegate
 {
@@ -86,67 +85,12 @@
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     [self createSubView];
     [self getData];
-//    [self configureBlocks];
-//    self.getIndListBlock();
-    //[self getIndInfo];
+
     [self.rcTV.tableViewSate  addObserver:self forKeyPath:@"leftTableView" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     [self.rcTV.tableViewSate  addObserver:self forKeyPath:@"rightTableView" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
 
 }
-- (void)getIndInfo
-{
-    NSOperationQueue *queue = [[NSOperationQueue alloc]init];
-    NSBlockOperation *getData = [NSBlockOperation blockOperationWithBlock:^{
-//        [self configureBlocks];
-//        self.getIndListBlock();
-        @weakify(self);
-        self.getIndListBlock = ^(){
-            @strongify(self);
-            return [[DataManager manager] getAllIndustriesWithSuccess:^(IndustryList *indList) {
-                @strongify(self)
-                self.indList = indList;
-                for (IndustryModel *model in self.indList.list) {
-                    self.getActivityListWithIndBlock(model);
-                    
-                }
-                
-            } failure:^(NSError *error) {
-                NSLog(@"Error:%@",error);
-            }];
-        };
-        sleep(1);
-        NSLog(@"getDate done");
-    }];
 
-    NSBlockOperation *reflestUI = [NSBlockOperation blockOperationWithBlock:^{
-        @weakify(self)
-        self.getActivityListWithIndBlock = ^(IndustryModel *model){
-            @strongify(self);
-            return [[DataManager manager] checkIndustryWithCityId:@"1" industryId:model.indId startId:@"0" success:^(ActivityList *acList) {
-                @strongify(self);
-                self.activityList = acList;
-            } failure:^(NSError *error) {
-                NSLog(@"Error:%@",error);
-            }];
-        };
-        sleep(1);
-        NSLog(@"reflesh UI");
-    }];
-    [reflestUI addDependency:getData];
-    NSBlockOperation *allDone = [NSBlockOperation blockOperationWithBlock:^{
-        [[NSOperationQueue mainQueue] addOperationWithBlock:^{
-            NSLog(@"回到主线程更新UI");
-            self.rightDelegate.array = [[NSMutableArray alloc]initWithArray:self.activityList.list];
-            self.rightDelegate.array = [[NSMutableArray alloc]initWithArray:self.activityList.list];
-        }];
-        NSLog(@"all thing done");
-    }];
-    [allDone addDependency:getData];
-    [allDone addDependency:reflestUI];
-
-    [queue addOperations:@[getData, reflestUI,allDone] waitUntilFinished:NO];
-
-}
 
 - (void)getData
 {
@@ -173,13 +117,14 @@
             //更新UI
             if (self.activityList.list.count != 0 )
             {
+                ActivityList *defaultInd = [self.acByind valueForKey:@"互联网"];
                 NSMutableArray *leftArray = [[NSMutableArray alloc]init];
                 NSMutableArray *rightArray = [[NSMutableArray alloc]init];
-                for (int i =0; i < self.activityList.list.count; i++) {
-                    if (i<(self.activityList.list.count/2)) {
-                        [leftArray addObject:self.activityList.list[i]];
+                for (int i =0; i < defaultInd.list.count; i++) {
+                    if (i<(defaultInd.list.count/2)) {
+                        [leftArray addObject:defaultInd.list[i]];
                     } else {
-                        [rightArray addObject:self.activityList.list[i]];
+                        [rightArray addObject:defaultInd.list[i]];
                     }
                 }
                 self.rightDelegate.array = rightArray;
@@ -259,7 +204,7 @@
     [self isToolButtonSelected:btn];
     //此处添加按钮点击事件的处理代码---------------
     NSString *tagName = btn.titleLabel.text;
-    
+
 }
 
 -(void)didReceiveMemoryWarning
@@ -291,6 +236,7 @@
         return [[DataManager manager] checkIndustryWithCityId:@"1" industryId:model.indId startId:@"0" success:^(ActivityList *acList) {
             @strongify(self);
             self.activityList = acList;
+            [self.acByind setValue:self.activityList forKey:model.indName];
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];
