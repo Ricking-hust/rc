@@ -22,30 +22,16 @@
 @end
 
 @implementation RCScheduleViewController
-- (BOOL)isLogin
-{
-    if (!_isLogin){
-        _isLogin = YES;
-    }
-    return _isLogin;
-}
-- (BOOL)isAddsc
-{
-    if (!_isAddsc)
-    {
-        _isAddsc = NO;
-    }
-    return _isAddsc;
-}
+
+
 - (void)viewWillAppear:(BOOL)animated
 {
+    self.isLogin = [DataManager manager].user.isLogin;
     if (self.isLogin)
     {
         self.sc.hidden = NO;
-        if (self.isAddsc)
-        {
-            //同步用户行程
-        }
+
+            self.getPlanListBlock();
     }else
     {
         NSLog(@"please login");
@@ -66,18 +52,17 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    // Do any additional setup after loading the view.
     [self setNavigation];
     [self createSC];
     [self configureBlocks];
-    self.getPlanListBlock();
     [[NSNotificationCenter defaultCenter]postNotificationName:@"getView" object:self.view];
 }
+
 -(void)configureBlocks{
     @weakify(self);
     self.getPlanListBlock = ^(){
         @strongify(self);
-        return [[DataManager manager] getPlanWithUserId:@"1" beginDate:@"2016-01-01" endDate:@"2016-12-31" success:^(PlanList *plList) {
+        return [[DataManager manager] getPlanWithUserId:[userDefaults objectForKey:@"userId"] beginDate:@"2016-01-01" endDate:@"2016-12-31" success:^(PlanList *plList) {
             @strongify(self);
             self.planList = plList;
         } failure:^(NSError *error) {

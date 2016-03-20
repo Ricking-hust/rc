@@ -15,7 +15,7 @@
     if (self = [super initWithDictionary:dict]) {
         self.planId                         = [dict objectForSafeKey:@"pl_id"];
         self.planContent                    = [dict objectForSafeKey:@"pl_content"];
-        self.planTime                      = [dict objectForSafeKey:@"pl_time"];
+        self.planTime                       = [dict objectForSafeKey:@"pl_time"];
         self.plAlarmOne                     = [dict objectForSafeKey:@"pl_alarm_one"];
         self.plAlarmTwo                     = [dict objectForSafeKey:@"pl_alarm_two"];
         self.plAlarmThree                   = [dict objectForSafeKey:@"pl_alarm_three"];

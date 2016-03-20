@@ -22,12 +22,36 @@
 @property (assign, nonatomic) CurrentDevice device;
 @property (assign, nonatomic) CGFloat padding;
 @property (strong, nonatomic) UIScrollView *scrollView;
-#pragma mark - 测试数据
-@property (strong, nonatomic) NSMutableArray *array;
+@property (nonatomic,strong) NSMutableArray *popSearchAry;
+@property (nonatomic,strong) NSMutableArray *searchResult;
+
+@property (nonatomic,copy) NSURLSessionDataTask *(^getPopSerchBlock)();
 
 @end
 
 @implementation CZSearchViewController
+
+
+#pragma mark - get data
+
+-(void)configureBlocks{
+    @weakify(self)
+    self.getPopSerchBlock = ^(){
+        @strongify(self)
+        return [[DataManager manager] getPopularSearchSuccess:^(NSMutableArray *popSearchList) {
+            @strongify(self)
+            self.popSearchAry = popSearchList;
+        } failure:^(NSError *error) {
+            NSLog(@"Error:%@",error);
+        }];
+    };
+}
+
+-(void) setPopSearchAry:(NSMutableArray *)popSearchAry{
+    _popSearchAry = popSearchAry;
+    
+    [self addHotSearchConstraint];
+}
 
 - (void)viewDidLoad
 {
@@ -36,19 +60,12 @@
     self.navigationController.navigationBarHidden = YES;
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     self.device = [self currentDeviceSize];
+    [self configureBlocks];
+    self.getPopSerchBlock();
     [self addSearchBarConstraint];
-    [self addHotSearchConstraint];
 
 }
-#pragma mark - 懒加载
-- (NSMutableArray *)array
-{
-    if (!_array)
-    {
-        self.array = [[NSMutableArray alloc]initWithObjects:@"创业",@"互联网",@"金融",@"讲座",@"IT",@"Xcode", @"mac", nil];
-    }
-    return _array;
-}
+
 - (UIScrollView *)scrollView
 {
     if (!_scrollView)
@@ -113,6 +130,7 @@
 #pragma mark - 搜索框约束
 - (void)addSearchBarConstraint
 {
+    self.searchBar.delegate = self;
     CGRect rect = [[UIScreen mainScreen]bounds];
     CGFloat searchBarW = rect.size.width * 0.82;
     CGFloat searchBarH = 44;
@@ -139,7 +157,7 @@
 {
     [self.searchBar resignFirstResponder];
 }
-#pragma mark - 热闹搜索约束
+#pragma mark - 热门搜索约束
 - (void) addHotSearchConstraint
 {
     CGRect rect = [[UIScreen mainScreen]bounds];
@@ -208,12 +226,12 @@
     int y = 0;
     CGFloat XPading = 0;
     CGFloat YPadding = 12;
-    long int count = self.array.count;
+    long int count = self.popSearchAry.count;
     for (int i = 0; i < count; i++)
     {
         UIButton *btn = [[UIButton alloc]init];
         [self.hotSearchView addSubview:btn];
-        [self setButton:btn WithTittle:self.array[i]];
+        [self setButton:btn WithTittle:self.popSearchAry[i]];
         [btn addTarget:self action:@selector(onClickTagBtn:) forControlEvents:UIControlEventTouchUpInside];
         if ((i) % 4 == 0 && i != 0 )
         {
@@ -234,7 +252,7 @@
 - (CGFloat)heigthForTagButtonsView
 {
 
-    CGFloat row = self.array.count / 4.0;
+    CGFloat row = self.popSearchAry.count / 4.0;
     int height = (int)row;
     if (height == row)
     {
@@ -273,6 +291,12 @@
     [self.navigationController popToRootViewControllerAnimated:YES];
     self.navigationController.navigationBarHidden = NO;
 
+}
+
+#pragma mark - search delegate
+
+- (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
+    
 }
 
 //获取当前设备

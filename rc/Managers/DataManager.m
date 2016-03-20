@@ -379,8 +379,16 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
                                  @"end_date":endDate,
                                  };
     return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app.myrichang.com/Home/Plan/getPlan" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
-        PlanList *plList = [[PlanList alloc] initWithArray:[responseObject objectForKey:@"data"]];
-        success(plList);
+        NSDictionary *returnMessage = [[NSDictionary alloc]initWithDictionary:responseObject];
+        NSNumber *code = [returnMessage objectForKey:@"code"];
+        NSNumber *successcode = [NSNumber numberWithLong:200];
+        if ([code isEqualToNumber:successcode]) {
+            PlanList *plList = [[PlanList alloc] initWithArray:[responseObject objectForKey:@"data"]];
+            success(plList);
+        } else {
+            PlanList *plList = nil;
+            success(plList);
+        }
     } failure:^(NSError *error) {
         failure(error);
     }];
@@ -568,7 +576,6 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
         NSNumber *successcode = [NSNumber numberWithLong:200];
         if ([code isEqualToNumber:successcode]) {
             UserModel *user = [[UserModel alloc] initWithDictionary:[responseObject objectForKey:@"data"]];
-            NSLog(@"phone:%@",user.userPhone);
             success(user);
         } else {
             NSError *error = [[NSError alloc] initWithDomain:@"com.app.richang.com" code:RcErrorTypeLoginFailure userInfo:nil];

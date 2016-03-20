@@ -26,7 +26,7 @@
 @property (nonatomic,strong) CityList *cityList;
 @property (nonatomic,strong) NSString *cityId;
 @property (nonatomic,strong) NSMutableArray *cityNameList;
-@property (nonatomic,strong)  ActivityModel *activitymodel;
+@property (nonatomic,strong) ActivityModel *activitymodel;
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListBlock)();
 @property (nonatomic,copy) NSURLSessionDataTask *(^getCityListBlock)();
 @property (weak, nonatomic) IBOutlet CZCityButton *leftButton;
@@ -126,7 +126,7 @@
         } else {
             userId = @"-1";
         }
-        return [[DataManager manager] getActivityRecommendWithCityId:self.cityId startId:@"0" num:@"20" userId:@"1" success:^(ActivityList *acList) {
+        return [[DataManager manager] getActivityRecommendWithCityId:self.cityId startId:@"0" num:@"20" userId:userId success:^(ActivityList *acList) {
             @strongify(self);
             self.activityList = acList;
         } failure:^(NSError *error) {
