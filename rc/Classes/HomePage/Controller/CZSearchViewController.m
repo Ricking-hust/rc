@@ -97,6 +97,7 @@
         _searchBar.layer.cornerRadius = 13.0;
         
         [_bgView addSubview:_searchBar];
+        _searchBar.delegate = self;
     }
     return _searchBar;
 }
@@ -130,7 +131,6 @@
 #pragma mark - 搜索框约束
 - (void)addSearchBarConstraint
 {
-    self.searchBar.delegate = self;
     CGRect rect = [[UIScreen mainScreen]bounds];
     CGFloat searchBarW = rect.size.width * 0.82;
     CGFloat searchBarH = 44;
@@ -296,7 +296,7 @@
 #pragma mark - search delegate
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar{
-    
+    NSLog(@"Fuck");
 }
 
 //获取当前设备
