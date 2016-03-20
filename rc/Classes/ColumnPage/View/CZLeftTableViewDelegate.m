@@ -149,14 +149,14 @@
 
 - (void)displayInfo:(UITapGestureRecognizer *)gesture
 {
-//    UIView *view = gesture.view;
-//    CZActivityInfoViewController *info = [[CZActivityInfoViewController alloc]init];
-//    info.title = @"活动介绍";
-//    info.activityModelPre = self.array[view.tag];
-    UIViewController *vc = [[UIViewController alloc]init];
-    vc.view.backgroundColor = [UIColor whiteColor];
+    UIView *view = gesture.view;
+    CZActivityInfoViewController *info = [[CZActivityInfoViewController alloc]init];
+    info.title = @"活动介绍";
+    info.activityModelPre = self.array[view.tag];
+//    UIViewController *vc = [[UIViewController alloc]init];
+//    vc.view.backgroundColor = [UIColor whiteColor];
 
-    [[self viewController].navigationController pushViewController:vc animated:YES];
+    [[self viewController].navigationController pushViewController:info animated:YES];
 }
 - (UIViewController *)viewController
 {
