@@ -85,10 +85,10 @@
     [self.view addSubview:temp];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     [self createSubView];
-//    [self getData];
+    [self getData];
 //    [self configureBlocks];
 //    self.getIndListBlock();
-    [self getIndInfo];
+    //[self getIndInfo];
     [self.rcTV.tableViewSate  addObserver:self forKeyPath:@"leftTableView" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     [self.rcTV.tableViewSate  addObserver:self forKeyPath:@"rightTableView" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
 
@@ -114,12 +114,12 @@
                 NSLog(@"Error:%@",error);
             }];
         };
-        
+        sleep(1);
         NSLog(@"getDate done");
     }];
 
     NSBlockOperation *reflestUI = [NSBlockOperation blockOperationWithBlock:^{
-        
+        @weakify(self)
         self.getActivityListWithIndBlock = ^(IndustryModel *model){
             @strongify(self);
             return [[DataManager manager] checkIndustryWithCityId:@"1" industryId:model.indId startId:@"0" success:^(ActivityList *acList) {
@@ -129,7 +129,7 @@
                 NSLog(@"Error:%@",error);
             }];
         };
-
+        sleep(1);
         NSLog(@"reflesh UI");
     }];
     [reflestUI addDependency:getData];
@@ -173,8 +173,17 @@
             //更新UI
             if (self.activityList.list.count != 0 )
             {
-                self.rightDelegate.array = [[NSMutableArray alloc]initWithArray:self.activityList.list];
-                self.leftDelegate.array = [[NSMutableArray alloc]initWithArray:self.activityList.list];
+                NSMutableArray *leftArray = [[NSMutableArray alloc]init];
+                NSMutableArray *rightArray = [[NSMutableArray alloc]init];
+                for (int i =0; i < self.activityList.list.count; i++) {
+                    if (i<(self.activityList.list.count/2)) {
+                        [leftArray addObject:self.activityList.list[i]];
+                    } else {
+                        [rightArray addObject:self.activityList.list[i]];
+                    }
+                }
+                self.rightDelegate.array = rightArray;
+                self.leftDelegate.array = leftArray;
 
             }else
             {
