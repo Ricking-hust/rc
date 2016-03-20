@@ -50,7 +50,7 @@
     if ([model.planId isEqualToString:@"null"])
     {
         UITableViewCell *cell = [[UITableViewCell alloc]init];
-        cell.backgroundColor = [UIColor redColor];
+        cell.backgroundColor = [UIColor clearColor];
         cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
         

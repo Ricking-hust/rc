@@ -93,8 +93,13 @@
     @weakify(self);
     self.getActivityBlock = ^(){
         @strongify(self);
-        
-        return [[DataManager manager] getActivityContentWithAcId:self.activityModelPre.acID userId:[userDefaults objectForKey:@"userId"] success:^(ActivityModel *activity) {
+        NSString *userId = [[NSString alloc]init];
+        if ([userDefaults objectForKey:@"userId"]) {
+            userId = [userDefaults objectForKey:@"userId"];
+        } else {
+            userId = @"-1";
+        }
+        return [[DataManager manager] getActivityContentWithAcId:self.activityModelPre.acID userId:userId success:^(ActivityModel *activity) {
             @strongify(self);
             self.activitymodel = activity;
         } failure:^(NSError *error) {
