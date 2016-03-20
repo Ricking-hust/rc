@@ -13,7 +13,8 @@
 
 @interface CZMyReleseViewController()
 
-@property(nonatomic, strong) NSMutableArray *activity;
+@property(nonatomic, strong) ActivityList *acList;
+@property (nonatomic, copy) NSURLSessionDataTask *(^getUserActivityBlock)();
 
 @end
 
@@ -28,10 +29,11 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [self configureBlocks];
     //设置导航栏
     [self setNavigation];
     [self createButtons];
+    [self startget];
 }
 //设置导航栏
 - (void)setNavigation
@@ -156,7 +158,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
-    return self.activity.count;
+    return self.acList.list.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -184,7 +186,12 @@
     
     //1 创建可重用的自定义cell
     CZActivitycell *cell = (CZActivitycell*)[CZActivitycell activitycellWithTableView:tableView];
-    cell.activity = (Activity*)self.activity[indexPath.section];
+    
+    //对cell内的控件进行赋值
+    [self setCellValue:cell AtIndexPath:indexPath];
+    
+    //对cell内的控件进行布局
+    [cell setSubViewsConstraint];
     
     //2 返回cell
     return cell;
@@ -193,5 +200,52 @@
 {
     CZActivitycell *cell = (CZActivitycell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
     return cell.cellHeight;
+}
+
+//给单元格进行赋值
+- (void) setCellValue:(CZActivitycell *)cell AtIndexPath:(NSIndexPath *)indexPath
+{
+    ActivityModel *ac = self.acList.list[indexPath.section];
+    
+    [cell.ac_poster sd_setImageWithURL:[NSURL URLWithString:ac.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
+    cell.ac_title.text = ac.acTitle;
+    cell.ac_time.text = ac.acTime;
+    cell.ac_place.text = ac.acPlace;
+    NSMutableArray *Artags = [[NSMutableArray alloc]init];
+    
+    for (TagModel *model in ac.tagsList.list) {
+        [Artags addObject:model.tagName];
+    }
+    
+    NSString *tags = [Artags componentsJoinedByString:@","];
+    cell.ac_tags.text = tags;
+    
+}
+
+#pragma mark - get data
+
+-(void)configureBlocks{
+    @weakify(self)
+    self.getUserActivityBlock = ^(){
+        @strongify(self)
+        return [[DataManager manager] getUserActivityWithUserId:[userDefaults objectForKey:@"userId"] opType:@"1" success:^(ActivityList *acList) {
+            @strongify(self)
+            self.acList = acList;
+        } failure:^(NSError *error) {
+            NSLog(@"error:%@",error);
+        }];
+    };
+}
+
+-(void)startget{
+    if (self.getUserActivityBlock) {
+        self.getUserActivityBlock();
+    }
+}
+
+- (void) setAcList:(ActivityList *)acList{
+    _acList = acList;
+    
+    [self.tableView reloadData];
 }
 @end
