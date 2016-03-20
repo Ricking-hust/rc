@@ -204,9 +204,58 @@
     [self isToolButtonSelected:btn];
     //此处添加按钮点击事件的处理代码---------------
     NSString *tagName = btn.titleLabel.text;
-
+    if ([tagName isEqualToString:@"互联网"])
+    {
+        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
+        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
+        [self updateDateSourceByInd:tagName];
+    }else if ([tagName isEqualToString:@"大学"])
+    {
+        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
+        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
+        [self updateDateSourceByInd:tagName];
+    }else if ([tagName isEqualToString:@"传媒"])
+    {
+        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
+        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
+        [self updateDateSourceByInd:tagName];
+    }else if ([tagName isEqualToString:@"创业"])
+    {
+        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
+        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
+        [self updateDateSourceByInd:tagName];
+    }else if ([tagName isEqualToString:@"金融"])
+    {
+        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
+        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
+        [self updateDateSourceByInd:tagName];
+    }else if ([tagName isEqualToString:@"人文"])
+    {
+        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
+        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
+        [self updateDateSourceByInd:tagName];
+    }else
+    {
+        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
+        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
+        [self updateDateSourceByInd:tagName];
+    }
 }
-
+- (void)updateDateSourceByInd:(NSString *)ind
+{
+    ActivityList *defaultInd = [self.acByind valueForKey:ind];
+    NSMutableArray *leftArray = [[NSMutableArray alloc]init];
+    NSMutableArray *rightArray = [[NSMutableArray alloc]init];
+    for (int i =0; i < defaultInd.list.count; i++) {
+        if (i<(defaultInd.list.count/2)) {
+            [leftArray addObject:defaultInd.list[i]];
+        } else {
+            [rightArray addObject:defaultInd.list[i]];
+        }
+    }
+    self.rightDelegate.array = rightArray;
+    self.leftDelegate.array = leftArray;
+}
 -(void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
