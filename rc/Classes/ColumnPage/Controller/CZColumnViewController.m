@@ -205,7 +205,7 @@
             PlanModel *model = [[PlanModel alloc]init];
             model.planId = @"null";
             [self.leftDelegate.array addObject:model];
-            self.leftDelegate.subHeight = subHeight;
+            self.leftDelegate.subHeight = ABS(subHeight);
             [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
             [self.rcTV.leftTableView reloadData];
             
@@ -214,7 +214,7 @@
             PlanModel *model = [[PlanModel alloc]init];
             model.planId = @"null";
             [self.rightDelegate.array addObject:model];
-            self.rightDelegate.subHeight = subHeight;
+            self.rightDelegate.subHeight = ABS(subHeight);
             [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
             [self.rcTV.rightTableView reloadData];
         }else
