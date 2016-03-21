@@ -12,6 +12,7 @@
 #import "CZTimeCell.h"
 #import "CZActivityInfoCell.h"
 #import "CZActivityDetailCell.h"
+
 #import "CZRemindMeView.h"
 #import "UIViewController+LewPopupViewController.h"
 #import "LewPopupViewAnimationSlide.h"
@@ -23,45 +24,102 @@
 
 @interface CZActivityInfoViewController ()
 
-@property(nonatomic, strong) UIView *bottomView;
+@property (nonatomic, strong) UIView *bottomView;
 @property (nonatomic, strong) UIView *header;
 @property (nonatomic, strong) UIImageView *headerImageView;
 @property (nonatomic, strong) UIImageView *acImageView;
-@property (nonatomic ,strong) UIImageView *acTagImageView;
+@property (nonatomic,strong) UIImageView *acTagImageView;
 @property (nonatomic, strong) UILabel *acTittleLabel;
 @property (nonatomic, strong) UILabel *acTagLabel;
 
-@property(nonatomic,strong) UIButton *collectionBtn;
-@property(nonatomic,strong) UIButton *addToSchedule;
+@property(nonatomic, strong) UIButton *collectionBtn;
+@property(nonatomic, strong) UIButton *addToSchedule;
 
-@property (nonatomic,strong)  ActivityModel *activitymodel;
+
 @property (nonatomic, strong) MBProgressHUD    *HUD;
 @property (nonatomic, strong) NSString *isCollect;
-@property (nonatomic,strong) NSString *planId;
-@property (nonatomic,strong) NSMutableArray *plAlarm;
-
+@property (nonatomic, strong) NSString *planId;
+@property (nonatomic, strong) NSMutableArray *plAlarm;
+@property (nonatomic, strong) ActivityModel *activitymodel;
+@property (nonatomic, assign) CGFloat acHtmlHeight;
 @property (nonatomic, copy) NSURLSessionDataTask* (^getActivityBlock)();
 
 @end
 
 @implementation CZActivityInfoViewController
 
+- (CGFloat)acHtmlHeight
+{
+    if (!_acHtmlHeight) {
+        _acHtmlHeight = 10;
+    }
+    return _acHtmlHeight;
+}
 #pragma mark - view
 
 - (void)viewDidLoad {
     [super viewDidLoad];
-    
     [self createSubViews];
+    self.collectionBtn.hidden = YES;
+    self.addToSchedule.hidden = YES;
+    [self getData];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cellValue:) name:@"cellValue" object:nil];
+
     //设置导航栏
     [self setNavigation];
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
     self.navigationController.navigationBarHidden = NO;
-    //设置tableView头
-    [self layoutHeaderImageView];
     
-    [self configureBlocks];
-    self.getActivityBlock();
+}
+- (void)getData
+{
+    dispatch_queue_t queue = dispatch_queue_create("cloumn", DISPATCH_QUEUE_CONCURRENT);
+    dispatch_async(queue, ^{
+        [self configureBlocks];
+         self.getActivityBlock();
+        sleep(1);
+    });
+    dispatch_async(queue, ^{
+        sleep(0.5);
+    });
+    
+    dispatch_barrier_async(queue, ^{
+
+    });
+    
+    dispatch_async(queue, ^{
+        dispatch_async(dispatch_get_main_queue(), ^{
+            //更新UI
+            //获取活动收藏情况
+            if (self.activitymodel != nil)
+            {
+                self.view.backgroundColor = [UIColor whiteColor];
+                self.collectionBtn.hidden = NO;
+                self.addToSchedule.hidden = NO;
+                [self createSubViews];
+                //设置tableView头
+                [self layoutHeaderImageView];
+                
+                self.tableView.delegate = self;
+                self.tableView.dataSource = self;
+                self.isCollect = self.activitymodel.acCollect;
+                [self setCollectionBtnStyle];
+                //对tableView头进行赋值
+                [self setTableViewHeader];
+                [self.tableView reloadData];
+            }
+
+
+        });
+    });
+}
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    CGRect frame = webView.frame;
+    CGSize fittingSize = [webView sizeThatFits:CGSizeZero];
+    frame.size = fittingSize;
+    webView.frame = frame;
+    self.acHtmlHeight = webView.scrollView.contentSize.height;
 }
 - (void)cellValue:(NSNotification *)notification
 {
@@ -116,12 +174,12 @@
 -(void)setActivitymodel:(ActivityModel *)activitymodel{
     
     _activitymodel = activitymodel;
-    //获取活动收藏情况
-    self.isCollect = activitymodel.acCollect;
-    [self setCollectionBtnStyle];
-    //对tableView头进行赋值
-    [self setTableViewHeader];
-    [self.tableView reloadData];
+//    //获取活动收藏情况
+//    self.isCollect = activitymodel.acCollect;
+//    [self setCollectionBtnStyle];
+//    //对tableView头进行赋值
+//    [self setTableViewHeader];
+//    [self.tableView reloadData];
 }
 
 -(NSString *)isCollect{
@@ -144,13 +202,179 @@
     }
     return _plAlarm;
 }
+//左侧按钮的点击事件
+- (void) backToForwardViewController
+{
+    [self.navigationController popViewControllerAnimated:YES];
+    
+}
+
+
+#pragma mark - Table view data source
+
+- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+{
+    
+    return 3;
+}
+
+- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+{
+    
+    return 1;
+}
+
+
+- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    switch (indexPath.section) {
+        case 0:
+        {
+            CZTimeCell *cell = [CZTimeCell timeCellWithTableView:tableView];
+            [cell.remindMeBtn addTarget:self action:@selector(onClickRemindMe:) forControlEvents:UIControlEventTouchUpInside];
+            //对cell的控件进行赋值
+            [self setCellValue:cell AtIndexPath:indexPath];//3
+            //对cell的控件进行布局
+            [cell setSubViewsConstraint];
+            
+            return cell;
+        }
+            break;
+        case 1:
+        {
+            CZActivityInfoCell *cell = [CZActivityInfoCell activityCellWithTableView:tableView];
+            //对cell的控件进行赋值
+            [self setCellValue:cell AtIndexPath:indexPath];
+            //对cell的控件进行布局
+            [cell setSubViewsConstraint];
+             
+            return cell;
+        }
+            break;
+        default:
+        {
+            CZActivityDetailCell *cell = [CZActivityDetailCell detailCellWithTableView:tableView];
+            //cell.webView.delegate = self;
+            return cell;
+        }
+            break;
+    }
+}
+//cell的控件进行赋值
+- (void) setCellValue:(UITableViewCell *)cell AtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([cell isKindOfClass:[CZTimeCell class]])
+    {
+        ((CZTimeCell*)cell).timeLabel.text = self.activitymodel.acTime;
+        
+    }else if ([cell isKindOfClass:[CZActivityInfoCell class]])
+    {
+        ((CZActivityInfoCell *)cell).model = self.activitymodel;
+    }else
+    {
+        ((CZActivityDetailCell *)cell).model = self.activitymodel;
+        
+    }
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    if (indexPath.section == 0)
+    {
+        CZTimeCell *cell = (CZTimeCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+        return cell.rowHeight;
+        
+    }else if (indexPath.section == 1)
+    {
+        CZActivityInfoCell *cell = (CZActivityInfoCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+        return cell.rowHeight;
+        
+    }else
+    {
+
+        return self.acHtmlHeight;
+    }
+    
+}
+
+// 配置tableView header UI布局
+- (void)layoutHeaderImageView
+{
+    CGSize screenSize = [[UIScreen mainScreen]bounds].size;
+    self.header = [[UIView alloc]init];
+    [self.header setFrame:CGRectMake(0, 0, screenSize.width, screenSize.height * 0.25 + 64)];
+    
+    self.headerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, screenSize.width, screenSize.height * 0.25 + 64)];
+    self.headerImageView.alpha = 0.7;
+    //self.headerImageView.image  = [UIImage imageNamed:@"img_1"]; //headerView的背景模糊图片
+    
+    [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
+    
+    [self.header addSubview:self.headerImageView];
+    [self.headerImageView setImageToBlur:self.headerImageView.image blurRadius:21 completionBlock:nil];
+    //headerView中的子控件
+    self.acImageView    = [[UIImageView alloc]init];
+    self.acTagImageView = [[UIImageView alloc]init];
+    self.acTittleLabel  = [[UILabel alloc]init];
+    self.acTagLabel     = [[UILabel alloc]init];
+    
+    [self.header addSubview:self.acImageView];
+    [self.header addSubview:self.acTagImageView];
+    [self.header addSubview:self.acTittleLabel];
+    [self.header addSubview:self.acTagLabel];
+    
+    self.acTagImageView.image = [UIImage imageNamed:@"tagImage"];
+    self.acTittleLabel.text = self.activitymodel.acTitle;
+    //对tableView头进行布局
+    [self setSubViewsConstraint];
+    
+    self.tableView.tableHeaderView = self.header;
+    
+}
+// 下拉后图片拉伸的效果方法下载这个里面
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    
+    CGFloat width = self.view.frame.size.width;     // 图片宽度
+    CGFloat yOffset = scrollView.contentOffset.y;  // 偏移的y值
+    if (yOffset < 0)
+    {
+        CGFloat totalOffset = 200 + ABS(yOffset);
+        CGFloat f = totalOffset / 200;
+        self.headerImageView.frame =  CGRectMake(- (width * f - width) / 2, yOffset, width * f, totalOffset);
+    }
+}
+
+//对tableView头进行赋值
+- (void)setTableViewHeader
+{
+    
+    self.acTittleLabel.font          = [UIFont systemFontOfSize:15];
+    self.acTittleLabel.numberOfLines = 0;
+    self.acTittleLabel.textColor     = [UIColor whiteColor];
+    self.acTagLabel.font             = [UIFont systemFontOfSize:12];
+    self.acTagLabel.textColor        = self.acTittleLabel.textColor;
+    
+    [self.acImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
+    self.acTittleLabel.text   = self.activitymodel.acTitle;
+    self.acTagImageView.image = [UIImage imageNamed:@"tagImage"];
+    
+    NSMutableArray *Artags = [[NSMutableArray alloc]init];
+    
+    for (TagModel *model in self.activitymodel.tagsList.list) {
+        [Artags addObject:model.tagName];
+    }
+    
+    NSString *tags = [Artags componentsJoinedByString:@","];
+    self.acTagLabel.text      = tags;
+    
+}
 
 //创建子控件
 - (void)createSubViews
 {
     self.view.backgroundColor = [UIColor whiteColor];
+    self.bottomView.backgroundColor = [UIColor clearColor];
     self.bottomView = [[UIView alloc]init];
-    self.bottomView.backgroundColor = [UIColor whiteColor];
     self.collectionBtn =[UIButton buttonWithType:UIButtonTypeCustom];
     self.addToSchedule = [UIButton buttonWithType:UIButtonTypeCustom];
     self.tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
@@ -162,8 +386,8 @@
     [self.collectionBtn addTarget:self action:@selector(onClickCollection) forControlEvents:UIControlEventTouchUpInside];
     [self.addToSchedule addTarget:self action:@selector(onClickAdd) forControlEvents:UIControlEventTouchUpInside];
     
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
+//    self.tableView.delegate = self;
+//    self.tableView.dataSource = self;
     [self.addToSchedule setTitle:@"加入日程" forState:UIControlStateNormal];
     [self.addToSchedule setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:130.0/255.0  blue:5.0/255.0  alpha:1.0]];
     
@@ -221,6 +445,7 @@
 
 - (void)setNavigation
 {
+    self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     //设置导航标题栏
     UILabel *titleLabel     = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
     titleLabel.font         = [UIFont systemFontOfSize:18];
@@ -236,169 +461,7 @@
     [self.navigationItem setLeftBarButtonItem:leftButton];
 }
 
-//左侧按钮的点击事件
-- (void) backToForwardViewController
-{
-    [self.navigationController popViewControllerAnimated:YES];
-    
-}
 
-
-#pragma mark - Table view data source
-
-- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-{
-    
-    return 3;
-}
-
-- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-{
-    
-    return 1;
-}
-
-
-- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    switch (indexPath.section) {
-        case 0:
-        {
-            CZTimeCell *cell = [CZTimeCell timeCellWithTableView:tableView];
-            [cell.remindMeBtn addTarget:self action:@selector(onClickRemindMe:) forControlEvents:UIControlEventTouchUpInside];
-            //对cell的控件进行赋值
-            [self setCellValue:cell AtIndexPath:indexPath];//3
-            //对cell的控件进行布局
-            [cell setSubViewsConstraint];
-            
-            return cell;
-        }
-            break;
-        case 1:
-        {
-            CZActivityInfoCell *cell = [CZActivityInfoCell activityCellWithTableView:tableView];
-            //对cell的控件进行赋值
-            [self setCellValue:cell AtIndexPath:indexPath];
-            //对cell的控件进行布局
-            [cell setSubViewsConstraint];
-             
-            return cell;
-        }
-            break;
-        default:
-        {
-            CZActivityDetailCell *cell = [CZActivityDetailCell detailCellWithTableView:tableView];
-            
-            return cell;
-        }
-            break;
-    }
-}
-//cell的控件进行赋值
-- (void) setCellValue:(UITableViewCell *)cell AtIndexPath:(NSIndexPath *)indexPath
-{
-    if ([cell isKindOfClass:[CZTimeCell class]])
-    {
-        ((CZTimeCell*)cell).timeLabel.text = self.activityModelPre.acTime;
-        
-    }else if ([cell isKindOfClass:[CZActivityInfoCell class]])
-    {
-        ((CZActivityInfoCell *)cell).model = self.activitymodel;
-    }else
-    {
-        ;
-    }
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    if (indexPath.section == 0)
-    {
-        CZTimeCell *cell = (CZTimeCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-        return cell.rowHeight;
-        
-    }else if (indexPath.section == 1)
-    {
-        CZActivityInfoCell *cell = (CZActivityInfoCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-        return cell.rowHeight;
-        
-    }else
-    {
-        return 44;
-    }
-    
-}
-// 配置tableView header UI布局
-- (void)layoutHeaderImageView
-{
-    CGSize screenSize = [[UIScreen mainScreen]bounds].size;
-    self.header = [[UIView alloc]init];
-    [self.header setFrame:CGRectMake(0, 0, screenSize.width, screenSize.height * 0.25 + 64)];
-    
-    self.headerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, screenSize.width, screenSize.height * 0.25 + 64)];
-    self.headerImageView.alpha = 0.7;
-    //self.headerImageView.image  = [UIImage imageNamed:@"img_1"]; //headerView的背景模糊图片
-    
-    [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:self.activityModelPre.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
-    
-    [self.header addSubview:self.headerImageView];
-    [self.headerImageView setImageToBlur:self.headerImageView.image blurRadius:21 completionBlock:nil];
-    //headerView中的子控件
-    self.acImageView    = [[UIImageView alloc]init];
-    self.acTagImageView = [[UIImageView alloc]init];
-    self.acTittleLabel  = [[UILabel alloc]init];
-    self.acTagLabel     = [[UILabel alloc]init];
-    
-    [self.header addSubview:self.acImageView];
-    [self.header addSubview:self.acTagImageView];
-    [self.header addSubview:self.acTittleLabel];
-    [self.header addSubview:self.acTagLabel];
-    
-    self.acTagImageView.image = [UIImage imageNamed:@"tagImage"];
-    self.acTittleLabel.text = self.activityModelPre.acTitle;
-    //对tableView头进行布局
-    [self setSubViewsConstraint];
-    
-    self.tableView.tableHeaderView = self.header;
-    
-}
-// 下拉后图片拉伸的效果方法下载这个里面
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    
-    CGFloat width = self.view.frame.size.width;     // 图片宽度
-    CGFloat yOffset = scrollView.contentOffset.y;  // 偏移的y值
-    if (yOffset < 0)
-    {
-        CGFloat totalOffset = 200 + ABS(yOffset);
-        CGFloat f = totalOffset / 200;
-        self.headerImageView.frame =  CGRectMake(- (width * f - width) / 2, yOffset, width * f, totalOffset);
-    }
-}
-
-//对tableView头进行赋值
-- (void)setTableViewHeader
-{
-    
-    self.acTittleLabel.font          = [UIFont systemFontOfSize:15];
-    self.acTittleLabel.numberOfLines = 0;
-    self.acTittleLabel.textColor     = [UIColor whiteColor];
-    self.acTagLabel.font             = [UIFont systemFontOfSize:12];
-    self.acTagLabel.textColor        = self.acTittleLabel.textColor;
-    
-    [self.acImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
-    self.acTittleLabel.text   = self.activitymodel.acTitle;
-    self.acTagImageView.image = [UIImage imageNamed:@"tagImage"];
-    
-    NSMutableArray *Artags = [[NSMutableArray alloc]init];
-    
-    for (TagModel *model in self.activitymodel.tagsList.list) {
-        [Artags addObject:model.tagName];
-    }
-    
-    NSString *tags = [Artags componentsJoinedByString:@","];
-    self.acTagLabel.text      = tags;
-    
-}
 - (void)setSubViewsConstraint
 {
     [self.acImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -622,8 +685,6 @@
     [btnArray addObject:[superView viewWithTag:12]];
     [btnArray addObject:[superView viewWithTag:13]];
     
-    //[self isSelected:btnArray WithButton:btn];
-    
     BOOL isSelecte = !btn.selected;
     if (isSelecte)
     {
@@ -633,17 +694,6 @@
         btn.selected = NO;
     }
     
-}
-
-- (UIButton *)isSelected:(NSMutableArray *)btnArray WithButton:(UIButton *)btn
-{
-    for (int i = 0; i <btnArray.count; i++)
-    {
-        UIButton *btnTemp = (UIButton *)btnArray[i];
-        btnTemp.selected = NO;
-    }
-    btn.selected = YES;
-    return btn;
 }
 
 //确定提醒时间按钮点击事件
@@ -666,23 +716,52 @@
     }
     
     [self onClickRemind];
-    
     [self lew_dismissPopupView];
 }
-
-//判断哪个按钮选中
-- (UIButton *)whichButtonSelected:(NSMutableArray *)btnArray
+-(void)displayInfo
 {
-    UIButton *selectedBtn ;
-    for (int i = 0; i <btnArray.count; i++)
-    {
-        selectedBtn = (UIButton *)btnArray[i];
-        if (selectedBtn.selected)
-        {
-            break;
-        }
-    }
-    return selectedBtn;
+    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
+    //创建三个任务
+    NSBlockOperation *operationA = [NSBlockOperation blockOperationWithBlock:^{
+        [self configureBlocks];
+        self.getActivityBlock();
+        
+        
+    }];
+    
+    NSBlockOperation *operationB = [NSBlockOperation blockOperationWithBlock:^{
+        NSLog(@"task reflesh UI");
+        
+    }];
+    
+    NSBlockOperation *operationC = [NSBlockOperation blockOperationWithBlock:^{
+        NSLog(@"task c");
+        //[self performSelectorOnMainThread:@selector(refleshUI) withObject:nil waitUntilDone:YES];
+        self.view.backgroundColor = [UIColor whiteColor];
+        //设置tableView头
+        [self layoutHeaderImageView];
+        
+        self.tableView.delegate = self;
+        self.tableView.dataSource = self;
+        self.isCollect = self.activitymodel.acCollect;
+        [self setCollectionBtnStyle];
+        //对tableView头进行赋值
+        [self setTableViewHeader];
+        [self.tableView reloadData];
+    }];
+    
+    //设置三个任务相互依赖
+    // operationB 任务依赖于 operationA
+    [operationB addDependency:operationA];
+    // operationC 任务依赖于 operationB
+    [operationC addDependency:operationB];
+    [operationC addDependency:operationA];
+    
+    
+    //添加操作到队列中（自动异步执行任务，并发）
+    [queue addOperation:operationA];
+    [queue addOperation:operationB];
+    [queue addOperation:operationC];
 }
 
 /**

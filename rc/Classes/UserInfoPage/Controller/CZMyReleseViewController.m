@@ -8,7 +8,6 @@
 
 #import "CZMyReleseViewController.h"
 #import "CZActivityCell.h"
-#import "Activity.h"
 #import "Masonry.h"
 
 @interface CZMyReleseViewController()

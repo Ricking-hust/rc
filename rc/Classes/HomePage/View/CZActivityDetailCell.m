@@ -7,8 +7,8 @@
 //
 
 #import "CZActivityDetailCell.h"
-#import "ActivityIntroduction.h"
-
+#import "Masonry.h"
+#import "ActivityModel.h"
 @implementation CZActivityDetailCell
 
 + (instancetype)detailCellWithTableView:(UITableView*)tableView
@@ -24,41 +24,28 @@
     
     return cell;
 }
-
-
-
 - (instancetype) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
 {
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
-        //创建子控件
-        UIWebView *webView = [[UIWebView alloc]init];
+
+        UIWebView *webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 10)];
         self.webView = webView;
         [self.contentView addSubview:self.webView];
     }
     return self;
 }
-- (void)setAcIntroduction:(ActivityIntroduction *)acIntroduction
-{
-    _acIntroduction = acIntroduction;
-    [self setSubViewsContent];
-    [self setSubViewsConstraint];
-    
-}
-- (void)setSubViewsContent
-{
 
-}
 - (void)setSubViewsConstraint
 {
+
     //添加约束
+    [self.webView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.contentView.mas_top);
+        make.left.equalTo(self.contentView.mas_left);
+        make.width.mas_equalTo(kScreenWidth);
+        make.height.equalTo(@10);
+    }];
 
-}
-
-
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated {
-    [super setSelected:selected animated:animated];
-
-    // Configure the view for the selected state
 }
 
 @end

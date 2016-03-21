@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 @class ActivityModel;
 
-@interface CZActivityInfoViewController : UIViewController<UITableViewDelegate, UITableViewDataSource>
-@property (nonatomic,strong) UITableView *tableView;
-@property (nonatomic,strong) ActivityModel *activityModelPre;
+@interface CZActivityInfoViewController : UIViewController<UITableViewDelegate, UITableViewDataSource,UIWebViewDelegate>
+@property (nonatomic, strong) UITableView *tableView;
+@property (nonatomic, strong) ActivityModel *activityModelPre;
 @end

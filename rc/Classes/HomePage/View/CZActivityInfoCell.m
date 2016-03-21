@@ -7,7 +7,6 @@
 //
 
 #import "CZActivityInfoCell.h"
-#import "ActivityIntroduction.h"
 #import "Masonry.h"
 #import "ActivityModel.h"
 #define LABEL_FONTSIZE 14
@@ -93,7 +92,10 @@
 
 - (void) setModel:(ActivityModel *)model
 {
-    _model = model;
+//    self.ac_placeLabel.text = model.acPlace;
+//    self.ac_sizeLabel.text  = model.acSize;
+//    self.ac_payLabel.text   = model.acPay;
+//    _model = model;
 
     if (_model && self.isHaveValue == NO)
     {
@@ -101,7 +103,7 @@
         self.ac_sizeLabel.text  = model.acSize;
         self.ac_payLabel.text   = model.acPay;
         self.isHaveValue = YES;
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"cellValue" object:self];
+        //[[NSNotificationCenter defaultCenter] postNotificationName:@"cellValue" object:self];
     }
 }
 

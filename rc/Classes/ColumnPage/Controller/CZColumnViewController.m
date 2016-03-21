@@ -19,7 +19,6 @@
 #import "CZRightTableViewDelegate.h"
 #import "RCColumnInfoView.h"
 #import "UINavigationBar+Awesome.h"
-#import "Activity.h"
 #import "RCColumnTableView.h"
 
 @interface CZColumnViewController ()
