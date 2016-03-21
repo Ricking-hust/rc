@@ -92,6 +92,7 @@
     self.addscDelegate = addsc;
     [self.addscDelegate passPlanListRanged:self.planListRanged];
     [self.addscDelegate passTimeNodeScrollView:self.sc.timeNodeSV];
+    [self.addscDelegate passLoginState:self.isLogin];
     [self.navigationController pushViewController:addsc animated:YES];
 
 }

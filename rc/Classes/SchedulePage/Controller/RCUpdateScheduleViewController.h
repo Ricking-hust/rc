@@ -12,7 +12,7 @@
 @class CZDownView;
 @class CZTagWithLabelView;
 @class RCScrollView;
-@interface RCUpdateScheduleViewController : UIViewController<RCModifyScheduleDelegate>
+@interface RCUpdateScheduleViewController : UIViewController<RCModifyScheduleDelegate,UITextViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
 
 @property (strong, nonatomic) CZUpView *upView;     //上方View
 @property (strong, nonatomic) CZDownView *downView; //下方View
