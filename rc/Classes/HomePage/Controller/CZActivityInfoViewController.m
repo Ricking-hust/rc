@@ -281,7 +281,7 @@
             [self setCellValue:cell AtIndexPath:indexPath];
             //对cell的控件进行布局
             [cell setSubViewsConstraint];
-            
+             
             return cell;
         }
             break;
