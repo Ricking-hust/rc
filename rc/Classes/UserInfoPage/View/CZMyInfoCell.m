@@ -27,6 +27,7 @@
     {
         //创建子控件
         self.imgIcon = [[UIImageView alloc]init];
+        
         self.contentLable = [[UILabel alloc]init];
         self.contentLable.font = [UIFont systemFontOfSize:14];
         self.contentLable.alpha = 0.8;

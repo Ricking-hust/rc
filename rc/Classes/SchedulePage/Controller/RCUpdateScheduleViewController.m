@@ -625,9 +625,9 @@
     
     self.downView.timeInfoLabel.text = [NSString stringWithFormat:@"%@年%@月%@日 %@", year, month, day, time];
     CGSize timeInfoSize = [self sizeWithText:self.downView.timeInfoLabel.text maxSize:CGSizeMake(MAXFLOAT, 20) fontSize:14];
-    //    [self.downView.timeInfoLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-    //        make.size.mas_equalTo(CGSizeMake(timeInfoSize.width+1, timeInfoSize.height+1));
-    //    }];
+    [self.downView.timeInfoLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(timeInfoSize.width+1, timeInfoSize.height+1));
+    }];
     [self lew_dismissPopupView];
 }
 
