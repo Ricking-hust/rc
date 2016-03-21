@@ -134,12 +134,11 @@
 }
 - (void)onClickTagBtn:(UIButton *)btn
 {
-    NSLog(@"%@",btn.titleLabel.text);
+    self.searchBar.text = btn.titleLabel.text;
 }
 #pragma mark - 取消
 - (void)onClick:(UIButton *)btn
 {
-    
     [self.searchBar resignFirstResponder];
     [self.navigationController popToRootViewControllerAnimated:YES];
     self.navigationController.navigationBarHidden = NO;
@@ -150,7 +149,7 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [[DataManager manager] getActivitySearchWithKeywords:@"" startId:@"0" num:@"10" cityId:@"1" success:^(ActivityList *acList) {
+    [[DataManager manager] getActivitySearchWithKeywords:self.searchBar.text startId:@"0" num:@"10" cityId:@"1" success:^(ActivityList *acList) {
         self.searchResult = acList;
         [self.tableView reloadData];
     } failure:^(NSError *error) {
