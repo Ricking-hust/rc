@@ -35,7 +35,6 @@
 @property(nonatomic, strong) UIButton *collectionBtn;
 @property(nonatomic, strong) UIButton *addToSchedule;
 
-
 @property (nonatomic, strong) MBProgressHUD    *HUD;
 @property (nonatomic, strong) NSString *isCollect;
 @property (nonatomic, strong) NSString *planId;

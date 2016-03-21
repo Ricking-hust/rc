@@ -8,6 +8,7 @@
 
 #import "CZFeedbackViewController.h"
 #import "Masonry.h"
+#import "MBProgressHUD.h"
 #define MAXLENGTH   200
 
 @interface CZFeedbackViewController() <UITextViewDelegate>
@@ -15,6 +16,9 @@
 @property (nonatomic, strong) UITextView *feedbackTextView;
 @property (nonatomic, strong) UILabel *textLimintLabel;
 @property (nonatomic, strong) UIButton *commintButton;
+
+@property (nonatomic, strong) MBProgressHUD    *HUD;
+
 @end
 @implementation CZFeedbackViewController
 
@@ -101,6 +105,20 @@
 }
 - (void)commintFeedback
 {
+    self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    self.HUD.removeFromSuperViewOnHide = YES;
+    [self.view addSubview:self.HUD];
+    [self.HUD showAnimated:YES];
+    [[DataManager manager] putFeedBackWithUserId:[userDefaults objectForKey:@"userId"] fbMail:[userDefaults objectForKey:@"userMail"] fbPhone:[userDefaults objectForKey:@"userPhone"] fbContent:self.feedbackTextView.text success:^(NSString *msg) {
+        self.HUD.mode = MBProgressHUDModeCustomView;
+        self.HUD.label.text = @"反馈成功，感谢您的反馈";
+        [self.HUD hideAnimated:YES afterDelay:0.6];
+    } failure:^(NSError *error) {
+        self.HUD.mode = MBProgressHUDModeCustomView;
+        self.HUD.label.text = @"网络出现了点小问题。。。";
+        [self.HUD hideAnimated:YES afterDelay:0.6];
+        NSLog(@"Error:%@",error);
+    }];
     [self.feedbackTextView resignFirstResponder];
 }
 #pragma mark - textView代理
