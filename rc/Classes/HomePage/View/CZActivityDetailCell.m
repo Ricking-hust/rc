@@ -34,7 +34,20 @@
     }
     return self;
 }
-
+- (void)setModel:(ActivityModel *)model
+{
+    _model = model;
+    NSURLRequest *request =[NSURLRequest requestWithURL:[NSURL URLWithString:_model.acHtml]];
+    [self.webView loadRequest:request];
+}
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    CGRect frame = webView.frame;
+    CGSize fittingSize = [webView sizeThatFits:CGSizeZero];
+    frame.size = fittingSize;
+    webView.frame = frame;
+    
+}
 - (void)setSubViewsConstraint
 {
 

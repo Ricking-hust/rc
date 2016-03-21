@@ -93,6 +93,12 @@
             //获取活动收藏情况
             if (self.activitymodel != nil)
             {
+                UIWebView *wv = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 10)];
+                wv.delegate = self;
+                NSURLRequest *request =[NSURLRequest requestWithURL:[NSURL URLWithString:@"http://www.baidu.com"]];
+                [wv loadRequest:request];
+                [self.view addSubview:wv];
+                
                 self.view.backgroundColor = [UIColor whiteColor];
                 self.collectionBtn.hidden = NO;
                 self.addToSchedule.hidden = NO;
@@ -118,8 +124,18 @@
     CGRect frame = webView.frame;
     CGSize fittingSize = [webView sizeThatFits:CGSizeZero];
     frame.size = fittingSize;
-    webView.frame = frame;
+//    webView.frame = frame;
     self.acHtmlHeight = webView.scrollView.contentSize.height;
+    webView.hidden = YES;
+    NSIndexPath *indexPath = [self.tableView indexPathForCell:self.tableView.visibleCells.lastObject];
+    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//    dispatch_queue_t queue = dispatch_queue_create("achtmlH", DISPATCH_QUEUE_CONCURRENT);
+//    
+//    dispatch_async(queue, ^{
+//
+//        NSIndexPath *indexPath = [self.tableView indexPathForCell:self.tableView.visibleCells.lastObject];
+//        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//    });
 }
 - (void)cellValue:(NSNotification *)notification
 {
@@ -247,14 +263,12 @@
             [self setCellValue:cell AtIndexPath:indexPath];
             //对cell的控件进行布局
             [cell setSubViewsConstraint];
-             
             return cell;
         }
             break;
         default:
         {
             CZActivityDetailCell *cell = [CZActivityDetailCell detailCellWithTableView:tableView];
-            //cell.webView.delegate = self;
             return cell;
         }
             break;
@@ -290,7 +304,6 @@
         
     }else
     {
-
         return self.acHtmlHeight;
     }
     
