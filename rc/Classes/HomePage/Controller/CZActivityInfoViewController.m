@@ -26,6 +26,7 @@
 
 @property (nonatomic, strong) UIView *bottomView;
 @property (nonatomic, strong) UIView *header;
+@property (nonatomic, strong) UIView *footer;
 @property (nonatomic, strong) UIImageView *headerImageView;
 @property (nonatomic, strong) UIImageView *acImageView;
 @property (nonatomic,strong) UIImageView *acTagImageView;
@@ -131,37 +132,16 @@
     webView.hidden = YES;
     NSIndexPath *indexPath = [self.tableView indexPathForCell:self.tableView.visibleCells.lastObject];
     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-//    dispatch_queue_t queue = dispatch_queue_create("achtmlH", DISPATCH_QUEUE_CONCURRENT);
-//    
-//    dispatch_async(queue, ^{
-//
-//        NSIndexPath *indexPath = [self.tableView indexPathForCell:self.tableView.visibleCells.lastObject];
-//        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-//    });
+
 }
 - (void)cellValue:(NSNotification *)notification
 {
     NSIndexSet *section = [NSIndexSet indexSetWithIndex:1];
     [self.tableView reloadSections:section withRowAnimation:UITableViewRowAnimationFade];
 }
--(void)didReceiveMemoryWarning{
-    [super didReceiveMemoryWarning];
-}
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-}
-
--(void)viewWillLayoutSubviews{
-    [super viewWillLayoutSubviews];
 }
 
 #pragma mark - Data
@@ -192,12 +172,7 @@
 -(void)setActivitymodel:(ActivityModel *)activitymodel{
     
     _activitymodel = activitymodel;
-//    //获取活动收藏情况
-//    self.isCollect = activitymodel.acCollect;
-//    [self setCollectionBtnStyle];
-//    //对tableView头进行赋值
-//    [self setTableViewHeader];
-//    [self.tableView reloadData];
+
 }
 
 -(NSString *)isCollect{
@@ -233,7 +208,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
-    return 3;
+    return 2;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -258,19 +233,13 @@
             return cell;
         }
             break;
-        case 1:
+        default:
         {
             CZActivityInfoCell *cell = [CZActivityInfoCell activityCellWithTableView:tableView];
             //对cell的控件进行赋值
             [self setCellValue:cell AtIndexPath:indexPath];
             //对cell的控件进行布局
             [cell setSubViewsConstraint];
-            return cell;
-        }
-            break;
-        default:
-        {
-            CZActivityDetailCell *cell = [CZActivityDetailCell detailCellWithTableView:tableView];
             return cell;
         }
             break;
@@ -283,13 +252,9 @@
     {
         ((CZTimeCell*)cell).timeLabel.text = self.activitymodel.acTime;
         
-    }else if ([cell isKindOfClass:[CZActivityInfoCell class]])
-    {
-        ((CZActivityInfoCell *)cell).model = self.activitymodel;
     }else
     {
-        ((CZActivityDetailCell *)cell).model = self.activitymodel;
-        
+        ((CZActivityInfoCell *)cell).model = self.activitymodel;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -299,18 +264,18 @@
         CZTimeCell *cell = (CZTimeCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
         return cell.rowHeight;
         
-    }else if (indexPath.section == 1)
+    }else
     {
         CZActivityInfoCell *cell = (CZActivityInfoCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
         return cell.rowHeight;
         
-    }else
-    {
-        return self.acHtmlHeight;
     }
     
 }
-
+- (void)layoutFooterView
+{
+    
+}
 // 配置tableView header UI布局
 - (void)layoutHeaderImageView
 {
@@ -320,7 +285,6 @@
     
     self.headerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, screenSize.width, screenSize.height * 0.25 + 64)];
     self.headerImageView.alpha = 0.7;
-    //self.headerImageView.image  = [UIImage imageNamed:@"img_1"]; //headerView的背景模糊图片
     
     [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     
