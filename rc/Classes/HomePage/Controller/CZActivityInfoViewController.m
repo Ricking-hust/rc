@@ -29,12 +29,12 @@
 @property (nonatomic, strong) UIView *footer;
 @property (nonatomic, strong) UIImageView *headerImageView;
 @property (nonatomic, strong) UIImageView *acImageView;
-@property (nonatomic,strong) UIImageView *acTagImageView;
+@property (nonatomic, strong) UIImageView *acTagImageView;
 @property (nonatomic, strong) UILabel *acTittleLabel;
 @property (nonatomic, strong) UILabel *acTagLabel;
 
-@property(nonatomic, strong) UIButton *collectionBtn;
-@property(nonatomic, strong) UIButton *addToSchedule;
+@property (nonatomic, strong) UIButton *collectionBtn;
+@property (nonatomic, strong) UIButton *addToSchedule;
 
 
 @property (nonatomic, strong) MBProgressHUD    *HUD;
@@ -44,7 +44,7 @@
 @property (nonatomic, strong) ActivityModel *activitymodel;
 @property (nonatomic, assign) CGFloat acHtmlHeight;
 @property (nonatomic, copy) NSURLSessionDataTask* (^getActivityBlock)();
-
+@property (nonatomic, strong) UIWebView *webView;
 
 
 @end
@@ -116,24 +116,14 @@
                 //对tableView头进行赋值
                 [self setTableViewHeader];
                 [self.tableView reloadData];
+                [self layoutFooterView];
             }
 
 
         });
     });
 }
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    CGRect frame = webView.frame;
-    CGSize fittingSize = [webView sizeThatFits:CGSizeZero];
-    frame.size = fittingSize;
-//    webView.frame = frame;
-    self.acHtmlHeight = webView.scrollView.contentSize.height;
-    webView.hidden = YES;
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:self.tableView.visibleCells.lastObject];
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
 
-}
 - (void)cellValue:(NSNotification *)notification
 {
     NSIndexSet *section = [NSIndexSet indexSetWithIndex:1];
@@ -274,7 +264,34 @@
 }
 - (void)layoutFooterView
 {
-    
+    self.footer = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 10)];
+
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 35)];
+    [self.footer addSubview:view];
+    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
+    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 60, 30)];
+    label.font = [UIFont systemFontOfSize:14];
+    label.text = @"活动介绍";
+    label.textColor = [UIColor colorWithRed:131.0/255.0 green:131.0/255.0  blue:131.0/255.0  alpha:1.0];
+    [view addSubview:label];
+
+    self.webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 35, kScreenWidth, 0)];
+    self.webView.delegate = self;
+    [self.webView loadHTMLString:self.activitymodel.acHtml baseURL:nil];
+    [self.footer addSubview:self.webView];
+//    CGFloat height = [[self.webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"]floatValue];
+//    [self.footer setFrame:CGRectMake(0, 0, kScreenWidth, height)];
+}
+- (void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    CGRect frame = webView.frame;
+    CGSize fittingSize = [webView sizeThatFits:CGSizeZero];
+    frame.size = fittingSize;
+    webView.frame = frame;
+    NSLog(@"h %f",frame.size.height);
+    [self.footer setFrame:CGRectMake(0, 0, kScreenWidth, frame.size.height)];
+    self.tableView.tableFooterView = self.footer;
+    [self.tableView reloadData];
 }
 // 配置tableView header UI布局
 - (void)layoutHeaderImageView
