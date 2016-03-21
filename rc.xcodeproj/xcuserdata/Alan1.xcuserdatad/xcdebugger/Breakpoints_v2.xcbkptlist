@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "rc/Classes/SchedulePage/Controller/RCAddScheduleViewController.m"
-            timestampString = "480222523.181037"
+            filePath = "rc/Classes/HomePage/Controller/CZActivityInfoViewController.m"
+            timestampString = "480254521.720752"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "95"
-            endingLineNumber = "95"
-            landmarkName = "-addSchedule"
+            startingLineNumber = "128"
+            endingLineNumber = "128"
+            landmarkName = "-webViewDidFinishLoad:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

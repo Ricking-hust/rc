@@ -12,5 +12,4 @@
 @optional
 - (void)passPlanListRanged:(NSMutableArray *)planListRanged;
 - (void)passTimeNodeScrollView:(id)timeNodeSV;
-- (void)passLoginState:(BOOL)isLogin;
 @end

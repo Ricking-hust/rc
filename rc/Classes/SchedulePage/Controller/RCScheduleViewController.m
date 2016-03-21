@@ -10,6 +10,7 @@
 #import "Masonry.h"
 #import "PlanModel.h"
 #import "RCScheduleView.h"
+#import "RCScrollView.h"
 #import "RCAddScheduleViewController.h"
 #include <sys/sysctl.h>
 @interface RCScheduleViewController ()
@@ -31,7 +32,7 @@
     {
         self.sc.hidden = NO;
 
-            self.getPlanListBlock();
+        self.getPlanListBlock();
     }else
     {
         NSLog(@"please login");
@@ -56,8 +57,8 @@
     [self createSC];
     [self configureBlocks];
     [[NSNotificationCenter defaultCenter]postNotificationName:@"getView" object:self.view];
-}
 
+}
 -(void)configureBlocks{
     @weakify(self);
     self.getPlanListBlock = ^(){
@@ -76,24 +77,43 @@
     [self rangePlanList:self.planList];
     if (self.planListRanged.count != 0)
     {
+
+//        dispatch_async(dispatch_get_main_queue(), ^{
+//            for (UIView *view in self.sc.timeNodeSV.subviews)
+//            {
+//                [view removeFromSuperview];
+//            }
+//            self.sc.planListRanged = self.planListRanged;
+//            self.sc.planList = self.planList;
+//        });
         self.sc.planListRanged = self.planListRanged;
         self.sc.planList = self.planList;
+
     }
-
-
-
-    //[self displayTimeNode];
 }
 #pragma mark - 添加行程
 - (IBAction)addSC:(id)sender
 {
-    
-    RCAddScheduleViewController *addsc = [[RCAddScheduleViewController alloc]init];
-    self.addscDelegate = addsc;
-    [self.addscDelegate passPlanListRanged:self.planListRanged];
-    [self.addscDelegate passTimeNodeScrollView:self.sc.timeNodeSV];
-    [self.addscDelegate passLoginState:self.isLogin];
-    [self.navigationController pushViewController:addsc animated:YES];
+    if (self.isLogin)
+    {
+        RCAddScheduleViewController *addsc = [[RCAddScheduleViewController alloc]init];
+        self.addscDelegate = addsc;
+        [self.addscDelegate passPlanListRanged:self.planListRanged];
+        [self.addscDelegate passTimeNodeScrollView:self.sc.timeNodeSV];
+        [self.navigationController pushViewController:addsc animated:YES];
+    }else
+    {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"您尚未登录，是否登录?" preferredStyle:UIAlertControllerStyleAlert];
+        
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            NSLog(@"在此登录");
+        }];
+        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil];
+        [alert addAction:cancelAction];
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+    }
+
 
 }
 

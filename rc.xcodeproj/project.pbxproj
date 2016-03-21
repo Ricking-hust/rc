@@ -56,7 +56,6 @@
 		565EF60C1C48EB3B0067C032 /* CZColumnViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF60A1C48EB3B0067C032 /* CZColumnViewController.m */; };
 		565EF6221C48EBA20067C032 /* DataManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6141C48EBA20067C032 /* DataManager.m */; };
 		565EF6231C48EBA20067C032 /* NSNumber+Message.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6161C48EBA20067C032 /* NSNumber+Message.m */; };
-		565EF6251C48EBA20067C032 /* Activity.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF61B1C48EBA20067C032 /* Activity.m */; };
 		565EF6261C48EBA20067C032 /* ActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF61D1C48EBA20067C032 /* ActivityModel.m */; };
 		565EF6271C48EBA20067C032 /* BaseModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF61F1C48EBA20067C032 /* BaseModel.m */; };
 		565EF6281C48EBA20067C032 /* CityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF6211C48EBA20067C032 /* CityModel.m */; };
@@ -124,7 +123,6 @@
 		56E732741C9E9D79006724BA /* RCLeftTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E732731C9E9D79006724BA /* RCLeftTableView.m */; };
 		56E732771C9E9DF4006724BA /* RCRightTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E732761C9E9DF4006724BA /* RCRightTableView.m */; };
 		56E7AE771C709C8C004593E6 /* CZButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E7AE761C709C8C004593E6 /* CZButtonView.m */; };
-		56E842781C4B88BC00D1D198 /* ActivityIntroduction.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E842771C4B88BC00D1D198 /* ActivityIntroduction.m */; };
 		56E8427B1C4BA74C00D1D198 /* CZTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8427A1C4BA74C00D1D198 /* CZTimeCell.m */; };
 		56E8427E1C4BB8E500D1D198 /* CZActivityInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8427D1C4BB8E500D1D198 /* CZActivityInfoCell.m */; };
 		56E842811C4BD21500D1D198 /* CZActivityDetailCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E842801C4BD21500D1D198 /* CZActivityDetailCell.m */; };
@@ -266,8 +264,6 @@
 		565EF6141C48EBA20067C032 /* DataManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = DataManager.m; sourceTree = "<group>"; };
 		565EF6151C48EBA20067C032 /* NSNumber+Message.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSNumber+Message.h"; sourceTree = "<group>"; };
 		565EF6161C48EBA20067C032 /* NSNumber+Message.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSNumber+Message.m"; sourceTree = "<group>"; };
-		565EF61A1C48EBA20067C032 /* Activity.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = Activity.h; sourceTree = "<group>"; };
-		565EF61B1C48EBA20067C032 /* Activity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = Activity.m; sourceTree = "<group>"; };
 		565EF61C1C48EBA20067C032 /* ActivityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityModel.h; sourceTree = "<group>"; };
 		565EF61D1C48EBA20067C032 /* ActivityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityModel.m; sourceTree = "<group>"; };
 		565EF61E1C48EBA20067C032 /* BaseModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BaseModel.h; sourceTree = "<group>"; };
@@ -405,8 +401,6 @@
 		56E732761C9E9DF4006724BA /* RCRightTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCRightTableView.m; sourceTree = "<group>"; };
 		56E7AE751C709C8C004593E6 /* CZButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZButtonView.h; sourceTree = "<group>"; };
 		56E7AE761C709C8C004593E6 /* CZButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZButtonView.m; sourceTree = "<group>"; };
-		56E842761C4B88BC00D1D198 /* ActivityIntroduction.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ActivityIntroduction.h; sourceTree = "<group>"; };
-		56E842771C4B88BC00D1D198 /* ActivityIntroduction.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ActivityIntroduction.m; sourceTree = "<group>"; };
 		56E842791C4BA74C00D1D198 /* CZTimeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTimeCell.h; sourceTree = "<group>"; };
 		56E8427A1C4BA74C00D1D198 /* CZTimeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTimeCell.m; sourceTree = "<group>"; };
 		56E8427C1C4BB8E500D1D198 /* CZActivityInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZActivityInfoCell.h; sourceTree = "<group>"; };
@@ -821,16 +815,12 @@
 			children = (
 				565EF61E1C48EBA20067C032 /* BaseModel.h */,
 				565EF61F1C48EBA20067C032 /* BaseModel.m */,
-				565EF61A1C48EBA20067C032 /* Activity.h */,
-				565EF61B1C48EBA20067C032 /* Activity.m */,
 				565EF61C1C48EBA20067C032 /* ActivityModel.h */,
 				565EF61D1C48EBA20067C032 /* ActivityModel.m */,
 				C4CAD1BF1C7B3975003FD0B0 /* UserModel.h */,
 				C4CAD1C01C7B3975003FD0B0 /* UserModel.m */,
 				565EF6201C48EBA20067C032 /* CityModel.h */,
 				565EF6211C48EBA20067C032 /* CityModel.m */,
-				56E842761C4B88BC00D1D198 /* ActivityIntroduction.h */,
-				56E842771C4B88BC00D1D198 /* ActivityIntroduction.m */,
 				C4CAD1B31C7B3943003FD0B0 /* IndustryModel.h */,
 				C4CAD1B41C7B3943003FD0B0 /* IndustryModel.m */,
 				C4CAD1B51C7B3943003FD0B0 /* PlanModel.h */,
@@ -1172,7 +1162,6 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				56E842781C4B88BC00D1D198 /* ActivityIntroduction.m in Sources */,
 				56E5235B1C759C1F00794B0E /* CZMyActivityViewContoller.m in Sources */,
 				561D01FF1C47DA5600E4E013 /* AFImageDownloader.m in Sources */,
 				56B9CD331C807A7100914F00 /* SDWebImageManager.m in Sources */,
@@ -1228,7 +1217,6 @@
 				561D01F81C47DA5600E4E013 /* AFSecurityPolicy.m in Sources */,
 				C4CAD1BD1C7B3943003FD0B0 /* TagModel.m in Sources */,
 				569773251C9ACA7500D25338 /* RCTagCell.m in Sources */,
-				565EF6251C48EBA20067C032 /* Activity.m in Sources */,
 				561D02041C47DA5600E4E013 /* UIProgressView+AFNetworking.m in Sources */,
 				56E5235E1C75A05100794B0E /* CZMyReleseViewController.m in Sources */,
 				56B9CD3A1C807A7100914F00 /* UIImageView+WebCache.m in Sources */,

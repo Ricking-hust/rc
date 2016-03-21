@@ -7,14 +7,11 @@
 //
 
 #import "CZTimeCell.h"
-#import "ActivityIntroduction.h"
 #import "Masonry.h"
 #define TIME_FONTSIZE   14  //活动时间字体大小
 #define BTN_FONTSIZE    12  //按钮字体大小
 
 @implementation CZTimeCell
-
-
 
 + (instancetype)timeCellWithTableView:(UITableView*)tableView
 {

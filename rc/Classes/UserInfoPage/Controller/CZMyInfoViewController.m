@@ -153,14 +153,6 @@
         LoginViewController *loginViewController = [[LoginViewController alloc]init];
         [self.navigationController pushViewController:loginViewController animated:YES];
         
-        
-//        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"你还没有登录" preferredStyle:UIAlertControllerStyleAlert];
-//        
-//        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
-//
-//        [alert addAction:okAction];
-//        [self presentViewController:alert animated:YES completion:nil];
-        
     }else
     {//如果用户已登录，则跳至相关界面
         switch (indexPath.section)

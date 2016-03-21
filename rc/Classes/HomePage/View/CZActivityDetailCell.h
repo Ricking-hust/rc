@@ -7,9 +7,9 @@
 //
 
 #import <UIKit/UIKit.h>
-@class ActivityIntroduction;
-@interface CZActivityDetailCell : UITableViewCell
-@property (nonatomic, strong)ActivityIntroduction *acIntroduction;
+@class ActivityModel;
+@interface CZActivityDetailCell : UITableViewCell<UIWebViewDelegate>
+@property (nonatomic,strong)ActivityModel *model;
 @property (nonatomic, strong) UIWebView *webView;
 @property (nonatomic, assign) CGFloat rowHeight;
 

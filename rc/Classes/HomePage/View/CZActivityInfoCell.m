@@ -7,7 +7,6 @@
 //
 
 #import "CZActivityInfoCell.h"
-#import "ActivityIntroduction.h"
 #import "Masonry.h"
 #import "ActivityModel.h"
 #define LABEL_FONTSIZE 14
@@ -53,7 +52,7 @@
         self.ac_payLabel.numberOfLines = 0;
         self.ac_payLabel.font = [UIFont systemFontOfSize:14];
         [self.contentView addSubview:self.ac_payLabel];
-        self.isHaveValue = NO;
+
     }
     return self;
     
@@ -94,15 +93,10 @@
 - (void) setModel:(ActivityModel *)model
 {
     _model = model;
+    self.ac_placeLabel.text = model.acPlace;
+    self.ac_sizeLabel.text  = model.acSize;
+    self.ac_payLabel.text   = model.acPay;
 
-    if (_model && self.isHaveValue == NO)
-    {
-        self.ac_placeLabel.text = model.acPlace;
-        self.ac_sizeLabel.text  = model.acSize;
-        self.ac_payLabel.text   = model.acPay;
-        self.isHaveValue = YES;
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"cellValue" object:self];
-    }
 }
 
 /**
