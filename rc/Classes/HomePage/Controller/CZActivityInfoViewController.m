@@ -11,7 +11,6 @@
 #import "Masonry.h"
 #import "CZTimeCell.h"
 #import "CZActivityInfoCell.h"
-#import "CZActivityDetailCell.h"
 
 #import "CZRemindMeView.h"
 #import "UIViewController+LewPopupViewController.h"
@@ -26,7 +25,6 @@
 
 @property (nonatomic, strong) UIView *bottomView;
 @property (nonatomic, strong) UIView *header;
-@property (nonatomic, strong) UIView *footer;
 @property (nonatomic, strong) UIImageView *headerImageView;
 @property (nonatomic, strong) UIImageView *acImageView;
 @property (nonatomic, strong) UIImageView *acTagImageView;
@@ -65,7 +63,6 @@
     self.collectionBtn.hidden = YES;
     self.addToSchedule.hidden = YES;
     [self getData];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cellValue:) name:@"cellValue" object:nil];
 
     //设置导航栏
     [self setNavigation];
@@ -115,14 +112,21 @@
                 //对tableView头进行赋值
                 [self setTableViewHeader];
                 [self.tableView reloadData];
-                [self layoutFooterView];
+                [self setwebViewCellH];
             }
 
 
         });
     });
 }
-
+- (void)setwebViewCellH
+{
+    self.webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 1)];
+    self.webView.delegate = self;
+    self.webView.scrollView.scrollEnabled = NO;
+    //预先加载url
+    [self.webView loadHTMLString:self.activitymodel.acHtml baseURL:nil];
+}
 - (void)cellValue:(NSNotification *)notification
 {
     NSIndexSet *section = [NSIndexSet indexSetWithIndex:1];
@@ -197,7 +201,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
-    return 2;
+    return 3;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -215,14 +219,14 @@
             CZTimeCell *cell = [CZTimeCell timeCellWithTableView:tableView];
             [cell.remindMeBtn addTarget:self action:@selector(onClickRemindMe:) forControlEvents:UIControlEventTouchUpInside];
             //对cell的控件进行赋值
-            [self setCellValue:cell AtIndexPath:indexPath];//3
+            [self setCellValue:cell AtIndexPath:indexPath];
             //对cell的控件进行布局
             [cell setSubViewsConstraint];
             
             return cell;
         }
             break;
-        default:
+        case 1:
         {
             CZActivityInfoCell *cell = [CZActivityInfoCell activityCellWithTableView:tableView];
             //对cell的控件进行赋值
@@ -230,6 +234,21 @@
             //对cell的控件进行布局
             [cell setSubViewsConstraint];
             return cell;
+        }
+            break;
+        default:
+        {
+            static NSString *identifier = @"cell";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell){
+                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                [cell.contentView addSubview:self.webView];
+                /* 忽略点击效果 */
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            }
+            return cell;
+//            CZActivityDetailCell *cell = [CZActivityDetailCell detailCellWithTableView:tableView];
+//            return cell;
         }
             break;
     }
@@ -241,9 +260,12 @@
     {
         ((CZTimeCell*)cell).timeLabel.text = self.activitymodel.acTime;
         
-    }else
+    }else if([cell isKindOfClass:[CZActivityInfoCell class]])
     {
         ((CZActivityInfoCell *)cell).model = self.activitymodel;
+    }else
+    {
+
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -253,44 +275,33 @@
         CZTimeCell *cell = (CZTimeCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
         return cell.rowHeight;
         
-    }else
+    }else if(indexPath.section == 1)
     {
+
         CZActivityInfoCell *cell = (CZActivityInfoCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
         return cell.rowHeight;
-        
+    }else
+    {
+        return self.webView.frame.size.height;
     }
     
 }
-- (void)layoutFooterView
+#pragma mark - UIWebView Delegate Methods
+-(void)webViewDidFinishLoad:(UIWebView *)webView
 {
-    self.footer = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 10)];
-
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 35)];
-    [self.footer addSubview:view];
-    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-    UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 60, 30)];
-    label.font = [UIFont systemFontOfSize:14];
-    label.text = @"活动介绍";
-    label.textColor = [UIColor colorWithRed:131.0/255.0 green:131.0/255.0  blue:131.0/255.0  alpha:1.0];
-    [view addSubview:label];
-
-    self.webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 35, kScreenWidth, 0)];
-    self.webView.delegate = self;
-    [self.webView loadHTMLString:self.activitymodel.acHtml baseURL:nil];
-    [self.footer addSubview:self.webView];
-//    CGFloat height = [[self.webView stringByEvaluatingJavaScriptFromString:@"document.body.scrollHeight"]floatValue];
-//    [self.footer setFrame:CGRectMake(0, 0, kScreenWidth, height)];
-}
-- (void)webViewDidFinishLoad:(UIWebView *)webView
-{
-    CGRect frame = webView.frame;
-    CGSize fittingSize = [webView sizeThatFits:CGSizeZero];
-    frame.size = fittingSize;
-    webView.frame = frame;
-    NSLog(@"h %f",frame.size.height);
-    [self.footer setFrame:CGRectMake(0, 0, kScreenWidth, frame.size.height)];
-    self.tableView.tableFooterView = self.footer;
+    //获取到webview的高度
+    CGFloat height = [[self.webView stringByEvaluatingJavaScriptFromString:@"document.body.offsetHeight"] floatValue];
+    self.webView.frame = CGRectMake(self.webView.frame.origin.x,self.webView.frame.origin.y, kScreenWidth, height);
+    
     [self.tableView reloadData];
+}
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
+    NSLog(@"webViewDidStartLoad");
+}
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(nullable NSError *)error
+{
+    NSLog(@"didFailLoadWithError===%@", error);
 }
 // 配置tableView header UI布局
 - (void)layoutHeaderImageView
