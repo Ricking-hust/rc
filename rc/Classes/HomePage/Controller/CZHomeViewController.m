@@ -137,6 +137,7 @@
     self.getCityListBlock = ^(){
         @strongify(self);
         return [[DataManager manager] getCityListSuccess:^(CityList *ctList) {
+            @strongify(self);
             self.cityList = ctList;
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);

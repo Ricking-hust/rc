@@ -42,6 +42,8 @@
 
 @property (nonatomic, copy) NSURLSessionDataTask* (^getActivityBlock)();
 
+
+
 @end
 
 @implementation CZActivityInfoViewController
@@ -487,37 +489,44 @@
     [self.view addSubview:self.HUD];
     [self.HUD showAnimated:YES];
     
-    if ([self.isCollect isEqualToString:@"0"]) {
-        [[DataManager manager] setActivityCollectWithUserID:[userDefaults objectForKey:@"userId"] acId:self.activityModelPre.acID opType:@"1" success:^(NSString *msg) {
-            self.isCollect = @"1";
-            [self.collectionBtn setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateNormal];
-            [self.collectionBtn setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateHighlighted];
-            [self.collectionBtn setTitle:@"已收藏" forState:UIControlStateNormal];
-            self.HUD.mode = MBProgressHUDModeCustomView;
-            self.HUD.label.text = @"收藏成功";
-            [self.HUD hideAnimated:YES afterDelay:0.6];
-        } failure:^(NSError *error) {
-            self.HUD.mode = MBProgressHUDModeCustomView;
-            self.HUD.label.text = @"操作失败";
-            [self.HUD hideAnimated:YES afterDelay:0.6];
-            NSLog(@"Error:%@",error);
-        }];
+    if ([DataManager manager].user.isLogin) {
+        if ([self.isCollect isEqualToString:@"0"]) {
+            [[DataManager manager] setActivityCollectWithUserID:[userDefaults objectForKey:@"userId"] acId:self.activityModelPre.acID opType:@"1" success:^(NSString *msg) {
+                self.isCollect = @"1";
+                [self.collectionBtn setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateNormal];
+                [self.collectionBtn setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateHighlighted];
+                [self.collectionBtn setTitle:@"已收藏" forState:UIControlStateNormal];
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"收藏成功";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+            } failure:^(NSError *error) {
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"操作失败";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+                NSLog(@"Error:%@",error);
+            }];
+        } else {
+            [[DataManager manager] setActivityCollectWithUserID:[userDefaults objectForKey:@"userId"] acId:self.activityModelPre.acID opType:@"2" success:^(NSString *msg) {
+                self.isCollect = @"0";
+                [self.collectionBtn setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateNormal];
+                [self.collectionBtn setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateHighlighted];
+                [self.collectionBtn setTitle:@"收藏" forState:UIControlStateNormal];
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"取消收藏成功";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+            } failure:^(NSError *error) {
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"操作失败";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+                NSLog(@"Error:%@",error);
+            }];
+        }
     } else {
-        [[DataManager manager] setActivityCollectWithUserID:[userDefaults objectForKey:@"userId"] acId:self.activityModelPre.acID opType:@"2" success:^(NSString *msg) {
-            self.isCollect = @"0";
-            [self.collectionBtn setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateNormal];
-            [self.collectionBtn setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateHighlighted];
-            [self.collectionBtn setTitle:@"收藏" forState:UIControlStateNormal];
-            self.HUD.mode = MBProgressHUDModeCustomView;
-            self.HUD.label.text = @"取消收藏成功";
-            [self.HUD hideAnimated:YES afterDelay:0.6];
-        } failure:^(NSError *error) {
-            self.HUD.mode = MBProgressHUDModeCustomView;
-            self.HUD.label.text = @"操作失败";
-            [self.HUD hideAnimated:YES afterDelay:0.6];
-            NSLog(@"Error:%@",error);
-        }];
+        self.HUD.mode = MBProgressHUDModeCustomView;
+        self.HUD.label.text = @"请登录";
+        [self.HUD hideAnimated:YES afterDelay:0.6];
     }
+    
 }
 
 - (void)onClickAdd
@@ -527,23 +536,29 @@
     [self.view addSubview:self.HUD];
     [self.HUD showAnimated:YES];
     
-    [[DataManager manager] joinTripWithUserId:[userDefaults objectForKey:@"userId"] acId:self.activityModelPre.acID opType:@"1" success:^(NSString *planId) {
-        if ([planId isEqualToString:@"joined"]) {
+    if ([DataManager manager].user.isLogin) {
+        [[DataManager manager] joinTripWithUserId:[userDefaults objectForKey:@"userId"] acId:self.activityModelPre.acID opType:@"1" success:^(NSString *planId) {
+            if ([planId isEqualToString:@"joined"]) {
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"该活动已在您的日程中(╯3╰)";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+            } else {
+                self.planId = planId;
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"加入日程成功~(≧▽≦)/~";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+            }
+        } failure:^(NSError *error) {
             self.HUD.mode = MBProgressHUDModeCustomView;
-            self.HUD.label.text = @"该活动已在您的日程中(╯3╰)";
+            self.HUD.label.text = @"操作失败~>_<~ ";
             [self.HUD hideAnimated:YES afterDelay:0.6];
-        } else {
-            self.planId = planId;
-            self.HUD.mode = MBProgressHUDModeCustomView;
-            self.HUD.label.text = @"加入日程成功~(≧▽≦)/~";
-            [self.HUD hideAnimated:YES afterDelay:0.6];
-        }
-    } failure:^(NSError *error) {
+            NSLog(@"Error:%@",error);
+        }];
+    } else {
         self.HUD.mode = MBProgressHUDModeCustomView;
-        self.HUD.label.text = @"操作失败~>_<~ ";
+        self.HUD.label.text = @"请登录";
         [self.HUD hideAnimated:YES afterDelay:0.6];
-        NSLog(@"Error:%@",error);
-    }];
+    }
 }
 
 - (void)onClickRemind{
@@ -553,37 +568,43 @@
     [self.view addSubview:self.HUD];
     [self.HUD showAnimated:YES];
     
-    [[DataManager manager] joinTripWithUserId:[userDefaults objectForKey:@"userId"] acId:self.activityModelPre.acID opType:@"1" success:^(NSString *planId) {
-        if ([planId isEqualToString:@"joined"]) {
-            [[DataManager manager] addPlanWithOpType:@"2" planId:self.activitymodel.planId userId:[userDefaults objectForKey:@"userId"] themeId:@"" planTime:@"" plAlarmOne:self.plAlarm[0] plAlarmTwo:self.plAlarm[1] plAlarmThree:self.plAlarm[2] planContent:@"" acPlace:@"" success:^(NSString *msg) {
-                self.HUD.mode = MBProgressHUDModeCustomView;
-                self.HUD.label.text = @"修改提醒成功~(≧▽≦)/~";
-                [self.HUD hideAnimated:YES afterDelay:0.6];
-            } failure:^(NSError *error) {
-                self.HUD.mode = MBProgressHUDModeCustomView;
-                self.HUD.label.text = @"操作失败~>_<~ ";
-                [self.HUD hideAnimated:YES afterDelay:0.6];
-                NSLog(@"Error:%@",error);
-            }];
-        } else {
-            self.planId = planId;
-            [[DataManager manager] addPlanWithOpType:@"1" planId:self.planId userId:[userDefaults objectForKey:@"userId"] themeId:@"" planTime:@"" plAlarmOne:self.plAlarm[0] plAlarmTwo:self.plAlarm[1] plAlarmThree:self.plAlarm[2] planContent:@"" acPlace:@"" success:^(NSString *msg) {
-                self.HUD.mode = MBProgressHUDModeCustomView;
-                self.HUD.label.text = @"加入日程提醒成功~(≧▽≦)/~";
-                [self.HUD hideAnimated:YES afterDelay:0.6];
-            } failure:^(NSError *error) {
-                self.HUD.mode = MBProgressHUDModeCustomView;
-                self.HUD.label.text = @"操作失败~>_<~ ";
-                [self.HUD hideAnimated:YES afterDelay:0.6];
-                NSLog(@"Error:%@",error);
-            }];
-        }
-    } failure:^(NSError *error) {
+    if ([DataManager manager].user.isLogin) {
+        [[DataManager manager] joinTripWithUserId:[userDefaults objectForKey:@"userId"] acId:self.activityModelPre.acID opType:@"1" success:^(NSString *planId) {
+            if ([planId isEqualToString:@"joined"]) {
+                [[DataManager manager] addPlanWithOpType:@"2" planId:self.activitymodel.planId userId:[userDefaults objectForKey:@"userId"] themeId:@"" planTime:@"" plAlarmOne:self.plAlarm[0] plAlarmTwo:self.plAlarm[1] plAlarmThree:self.plAlarm[2] planContent:@"" acPlace:@"" success:^(NSString *msg) {
+                    self.HUD.mode = MBProgressHUDModeCustomView;
+                    self.HUD.label.text = @"修改提醒成功~(≧▽≦)/~";
+                    [self.HUD hideAnimated:YES afterDelay:0.6];
+                } failure:^(NSError *error) {
+                    self.HUD.mode = MBProgressHUDModeCustomView;
+                    self.HUD.label.text = @"操作失败~>_<~ ";
+                    [self.HUD hideAnimated:YES afterDelay:0.6];
+                    NSLog(@"Error:%@",error);
+                }];
+            } else {
+                self.planId = planId;
+                [[DataManager manager] addPlanWithOpType:@"1" planId:self.planId userId:[userDefaults objectForKey:@"userId"] themeId:@"" planTime:@"" plAlarmOne:self.plAlarm[0] plAlarmTwo:self.plAlarm[1] plAlarmThree:self.plAlarm[2] planContent:@"" acPlace:@"" success:^(NSString *msg) {
+                    self.HUD.mode = MBProgressHUDModeCustomView;
+                    self.HUD.label.text = @"加入日程提醒成功~(≧▽≦)/~";
+                    [self.HUD hideAnimated:YES afterDelay:0.6];
+                } failure:^(NSError *error) {
+                    self.HUD.mode = MBProgressHUDModeCustomView;
+                    self.HUD.label.text = @"操作失败~>_<~ ";
+                    [self.HUD hideAnimated:YES afterDelay:0.6];
+                    NSLog(@"Error:%@",error);
+                }];
+            }
+        } failure:^(NSError *error) {
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"操作失败~>_<~ ";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+            NSLog(@"Error:%@",error);
+        }];
+    } else {
         self.HUD.mode = MBProgressHUDModeCustomView;
-        self.HUD.label.text = @"操作失败~>_<~ ";
+        self.HUD.label.text = @"请登录";
         [self.HUD hideAnimated:YES afterDelay:0.6];
-        NSLog(@"Error:%@",error);
-    }];
+    }
 }
 
 //弹出提醒视图

@@ -9,6 +9,7 @@
 #import "RCSettingTagTableViewController.h"
 #import "Masonry.h"
 #import "RCTagCell.h"
+#import "MBProgressHUD.h"
 #include <sys/sysctl.h>
 #define buttonSize CGSizeMake(65, 30)
 #define IPHONE5PADDING  12
@@ -21,6 +22,12 @@
 @property (nonatomic, strong) NSMutableArray *myButton;
 @property (nonatomic, strong) NSMutableArray *tags;
 @property (nonatomic, strong) NSMutableArray *myTags;
+@property (nonatomic, strong) MBProgressHUD    *HUD;
+@property (nonatomic,strong) TagsList *allTag;
+@property (nonatomic,strong) TagsList *myTag;
+@property (nonatomic,copy) NSURLSessionDataTask *(^getAllTagBlock)();
+@property (nonatomic,copy) NSURLSessionDataTask *(^getmyTagBlock)();
+
 @end
 
 @implementation RCSettingTagTableViewController
@@ -40,18 +47,94 @@
     }
     return _myButton;
 }
+
+- (NSMutableArray *)tags
+{
+    if (!_tags) {
+        _tags = [[NSMutableArray alloc]init];
+    }
+    
+    return _tags;
+}
+
+- (NSMutableArray *)myTags
+{
+    if (!_myTags) {
+        _myTags = [[NSMutableArray alloc]init];
+    }
+    
+    return _myTags;
+}
+#pragma mark - get data
+-(void)configureBlocks{
+    @weakify(self)
+    self.getAllTagBlock = ^(){
+        @strongify(self);
+        return [[DataManager manager] getAllTagsSuccess:^(TagsList *tagList) {
+            @strongify(self);
+            self.allTag = tagList;
+        } failure:^(NSError *error) {
+            NSLog(@"Error:%@",error);
+        }];
+    };
+    
+    self.getmyTagBlock = ^(){
+        @strongify(self);
+        NSString *userId = [[NSString alloc]init];
+        if ([userDefaults objectForKey:@"userId"]) {
+            userId = [userDefaults objectForKey:@"userId"];
+        } else {
+            userId = @"-1";
+        }
+        return [[DataManager manager] getUsrTagsWithUserId:userId success:^(TagsList *tagsList) {
+            @strongify(self);
+            self.myTag = tagsList;
+        } failure:^(NSError *error) {
+            NSLog(@"Error:%@",error);
+        }];
+    };
+}
+
+- (void)startget{
+    if (self.getAllTagBlock) {
+        self.getAllTagBlock();
+    }
+    
+    if (self.getmyTagBlock) {
+        self.getmyTagBlock();
+    }
+}
+
+-(void)setAllTag:(TagsList *)allTag{
+    _allTag = allTag;
+    
+    [self.tags addObjectsFromArray:self.allTag.list];
+    
+    [self.tableView reloadData];
+}
+
+-(void)setMyTag:(TagsList *)myTag{
+    _myTag = myTag;
+    
+    [self.myTags addObjectsFromArray:self.myTag.list];
+    [self.tableView reloadData];
+}
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    [self startget];
+}
+
 - (void)viewDidLoad {
     [super viewDidLoad];
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.isShake = NO;
+    [self configureBlocks];
     //self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     [self setNavigation];
     
-#pragma mark - test
-    self.tags = [[NSMutableArray alloc]initWithObjects:@"创者", @"资讯",@"媒s",@"感如何",@"者", @"讯",@"媒",@"如何",
-                 @"屁事快说",nil];
-    self.myTags = [[NSMutableArray alloc]initWithObjects:@"创业者", @"新闻资讯",@"媒体",@"感觉如何",@"创业者", @"新闻资讯",@"媒体",nil];
    
 }
 
@@ -73,6 +156,29 @@
 }
 - (void)updateMyTag
 {
+    self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    self.HUD.removeFromSuperViewOnHide = YES;
+    [self.view addSubview:self.HUD];
+    [self.HUD showAnimated:YES];
+    NSMutableArray *updateArray = [[NSMutableArray alloc]init];
+    for (TagModel *model in self.myTags) {
+        [updateArray addObject:model.tagId];
+    }
+    NSString *str = [updateArray componentsJoinedByString:@","];
+    NSMutableString *mstr = [[NSMutableString alloc]initWithString:str];
+    [mstr insertString:@"[" atIndex:0];
+    [mstr appendString:@"]"];
+    [[DataManager manager] setTagsWithUserId:[userDefaults objectForKey:@"userId"] tagsList:mstr success:^(NSString *msg) {
+        self.HUD.mode = MBProgressHUDModeCustomView;
+        self.HUD.label.text = @"标签修改成功";
+        [self.HUD hideAnimated:YES afterDelay:0.6];
+
+    } failure:^(NSError *error) {
+        self.HUD.mode = MBProgressHUDModeCustomView;
+        self.HUD.label.text = @"设置失败";
+        [self.HUD hideAnimated:YES afterDelay:0.6];
+        NSLog(@"Error:%@",error);
+    }];
     [self pause];
 }
 #pragma mark - Table view data source
@@ -191,7 +297,8 @@
         [cell.contentView addSubview:btn];
         btn.tag = 10 + i;
         [btn addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
-        [self setButton:btn WithTittle:array[i] AtCell:cell];
+        TagModel *model = array[i];
+        [self setButton:btn WithTittle:model.tagName AtCell:cell];
         if (cell.tag == 0)
         {
             [self.myButton addObject:btn];
@@ -226,33 +333,34 @@
     {
         if (self.isShake == YES)
         {
-            for (int i = 0; i<self.myTags.count; i++)
-            {
-                if ([self.myTags[i] isEqualToString:button.titleLabel.text])
-                {
-                    [self.myTags removeObject:button.titleLabel.text];
+            for (int i = 0; i<self.myTags.count; i++) {
+                TagModel *model = self.myTags[i];
+                if ([model.tagName isEqualToString:button.titleLabel.text]) {
+                    [self.myTags removeObject:model];
                     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
                     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
                 }
             }
-
         }
     }else
     {
         BOOL isAdd = NO;
-        for (int i = 0; i<self.myTags.count; i++)
-        {
-            if ([self.myTags[i] isEqualToString:button.titleLabel.text])
-            {
+        for (TagModel *model in self.myTags) {
+            if ([model.tagName isEqualToString:button.titleLabel.text]) {
                 isAdd = YES;
                 break;
             }
         }
         if (isAdd == NO)
         {
-            [self.myTags addObject:button.titleLabel.text];
-            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+            for (int i = 0; i<self.tags.count; i++) {
+                TagModel *model = self.tags[i];
+                if ([model.tagName isEqualToString:button.titleLabel.text]) {
+                    [self.myTags addObject:model];
+                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                }
+            }
         }
 
     }

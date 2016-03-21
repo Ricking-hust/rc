@@ -125,12 +125,21 @@
 
     }else
     {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入内容" preferredStyle:UIAlertControllerStyleAlert];
         
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
-        
-        [alert addAction:okAction];
-        [self presentViewController:alert animated:YES completion:nil];
+        if ([self.downView.textView.text isEqualToString:@""]) {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入内容" preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+            
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
+        } else {
+            [[DataManager manager] addPlanWithOpType:@"1" planId:@"" userId:[userDefaults objectForKey:@"userId"] themeId:@"" planTime:@"" plAlarmOne:@"" plAlarmTwo:@"" plAlarmThree:@"" planContent:self.downView.textView.text acPlace:@"" success:^(NSString *msg) {
+                
+            } failure:^(NSError *error) {
+                NSLog(@"Error:%@",error);
+            }];
+        }
     }
     
 }

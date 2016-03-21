@@ -50,7 +50,6 @@
 		564596B91C732A84006D8493 /* LewPopupViewAnimationSpring.m in Sources */ = {isa = PBXBuildFile; fileRef = 564596B21C732A84006D8493 /* LewPopupViewAnimationSpring.m */; };
 		564596BA1C732A84006D8493 /* UIViewController+LewPopupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 564596B41C732A84006D8493 /* UIViewController+LewPopupViewController.m */; };
 		5654C3381C97D4800018DA93 /* RCMyActivityCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5654C3371C97D4800018DA93 /* RCMyActivityCell.m */; };
-		565BCFB41C51CE580031ABBD /* CZTagSelectViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 565BCFB31C51CE580031ABBD /* CZTagSelectViewController.m */; };
 		565CBFA61C6F098500635EA4 /* CZTagSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565CBFA51C6F098500635EA4 /* CZTagSelectView.m */; };
 		565CBFA91C6F0ED500635EA4 /* CZTagWithLabelView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565CBFA81C6F0ED500635EA4 /* CZTagWithLabelView.m */; };
 		565EF5FE1C48EAA80067C032 /* CZHomeHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = 565EF5FC1C48EAA80067C032 /* CZHomeHeaderView.m */; };
@@ -255,8 +254,6 @@
 		564596B41C732A84006D8493 /* UIViewController+LewPopupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIViewController+LewPopupViewController.m"; sourceTree = "<group>"; };
 		5654C3361C97D4800018DA93 /* RCMyActivityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMyActivityCell.h; sourceTree = "<group>"; };
 		5654C3371C97D4800018DA93 /* RCMyActivityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMyActivityCell.m; sourceTree = "<group>"; };
-		565BCFB21C51CE570031ABBD /* CZTagSelectViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTagSelectViewController.h; sourceTree = "<group>"; };
-		565BCFB31C51CE580031ABBD /* CZTagSelectViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTagSelectViewController.m; sourceTree = "<group>"; };
 		565CBFA41C6F098500635EA4 /* CZTagSelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTagSelectView.h; sourceTree = "<group>"; };
 		565CBFA51C6F098500635EA4 /* CZTagSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTagSelectView.m; sourceTree = "<group>"; };
 		565CBFA71C6F0ED500635EA4 /* CZTagWithLabelView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTagWithLabelView.h; sourceTree = "<group>"; };
@@ -745,8 +742,6 @@
 				56DF02311C49356100E80DFA /* CZActivityInfoViewController.m */,
 				56423F491C4FB4710072CCC3 /* CZHomeViewController.h */,
 				56423F4A1C4FB4710072CCC3 /* CZHomeViewController.m */,
-				565BCFB21C51CE570031ABBD /* CZTagSelectViewController.h */,
-				565BCFB31C51CE580031ABBD /* CZTagSelectViewController.m */,
 				56637D701C560DA10000BF46 /* CZCityViewController.h */,
 				56637D711C560DA10000BF46 /* CZCityViewController.m */,
 				56E2AAAB1C59E229009371F7 /* CZSearchViewController.h */,
@@ -1245,7 +1240,6 @@
 				5661CBE11C96A6490062E979 /* RCColumnInfoView.m in Sources */,
 				56B9CD411C807C4A00914F00 /* UIImage+ImageEffects.m in Sources */,
 				56E732771C9E9DF4006724BA /* RCRightTableView.m in Sources */,
-				565BCFB41C51CE580031ABBD /* CZTagSelectViewController.m in Sources */,
 				56A3112E1C870B6300E82262 /* CZUpView.m in Sources */,
 				561D02001C47DA5600E4E013 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				56B9CD2C1C807A7100914F00 /* MKAnnotationView+WebCache.m in Sources */,

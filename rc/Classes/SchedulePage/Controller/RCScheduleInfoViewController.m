@@ -10,6 +10,7 @@
 #import "Masonry.h"
 #import "RCScrollView.h"
 #import "RCUpdateScheduleViewController.h"
+#import "MBProgressHUD.h"
 #define FONTSIZE    14  //字体大小
 #define PADDING     5
 @interface RCScheduleInfoViewController ()
@@ -27,6 +28,7 @@
 
 @property (strong, nonatomic) UILabel *scRemindTimeLabel;
 @property (strong, nonatomic) UILabel *scRemindTime;
+@property (nonatomic, strong) MBProgressHUD    *HUD;
 
 @property (strong, nonatomic) PlanModel *model;
 @property (nonatomic, strong) NSMutableArray *scArray;
@@ -166,7 +168,28 @@
     [self.deleteBtn addTarget:self action:@selector(deleteSC) forControlEvents:UIControlEventTouchUpInside];
 }
 #pragma mark - 删除行程
-- (void)deleteSC
+- (void)deleteSC{
+    self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    self.HUD.removeFromSuperViewOnHide = YES;
+    [self.view addSubview:self.HUD];
+    [self.HUD showAnimated:YES];
+    
+    NSArray *plArray = self.planListRanged[([self.timeNodeIndex intValue])];
+    PlanModel *model = plArray[self.index];
+    [[DataManager manager] delPlanWithUserId:[userDefaults objectForKey:@"userId"] planId:model.planId success:^(NSString *msg) {
+        self.HUD.mode = MBProgressHUDModeCustomView;
+        self.HUD.label.text = @"删除成功！";
+        [self.HUD hideAnimated:YES afterDelay:0.6];
+        [self deleteSCNative];
+    } failure:^(NSError *error) {
+        self.HUD.mode = MBProgressHUDModeCustomView;
+        self.HUD.label.text = @"操作失败";
+        [self.HUD hideAnimated:YES afterDelay:0.6];
+        NSLog(@"Error:%@",error);
+    }];
+}
+
+- (void)deleteSCNative
 {
     [self.scArray removeObjectAtIndex:self.index];
     [self.tableView reloadData];

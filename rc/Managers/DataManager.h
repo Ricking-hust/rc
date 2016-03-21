@@ -39,12 +39,12 @@ typedef NS_ENUM(NSInteger,RcErrorType) {
                                     failure:(void (^)(NSError *error))failure;
 
 -(NSURLSessionDataTask *) setTagsWithUserId:(NSString *)userId
-                                   tagsList:(NSArray *)tagsList
-                                    success:(void (^)(NSString *))success
-                                    failure:(void (^)(NSError *))failure;
+                                   tagsList:(NSString *)tagIds
+                                    success:(void (^)(NSString *msg))success
+                                    failure:(void (^)(NSError *error))failure;
 
 -(NSURLSessionDataTask *) getUsrTagsWithUserId:(NSString *)userId
-                                       success:(void (^)(TagsList *tagsList,NSString *msg))success
+                                       success:(void (^)(TagsList *tagsList))success
                                        failure:(void (^)(NSError *error))failure;
 
 -(NSURLSessionDataTask *) getPopularSearchSuccess:(void (^)(NSMutableArray *popSearchList))success

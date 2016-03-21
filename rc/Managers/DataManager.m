@@ -170,7 +170,7 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
 -(NSURLSessionDataTask *) getAllTagsSuccess:(void (^)(TagsList *tagList))success
                                     failure:(void (^)(NSError *error))failure{
     
-    return [self requestWithMethod:RcRequestMethodHTTPGET URLString:@"http://app.myrichang.com/Home/PersonalInfo/getAllTags" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app.myrichang.com/Home/PersonalInfo/getAllTags" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
         TagsList *tagsList = [[TagsList alloc] initWithArray:[responseObject objectForKey:@"data"]];
         success(tagsList);
     } failure:^(NSError *error) {
@@ -179,13 +179,13 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
 }
 
 -(NSURLSessionDataTask *) setTagsWithUserId:(NSString *)userId
-                                   tagsList:(NSArray *)tagsList
-                                    success:(void (^)(NSString *))success
-                                    failure:(void (^)(NSError *))failure{
+                                   tagsList:(NSString *)tagIds
+                                    success:(void (^)(NSString *msg))success
+                                    failure:(void (^)(NSError *error))failure{
     NSString *urlString = [NSString stringWithFormat:@"http://app.myrichang.com/Home/PersonalInfo/setTags"];
     NSDictionary *parameters = @{
                                  @"usr_id":userId,
-                                 @"tag[]":tagsList,
+                                 @"tags[]":tagIds,
                                  };
     return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:urlString parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
         NSString *msg = [[NSString alloc] initWithString:[responseObject objectForKey:@"msg"]];
@@ -196,15 +196,20 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
 }
 
 -(NSURLSessionDataTask *) getUsrTagsWithUserId:(NSString *)userId
-                                       success:(void (^)(TagsList *tagsList,NSString *msg))success
+                                       success:(void (^)(TagsList *tagsList))success
                                        failure:(void (^)(NSError *error))failure{
     NSDictionary *parameters = @{
                                  @"usr_id":userId,
                                  };
     return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app.myrichang.com/Home/PersonalInfo/getUsrTags" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
-        TagsList *tagsList = [[TagsList alloc] initWithArray:[responseObject objectForKey:@"data"]];
-        NSString *msg = [[NSString alloc] initWithString:[responseObject objectForKey:@"msg"]];
-        success(tagsList,msg);
+        NSString *code = [[NSString alloc] initWithFormat:@"%@",[responseObject objectForKey:@"code"]];
+        if ([code isEqualToString:@"200"]) {
+            TagsList *tagsList = [[TagsList alloc] initWithArray:[responseObject objectForKey:@"data"]];
+            success(tagsList);
+        } else if ([code isEqualToString:@"210"]){
+            TagsList *tagsList =[[TagsList alloc]init];
+            success(tagsList);
+        }
     } failure:^(NSError *error) {
         failure(error);
     }];
