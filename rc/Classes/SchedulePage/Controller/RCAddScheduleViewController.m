@@ -11,8 +11,8 @@
 #import "CZDownView.h"
 #import "RCScheduleInfoViewController.h"
 #import "RCScrollView.h"
+#import "LoginViewController.h"
 @interface RCAddScheduleViewController ()
-@property (nonatomic, assign) BOOL isLogin;
 @property (nonatomic, strong) PlanModel *model;
 @property (nonatomic, strong) RCScrollView *timeNodeSVAdd;
 
@@ -27,19 +27,9 @@
 {
     self.timeNodeSVAdd = timeNodeSV;
 }
-- (void)passLoginState:(BOOL)isLogin
-{
-    self.isLogin = isLogin;
-}
+
 #pragma mark - 懒加载
-- (BOOL)isLogin
-{
-    if (!_isLogin)
-    {
-        _isLogin = NO;
-    }
-    return _isLogin;
-}
+
 - (RCScrollView *)timeNodeSVAdd
 {
     if (!_timeNodeSVAdd)
@@ -90,39 +80,23 @@
     
     if (![self.downView.textView.text isEqualToString:@"请输入行程地点+内容(40字以内)"])
     {
-        if (self.isLogin)
+        [self getscInfo];
+        if (self.planListRangedAdd.count != 0)
         {
-            [self getscInfo];
-            if (self.planListRangedAdd.count != 0)
-            {
-                [self insertSC:self.model];
-            }else
-            {
-                NSArray *newsc = [[NSArray alloc]initWithObjects:self.model, nil];
-                [self.planListRangedAdd addObject:newsc];
-            }
-            for (UIView *view in self.timeNodeSVAdd.subviews)
-            {
-                [view removeFromSuperview];
-            }
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRangedAdd];
-            [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
-            [self.navigationController popViewControllerAnimated:YES];
+            [self insertSC:self.model];
         }else
         {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"您尚未登录，请先登录。" preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-                NSLog(@"登录");
-            }];
-            UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                NSLog(@"取消");
-            }];
-            [alert addAction:okAction];
-            [alert addAction:cancelAction];
-            [self presentViewController:alert animated:YES completion:nil];
+            NSArray *newsc = [[NSArray alloc]initWithObjects:self.model, nil];
+            [self.planListRangedAdd addObject:newsc];
         }
-
+        for (UIView *view in self.timeNodeSVAdd.subviews)
+        {
+            [view removeFromSuperview];
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRangedAdd];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
+        [self.navigationController popViewControllerAnimated:YES];
+        
     }else
     {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入内容" preferredStyle:UIAlertControllerStyleAlert];

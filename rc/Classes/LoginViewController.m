@@ -10,7 +10,6 @@
 #import "MyTextField.h"
 #import "RegisteViewController.h"
 #import "CZHomeViewController.h"
-
 static CGFloat const kContainViewYNormal = 70.0;
 static CGFloat const kContainViewYEditing = 60.0;
 
@@ -35,7 +34,6 @@ static CGFloat const kContainViewYEditing = 60.0;
 @end
 
 @implementation LoginViewController
-
 -(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
     if (self) {
@@ -248,7 +246,8 @@ static CGFloat const kContainViewYEditing = 60.0;
 
 - (void)logBackToMyInfoViewController
 {
-    [self.navigationController popToRootViewControllerAnimated:YES];
+    [self.navigationController popViewControllerAnimated:YES];
+    //[self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 -(void)turnToRegisteViewController{

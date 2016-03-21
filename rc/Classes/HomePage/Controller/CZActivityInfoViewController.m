@@ -294,7 +294,21 @@
             break;
     }
 }
-
+//cell的控件进行赋值
+- (void) setCellValue:(UITableViewCell *)cell AtIndexPath:(NSIndexPath *)indexPath
+{
+    if ([cell isKindOfClass:[CZTimeCell class]])
+    {
+        ((CZTimeCell*)cell).timeLabel.text = self.activityModelPre.acTime;
+        
+    }else if ([cell isKindOfClass:[CZActivityInfoCell class]])
+    {
+        ((CZActivityInfoCell *)cell).model = self.activitymodel;
+    }else
+    {
+        ;
+    }
+}
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0)
@@ -412,21 +426,7 @@
     }];
 }
 
-//cell的控件进行赋值
-- (void) setCellValue:(UITableViewCell *)cell AtIndexPath:(NSIndexPath *)indexPath
-{
-    if ([cell isKindOfClass:[CZTimeCell class]])
-    {
-        ((CZTimeCell*)cell).timeLabel.text = self.activityModelPre.acTime;
-        
-    }else if ([cell isKindOfClass:[CZActivityInfoCell class]])
-    {
-        ((CZActivityInfoCell *)cell).model = self.activitymodel;
-    }else
-    {
-        ;
-    }
-}
+
 
 //section头部间距
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section

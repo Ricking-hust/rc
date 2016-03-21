@@ -8,6 +8,8 @@
 
 #import "RCUpdateScheduleViewController.h"
 #import "RCAddScheduleDelegate.h"
+
 @interface RCAddScheduleViewController : RCUpdateScheduleViewController<RCAddScheduleDelegate>
 @property (nonatomic, strong) NSMutableArray *planListRangedAdd;
+
 @end
