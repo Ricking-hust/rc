@@ -105,16 +105,6 @@
     }else
     {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入内容" preferredStyle:UIAlertControllerStyleAlert];
-        
-<<<<<<< HEAD
-        if ([self.downView.textView.text isEqualToString:@""]) {
-            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入内容" preferredStyle:UIAlertControllerStyleAlert];
-            
-            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
-            
-            [alert addAction:okAction];
-            [self presentViewController:alert animated:YES completion:nil];
-        } else {
             NSString *themeId = [[NSString alloc]init];
             themeId = [self getThemeId:self.model.themeName];
             [[DataManager manager] addPlanWithOpType:@"1" planId:@"" userId:[userDefaults objectForKey:@"userId"] themeId:themeId planTime:self.model.planTime plAlarmOne:@"" plAlarmTwo:@"" plAlarmThree:@"" planContent:self.model.planContent acPlace:@"" success:^(NSString *msg) {
@@ -123,15 +113,6 @@
                 NSLog(@"Error:%@",error);
             }];
         }
-=======
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
-        
-        [alert addAction:okAction];
-        [self presentViewController:alert animated:YES completion:nil];
-
->>>>>>> 8b618da39b6c64bda7c36abfd594e197597fe6e2
-    }
-    
 }
 - (void)insertSC:(PlanModel *)newModel
 {
