@@ -416,10 +416,10 @@
     }else
     {
         [button setBackgroundColor:[UIColor whiteColor]];
-        [button setTitleColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.8] forState:UIControlStateNormal];
-        [button.layer setBorderWidth:1];    //设置边界的宽度
+        [button setTitleColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.6] forState:UIControlStateNormal];
+        [button.layer setBorderWidth:0.5];    //设置边界的宽度
         //设置按钮的边界颜色
-        CGColorRef color =[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.8].CGColor;
+        CGColorRef color =[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.4].CGColor;
         [button.layer setBorderColor:color];
     }
 

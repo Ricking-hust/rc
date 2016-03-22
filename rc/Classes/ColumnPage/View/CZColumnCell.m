@@ -87,8 +87,8 @@
     [self.bgView addSubview:self.acTagLabel];
     self.bgView.backgroundColor = [UIColor whiteColor];
     [self.bgView.layer setShadowColor:[UIColor blackColor].CGColor];//设置View的阴影颜色
-    [self.bgView.layer setShadowOpacity:0.8f];//设置阴影的透明度
-    [self.bgView.layer setShadowOffset:CGSizeMake(2.0, 1.0)];//设置View Shadow的偏移量
+    [self.bgView.layer setShadowOpacity:0.5f];//设置阴影的透明度
+    [self.bgView.layer setShadowOffset:CGSizeMake(0.5, 0.5)];//设置View Shadow的偏移量
 
     self.tagImageView.image = [UIImage imageNamed:@"tagImage"];
     

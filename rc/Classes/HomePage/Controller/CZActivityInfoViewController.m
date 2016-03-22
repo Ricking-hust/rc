@@ -20,7 +20,8 @@
 #import "UIImageView+LBBlurredImage.h"
 #import "MBProgressHUD.h"
 
-
+#define FONTSIZE 14
+#define PADDING  10 //活动详情cell 中子控件之间的垂直间距
 @interface CZActivityInfoViewController ()
 
 @property (nonatomic, strong) UIView *bottomView;
@@ -43,7 +44,7 @@
 @property (nonatomic, copy) NSURLSessionDataTask* (^getActivityBlock)();
 @property (nonatomic, strong) UIWebView *webView;
 
-
+@property (nonatomic, assign) int webViewCellRefleshIndex;
 @end
 
 @implementation CZActivityInfoViewController
@@ -54,6 +55,14 @@
         _acHtmlHeight = 10;
     }
     return _acHtmlHeight;
+}
+- (int)webViewCellRefleshIndex
+{
+    if (!_webViewCellRefleshIndex)
+    {
+        _webViewCellRefleshIndex = 0;
+    }
+    return _webViewCellRefleshIndex;
 }
 #pragma mark - view
 
@@ -247,8 +256,6 @@
                 [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             }
             return cell;
-//            CZActivityDetailCell *cell = [CZActivityDetailCell detailCellWithTableView:tableView];
-//            return cell;
         }
             break;
     }
@@ -265,30 +272,36 @@
         ((CZActivityInfoCell *)cell).model = self.activitymodel;
     }else
     {
-
+        ;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0)
     {
-        CZTimeCell *cell = (CZTimeCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-        return cell.rowHeight;
+        return 47;
         
     }else if(indexPath.section == 1)
     {
-
-        CZActivityInfoCell *cell = (CZActivityInfoCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-        return cell.rowHeight;
+        return [self heightForAcInfoCell];
     }else
     {
         return self.webView.frame.size.height;
     }
     
 }
+- (CGFloat)heightForAcInfoCell
+{
+    CGSize maxSize = CGSizeMake(kScreenWidth - 30, MAXFLOAT);
+    CGSize placeSize = [self sizeWithText:self.activitymodel.acPlace maxSize:maxSize fontSize:FONTSIZE];
+    CGSize scaleSize = [self sizeWithText:self.activitymodel.acSize maxSize:maxSize fontSize:FONTSIZE];
+    CGSize paySize = [self sizeWithText:self.activitymodel.acPay maxSize:maxSize fontSize:FONTSIZE];
+    return placeSize.height + scaleSize.height + paySize.height + 3 + 4 *PADDING;
+}
 #pragma mark - UIWebView Delegate Methods
 -(void)webViewDidFinishLoad:(UIWebView *)webView
 {
+    self.webViewCellRefleshIndex++;
     //获取到webview的高度
     CGFloat height = [[self.webView stringByEvaluatingJavaScriptFromString:@"document.body.offsetHeight"] floatValue];
     self.webView.frame = CGRectMake(self.webView.frame.origin.x,self.webView.frame.origin.y, kScreenWidth, height);
@@ -306,17 +319,22 @@
 // 配置tableView header UI布局
 - (void)layoutHeaderImageView
 {
-    CGSize screenSize = [[UIScreen mainScreen]bounds].size;
     self.header = [[UIView alloc]init];
-    [self.header setFrame:CGRectMake(0, 0, screenSize.width, screenSize.height * 0.25 + 64)];
-    
-    self.headerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, screenSize.width, screenSize.height * 0.25 + 64)];
+    [self.header setFrame:CGRectMake(0, 0, kScreenWidth, 215)];
+    self.tableView.tableHeaderView = self.header;
+    self.headerImageView = [[UIImageView alloc]init];
     self.headerImageView.alpha = 0.7;
     
     [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     
     [self.header addSubview:self.headerImageView];
     [self.headerImageView setImageToBlur:self.headerImageView.image blurRadius:21 completionBlock:nil];
+    [self.headerImageView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.header.mas_top);
+        make.left.equalTo(self.header.mas_left);
+        make.width.mas_equalTo(kScreenWidth);
+        make.height.mas_equalTo(215);
+    }];
     //headerView中的子控件
     self.acImageView    = [[UIImageView alloc]init];
     self.acTagImageView = [[UIImageView alloc]init];
@@ -333,27 +351,28 @@
     //对tableView头进行布局
     [self setSubViewsConstraint];
     
-    self.tableView.tableHeaderView = self.header;
-    
 }
 // 下拉后图片拉伸的效果方法下载这个里面
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    
-    CGFloat width = self.view.frame.size.width;     // 图片宽度
     CGFloat yOffset = scrollView.contentOffset.y;  // 偏移的y值
     if (yOffset < 0)
     {
-        CGFloat totalOffset = 200 + ABS(yOffset);
-        CGFloat f = totalOffset / 200;
-        self.headerImageView.frame =  CGRectMake(- (width * f - width) / 2, yOffset, width * f, totalOffset);
+        CGFloat totalOffset = 215 + ABS(yOffset);
+
+        [self.headerImageView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.header.mas_top).offset(yOffset);
+            make.left.equalTo(self.header.mas_left);
+            make.width.mas_equalTo(kScreenWidth);
+            make.height.mas_equalTo(totalOffset);
+
+        }];
     }
 }
 
 //对tableView头进行赋值
 - (void)setTableViewHeader
 {
-    
     self.acTittleLabel.font          = [UIFont systemFontOfSize:15];
     self.acTittleLabel.numberOfLines = 0;
     self.acTittleLabel.textColor     = [UIColor whiteColor];
@@ -378,12 +397,12 @@
 //创建子控件
 - (void)createSubViews
 {
-    self.view.backgroundColor = [UIColor whiteColor];
-    self.bottomView.backgroundColor = [UIColor clearColor];
     self.bottomView = [[UIView alloc]init];
+    self.bottomView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     self.collectionBtn =[UIButton buttonWithType:UIButtonTypeCustom];
     self.addToSchedule = [UIButton buttonWithType:UIButtonTypeCustom];
     self.tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
+    self.tableView.backgroundColor =[UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     [self.view addSubview:self.bottomView];
     [self.view addSubview:self.tableView];
     [self.bottomView addSubview:self.collectionBtn];
@@ -392,12 +411,9 @@
     [self.collectionBtn addTarget:self action:@selector(onClickCollection) forControlEvents:UIControlEventTouchUpInside];
     [self.addToSchedule addTarget:self action:@selector(onClickAdd) forControlEvents:UIControlEventTouchUpInside];
     
-//    self.tableView.delegate = self;
-//    self.tableView.dataSource = self;
     [self.addToSchedule setTitle:@"加入日程" forState:UIControlStateNormal];
     [self.addToSchedule setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:130.0/255.0  blue:5.0/255.0  alpha:1.0]];
-    
-    CGSize size = [[UIScreen mainScreen]bounds].size;
+
     //add tableView constraints
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
@@ -410,16 +426,16 @@
     [self.bottomView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.top.equalTo(self.tableView.mas_bottom);
-        make.size.mas_equalTo(CGSizeMake(size.width, 50));
+        make.size.mas_equalTo(CGSizeMake(kScreenWidth, 50));
     }];
     
     //add collectionBtn constraints
     [self.collectionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.bottom.equalTo(self.view.mas_bottom);
-        make.width.mas_equalTo(size.width * 0.33);
+        make.width.mas_equalTo(kScreenWidth * 0.33);
         make.height.mas_equalTo(50);
-        make.size.mas_equalTo(CGSizeMake(size.width * 0.33, 50));
+        make.size.mas_equalTo(CGSizeMake(kScreenWidth * 0.33, 50));
     }];
     
     //add addToSchedule constriants
@@ -444,8 +460,11 @@
         [self.collectionBtn setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateNormal];
         [self.collectionBtn setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateHighlighted];
         [self.collectionBtn setTitle:@"已收藏" forState:UIControlStateNormal];
-        [self.collectionBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+
     }
+    [self.collectionBtn setTitleColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.8] forState:UIControlStateNormal];
+    self.collectionBtn.contentEdgeInsets = UIEdgeInsetsMake(0,10, 0, 0);
+    self.collectionBtn.imageView.contentMode = UIViewContentModeScaleAspectFit;
 }
 
 
@@ -517,7 +536,7 @@
     {
         view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 60, 30)];
-        label.font = [UIFont systemFontOfSize:14];
+        label.font = [UIFont systemFontOfSize:12];
         label.text = @"活动详情";
         label.textColor = textcolor;
         [view addSubview:label];
@@ -525,7 +544,7 @@
     {
         view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 60, 30)];
-        label.font = [UIFont systemFontOfSize:14];
+        label.font = [UIFont systemFontOfSize:12];
         label.text = @"活动介绍";
         label.textColor = textcolor;
         [view addSubview:label];

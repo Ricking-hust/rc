@@ -9,8 +9,9 @@
 #import "CZActivityInfoCell.h"
 #import "Masonry.h"
 #import "ActivityModel.h"
-#define LABEL_FONTSIZE 14
 
+#define FONTSIZE 14
+#define PADDING  10
 @implementation CZActivityInfoCell
 
 + (instancetype)activityCellWithTableView:(UITableView*)tableView
@@ -34,7 +35,6 @@
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         //创建子控件
-        
         UILabel *placeLabel = [[UILabel alloc]init];
         self.ac_placeLabel = placeLabel;
         self.ac_placeLabel.numberOfLines = 0;
@@ -64,28 +64,27 @@
     {
         //添加地点标签约束
         CGSize maxSize = CGSizeMake(kScreenWidth - 30, MAXFLOAT);
-        CGSize placeSize = [self sizeWithText:self.ac_placeLabel.text maxSize:maxSize fontSize:14];
+        CGSize placeSize = [self sizeWithText:self.ac_placeLabel.text maxSize:maxSize fontSize:FONTSIZE];
         [self.ac_placeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).offset(10);
-            make.top.equalTo(self.contentView.mas_top).with.offset(11);
+            make.left.equalTo(self.contentView.mas_left).offset(15);
+            make.top.equalTo(self.contentView.mas_top).with.offset(PADDING);
             make.width.mas_equalTo(placeSize.width+1);
             make.height.mas_equalTo(placeSize.height+1);
         }];
         //添加规模标签约束
-        CGSize scaleSize = [self sizeWithText:self.ac_sizeLabel.text maxSize:CGSizeMake(kScreenWidth-20, MAXFLOAT) fontSize:14];
+        CGSize scaleSize = [self sizeWithText:self.ac_sizeLabel.text maxSize:maxSize fontSize:FONTSIZE];
         [self.ac_sizeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.ac_placeLabel.mas_bottom).with.offset(11);
+            make.top.equalTo(self.ac_placeLabel.mas_bottom).with.offset(PADDING);
             make.left.equalTo(self.ac_placeLabel.mas_left);
             make.size.mas_equalTo(CGSizeMake(scaleSize.width+1, scaleSize.height+1));
         }];
         //添加费用标签约束
-        CGSize paySize = [self sizeWithText:self.ac_payLabel.text maxSize:CGSizeMake(kScreenWidth-20, MAXFLOAT) fontSize:14];
+        CGSize paySize = [self sizeWithText:self.ac_payLabel.text maxSize:maxSize fontSize:FONTSIZE];
         [self.ac_payLabel mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.ac_placeLabel.mas_left);
-            make.top.equalTo(self.ac_sizeLabel.mas_bottom).with.offset(11);
+            make.top.equalTo(self.ac_sizeLabel.mas_bottom).with.offset(PADDING);
             make.size.mas_equalTo(CGSizeMake(paySize.width+1, paySize.height+1));
         }];
-        self.rowHeight = placeSize.height+1+scaleSize.height+1+paySize.height+1+44;
 
     }
 }

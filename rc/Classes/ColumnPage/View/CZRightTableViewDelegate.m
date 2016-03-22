@@ -45,8 +45,6 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ActivityModel *model = self.array[indexPath.row];
-//    long int index = indexPath.row;
-//    NSLog(@"index %ld",index);
     if ([model.planId isEqualToString:@"null"])
     {
         UITableViewCell *cell = [[UITableViewCell alloc]init];
@@ -61,7 +59,7 @@
         //1 创建可重用的自定义cell
         CZColumnCell *cell = [CZColumnCell cellWithTableView:tableView];
         //CZColumnCell *cell = [[CZColumnCell alloc]init];
-        cell.isLeft = YES;
+        cell.isLeft = NO;
         
         //对cell内的控件进行赋值
         [self setCellValue:cell AtIndexPath:indexPath];
@@ -69,10 +67,7 @@
         [cell setSubviewConstraint];
         
         //2 返回cell
-        //        if (indexPath.row == 4)
-        //        {
-        //            cell.backgroundColor = [UIColor redColor];
-        //        }
+
         return cell;
     }
 
@@ -80,8 +75,6 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ActivityModel *model = self.array[indexPath.row];
-//    long int index = indexPath.row;
-//    NSLog(@"index %ld",index);
     if ([model.planId isEqualToString:@"null"])
     {
         return self.subHeight;
@@ -121,8 +114,6 @@
     CGSize acTimeSize = [self sizeWithText:model.acTime maxSize:maxSize fontSize:12];
     CGSize acPlaceSize = [self sizeWithText:model.acPlace maxSize:maxSize fontSize:12];
     CGSize acTagSize = [self sizeWithText:@"求职" maxSize:maxSize fontSize:12];
-    
-    //NSLog(@"name %f time %f place %f",acNameSize.height, acTimeSize.height, acPlaceSize.height);
     return acImageH + 10 + acNameSize.height + 20 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height +10+10;
 }
 //给单元格进行赋值

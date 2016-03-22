@@ -45,10 +45,7 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    tableView.backgroundColor = [UIColor greenColor];
     ActivityModel *model = self.array[indexPath.row];
-//    long int index = indexPath.row;
-//    NSLog(@"index %ld",index);
     if ([model.planId isEqualToString:@"null"])
     {
         UITableViewCell *cell = [[UITableViewCell alloc]init];
@@ -69,12 +66,7 @@
         [self setCellValue:cell AtIndexPath:indexPath];
         //对cell内的控件进行布局
         [cell setSubviewConstraint];
-        
-        //2 返回cell
-//        if (indexPath.row == 4)
-//        {
-//            cell.backgroundColor = [UIColor redColor];
-//        }
+
         return cell;
     }
 
@@ -82,15 +74,12 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     ActivityModel *model = self.array[indexPath.row];
-//    long int index = indexPath.row;
-//    NSLog(@"index %ld",index);
     if ([model.planId isEqualToString:@"null"])
     {
         return self.subHeight;
     }else
     {
         CGFloat height = [self ContacterTableCell:self.array[indexPath.row]];
-        //NSLog(@"index.row %ld,height %f",indexPath.row,height);
         return height;
     }
 }

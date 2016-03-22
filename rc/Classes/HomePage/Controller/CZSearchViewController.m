@@ -152,13 +152,20 @@
     [[DataManager manager] getActivitySearchWithKeywords:self.searchBar.text startId:@"0" num:@"10" cityId:@"1" success:^(ActivityList *acList) {
         self.searchResult = acList;
         [self.tableView reloadData];
+        self.tableView.hidden = NO;
     } failure:^(NSError *error) {
         NSLog(@"Error:%@",error);
     }];
-        self.scrollView.hidden = YES;
+    self.scrollView.hidden = YES;
     [searchBar resignFirstResponder];
 }
-
+// 当搜索内容变化时，执行该方法。很有用，可以实现时实搜索
+- (void)searchBar:(UISearchBar *)searchBar textDidChange:(NSString *)searchText
+{
+    self.scrollView.hidden = NO;
+    self.tableView.hidden = YES;
+    
+}
 
 - (UITableView *)tableView
 {
@@ -307,7 +314,7 @@
         make.size.mas_equalTo(imgView.image.size);
     }];
     
-    //标签-热闹搜索
+    //标签-热门搜索
     UILabel *label = [[UILabel alloc]init];
     label.text = @"热门搜索";
     label.textColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
@@ -383,10 +390,10 @@
 - (void)setButton:(UIButton *)button WithTittle:(NSString *)tittle
 {
     [button setBackgroundColor:[UIColor whiteColor]];
-    [button setTitleColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.8] forState:UIControlStateNormal];
-    [button.layer setBorderWidth:1];    //设置边界的宽度
+    [button setTitleColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.6] forState:UIControlStateNormal];
+    [button.layer setBorderWidth:0.5];    //设置边界的宽度
     //设置按钮的边界颜色
-    CGColorRef color = [UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.8].CGColor;
+    CGColorRef color = [UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.5].CGColor;
     [button.layer setBorderColor:color];
 
     [button setTitle:tittle forState:UIControlStateNormal];

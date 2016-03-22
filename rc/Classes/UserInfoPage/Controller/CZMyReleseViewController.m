@@ -7,7 +7,7 @@
 //
 
 #import "CZMyReleseViewController.h"
-#import "CZActivityCell.h"
+#import "RCMyActivityCell.h"
 #import "Masonry.h"
 
 @interface CZMyReleseViewController()
@@ -183,41 +183,40 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     
-    //1 创建可重用的自定义cell
-    CZActivitycell *cell = (CZActivitycell*)[CZActivitycell activitycellWithTableView:tableView];
-    
-    //对cell内的控件进行赋值
-    [self setCellValue:cell AtIndexPath:indexPath];
-    
-    //对cell内的控件进行布局
-    [cell setSubViewsConstraint];
-    
-    //2 返回cell
+    static NSString *reuseId = @"myActivity";
+    RCMyActivityCell *cell = [tableView dequeueReusableCellWithIdentifier:reuseId];
+    if (!cell)
+    {
+        cell = [[RCMyActivityCell alloc]init];
+    }
+    //对cell赋值
+    [self setValueOfCell:cell AtIndexPath:indexPath];
+    //对cell布局
+    [cell setSubViewConstraint];
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    CZActivitycell *cell = (CZActivitycell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-    return cell.cellHeight;
+        return 130;
+//    CZActivitycell *cell = (CZActivitycell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+//    return cell.cellHeight;
 }
 
 //给单元格进行赋值
-- (void) setCellValue:(CZActivitycell *)cell AtIndexPath:(NSIndexPath *)indexPath
+- (void)setValueOfCell:(RCMyActivityCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-    ActivityModel *ac = self.acList.list[indexPath.section];
-    
-    [cell.ac_poster sd_setImageWithURL:[NSURL URLWithString:ac.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
-    cell.ac_title.text = ac.acTitle;
-    cell.ac_time.text = ac.acTime;
-    cell.ac_place.text = ac.acPlace;
+    ActivityModel *acmodel = self.acList.list[indexPath.section];
+    [cell.acImageView sd_setImageWithURL:[NSURL URLWithString:acmodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
+    cell.acName.text = acmodel.acTitle;
+    cell.acTime.text = acmodel.acTime;
+    cell.acPlace.text = acmodel.acPlace;
     NSMutableArray *Artags = [[NSMutableArray alloc]init];
     
-    for (TagModel *model in ac.tagsList.list) {
+    for (TagModel *model in acmodel.tagsList.list) {
         [Artags addObject:model.tagName];
     }
-    
     NSString *tags = [Artags componentsJoinedByString:@","];
-    cell.ac_tags.text = tags;
+    cell.acTag.text = tags;
     
 }
 

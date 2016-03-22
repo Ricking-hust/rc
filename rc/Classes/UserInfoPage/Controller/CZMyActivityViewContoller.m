@@ -90,8 +90,9 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RCMyActivityCell *cell = (RCMyActivityCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-    return cell.rowHeight;
+    return 130;
+//    RCMyActivityCell *cell = (RCMyActivityCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+//    return cell.rowHeight;
     
 }
 - (void)setValueOfCell:(RCMyActivityCell *)cell AtIndexPath:(NSIndexPath *)indexPath

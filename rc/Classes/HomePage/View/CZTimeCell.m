@@ -56,9 +56,8 @@
 - (void)setSubViewsConstraint
 {
     //添加时间标签约束
-    CGSize timeSize = [self sizeWithText:self.timeLabel.text maxSize:CGSizeMake(200, MAXFLOAT) fontSize:TIME_FONTSIZE];
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.contentView.mas_left).with.offset(10);
+        make.left.equalTo(self.contentView.mas_left).with.offset(15);
         make.centerY.equalTo(self.contentView);
         make.size.mas_equalTo(CGSizeMake(150, 20));
         
@@ -66,7 +65,7 @@
     //添加按钮约束
     [self.remindMeBtn mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView.mas_top).with.offset(17.0/2);
-        make.right.equalTo(self.contentView.mas_right).with.offset(-10);
+        make.right.equalTo(self.contentView.mas_right).with.offset(-15);
         make.size.mas_equalTo(CGSizeMake(60, 30));
     }];
 }

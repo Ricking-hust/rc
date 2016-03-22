@@ -111,10 +111,10 @@
 {
     if (indexPath.section == 0)
     {
-        return [[UIScreen mainScreen]bounds].size.width * 0.21;
+        return 74;
     }else
     {
-        return 44;
+        return 47;
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section

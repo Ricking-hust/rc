@@ -92,10 +92,12 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    RCMyActivityCell *cell = (RCMyActivityCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-    return cell.rowHeight;
+    return 130;
+//    RCMyActivityCell *cell = (RCMyActivityCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
+//    return cell.rowHeight;
 }
 
+//给单元格进行赋值
 - (void)setValueOfCell:(RCMyActivityCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
     ActivityModel *acmodel = self.acList.list[indexPath.section];
@@ -110,7 +112,9 @@
     }
     NSString *tags = [Artags componentsJoinedByString:@","];
     cell.acTag.text = tags;
+    
 }
+
 
 #pragma mark - get data
 

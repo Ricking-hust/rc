@@ -27,10 +27,10 @@
 }
 - (void)setSubView
 {
-    self.acName.font = [UIFont systemFontOfSize:11];
-    self.acTime.font = [UIFont systemFontOfSize:11];
-    self.acPlace.font = [UIFont systemFontOfSize:11];
-    self.acTag.font = [UIFont systemFontOfSize:10];
+    self.acName.font = [UIFont systemFontOfSize:13];
+    self.acTime.font = [UIFont systemFontOfSize:13];
+    self.acPlace.font = [UIFont systemFontOfSize:13];
+    self.acTag.font = [UIFont systemFontOfSize:11];
     self.acTime.alpha = 0.6;
     self.acPlace.alpha = 0.6;
     self.acTag.alpha = 0.6;
@@ -49,45 +49,47 @@
 - (void)setSubViewConstraint
 {
     CGSize maxSize = CGSizeMake(kScreenWidth - 120, MAXFLOAT);
-    CGSize acNameSize = [self sizeWithText:self.acName.text maxSize:maxSize fontSize:11];
-    [self.acName mas_makeConstraints:^(MASConstraintMaker *make) {
+    CGFloat sizeW = kScreenWidth - 120 - 32;
+    CGSize acNameSize = [self sizeWithText:self.acName.text maxSize:maxSize fontSize:13];
+    [self.acName mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.acImageView.mas_right).offset(10);
         make.top.equalTo(self.contentView.mas_top).offset(17);
-        make.width.mas_equalTo(acNameSize.width+1);
-        make.height.mas_equalTo(acNameSize.height+1);
+        make.width.mas_equalTo(sizeW);
+        make.height.mas_equalTo(20);
     }];
-    CGSize acTimeSize = [self sizeWithText:self.acTime.text maxSize:maxSize fontSize:11];
-    [self.acTime mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.acName.mas_bottom).offset(5);
+    CGSize acTimeSize = [self sizeWithText:self.acTime.text maxSize:maxSize fontSize:13];
+    [self.acTime mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.acName.mas_bottom).offset(10);
         make.left.equalTo(self.acName.mas_left);
-        make.width.mas_equalTo(acTimeSize.width+1);
-        make.height.mas_equalTo(acTimeSize.height+1);
+        make.width.mas_equalTo(sizeW);
+        make.height.mas_equalTo(20);
     }];
-    CGSize acPlaceSize = [self sizeWithText:self.acPlace.text maxSize:maxSize fontSize:11];
-    [self.acPlace mas_makeConstraints:^(MASConstraintMaker *make) {
+    CGSize acPlaceSize = [self sizeWithText:self.acPlace.text maxSize:maxSize fontSize:13];
+    [self.acPlace mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.acName.mas_left);
         make.top.equalTo(self.acTime.mas_bottom);
-        make.width.mas_equalTo(acPlaceSize.width+1);
-        make.height.mas_equalTo(acPlaceSize.height+1);
+        make.width.mas_equalTo(sizeW);
+        make.height.mas_equalTo(20);
     }];
-    [self.acTagImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.acTagImageView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.acName.mas_left);
-        make.top.equalTo(self.acPlace.mas_bottom).offset(10);
+        make.top.equalTo(self.acPlace.mas_bottom).offset(15);
         make.size.mas_equalTo(self.acTagImageView.image.size);
     }];
-    CGSize acTagSize = [self sizeWithText:self.acTag.text maxSize:maxSize fontSize:10];
-    [self.acTag mas_makeConstraints:^(MASConstraintMaker *make) {
+    CGSize acTagSize = [self sizeWithText:self.acTag.text maxSize:maxSize fontSize:11];
+    [self.acTag mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.acTagImageView.mas_right).offset(7);
-        make.top.equalTo(self.acTagImageView.mas_top).offset(-2);
-        make.width.mas_equalTo(acTagSize.width+1);
-        make.height.mas_equalTo(acTagSize.height+1);
+        make.top.equalTo(self.acTagImageView.mas_top).offset(-5);
+        make.width.mas_equalTo(sizeW);
+        make.height.mas_equalTo(20);
     }];
     self.rowHeight = 17 + acNameSize.height + 5 + acTimeSize.height+acPlaceSize.height+10+acTagSize.height+17;
-    [self.acImageView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.contentView.mas_top).offset(8);
+    [self.acImageView mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.top.equalTo(self.contentView.mas_top).offset(8);
+        make.centerY.equalTo(self.contentView);
         make.left.equalTo(self.contentView.mas_left).offset(10);
-        make.height.mas_equalTo(self.rowHeight - 16);
-        make.width.mas_equalTo(90);
+        make.height.mas_equalTo(110);
+        make.width.mas_equalTo(110);
     }];
 }
 /**

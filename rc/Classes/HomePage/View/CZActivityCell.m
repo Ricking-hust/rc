@@ -10,10 +10,10 @@
 #import "Masonry.h"
 #import "ActivityModel.h"
 
-#define TITLE_FONTSIZE  15  //活动主题字体大小
+#define TITLE_FONTSIZE  13  //活动主题字体大小
 #define TIME_FONTSIZE   12  //活动时间字体大小
 #define PLACE_FONTSIZE  12  //活动地点字体大小
-#define TAG_FONTSIZE    10  //活动标签字体大小
+#define TAG_FONTSIZE    11  //活动标签字体大小
 
 @interface CZActivitycell()
 
@@ -90,7 +90,7 @@
 - (void)setSubViewsConstraint
 {
     //最大宽度
-    CGFloat maxfW = kScreenWidth - 120 - 60;
+    CGFloat maxfW = kScreenWidth - 120 - 35;
     //名字的上边距
     CGFloat tittleTopPadding = 12;
     //1.名字的高度
@@ -119,7 +119,7 @@
     }];
     [self.ac_title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView.mas_top).offset(13);
-        make.left.equalTo(self.ac_poster.mas_right).offset(25);
+        make.left.equalTo(self.ac_poster.mas_right).offset(15);
         make.width.mas_equalTo(maxfW);
         make.height.mas_equalTo(20);
     }];

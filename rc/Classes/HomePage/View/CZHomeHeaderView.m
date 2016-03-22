@@ -64,8 +64,6 @@
     //configure scrollView constraint
     [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.and.top.equalTo(self);
-//        make.left.equalTo(self);
-//        make.top.equalTo(self).with.offset(10);
         make.width.mas_equalTo(rect.size.width);
         make.height.mas_equalTo(SCROLLVIEW_HEIGHT);
         

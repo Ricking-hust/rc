@@ -74,15 +74,6 @@
 {
     [super viewDidAppear:animated];
     
-//    @weakify(self);
-//    static dispatch_once_t onceToken;
-//    dispatch_once(&onceToken, ^{
-//        @strongify(self);
-//        
-//        [self startget];
-//        
-//    });
-    
 }
 - (id)init
 {
@@ -205,7 +196,7 @@
 //section头部间距
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 5;//section头部高度
+    return 5;
 }
 //section头部视图
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -292,18 +283,17 @@
     label.font = [UIFont systemFontOfSize:labelFont];
     label.tintColor = [UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.5];
     label.text = @"搜索科技、媒体、互联网";
+    label.alpha = 0.7;
     CGSize labelSize = [label.text boundingRectWithSize:CGSizeMake(MAXFLOAT, MAXFLOAT) options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:labelFont]} context:nil].size;
     [view addSubview:label];
     
-    CGFloat leftPadding = [[UIScreen mainScreen]bounds].size.width *0.08 /2;
-    CGFloat topPadding = self.searchView.frame.size.height * 0.2 / 2;
-    CGSize viewSize = CGSizeMake([[UIScreen mainScreen]bounds].size.width * 0.92, self.searchView.frame.size.height * 0.8);
-    
     [view mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.searchView.mas_left).with.offset(leftPadding);
-        make.top.equalTo(self.searchView.mas_top).with.offset(topPadding);
-        make.size.mas_equalTo(viewSize);
+        make.left.equalTo(self.searchView.mas_left).with.offset(15);
+        make.centerY.equalTo(self.searchView.mas_centerY);
+        make.right.equalTo(self.searchView.mas_right).offset(-15);
+        make.height.mas_equalTo(28);
     }];
+
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(view);
         make.centerX.equalTo(view).with.offset(15);
@@ -319,7 +309,7 @@
         make.top.equalTo(self.view.mas_top).with.offset(64);
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
-        make.height.mas_equalTo(70.0 / 2);
+        make.height.mas_equalTo(38);
     }];
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view.mas_top).with.offset(35);

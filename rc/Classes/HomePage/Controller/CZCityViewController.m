@@ -28,6 +28,7 @@
 }
 - (void)setNavigation
 {
+    self.title = @"城市选择";
     UIBarButtonItem *leftButton =[[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"close"] style:UIBarButtonItemStylePlain target:self action:@selector(didCancelSelection)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
     
