@@ -108,7 +108,9 @@
             [alert addAction:okAction];
             [self presentViewController:alert animated:YES completion:nil];
         } else {
-            [[DataManager manager] addPlanWithOpType:@"1" planId:@"" userId:[userDefaults objectForKey:@"userId"] themeId:@"" planTime:@"" plAlarmOne:@"" plAlarmTwo:@"" plAlarmThree:@"" planContent:self.downView.textView.text acPlace:@"" success:^(NSString *msg) {
+            NSString *themeId = [[NSString alloc]init];
+            themeId = [self getThemeId:self.model.themeName];
+            [[DataManager manager] addPlanWithOpType:@"1" planId:@"" userId:[userDefaults objectForKey:@"userId"] themeId:themeId planTime:self.model.planTime plAlarmOne:@"" plAlarmTwo:@"" plAlarmThree:@"" planContent:self.model.planContent acPlace:@"" success:^(NSString *msg) {
                 
             } failure:^(NSError *error) {
                 NSLog(@"Error:%@",error);
@@ -174,6 +176,28 @@
         [self.planListRangedAdd addObject:newscArray];
     }
     
+}
+
+-(NSString *)getThemeId:(NSString *)theme{
+    NSString *themeId = [[NSString alloc]init];
+    if ([theme isEqualToString:@"会议"]) {
+        themeId = @"1";
+    } else if ([theme isEqualToString:@"约会"]){
+        themeId = @"2";
+    } else if ([theme isEqualToString:@"出差"]){
+        themeId = @"3";
+    } else if ([theme isEqualToString:@"运动"]){
+        themeId = @"4";
+    } else if ([theme isEqualToString:@"购物"]){
+        themeId = @"5";
+    } else if ([theme isEqualToString:@"娱乐"]){
+        themeId = @"6";
+    } else if ([theme isEqualToString:@"聚会"]){
+        themeId = @"7";
+    } else if ([theme isEqualToString:@"其他"]){
+        themeId = @"8";
+    }
+    return themeId;
 }
 
 - (void)getscInfo

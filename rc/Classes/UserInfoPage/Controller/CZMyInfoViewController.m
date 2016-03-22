@@ -268,7 +268,7 @@
     [cell.contentLable mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(cell.imgIcon.mas_right).with.offset(15);
         make.centerY.equalTo(cell.contentView);
-        make.size.mas_equalTo(CGSizeMake(contentLableSize.width+1, contentLableSize.height+1));
+        make.size.mas_equalTo(CGSizeMake(contentLableSize.width+200, contentLableSize.height+1));
     }];
     [cell.indicatorImageView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(cell.contentView);

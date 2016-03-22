@@ -13,6 +13,7 @@
 #import "CZCityViewController.h"
 #import "CZActivityInfoViewController.h"
 #import "RCSettingTagTableViewController.h"
+#import "LoginViewController.h"
 #import "CZSearchViewController.h"
 #import "CZActivitycell.h"
 #import "ActivityModel.h"
@@ -337,8 +338,13 @@
 }
 - (IBAction)toTagSelectViewController:(id)sender
 {
-    RCSettingTagTableViewController *tagVC = [[RCSettingTagTableViewController alloc]init];
-    [self.navigationController pushViewController:tagVC animated:YES];
+    if ([DataManager manager].user.isLogin) {
+        RCSettingTagTableViewController *tagVC = [[RCSettingTagTableViewController alloc]init];
+        [self.navigationController pushViewController:tagVC animated:YES];
+    } else {
+        LoginViewController *loginViewController = [[LoginViewController alloc]init];
+        [self.navigationController pushViewController:loginViewController animated:YES];
+    }
 }
 #pragma mark - 首页搜索框点击事件
 - (void) onClickSearch:(UIView *)view

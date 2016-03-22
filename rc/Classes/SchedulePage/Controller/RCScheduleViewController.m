@@ -12,6 +12,7 @@
 #import "RCScheduleView.h"
 #import "RCScrollView.h"
 #import "RCAddScheduleViewController.h"
+#import "LoginViewController.h"
 #include <sys/sysctl.h>
 @interface RCScheduleViewController ()
 @property (nonatomic, strong) RCScheduleView *sc;
@@ -35,7 +36,7 @@
         self.getPlanListBlock();
     }else
     {
-        NSLog(@"please login");
+        [self showLoginOrNotView];
     }
 }
 - (void)createSC
@@ -94,27 +95,29 @@
 #pragma mark - 添加行程
 - (IBAction)addSC:(id)sender
 {
-    if (self.isLogin)
-    {
         RCAddScheduleViewController *addsc = [[RCAddScheduleViewController alloc]init];
         self.addscDelegate = addsc;
         [self.addscDelegate passPlanListRanged:self.planListRanged];
         [self.addscDelegate passTimeNodeScrollView:self.sc.timeNodeSV];
         [self.navigationController pushViewController:addsc animated:YES];
-    }else
-    {
-        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"您尚未登录，是否登录?" preferredStyle:UIAlertControllerStyleAlert];
+}
+
+-(void)showLoginOrNotView{
+    
+    UIAlertController *chooseView = [UIAlertController alertControllerWithTitle:@"提示" message:@"您尚未登录，是否登录" preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
         
-        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"是" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
-            NSLog(@"在此登录");
-        }];
-        UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"否" style:UIAlertActionStyleDefault handler:nil];
-        [alert addAction:cancelAction];
-        [alert addAction:okAction];
-        [self presentViewController:alert animated:YES completion:nil];
-    }
-
-
+    }];
+    UIAlertAction *configureController = [UIAlertAction actionWithTitle:@"登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        LoginViewController *loginViewController = [[LoginViewController alloc]init];
+        [self.navigationController pushViewController:loginViewController animated:YES];
+    }];
+    
+    [chooseView addAction:cancelAction];
+    [chooseView addAction:configureController];
+    
+    [self presentViewController:chooseView animated:YES completion:nil];
 }
 
 -(NSMutableArray *)planListRanged{
