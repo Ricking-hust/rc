@@ -86,11 +86,11 @@
 #pragma mark - 添加行程
 - (IBAction)addSC:(id)sender
 {
-        RCAddScheduleViewController *addsc = [[RCAddScheduleViewController alloc]init];
-        self.addscDelegate = addsc;
-        [self.addscDelegate passPlanListRanged:self.planListRanged];
-        [self.addscDelegate passTimeNodeScrollView:self.sc.timeNodeSV];
-        [self.navigationController pushViewController:addsc animated:YES];
+    RCAddScheduleViewController *addsc = [[RCAddScheduleViewController alloc]init];
+    self.addscDelegate = addsc;
+    [self.addscDelegate passPlanListRanged:self.planListRanged];
+    [self.addscDelegate passTimeNodeScrollView:self.sc.timeNodeSV];
+    [self.navigationController pushViewController:addsc animated:YES];
 }
 
 -(void)showLoginOrNotView{

@@ -12,6 +12,7 @@
 #import "RCScheduleInfoViewController.h"
 #import "RCScrollView.h"
 #import "LoginViewController.h"
+#import "CZMoreRemindTimeViewController.h"
 @interface RCAddScheduleViewController ()
 @property (nonatomic, strong) PlanModel *model;
 @property (nonatomic, strong) RCScrollView *timeNodeSVAdd;
@@ -74,6 +75,19 @@
     UIBarButtonItem *rigthButton = [[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(addSchedule)];
     [self.navigationItem setRightBarButtonItem:rigthButton];
 }
+#pragma mark - remindView点击事件
+- (void)onClickRemindView
+{
+    //收起键盘
+    [self.downView.textView resignFirstResponder];
+    
+    CZMoreRemindTimeViewController *moreRemindTimeViewController = [[CZMoreRemindTimeViewController alloc]init];
+    moreRemindTimeViewController.title = @"提醒时间";
+    self.settingRemindDelegate = moreRemindTimeViewController;
+    [self.settingRemindDelegate passModifySchedule:self.model];
+    [self.navigationController pushViewController:moreRemindTimeViewController animated:YES];
+    
+}
 #pragma mark - 行程添加的确认按钮
 - (void)addSchedule
 {
@@ -113,6 +127,7 @@
                 NSLog(@"Error:%@",error);
             }];
         }
+
 }
 - (void)insertSC:(PlanModel *)newModel
 {

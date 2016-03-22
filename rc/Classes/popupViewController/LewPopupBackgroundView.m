@@ -23,8 +23,10 @@
     CGContextRef context = UIGraphicsGetCurrentContext();
     size_t locationsCount = 2;
     CGFloat locations[2] = {1.0f, 1.0f};
-    CGFloat colors[8] = {0.0f,0.0f,0.0f,0.5f,0.0f,0.0f,0.0f,0.5f};
+    CGFloat colors[8] = {0.0f,0.0f,0.0f,0.5f //渐变的起始颜色RGB(r,g,b, apla)
+                        ,0.0f,0.0f,0.0f,0.5f};//渐变的结束颜色(r,g,b, apla)
     CGColorSpaceRef colorSpace = CGColorSpaceCreateDeviceRGB();
+    //创造一个CGGradientRef,颜色是黑,黑,location分别是1,1
     CGGradientRef gradient = CGGradientCreateWithColorComponents(colorSpace, colors, locations, locationsCount);
     CGColorSpaceRelease(colorSpace);
 

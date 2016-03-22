@@ -631,7 +631,7 @@
     [self lew_dismissPopupView];
 }
 
-#pragma mark - remindView点击事件
+#pragma mark - 设置提醒时间点击事件
 - (void)onClickRemindView
 {
     //收起键盘
@@ -639,6 +639,8 @@
     
     CZMoreRemindTimeViewController *moreRemindTimeViewController = [[CZMoreRemindTimeViewController alloc]init];
     moreRemindTimeViewController.title = @"提醒时间";
+    self.settingRemindDelegate = moreRemindTimeViewController;
+    [self.settingRemindDelegate passModifySchedule:self.model];
     [self.navigationController pushViewController:moreRemindTimeViewController animated:YES];
     
 }

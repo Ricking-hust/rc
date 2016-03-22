@@ -8,12 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "RCModifyScheduleDelegate.h"
+#import "RCSettingRemindTimeDelegate.h"
 @class CZUpView;
 @class CZDownView;
 @class CZTagWithLabelView;
 @class RCScrollView;
-@interface RCUpdateScheduleViewController : UIViewController<RCModifyScheduleDelegate,UITextViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
-
+@interface RCUpdateScheduleViewController : UIViewController<RCModifyScheduleDelegate, UITextViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
+@property (nonatomic, weak) id<RCSettingRemindTimeDelegate> settingRemindDelegate;
 @property (strong, nonatomic) CZUpView *upView;     //上方View
 @property (strong, nonatomic) CZDownView *downView; //下方View
 

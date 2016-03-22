@@ -129,7 +129,7 @@
     CGFloat location = offsetY/NodeH;
     int index = (int)location;
     CGFloat sub = location - index;
-    if (sub < 0.1 && sub > -0.12 && self.isUpRange)
+    if (sub < 0.12 && sub > -0.12 && self.isUpRange)
     {
         index = (int)location;
         self.isNodeChanged = YES;
@@ -155,7 +155,7 @@
         self.isNodeChanged = YES;
         self.isUpRange = NO;
     }
-    if (location - ([self.nodeIndex intValue])> 0.9 && location - ([self.nodeIndex intValue]) < 1.1)
+    if (location - ([self.nodeIndex intValue])> 0.8 && location - ([self.nodeIndex intValue]) < 1.1)
     {
         self.isUpRange = YES;
         self.isDownRange = YES;

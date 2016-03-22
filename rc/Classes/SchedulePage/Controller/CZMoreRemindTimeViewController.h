@@ -7,12 +7,13 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RCSettingRemindTimeDelegate.h"
 @class CZRemindView;
 @class CZRemintTimeView;
-@interface CZMoreRemindTimeViewController : UIViewController
+@interface CZMoreRemindTimeViewController : UIViewController<RCSettingRemindTimeDelegate, UIPickerViewDataSource, UIPickerViewDelegate>
 @property (strong, nonatomic) CZRemindView *notRemind;
 @property (strong, nonatomic) CZRemindView *beforeOneDay;
+@property (strong, nonatomic) CZRemindView *beforeTwoDay;
 @property (strong, nonatomic) CZRemindView *beforeThreeDay;
-@property (strong, nonatomic) CZRemindView *beforeFiveDay;
 @property (strong, nonatomic) CZRemintTimeView *timeView;
 @end

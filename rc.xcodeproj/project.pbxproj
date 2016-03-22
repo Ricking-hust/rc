@@ -308,6 +308,7 @@
 		56A191E11C756A3100E03B41 /* CZMyInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZMyInfoCell.m; sourceTree = "<group>"; };
 		56A3112C1C870B6300E82262 /* CZUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZUpView.h; sourceTree = "<group>"; };
 		56A3112D1C870B6300E82262 /* CZUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZUpView.m; sourceTree = "<group>"; };
+		56A7CE0A1CA1212E0000331D /* RCSettingRemindTimeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSettingRemindTimeDelegate.h; sourceTree = "<group>"; };
 		56B9CD0B1C807A7100914F00 /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
 		56B9CD0C1C807A7100914F00 /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
 		56B9CD0D1C807A7100914F00 /* NSData+ImageContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ImageContentType.h"; sourceTree = "<group>"; };
@@ -878,8 +879,6 @@
 		56B83C101C608CD6005FF427 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				56E3C0191C9C72BD00BDAE19 /* CZRemindView.h */,
-				56E3C01A1C9C72BD00BDAE19 /* CZRemindView.m */,
 				566094571C9BB33800433AD8 /* RCScheduleView.h */,
 				566094581C9BB33800433AD8 /* RCScheduleView.m */,
 				566094601C9BC8BA00433AD8 /* RCScrollView.h */,
@@ -889,6 +888,7 @@
 				566094691C9C2A9200433AD8 /* RCDisplayScheduleDelegate.h */,
 				56E3C0111C9C5CDA00BDAE19 /* RCModifyScheduleDelegate.h */,
 				56E3C0151C9C6A8F00BDAE19 /* RCAddScheduleDelegate.h */,
+				56A7CE0A1CA1212E0000331D /* RCSettingRemindTimeDelegate.h */,
 				56E3C0161C9C722000BDAE19 /* CZScheduleInfoCell.h */,
 				56E3C0171C9C722000BDAE19 /* CZScheduleInfoCell.m */,
 				562CC4441C6C962100774C22 /* CZTimeSelectView.h */,
@@ -901,6 +901,8 @@
 				56A3112D1C870B6300E82262 /* CZUpView.m */,
 				56655EED1C87189200F4BE9E /* CZDownView.h */,
 				56655EEE1C87189200F4BE9E /* CZDownView.m */,
+				56E3C0191C9C72BD00BDAE19 /* CZRemindView.h */,
+				56E3C01A1C9C72BD00BDAE19 /* CZRemindView.m */,
 				56E8C66E1C8A2BD000435758 /* CZRemintTimeView.h */,
 				56E8C66F1C8A2BD000435758 /* CZRemintTimeView.m */,
 			);

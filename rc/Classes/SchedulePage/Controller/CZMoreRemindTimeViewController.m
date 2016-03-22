@@ -10,41 +10,228 @@
 #import "Masonry.h"
 #import "CZRemindView.h"
 #import "CZRemintTimeView.h"
+#import "UIViewController+LewPopupViewController.h"
+#import "LewPopupViewAnimationSlide.h"
 #define FONTSIZE    14
 
 @interface CZMoreRemindTimeViewController ()
-
+@property (nonatomic, strong) UIPickerView *pickView;
+@property (nonatomic, strong) PlanModel *model;
 @end
 
 @implementation CZMoreRemindTimeViewController
-
+#pragma mark - 设置提醒时间代理
+- (void)passModifySchedule:(id)schedule
+{
+    self.model = schedule;
+}
+- (PlanModel *)model
+{
+    if (!_model)
+    {
+        _model = [[PlanModel alloc]init];
+    }
+    return _model;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-
     [self setNavigationItem];
     [self createSubView];
-
     [self addConstraintOfSubView];
+    [self.notRemind addObserver:self forKeyPath:@"isSelected" options:NSKeyValueObservingOptionNew context:nil];
+#pragma mark - 后期实现
+    self.timeView.hidden = YES;
+}
+- (void)dealloc
+{
+    [self.notRemind removeObserver: self forKeyPath:@"isSelected"];
+}
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self setRemindView:self.beforeOneDay WithState:self.model.plAlarmOne];
+    [self setRemindView:self.beforeTwoDay WithState:self.model.plAlarmTwo];
+    [self setRemindView:self.beforeThreeDay WithState:self.model.plAlarmThree];
+    if (self.beforeThreeDay.img.hidden && self.beforeOneDay.img.hidden && self.beforeTwoDay.img.hidden)
+    {
+        self.timeView.label.alpha = 0.3;
+        self.timeView.time.alpha = 0.3;
+        self.timeView.img.alpha = 0.3;
+    }else
+    {
+        self.timeView.label.alpha = 1.0;
+        self.timeView.time.alpha = 1.0;
+        self.timeView.img.alpha = 1.0;
+        UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didSetRemindTime:)];
+        [self.timeView addGestureRecognizer:gesture];
+    }
+}
+- (void)setRemindView:(CZRemindView *)view WithState:(NSString *)state
+{
+    if ([state isEqualToString:@"0"])
+    {
+        view.img.hidden = YES;
+    }else if(state == nil)
+    {
+        ;
+    }else
+    {
+        view.img.hidden = NO;
+    }
+}
+#pragma mark - 弹出准确的时间点
+- (void)didSetRemindTime:(UITapGestureRecognizer *)gesture
+{
     
+//    CZTimeSelectView *selectView = [CZTimeSelectView selectView];
+//    selectView.pickView.dataSource = self;
+//    selectView.pickView.delegate = self;
+//    [selectView.OKbtn addTarget:self action:@selector(selectTime:) forControlEvents:UIControlEventTouchUpInside];
+//    
+//    LewPopupViewAnimationSlide *animation = [[LewPopupViewAnimationSlide alloc]init];
+//    animation.type = LewPopupViewAnimationSlideTypeBottomBottom;
+//    [self lew_presentPopupView:selectView animation:animation dismissed:^{
+//        NSLog(@"时间选择视图已弹出");
+//    }];
+}
+#pragma mark - PickView代理
+
+// UIPickerViewDataSource中定义的方法，该方法的返回值决定该控件包含多少列
+- (NSInteger)numberOfComponentsInPickerView:(UIPickerView*)pickerView
+{
+    return 1;
+}
+// UIPickerViewDataSource中定义的方法，该方法的返回值决定该控件指定列包含多少个列表项
+- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
+{
+
+    return 1;
+}
+// UIPickerViewDelegate中定义的方法，该方法返回的NSString将作为
+// UIPickerView中指定列和列表项上显示的标题
+- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
+{
+    return @"d";
+}
+
+- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
+{
+    
+ 
+}
+- (void)didSelectDay:(UITapGestureRecognizer *)gesture
+{
+    CZRemindView *view = (CZRemindView *)gesture.view;
+    view.img.hidden = !view.img.hidden;
+    if (view.img.hidden == YES)
+    {
+        if (view.tag == 1)
+        {
+            self.model.plAlarmOne = @"0";
+        }else if (view.tag == 2)
+        {
+            self.model.plAlarmTwo = @"0";
+        }else
+        {
+            self.model.plAlarmThree = @"0";
+        }
+    }else
+    {
+        if (view.tag == 1)
+        {
+            self.model.plAlarmOne = @"1";
+        }else if (view.tag == 2)
+        {
+            self.model.plAlarmTwo = @"1";
+        }else
+        {
+            self.model.plAlarmThree = @"1";
+        }
+        CZRemindView *view = [self.view viewWithTag:10];
+        view.img.hidden = YES;
+        [view setValue:@"YES" forKey:@"isSelected"];
+
+    }
+    
+    CZRemindView *one = [self.view viewWithTag:1];
+    CZRemindView *two = [self.view viewWithTag:2];
+    CZRemindView *three = [self.view viewWithTag:3];
+    if (one.img.hidden && two.img.hidden && three.img.hidden)
+    {
+        CZRemindView *view = [self.view viewWithTag:10];
+        view.img.hidden = YES;
+        [view setValue:@"NO" forKey:@"isSelected"];
+    }
+}
+- (void)didNotRemind:(UITapGestureRecognizer *)gesture
+{
+    CZRemindView *view = (CZRemindView *)gesture.view;
+    view.img.hidden = NO;
+    self.beforeOneDay.img.hidden = YES;
+    self.beforeTwoDay.img.hidden = YES;
+    self.beforeThreeDay.img.hidden = YES;
+    [view setValue:@"NO" forKey:@"isSelected"];
+}
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
+{
+    CZRemindView *notRemind = (CZRemindView *)object;
+    if ([notRemind valueForKey:@"isSelected"] == [[NSNumber alloc]initWithBool:YES])
+    {
+        NSLog(@"yes");
+        self.timeView.label.alpha = 1.0;
+        self.timeView.time.alpha = 1.0;
+        self.timeView.img.alpha = 1.0;
+        UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didSetRemindTime:)];
+        [self.timeView addGestureRecognizer:gesture];
+    }else
+    {
+        self.timeView.label.alpha = 0.3;
+        self.timeView.time.alpha = 0.3;
+        self.timeView.img.alpha = 0.3;
+        for (UIGestureRecognizer *gesture in self.timeView.gestureRecognizers)
+        {
+            [self.timeView removeGestureRecognizer:gesture];
+        }
+        NSLog(@"no");
+
+    }
+
+    
+}
+- (void)setNavigationItem
+{
+    self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(backForwardController)];
+    [self.navigationItem setLeftBarButtonItem:leftButton];
+    
+}
+- (void)backForwardController
+{
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)createSubView
 {
     self.notRemind = [[CZRemindView alloc]init];
     self.beforeOneDay = [[CZRemindView alloc]init];
+    self.beforeTwoDay = [[CZRemindView alloc]init];
     self.beforeThreeDay = [[CZRemindView alloc]init];
-    self.beforeFiveDay = [[CZRemindView alloc]init];
+    
     self.notRemind.label.text = @"不提醒";
     self.beforeOneDay.label.text = @"前一天";
+    self.beforeTwoDay.label.text = @"前二天";
     self.beforeThreeDay.label.text = @"前三天";
-    self.beforeFiveDay.label.text = @"前五天";
+    
+    self.notRemind.tag = 10;
+    self.beforeOneDay.tag = 1;
+    self.beforeTwoDay.tag = 2;
+    self.beforeThreeDay.tag = 3;
     
     self.timeView = [[CZRemintTimeView alloc]init];
     
     [self.view addSubview:self.notRemind];
     [self.view addSubview:self.beforeOneDay];
+    [self.view addSubview:self.beforeTwoDay];
     [self.view addSubview:self.beforeThreeDay];
-    [self.view addSubview:self.beforeFiveDay];
     
     [self.view addSubview:self.timeView];
     
@@ -55,9 +242,9 @@
     [self.beforeOneDay addGestureRecognizer:oneDay];
     
     UITapGestureRecognizer *threeDay = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didSelectDay:)];
-    [self.beforeThreeDay addGestureRecognizer:threeDay];
+    [self.beforeTwoDay addGestureRecognizer:threeDay];
     UITapGestureRecognizer *fiveDay = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didSelectDay:)];
-    [self.beforeFiveDay addGestureRecognizer:fiveDay];
+    [self.beforeThreeDay addGestureRecognizer:fiveDay];
 }
 
 //添加self.view子控件的约束
@@ -65,13 +252,13 @@
 {
     [self addConstraintOfRemindView:self.notRemind WithPadding:64+7];
     [self addConstraintOfRemindView:self.beforeOneDay WithPadding:64+7+40];
-    [self addConstraintOfRemindView:self.beforeThreeDay WithPadding:64+7+40+40];
-    [self addConstraintOfRemindView:self.beforeFiveDay WithPadding:64+7+40+40+40];
-    self.beforeFiveDay.segline.hidden = YES;
+    [self addConstraintOfRemindView:self.beforeTwoDay WithPadding:64+7+40+40];
+    [self addConstraintOfRemindView:self.beforeThreeDay WithPadding:64+7+40+40+40];
+    self.beforeThreeDay.segline.hidden = YES;
     
     [self.timeView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
-        make.top.equalTo(self.beforeFiveDay.mas_bottom).offset(7);
+        make.top.equalTo(self.beforeThreeDay.mas_bottom).offset(7);
         make.width.mas_equalTo([[UIScreen mainScreen]bounds].size.width);
         make.height.mas_equalTo(40);
     }];
@@ -118,33 +305,6 @@
         make.height.mas_equalTo(0.5);
     }];
 }
-
-- (void)didSelectDay:(UITapGestureRecognizer *)gesture
-{
-    CZRemindView *view = (CZRemindView *)gesture.view;
-    view.img.hidden = NO;
-    self.notRemind.img.hidden = YES;
-}
-- (void)didNotRemind:(UITapGestureRecognizer *)gesture
-{
-    CZRemindView *view = (CZRemindView *)gesture.view;
-    view.img.hidden = NO;
-    self.beforeOneDay.img.hidden = YES;
-    self.beforeThreeDay.img.hidden = YES;
-    self.beforeFiveDay.img.hidden = YES;
-}
-- (void)setNavigationItem
-{
-    self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(backForwardController)];
-    [self.navigationItem setLeftBarButtonItem:leftButton];
-    
-}
-- (void)backForwardController
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
-
 //设置标签的样式
 - (CGSize)setLabelStyle:(UILabel *)label WithContent:(NSString *)content
 {
