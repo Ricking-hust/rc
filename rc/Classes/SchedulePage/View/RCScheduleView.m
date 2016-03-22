@@ -49,6 +49,12 @@
 {
     NSMutableArray *array = notification.object;
     dispatch_async(dispatch_get_main_queue(), ^{
+ 
+        for (UIView *view in self.timeNodeSV.subviews)
+        {
+            [view removeFromSuperview];
+        }
+
         UIColor *color = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
         UIView *defaultLine = [self createDefaultUpLine];
         UIView *lastNode = [[UIView alloc]init];

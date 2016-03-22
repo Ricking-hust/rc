@@ -11,7 +11,6 @@
 #import "Masonry.h"
 #import "CZTimeCell.h"
 #import "CZActivityInfoCell.h"
-#import "CZActivityDetailCell.h"
 
 #import "CZRemindMeView.h"
 #import "UIViewController+LewPopupViewController.h"
@@ -28,12 +27,12 @@
 @property (nonatomic, strong) UIView *header;
 @property (nonatomic, strong) UIImageView *headerImageView;
 @property (nonatomic, strong) UIImageView *acImageView;
-@property (nonatomic,strong) UIImageView *acTagImageView;
+@property (nonatomic, strong) UIImageView *acTagImageView;
 @property (nonatomic, strong) UILabel *acTittleLabel;
 @property (nonatomic, strong) UILabel *acTagLabel;
 
-@property(nonatomic, strong) UIButton *collectionBtn;
-@property(nonatomic, strong) UIButton *addToSchedule;
+@property (nonatomic, strong) UIButton *collectionBtn;
+@property (nonatomic, strong) UIButton *addToSchedule;
 
 @property (nonatomic, strong) MBProgressHUD    *HUD;
 @property (nonatomic, strong) NSString *isCollect;
@@ -42,7 +41,7 @@
 @property (nonatomic, strong) ActivityModel *activitymodel;
 @property (nonatomic, assign) CGFloat acHtmlHeight;
 @property (nonatomic, copy) NSURLSessionDataTask* (^getActivityBlock)();
-
+@property (nonatomic, strong) UIWebView *webView;
 
 
 @end
@@ -64,7 +63,6 @@
     self.collectionBtn.hidden = YES;
     self.addToSchedule.hidden = YES;
     [self getData];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(cellValue:) name:@"cellValue" object:nil];
 
     //设置导航栏
     [self setNavigation];
@@ -114,53 +112,29 @@
                 //对tableView头进行赋值
                 [self setTableViewHeader];
                 [self.tableView reloadData];
+                [self setwebViewCellH];
             }
 
 
         });
     });
 }
-- (void)webViewDidFinishLoad:(UIWebView *)webView
+- (void)setwebViewCellH
 {
-    CGRect frame = webView.frame;
-    CGSize fittingSize = [webView sizeThatFits:CGSizeZero];
-    frame.size = fittingSize;
-//    webView.frame = frame;
-    self.acHtmlHeight = webView.scrollView.contentSize.height;
-    webView.hidden = YES;
-    NSIndexPath *indexPath = [self.tableView indexPathForCell:self.tableView.visibleCells.lastObject];
-    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-//    dispatch_queue_t queue = dispatch_queue_create("achtmlH", DISPATCH_QUEUE_CONCURRENT);
-//    
-//    dispatch_async(queue, ^{
-//
-//        NSIndexPath *indexPath = [self.tableView indexPathForCell:self.tableView.visibleCells.lastObject];
-//        [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-//    });
+    self.webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 1)];
+    self.webView.delegate = self;
+    self.webView.scrollView.scrollEnabled = NO;
+    //预先加载url
+    [self.webView loadHTMLString:self.activitymodel.acHtml baseURL:nil];
 }
 - (void)cellValue:(NSNotification *)notification
 {
     NSIndexSet *section = [NSIndexSet indexSetWithIndex:1];
     [self.tableView reloadSections:section withRowAnimation:UITableViewRowAnimationFade];
 }
--(void)didReceiveMemoryWarning{
-    [super didReceiveMemoryWarning];
-}
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self];
-}
-
-- (void)viewWillAppear:(BOOL)animated {
-    [super viewWillAppear:animated];
-}
-
--(void)viewDidAppear:(BOOL)animated{
-    [super viewDidAppear:animated];
-}
-
--(void)viewWillLayoutSubviews{
-    [super viewWillLayoutSubviews];
 }
 
 #pragma mark - Data
@@ -191,12 +165,7 @@
 -(void)setActivitymodel:(ActivityModel *)activitymodel{
     
     _activitymodel = activitymodel;
-//    //获取活动收藏情况
-//    self.isCollect = activitymodel.acCollect;
-//    [self setCollectionBtnStyle];
-//    //对tableView头进行赋值
-//    [self setTableViewHeader];
-//    [self.tableView reloadData];
+
 }
 
 -(NSString *)isCollect{
@@ -250,7 +219,7 @@
             CZTimeCell *cell = [CZTimeCell timeCellWithTableView:tableView];
             [cell.remindMeBtn addTarget:self action:@selector(onClickRemindMe:) forControlEvents:UIControlEventTouchUpInside];
             //对cell的控件进行赋值
-            [self setCellValue:cell AtIndexPath:indexPath];//3
+            [self setCellValue:cell AtIndexPath:indexPath];
             //对cell的控件进行布局
             [cell setSubViewsConstraint];
             
@@ -269,8 +238,17 @@
             break;
         default:
         {
-            CZActivityDetailCell *cell = [CZActivityDetailCell detailCellWithTableView:tableView];
+            static NSString *identifier = @"cell";
+            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+            if (!cell){
+                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+                [cell.contentView addSubview:self.webView];
+                /* 忽略点击效果 */
+                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+            }
             return cell;
+//            CZActivityDetailCell *cell = [CZActivityDetailCell detailCellWithTableView:tableView];
+//            return cell;
         }
             break;
     }
@@ -282,13 +260,12 @@
     {
         ((CZTimeCell*)cell).timeLabel.text = self.activitymodel.acTime;
         
-    }else if ([cell isKindOfClass:[CZActivityInfoCell class]])
+    }else if([cell isKindOfClass:[CZActivityInfoCell class]])
     {
         ((CZActivityInfoCell *)cell).model = self.activitymodel;
     }else
     {
-        ((CZActivityDetailCell *)cell).model = self.activitymodel;
-        
+
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -298,18 +275,34 @@
         CZTimeCell *cell = (CZTimeCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
         return cell.rowHeight;
         
-    }else if (indexPath.section == 1)
+    }else if(indexPath.section == 1)
     {
+
         CZActivityInfoCell *cell = (CZActivityInfoCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
         return cell.rowHeight;
-        
     }else
     {
-        return self.acHtmlHeight;
+        return self.webView.frame.size.height;
     }
     
 }
-
+#pragma mark - UIWebView Delegate Methods
+-(void)webViewDidFinishLoad:(UIWebView *)webView
+{
+    //获取到webview的高度
+    CGFloat height = [[self.webView stringByEvaluatingJavaScriptFromString:@"document.body.offsetHeight"] floatValue];
+    self.webView.frame = CGRectMake(self.webView.frame.origin.x,self.webView.frame.origin.y, kScreenWidth, height);
+    
+    [self.tableView reloadData];
+}
+- (void)webViewDidStartLoad:(UIWebView *)webView
+{
+    NSLog(@"webViewDidStartLoad");
+}
+- (void)webView:(UIWebView *)webView didFailLoadWithError:(nullable NSError *)error
+{
+    NSLog(@"didFailLoadWithError===%@", error);
+}
 // 配置tableView header UI布局
 - (void)layoutHeaderImageView
 {
@@ -319,7 +312,6 @@
     
     self.headerImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, screenSize.width, screenSize.height * 0.25 + 64)];
     self.headerImageView.alpha = 0.7;
-    //self.headerImageView.image  = [UIImage imageNamed:@"img_1"]; //headerView的背景模糊图片
     
     [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     

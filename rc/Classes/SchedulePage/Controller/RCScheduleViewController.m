@@ -79,17 +79,8 @@
     if (self.planListRanged.count != 0)
     {
 
-//        dispatch_async(dispatch_get_main_queue(), ^{
-//            for (UIView *view in self.sc.timeNodeSV.subviews)
-//            {
-//                [view removeFromSuperview];
-//            }
-//            self.sc.planListRanged = self.planListRanged;
-//            self.sc.planList = self.planList;
-//        });
         self.sc.planListRanged = self.planListRanged;
         self.sc.planList = self.planList;
-
     }
 }
 #pragma mark - 添加行程

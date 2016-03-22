@@ -77,7 +77,7 @@
 #pragma mark - 行程添加的确认按钮
 - (void)addSchedule
 {
-    
+    [self.downView.textView resignFirstResponder];
     if (![self.downView.textView.text isEqualToString:@"请输入行程地点+内容(40字以内)"])
     {
         [self getscInfo];
@@ -95,11 +95,18 @@
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRangedAdd];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
+        [[DataManager manager] addPlanWithOpType:@"1" planId:@"" userId:[userDefaults objectForKey:@"userId"] themeId:@"" planTime:@"" plAlarmOne:@"" plAlarmTwo:@"" plAlarmThree:@"" planContent:self.downView.textView.text acPlace:@"" success:^(NSString *msg) {
+            
+        } failure:^(NSError *error) {
+            NSLog(@"Error:%@",error);
+        }];
         [self.navigationController popViewControllerAnimated:YES];
         
     }else
     {
+        UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入内容" preferredStyle:UIAlertControllerStyleAlert];
         
+<<<<<<< HEAD
         if ([self.downView.textView.text isEqualToString:@""]) {
             UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入内容" preferredStyle:UIAlertControllerStyleAlert];
             
@@ -116,6 +123,13 @@
                 NSLog(@"Error:%@",error);
             }];
         }
+=======
+        UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+        
+        [alert addAction:okAction];
+        [self presentViewController:alert animated:YES completion:nil];
+
+>>>>>>> 8b618da39b6c64bda7c36abfd594e197597fe6e2
     }
     
 }
