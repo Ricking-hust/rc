@@ -25,7 +25,6 @@
 
 @implementation RCScheduleViewController
 
-
 - (void)viewWillAppear:(BOOL)animated
 {
     self.isLogin = [DataManager manager].user.isLogin;
