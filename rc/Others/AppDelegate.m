@@ -44,11 +44,6 @@
      *  在此事件中写入连接代码。第四个参数则为配置本地社交平台时触发，根据返回的平台类型来配置平台信息。
      *  如果您使用的时服务端托管平台信息时，第二、四项参数可以传入nil，第三项参数则根据服务端托管平台来决定要连接的社交SDK。
      */
-    //添加QQ空间应用  注册网址  http://connect.qq.com/intro/login/
-//    [ShareSDK connectQZoneWithAppKey:@"100371282"
-//                           appSecret:@"aed9b0303e3ed1e27bae87c33761161d"
-//                   qqApiInterfaceCls:[QQApiInterface class]
-//                     tencentOAuthCls:[TencentOAuth class]];
     [ShareSDK registerApp:@"10c6f1c7e6778"
           activePlatforms:@[
                             @(SSDKPlatformTypeTencentWeibo),
