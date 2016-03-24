@@ -7,6 +7,7 @@
 //
 
 #import "RCNewsNoteViewController.h"
+#import "LoginViewController.h"
 #import "Masonry.h"
 @interface RCNewsNoteViewController()
 @property (nonatomic, strong) PlanList *planList;
@@ -20,6 +21,17 @@
     }
     return _planListRanged;
 }
+
+-(void)viewWillAppear:(BOOL)animated{
+    [super viewWillAppear:animated];
+    
+    if ([DataManager manager].user.isLogin) {
+        self.getPlanListBlock();
+    } else {
+        [self showLoginOrNotView];
+    }
+}
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -134,6 +146,24 @@
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
 
+}
+
+-(void)showLoginOrNotView{
+    
+    UIAlertController *chooseView = [UIAlertController alertControllerWithTitle:@"提示" message:@"您尚未登录，是否登录" preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
+        
+    }];
+    UIAlertAction *configureController = [UIAlertAction actionWithTitle:@"登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        LoginViewController *loginViewController = [[LoginViewController alloc]init];
+        [self.navigationController pushViewController:loginViewController animated:YES];
+    }];
+    
+    [chooseView addAction:cancelAction];
+    [chooseView addAction:configureController];
+    
+    [self presentViewController:chooseView animated:YES completion:nil];
 }
 
 @end

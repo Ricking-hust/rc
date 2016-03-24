@@ -27,6 +27,7 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
     self.isLogin = [DataManager manager].user.isLogin;
     if (self.isLogin)
     {
