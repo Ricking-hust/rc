@@ -114,7 +114,7 @@ static CGFloat const kContainViewYEditing = 60.0;
     self.usernameField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入手机号"
                                                                                attributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:0.836 alpha:1.000],
                                                                                             NSFontAttributeName:[UIFont italicSystemFontOfSize:18]}];
-    self.usernameField.keyboardType = UIKeyboardTypeEmailAddress;
+    self.usernameField.keyboardType = UIKeyboardTypeNumberPad;
     self.usernameField.returnKeyType = UIReturnKeyNext;
     self.usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -247,7 +247,6 @@ static CGFloat const kContainViewYEditing = 60.0;
 - (void)logBackToMyInfoViewController
 {
     [self.navigationController popViewControllerAnimated:YES];
-    //[self.navigationController popToRootViewControllerAnimated:YES];
 }
 
 -(void)turnToRegisteViewController{

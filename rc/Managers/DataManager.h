@@ -171,4 +171,11 @@ typedef NS_ENUM(NSInteger,RcErrorType) {
                                                  failure:(void (^)(NSError *error))failure;
 - (void)UserLogout;
 
+-(NSURLSessionDataTask *)sendMobileMsgWithMobile:(NSString *)mobile
+                                            type:(NSString *)type
+                                             msg:(NSString *)msg
+                                           token:(NSString *)token
+                                         success:(void (^)(NSString *code))success
+                                         failure:(void (^)(NSError *error))failure;
+
 @end

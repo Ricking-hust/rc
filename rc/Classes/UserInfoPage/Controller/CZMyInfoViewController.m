@@ -36,7 +36,6 @@
     return self;
 }
 
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -199,6 +198,7 @@
 
     }
 }
+
 - (void)setCell:(CZMyInfoCell *)cell WithIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0)
@@ -208,7 +208,7 @@
             cell.contentLable.text = @"未登录";
         } else {
             [cell.imgIcon sd_setImageWithURL:[NSURL URLWithString:[userDefaults objectForKey:@"userPic"]] placeholderImage:[ UIImage imageNamed:@"20160102.png"]];
-            cell.imgIcon.layer.cornerRadius=cell.imgIcon.image.size.width/2;
+            //cell.imgIcon.layer.cornerRadius=cell.imgIcon.image.size.width/2;
             cell.contentLable.text = [userDefaults objectForKey:@"userName"];
         }
 

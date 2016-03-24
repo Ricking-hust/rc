@@ -616,4 +616,25 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
     self.user = nil;
 }
 
+-(NSURLSessionDataTask *) sendMobileMsgWithMobile:(NSString *)mobile
+                                             type:(NSString *)type
+                                              msg:(NSString *)msg
+                                            token:(NSString *)token
+                                          success:(void (^)(NSString *code))success
+                                          failure:(void (^)(NSError *error))failure{
+    NSDictionary *parameters = @{
+                                 @"mobile":mobile,
+                                 @"type":type,
+                                 @"msg":msg,
+                                 @"token":token
+                                 };
+    [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app.myrichang.com/Home/Person/sendMobileMsg" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSString *code = [[NSString alloc] initWithFormat:@"%@",[responseObject objectForKey:@"code"]];
+        success(code);
+    } failure:^(NSError *error) {
+        NSLog(@"Error:%@",error);
+    }];
+    return nil;
+}
+
 @end

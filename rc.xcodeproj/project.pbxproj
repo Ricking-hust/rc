@@ -176,6 +176,7 @@
 		C459AD8E1C8D9633009922EE /* NSDictionary+NotNullKey.m in Sources */ = {isa = PBXBuildFile; fileRef = C459AD8D1C8D9633009922EE /* NSDictionary+NotNullKey.m */; };
 		C46A93D01C85DA5E009626F6 /* ScrollViewFrameAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = C46A93CD1C85DA5E009626F6 /* ScrollViewFrameAccessor.m */; };
 		C46A93D11C85DA5E009626F6 /* ViewFrameAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = C46A93CF1C85DA5E009626F6 /* ViewFrameAccessor.m */; };
+		C4B300161CA44BCC004516B0 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = C4B300151CA44BCC004516B0 /* NSString+MD5.m */; };
 		C4BBA81A1C89B93300AD02EE /* RegisteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BBA8191C89B93300AD02EE /* RegisteViewController.m */; };
 		C4C05E6D1C842126005E7FEE /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C05E6B1C842126005E7FEE /* EXTScope.m */; };
 		C4C05EEB1C85C500005E7FEE /* LoginViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C05EEA1C85C500005E7FEE /* LoginViewController.m */; };
@@ -543,6 +544,8 @@
 		C46A93CD1C85DA5E009626F6 /* ScrollViewFrameAccessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewFrameAccessor.m; sourceTree = "<group>"; };
 		C46A93CE1C85DA5E009626F6 /* ViewFrameAccessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFrameAccessor.h; sourceTree = "<group>"; };
 		C46A93CF1C85DA5E009626F6 /* ViewFrameAccessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewFrameAccessor.m; sourceTree = "<group>"; };
+		C4B300141CA44BCC004516B0 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
+		C4B300151CA44BCC004516B0 /* NSString+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5.m"; sourceTree = "<group>"; };
 		C4BBA8181C89B93300AD02EE /* RegisteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisteViewController.h; sourceTree = "<group>"; };
 		C4BBA8191C89B93300AD02EE /* RegisteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RegisteViewController.m; sourceTree = "<group>"; };
 		C4C05E6A1C842126005E7FEE /* EXTScope.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = EXTScope.h; sourceTree = "<group>"; };
@@ -785,6 +788,8 @@
 		561D01361C47DA5600E4E013 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				C4B300141CA44BCC004516B0 /* NSString+MD5.h */,
+				C4B300151CA44BCC004516B0 /* NSString+MD5.m */,
 				C4BBA8181C89B93300AD02EE /* RegisteViewController.h */,
 				C4BBA8191C89B93300AD02EE /* RegisteViewController.m */,
 				C4C05EE91C85C500005E7FEE /* LoginViewController.h */,
@@ -1601,6 +1606,7 @@
 				56E732771C9E9DF4006724BA /* RCRightTableView.m in Sources */,
 				56A3112E1C870B6300E82262 /* CZUpView.m in Sources */,
 				561D02001C47DA5600E4E013 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				C4B300161CA44BCC004516B0 /* NSString+MD5.m in Sources */,
 				56B9CD2C1C807A7100914F00 /* MKAnnotationView+WebCache.m in Sources */,
 				561D020B1C47DA5600E4E013 /* MASLayoutConstraint.m in Sources */,
 				56E523551C75909A00794B0E /* CZPersonInfoViewController.m in Sources */,

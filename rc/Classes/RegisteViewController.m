@@ -8,6 +8,7 @@
 
 #import "RegisteViewController.h"
 #import "MyTextField.h"
+#import "NSString+MD5.h"
 #import "LoginViewController.h"
 
 static CGFloat const kContainViewYNormal = 70.0;
@@ -30,12 +31,20 @@ static CGFloat const kContainViewYEditing = 60.0;
 @property (nonatomic,strong) UIImageView *leftVerifyCodeView;
 @property (nonatomic, strong) UIButton    *registeButton;
 
+@property (nonatomic,strong) NSString *MD5Str;
 @property (nonatomic, assign) BOOL isKeyboardShowing;
 @property (nonatomic,assign) BOOL isRegisting;
 
 @end
 
 @implementation RegisteViewController
+
+-(NSString *)MD5Str{
+    if (!_MD5Str) {
+        _MD5Str = [[NSString alloc]init];
+    }
+    return _MD5Str;
+}
 
 -(id)initWithNibName:(NSString *)nibNameOrNil bundle:(NSBundle *)nibBundleOrNil{
     self = [super initWithNibName:nibNameOrNil bundle:nibBundleOrNil];
@@ -53,7 +62,7 @@ static CGFloat const kContainViewYEditing = 60.0;
     self.view.backgroundColor = [UIColor whiteColor];
     
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"cross_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(regBackToForwardViewController)];
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithTitle:@"登录" style:UIBarButtonItemStylePlain target:self action:@selector(turnToLoginViewController)];
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithTitle:@"登录" style:UIBarButtonItemStylePlain target:self action:@selector(regBackToForwardViewController)];
     
     [self.navigationItem setLeftBarButtonItem:leftButton];
     [self.navigationItem setRightBarButtonItem:rightButton];
@@ -76,7 +85,7 @@ static CGFloat const kContainViewYEditing = 60.0;
     self.logoLabel.center = (CGPoint){kScreenWidth/2,80};
     self.usernameField.frame = (CGRect){50, 184, kScreenWidth - 100, 30};
     self.verifyCodeField.frame = (CGRect){50,224,kScreenWidth-220,30};
-    self.verifyCodeButton.frame = (CGRect){kScreenWidth-130,224,90,30};
+    self.verifyCodeButton.frame = (CGRect){kScreenWidth-150,224,100,30};
     self.passwordField.frame = (CGRect){50, 264, kScreenWidth - 100, 30};
     self.registeButton.center = (CGPoint){kScreenWidth/2, 350};
 }
@@ -110,7 +119,7 @@ static CGFloat const kContainViewYEditing = 60.0;
     self.usernameField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入手机号"
                                                                                attributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:0.836 alpha:1.000],
                                                                                             NSFontAttributeName:[UIFont italicSystemFontOfSize:18]}];
-    self.usernameField.keyboardType = UIKeyboardTypeEmailAddress;
+    self.usernameField.keyboardType = UIKeyboardTypeNumberPad;
     self.usernameField.returnKeyType = UIReturnKeyNext;
     self.usernameField.autocapitalizationType = UITextAutocapitalizationTypeNone;
     self.usernameField.autocorrectionType = UITextAutocorrectionTypeNo;
@@ -178,6 +187,35 @@ static CGFloat const kContainViewYEditing = 60.0;
     self.registeButton.layer.borderWidth = 0.5;
     [self.containView addSubview:self.registeButton];
     
+    [self.usernameField addTarget:self action:@selector(showKeyboard) forControlEvents:UIControlEventEditingDidBegin];
+    [self.usernameField addTarget:self action:@selector(goVerify) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [self.verifyCodeField addTarget:self action:@selector(showKeyboard) forControlEvents:UIControlEventEditingDidBegin];
+    [self.verifyCodeField addTarget:self action:@selector(goPassWord) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [self.verifyCodeButton addTarget:self action:@selector(sendVerifyCode) forControlEvents:UIControlEventTouchUpInside];
+    [self.passwordField addTarget:self action:@selector(showKeyboard) forControlEvents:UIControlEventEditingDidBegin];
+    [self.passwordField addTarget:self action:@selector(registe) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [self.registeButton addTarget:self action:@selector(registe) forControlEvents:UIControlEventTouchUpInside];
+}
+
+
+#pragma mark - private methods
+
+-(void)beginRegiste{
+    self.isRegisting = YES;
+    
+    self.usernameField.enabled = NO;
+    self.verifyCodeField.enabled = NO;
+    self.verifyCodeButton.enabled = NO;
+    self.passwordField.enabled = NO;
+}
+
+-(void)endLogin{
+    self.usernameField.enabled = YES;
+    self.verifyCodeField.enabled = YES;
+    self.verifyCodeButton.enabled = YES;
+    self.passwordField.enabled = YES;
+    
+    self.isRegisting = NO;
 }
 
 -(void)registe{
@@ -186,7 +224,6 @@ static CGFloat const kContainViewYEditing = 60.0;
         
         [[DataManager manager] UserLoginOrRegisteWithUserphone:self.usernameField.text password:self.passwordField.text op_type:@"2" success:^(UserModel *user) {
             [DataManager manager].user = user;
-            //[self endLogin];
             [self.navigationController popToRootViewControllerAnimated:YES];
         } failure:^(NSError *error) {
             NSString *reasonString;
@@ -208,7 +245,21 @@ static CGFloat const kContainViewYEditing = 60.0;
     }
 }
 
-#pragma mark - private methods
+-(void)sendVerifyCode{
+    //生成随机六位验证码
+    int num = (arc4random()%1000000);
+    NSString *randomNumber = [[NSString alloc]initWithFormat:@"%.6d",num];
+    NSString *tokenStr = [NSString stringWithFormat:@"%@sms",randomNumber];
+    self.MD5Str = [tokenStr MD5];
+    NSLog(@"randomNumber:%@",randomNumber);
+    NSLog(@"md5Str:%@",self.MD5Str);
+    //发送验证码与注册信息
+    [[DataManager manager] sendMobileMsgWithMobile:self.usernameField.text type:@"0" msg:randomNumber token:self.MD5Str success:^(NSString *code) {
+        
+    } failure:^(NSError *error) {
+        NSLog(@"Error:%@",error);
+    }];
+}
 
 - (void)showKeyboard {
     
@@ -246,14 +297,17 @@ static CGFloat const kContainViewYEditing = 60.0;
     
 }
 
+-(void)goVerify{
+    [self.verifyCodeField becomeFirstResponder];
+}
+
+-(void)goPassWord{
+    [self.passwordField becomeFirstResponder];
+}
+
 - (void)regBackToForwardViewController
 {
     [self.navigationController popViewControllerAnimated:YES];
-}
-
--(void)turnToLoginViewController{
-    LoginViewController *loginViewController = [[LoginViewController alloc]init];
-    [self.navigationController pushViewController:loginViewController animated:YES];
 }
 
 @end
