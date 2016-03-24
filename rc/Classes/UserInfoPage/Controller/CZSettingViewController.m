@@ -7,6 +7,7 @@
 //
 
 #import "CZSettingViewController.h"
+#import "RCNewsNoteViewController.h"
 #import "Masonry.h"
 
 @implementation CZSettingViewController
@@ -163,7 +164,11 @@
     if (indexPath.section == 1) {
         [[DataManager manager] UserLogout];
     }
-    if (indexPath.section == 0 &&indexPath.row == 1)
+    if (indexPath.section == 0 &&indexPath.row == 0)
+    {//设置新消息通知
+        [self newsNote];
+//        [self addLocalNote];
+    }else
     {
         CGFloat size = [self getCacheSizeAtPath:[self getCachesPath]];;
         NSString *str = [NSString stringWithFormat:@"确定清除%0.2fM缓存数据吗?",size];
@@ -179,7 +184,60 @@
         [alert addAction:cancelAction];
         [alert addAction:okAction];
         [self presentViewController:alert animated:YES completion:nil];
-
+    }
+}
+- (void)newsNote
+{
+    RCNewsNoteViewController *newsVC = [[RCNewsNoteViewController alloc]init];
+    newsVC.title = @"消息通知";
+    
+    [self.navigationController pushViewController:newsVC animated:YES];
+}
+- (void)addLocalNote
+{
+    NSDate *date = [NSDate dateWithTimeIntervalSinceNow:5];
+    
+    /*
+     
+     NSDateFormatter *formatter = [[NSDateFormatter alloc] init];
+     
+     [formatter setDateFormat:@"HH:mm:ss"];
+     
+     NSDate *now = [formatter dateFromString:@"15:00:00"];//触发通知的时间
+     
+     */
+    
+    //chuagjian
+    
+    UILocalNotification *noti = [[UILocalNotification alloc] init];
+    
+    if (noti)
+    {
+        //设置推送时间
+        noti.fireDate = date;//=now
+        
+        //设置时区
+        noti.timeZone = [NSTimeZone defaultTimeZone];
+        
+        //设置重复间隔
+        noti.repeatInterval = NSWeekCalendarUnit;
+        
+        //推送声音
+        noti.soundName = UILocalNotificationDefaultSoundName;
+        
+        //内容
+        noti.alertBody = @"推送内容";
+        
+        //显示在icon上的红色圈中的数子
+        noti.applicationIconBadgeNumber = 1;
+        
+        //设置userinfo 方便在之后需要撤销的时候使用
+        NSDictionary *infoDic = [NSDictionary dictionaryWithObject:@"name" forKey:@"key"];
+        noti.userInfo = infoDic;
+        //添加推送到uiapplication
+        UIApplication *app = [UIApplication sharedApplication];
+        [app scheduleLocalNotification:noti];
+        
     }
 }
 /**
