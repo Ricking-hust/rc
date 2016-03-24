@@ -21,6 +21,9 @@
 #import "UIImageView+WebCache.h"
 #import "UINavigationBar+Awesome.h"
 #import "EXTScope.h"
+//MJReflesh--------------------------------
+#import "MJRefresh.h"
+#import "RCHomeRefreshHeader.h"
 
 @interface CZHomeViewController ()
 @property (nonatomic,strong) ActivityList *activityList;
@@ -41,7 +44,6 @@
 {
     [super viewWillAppear:animated];
     
-    self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
 
     //刷新数据
@@ -90,7 +92,6 @@
     
     [self configureBlocks];
     [self createSubViews];
-    
     //设置tableHeaderView
     CZHomeHeaderView *headerView = [CZHomeHeaderView headerView];
     [headerView setView];
@@ -98,8 +99,42 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.city = Beijing;
     self.cityId = @"1";
-}
+//    [self pullDownToReflesh];
+    self.tableView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
 
+}
+#pragma mark UITableView + 下拉刷新 自定义文字
+- (void)pullDownToReflesh
+{
+    __unsafe_unretained UITableView *tableView = self.tableView;
+    // 设置回调（一旦进入刷新状态，就调用target的action，也就是调用self的loadNewData方法）
+    MJRefreshNormalHeader *header = [MJRefreshNormalHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    
+    // 设置文字
+    [header setTitle:@"下拉刷新" forState:MJRefreshStateIdle];
+    [header setTitle:@"松开更新" forState:MJRefreshStatePulling];
+    [header setTitle:@"刷新中……" forState:MJRefreshStateRefreshing];
+    
+    // 设置字体
+    header.stateLabel.font = [UIFont systemFontOfSize:13];
+    header.lastUpdatedTimeLabel.font = [UIFont systemFontOfSize:13];
+    
+    // 设置颜色
+    header.stateLabel.textColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
+    header.lastUpdatedTimeLabel.textColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
+    
+    // 马上进入刷新状态
+    //[header beginRefreshing];
+    
+    // 设置刷新控件
+    tableView.mj_header = header;
+}
+#pragma mark - 更新数据
+- (void)loadNewData
+{
+    NSLog(@"loadNewData");
+    [self.tableView.mj_header endRefreshing];
+}
 - (void)didReceiveMemoryWarning
 {
     [super didReceiveMemoryWarning];
