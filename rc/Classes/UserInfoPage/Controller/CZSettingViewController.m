@@ -168,7 +168,7 @@
     {//设置新消息通知
         [self newsNote];
 //        [self addLocalNote];
-    }else
+    }else if(indexPath.section == 0 && indexPath.row == 1)
     {
         CGFloat size = [self getCacheSizeAtPath:[self getCachesPath]];;
         NSString *str = [NSString stringWithFormat:@"确定清除%0.2fM缓存数据吗?",size];
