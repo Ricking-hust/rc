@@ -92,6 +92,9 @@
 #pragma mark - 单元格的点击事件
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     [self didSelectCellAtIndexPath:indexPath];
+
+    //[self.tableView reloadData];
+    [self.view layoutIfNeeded];
 }
 
 - (void)didSelectCellAtIndexPath:(NSIndexPath *)indexPath{
@@ -170,23 +173,24 @@
 - (void)setCellConstraints:(CZPersonInfoCell *)cell WithIndexPath:(NSIndexPath *)indexPath
 {
     CGSize tittleSize = [self sizeWithText:cell.tittle.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:14];
-    [cell.tittle mas_makeConstraints:^(MASConstraintMaker *make) {
+    [cell.tittle mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(cell.contentView.mas_left).with.offset(10);
         make.centerY.equalTo(cell.contentView);
         make.size.mas_equalTo(CGSizeMake(tittleSize.width+1, tittleSize.height+1));
     }];
-    [cell.indecatorImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [cell.indecatorImageView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(cell.contentView);
         make.right.equalTo(cell.contentView.mas_right).with.offset(-10);
         make.size.mas_equalTo(cell.indecatorImageView.image.size);
     }];
+
     switch (indexPath.section)
     {
         case 0:
         {
             if (indexPath.row == 0)
             {
-                [cell.personIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+                [cell.personIcon mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.centerY.equalTo(cell.contentView);
                     make.right.equalTo(cell.indecatorImageView.mas_left).with.offset(-5);
                     make.size.mas_equalTo(CGSizeMake(30, 30));
@@ -194,11 +198,15 @@
             }else
             {
                 CGSize contentLabelSize = [self sizeWithText:cell.contentLabel.text maxSize:CGSizeMake(200, 20) fontSize:14];
-                [cell.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+                [cell.contentLabel mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.centerY.equalTo(cell.contentView);
                     make.right.equalTo(cell.indecatorImageView.mas_left).with.offset(-5);
                     make.size.mas_equalTo(CGSizeMake(contentLabelSize.width+1, contentLabelSize.height+1));
                 }];
+            }
+            if (indexPath.row == 3)
+            {
+                cell.indecatorImageView.image = [UIImage imageNamed:@""];
             }
         }
             break;
@@ -206,9 +214,9 @@
         default:
         {
             CGSize contentLabelSize = [self sizeWithText:cell.contentLabel.text maxSize:CGSizeMake(200, 20) fontSize:14];
-            [cell.contentLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+            [cell.contentLabel mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.centerY.equalTo(cell.contentView);
-                make.right.equalTo(cell.indecatorImageView.mas_left).with.offset(5);
+                make.right.equalTo(cell.indecatorImageView.mas_left).with.offset(-5);
                 make.size.mas_equalTo(CGSizeMake(contentLabelSize.width+1, contentLabelSize.height+1));
             }];
         }

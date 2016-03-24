@@ -26,8 +26,6 @@
         self.currentPoint = [[UIImageView alloc]init];
         //注册通知，监听行程数据的改变
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createTimeNode:) name:@"timeNode" object:nil];
-//        //发送timeNodeSV
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:self.timeNodeSV];
     }
     [self setContentView];
     return self;
@@ -48,20 +46,26 @@
 - (void)createTimeNode:(NSNotification *)notification
 {
     NSMutableArray *array = notification.object;
+    self.planListRanged = array;
     dispatch_async(dispatch_get_main_queue(), ^{
  
         for (UIView *view in self.timeNodeSV.subviews)
         {
             [view removeFromSuperview];
         }
-
         UIColor *color = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
         UIView *defaultLine = [self createDefaultUpLine];
         UIView *lastNode = [[UIView alloc]init];
-        if (array.count != 0) {
-            for (int i = 0; i<array.count; i++) {
-                UIView *upLine = [self createLine];
+        if (array.count != 0)
+        {
+            for (int i = 0; i<array.count; i++)
+            {
+
+                UIView *upLine = [[UIView alloc]init];
+                upLine.backgroundColor = color;
+                [self.timeNodeSV addSubview:upLine];
                 upLine.tag = 1 +i;
+                
                 UIView *point = [[UIView alloc]init];
                 UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didSelectTimeNode:)];
                 [point addGestureRecognizer:gesture];
@@ -69,10 +73,13 @@
                 point.layer.cornerRadius = 7;
                 point.backgroundColor = color;
                 
-                UIView *downLine = [self createLine];
+                UIView *downLine = [[UIView alloc]init];
+                upLine.backgroundColor = color;
+                [self.timeNodeSV addSubview:downLine];
                 downLine.tag = 1000 +i;
 
-                if (i == self.planListRanged.count -1) {
+                if (i == array.count -1)
+                {
                     lastNode = downLine;
                     downLine.backgroundColor = [UIColor colorWithRed:189.0/255.0 green:189.0/255.0 blue:189.0/255.0 alpha:1.0];
                     
@@ -90,9 +97,10 @@
                 [self.timeNodeSV addSubview:point];
                 [self.timeNodeSV addSubview:dayLabel];
                 [self.timeNodeSV addSubview:weekLabel];
-                
-                dayLabel.text = [self dayLabelStr:self.planListRanged AtIndex:i];
-                weekLabel.text = [self weekLabelStr:self.planListRanged AtIndex:i];
+#pragma mark - 修改plistranged begin
+                dayLabel.text = [self dayLabelStr:array AtIndex:i];
+                weekLabel.text = [self weekLabelStr:array AtIndex:i];
+#pragma mark - end 
                 
                 //10为上线的高度，14为节点的高度，60为下线的高度
                 CGFloat upLineTopPadding = 130 + (20 + 14 + 80 )* i;
@@ -160,7 +168,6 @@
             make.top.equalTo(self.timeNodeSV.upLine.mas_bottom).offset(10);
         }];
         self.scheduleTV.scArray = array.firstObject;
-//        self.timeNodeSV.nodeIndex = [[NSNumber alloc]initWithInt:0];
         [self.timeNodeSV setContentOffsetY:0];
         [self.scheduleTV reloadData];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNodeSV" object:self.timeNodeSV];

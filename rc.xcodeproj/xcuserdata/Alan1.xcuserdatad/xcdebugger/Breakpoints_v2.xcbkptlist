@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "rc/Classes/HomePage/Controller/CZActivityInfoViewController.m"
-            timestampString = "480343322.643156"
+            filePath = "rc/Classes/SchedulePage/View/RCScheduleView.m"
+            timestampString = "480520376.282417"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "686"
-            endingLineNumber = "686"
-            landmarkName = "-didShare"
+            startingLineNumber = "48"
+            endingLineNumber = "48"
+            landmarkName = "-createTimeNode:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -25,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "rc/Classes/HomePage/Controller/CZActivityInfoViewController.m"
-            timestampString = "480342759.853379"
+            filePath = "rc/Classes/SchedulePage/Controller/RCAddScheduleViewController.m"
+            timestampString = "480520313.298936"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "606"
-            endingLineNumber = "606"
-            landmarkName = "-showLoadingView:"
+            startingLineNumber = "110"
+            endingLineNumber = "110"
+            landmarkName = "-addSchedule"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -41,13 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "rc/Classes/HomePage/Controller/CZActivityInfoViewController.m"
-            timestampString = "480342759.853379"
+            filePath = "rc/Classes/SchedulePage/View/RCScheduleView.m"
+            timestampString = "480521287.199089"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "511"
-            endingLineNumber = "511"
-            landmarkName = "-showShareActionSheet:"
+            startingLineNumber = "99"
+            endingLineNumber = "99"
+            landmarkName = "-createTimeNode:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -57,13 +57,29 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "rc/Classes/HomePage/Controller/CZActivityInfoViewController.m"
-            timestampString = "480342759.853379"
+            filePath = "rc/Classes/SchedulePage/View/RCScheduleView.m"
+            timestampString = "480521241.939905"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "526"
-            endingLineNumber = "526"
-            landmarkName = "-showShareActionSheet:"
+            startingLineNumber = "269"
+            endingLineNumber = "269"
+            landmarkName = "-createDefaultUpLine"
+            landmarkType = "5">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            shouldBeEnabled = "Yes"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "rc/Classes/SchedulePage/View/RCScheduleView.m"
+            timestampString = "480521737.140899"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "138"
+            endingLineNumber = "138"
+            landmarkName = "-createTimeNode:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

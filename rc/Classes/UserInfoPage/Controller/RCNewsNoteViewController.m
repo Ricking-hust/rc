@@ -58,19 +58,24 @@
     [self rangePlanList:self.planList];
 }
 -(void)rangePlanList:(PlanList *)planList{
-    PlanModel *rPlModel = planList.list[0];
-    NSString *defaultStr = [rPlModel.planTime substringWithRange:NSMakeRange(5, 5)];
-    int i = 0;
-    self.planListRanged[0] = [[NSMutableArray alloc]init];
-    for (PlanModel *planModel in planList.list) {
-        if ([planModel.planTime substringWithRange:NSMakeRange(5, 5)] == defaultStr) {
-            [self.planListRanged[i] addObject:planModel];
-        }else{
-            i = i+1;
-            self.planListRanged[i] = [[NSMutableArray alloc]init];
-            defaultStr = [planModel.planTime substringWithRange:NSMakeRange(5, 5)];
-            [self.planListRanged[i] addObject:planModel];
+    if (planList.list.count != 0) {
+        PlanModel *rPlModel = planList.list[0];
+        NSString *defaultStr = [rPlModel.planTime substringWithRange:NSMakeRange(5, 5)];
+        int i = 0;
+        self.planListRanged[0] = [[NSMutableArray alloc]init];
+        for (PlanModel *planModel in planList.list) {
+            if ([planModel.planTime substringWithRange:NSMakeRange(5, 5)] == defaultStr) {
+                [self.planListRanged[i] addObject:planModel];
+            }else{
+                i = i+1;
+                self.planListRanged[i] = [[NSMutableArray alloc]init];
+                defaultStr = [planModel.planTime substringWithRange:NSMakeRange(5, 5)];
+                [self.planListRanged[i] addObject:planModel];
+            }
         }
+    } else {
+        self.planListRanged = nil;
+        NSLog(@"Fuck");
     }
 }
 
@@ -153,7 +158,7 @@
     UIAlertController *chooseView = [UIAlertController alertControllerWithTitle:@"提示" message:@"您尚未登录，是否登录" preferredStyle:UIAlertControllerStyleAlert];
     
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {
-        
+        [self.navigationController popViewControllerAnimated:YES];
     }];
     UIAlertAction *configureController = [UIAlertAction actionWithTitle:@"登录" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         LoginViewController *loginViewController = [[LoginViewController alloc]init];

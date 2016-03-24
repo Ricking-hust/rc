@@ -111,7 +111,7 @@
 {
     if (indexPath.section == 0)
     {
-        return 74;
+        return 88;
     }else
     {
         return 47;
@@ -208,7 +208,7 @@
             cell.contentLable.text = @"未登录";
         } else {
             [cell.imgIcon sd_setImageWithURL:[NSURL URLWithString:[userDefaults objectForKey:@"userPic"]] placeholderImage:[ UIImage imageNamed:@"20160102.png"]];
-            cell.imgIcon.layer.cornerRadius=cell.imgIcon.image.size.width/2;
+            cell.imgIcon.layer.cornerRadius=33;
             cell.contentLable.text = [userDefaults objectForKey:@"userName"];
         }
 
@@ -249,14 +249,14 @@
 {
     if (indexPath.section == 0)
     {
-        [cell.imgIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+        [cell.imgIcon mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(cell.contentView.mas_left).with.offset(10);
             make.centerY.equalTo(cell.contentView);
-            make.size.mas_equalTo(CGSizeMake(50, 50));
+            make.size.mas_equalTo(CGSizeMake(66, 66));
         }];
     }else
     {
-        [cell.imgIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+        [cell.imgIcon mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(cell.contentView.mas_left).with.offset(10);
             make.centerY.equalTo(cell.contentView);
             make.size.mas_equalTo(cell.imgIcon.image.size);
@@ -265,12 +265,12 @@
     
 
     CGSize contentLableSize = [self sizeWithText:cell.contentLable.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:14];
-    [cell.contentLable mas_makeConstraints:^(MASConstraintMaker *make) {
+    [cell.contentLable mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(cell.imgIcon.mas_right).with.offset(15);
         make.centerY.equalTo(cell.contentView);
         make.size.mas_equalTo(CGSizeMake(contentLableSize.width+200, contentLableSize.height+1));
     }];
-    [cell.indicatorImageView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [cell.indicatorImageView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(cell.contentView);
         make.right.equalTo(cell.contentView.mas_right).with.offset(-10);
         make.size.mas_equalTo(cell.indicatorImageView.image.size);
@@ -284,7 +284,7 @@
         {
             cell.separator.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
 
-            [cell.separator mas_makeConstraints:^(MASConstraintMaker *make) {
+            [cell.separator mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(cell.imgIcon.mas_left);
                 make.right.equalTo(cell.indicatorImageView.mas_right);
                 make.bottom.equalTo(cell.contentView.mas_bottom);
@@ -296,7 +296,7 @@
         if (indexPath.row == 0)
         {
             cell.separator.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0 blue:204.0/255.0 alpha:1.0];
-            [cell.separator mas_makeConstraints:^(MASConstraintMaker *make) {
+            [cell.separator mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(cell.imgIcon.mas_left);
                 make.right.equalTo(cell.indicatorImageView.mas_right);
                 make.bottom.equalTo(cell.contentView.mas_bottom);
