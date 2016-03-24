@@ -31,7 +31,7 @@
         [self showLoginOrNotView];
     }
 }
-
+//-------
 - (void)viewDidLoad
 {
     [super viewDidLoad];
