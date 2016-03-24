@@ -31,9 +31,14 @@
     self.isLogin = [DataManager manager].user.isLogin;
     if (self.isLogin)
     {
-        self.sc.hidden = NO;
-
         self.getPlanListBlock();
+        self.sc.hidden = NO;
+        if (self.planListRanged.count == 0) {
+            self.sc.currentPoint.hidden  = YES;
+        }else{
+            self.sc.currentPoint.hidden = NO;
+        }
+
     }else
     {
         [self showLoginOrNotView];
@@ -132,6 +137,7 @@
 }
 -(void)rangePlanList:(PlanList *)planList{
     if (planList.list.count != 0) {
+        self.sc.hidden = NO;
         PlanModel *rPlModel = planList.list[0];
         NSString *defaultStr = [rPlModel.planTime substringWithRange:NSMakeRange(5, 5)];
         int i = 0;
