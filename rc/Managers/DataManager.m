@@ -482,21 +482,6 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
     }];
 }
 
--(NSURLSessionDataTask *) submitImgWithPhoto:(NSArray *)photo
-                                      userId:(NSString *)userId
-                                     success:(void (^)(NSDictionary *data))success
-                                     failure:(void (^)(NSError *error))failure{
-    NSDictionary *parameters = @{
-                                 @"photo[]":photo,
-                                 @"usr_id":userId
-                                 };
-    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app.myrichang.com/Home/Person/submitImg" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSDictionary *data = [[NSDictionary alloc] initWithDictionary:responseObject];
-        success(data);
-    } failure:^(NSError *error) {
-        failure(error);
-    }];
-}
 
 -(NSURLSessionDataTask *) getUserActivityWithUserId:(NSString *)userId
                                              opType:(NSString *)opType
@@ -556,6 +541,33 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
     } failure:^(NSError *error) {
         failure(error);
     }];
+}
+
+-(void)uploadImgWithImage:(UIImage *)image
+               fileName:(NSString *)fileName
+                success:(void (^)(id))success
+                   fail:(void (^)(NSError *))failure{
+    NSMutableURLRequest *request = [[AFHTTPRequestSerializer serializer] multipartFormRequestWithMethod:@"POST" URLString:@"http://myrichang.com/Publish/Public/Uploads/android/upload_android.php" parameters:nil constructingBodyWithBlock:^(id<AFMultipartFormData>  _Nonnull formData) {
+        [formData appendPartWithFileData:UIImagePNGRepresentation(image) name:@"uploadfile" fileName:fileName mimeType:@"multipart/form-data"];
+    } error:nil];
+    
+    AFURLSessionManager *manager = [[AFURLSessionManager alloc] initWithSessionConfiguration:[NSURLSessionConfiguration defaultSessionConfiguration]];
+    AFHTTPResponseSerializer *responseSerializer = [AFJSONResponseSerializer serializer];
+    responseSerializer.acceptableContentTypes = [NSSet setWithObject:@"text/html"];
+    manager.responseSerializer = responseSerializer;
+    NSURLSessionDataTask *uploadTask;
+    uploadTask = [manager uploadTaskWithStreamedRequest:request progress:^(NSProgress * _Nonnull uploadProgress) {
+        
+    } completionHandler:^(NSURLResponse * _Nonnull response, id  _Nullable responseObject, NSError * _Nullable error) {
+        if (error) {
+            NSLog(@"Error:%@",error);
+            failure(error);
+        } else {
+            success(responseObject);
+        }
+    }];
+    
+    [uploadTask resume];
 }
 
 #pragma mark - Login & Profile

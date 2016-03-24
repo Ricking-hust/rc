@@ -130,19 +130,24 @@
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
 }
 -(void)rangePlanList:(PlanList *)planList{
-    PlanModel *rPlModel = planList.list[0];
-    NSString *defaultStr = [rPlModel.planTime substringWithRange:NSMakeRange(5, 5)];
-    int i = 0;
-    self.planListRanged[0] = [[NSMutableArray alloc]init];
-    for (PlanModel *planModel in planList.list) {
-        if ([planModel.planTime substringWithRange:NSMakeRange(5, 5)] == defaultStr) {
-            [self.planListRanged[i] addObject:planModel];
-        }else{
-            i = i+1;
-            self.planListRanged[i] = [[NSMutableArray alloc]init];
-            defaultStr = [planModel.planTime substringWithRange:NSMakeRange(5, 5)];
-            [self.planListRanged[i] addObject:planModel];
+    if (planList.list.count != 0) {
+        PlanModel *rPlModel = planList.list[0];
+        NSString *defaultStr = [rPlModel.planTime substringWithRange:NSMakeRange(5, 5)];
+        int i = 0;
+        self.planListRanged[0] = [[NSMutableArray alloc]init];
+        for (PlanModel *planModel in planList.list) {
+            if ([planModel.planTime substringWithRange:NSMakeRange(5, 5)] == defaultStr) {
+                [self.planListRanged[i] addObject:planModel];
+            }else{
+                i = i+1;
+                self.planListRanged[i] = [[NSMutableArray alloc]init];
+                defaultStr = [planModel.planTime substringWithRange:NSMakeRange(5, 5)];
+                [self.planListRanged[i] addObject:planModel];
+            }
         }
+    } else {
+        self.planListRanged = nil;
+        NSLog(@"Fuck");
     }
     //若使用此方法，需将planListRanged改为copy类型
     //    PlanModel *rPlModel = planList.list[0];

@@ -99,7 +99,7 @@
         case 0:
         {
             if (indexPath.row == 0) {
-                
+                [self chooseImage];
             } else if (indexPath.row == 1){
                 [self showNameEditAlertViewWitText:[userDefaults objectForKey:@"userName"]];
             } else if (indexPath.row == 2){
@@ -232,6 +232,31 @@
     //计算文本的大小
     CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
     return nameSize;
+}
+
+-(void)editPicWithPicUrl:(NSString *)picurl{
+    @weakify(self);
+    self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    self.HUD.removeFromSuperViewOnHide = YES;
+    [self.view addSubview:self.HUD];
+    [self.HUD showAnimated:YES];
+    [[DataManager manager] modifyAccountWithUserId:[userDefaults objectForKey:@"userId"] opType:@"2" userPwdO:@"" userPwdN:@"" username:[userDefaults objectForKey:@"userName"] userSign:[userDefaults objectForKey:@"userSign"] userPic:picurl userSex:[userDefaults objectForKey:@"userSex"] userMail:[userDefaults objectForKey:@"userMail"] cityId:@"1" success:^(NSString *msg) {
+        @strongify(self)
+        
+        [userDefaults setObject:picurl forKey:@"userPic"];
+        self.HUD.mode = MBProgressHUDModeCustomView;
+        self.HUD.label.text = @"修改成功";
+        [self.HUD hideAnimated:YES afterDelay:0.6];
+        [self.tableView reloadData];
+    } failure:^(NSError *error) {
+        @strongify(self);
+        
+        self.HUD.mode = MBProgressHUDModeCustomView;
+        self.HUD.label.text = @"修改失败";
+        [self.HUD hideAnimated:YES afterDelay:0.6];
+        
+    }];
+
 }
 
 -(void)showNameEditAlertViewWitText:(NSString *)text{
@@ -422,6 +447,59 @@
     [editControl addAction:configureController];
     
     [self presentViewController:editControl animated:YES completion:nil];
+}
+
+-(void)chooseImage {
+    UIAlertController *chooseControl = [UIAlertController alertControllerWithTitle:@"选择" message:@"" preferredStyle:UIAlertControllerStyleActionSheet];
+    
+    UIAlertAction *librayAction = [UIAlertAction actionWithTitle:@"从相册选择" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        UIImagePickerController *imagePickerController = [[UIImagePickerController alloc]init];
+        
+        imagePickerController.sourceType = UIImagePickerControllerSourceTypePhotoLibrary;
+        imagePickerController.delegate = self;
+        imagePickerController.allowsEditing = YES;
+        
+        [self presentViewController:imagePickerController animated:YES completion:^{
+            
+        }];
+    }];
+    
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction *action) {        
+    }];
+    
+    if ([UIImagePickerController isSourceTypeAvailable:UIImagePickerControllerSourceTypeCamera]) {
+        UIAlertAction *cameraAction = [UIAlertAction actionWithTitle:@"拍照" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+            UIImagePickerController *imagePickerController = [[UIImagePickerController alloc]init];
+            
+            imagePickerController.sourceType = UIImagePickerControllerSourceTypeCamera;
+            imagePickerController.delegate = self;
+            imagePickerController.allowsEditing = YES;
+            
+            [self presentViewController:imagePickerController animated:YES completion:^{
+            }];
+        }];
+        
+        [chooseControl addAction:cameraAction];
+    }
+    [chooseControl addAction:librayAction];
+    [chooseControl addAction:cancelAction];
+    
+    [self presentViewController:chooseControl animated:YES completion:nil];
+}
+
+-(void)imagePickerController:(UIImagePickerController *)picker didFinishPickingMediaWithInfo:(NSDictionary<NSString *,id> *)info{
+    [picker dismissViewControllerAnimated:YES completion:^{
+        
+    }];
+    
+    UIImage *image = [info objectForKey:UIImagePickerControllerEditedImage];
+    
+    [[DataManager manager]uploadImgWithImage:image fileName:[NSString stringWithFormat:@"test"] success:^(id responseObject) {
+        NSString *msg= [responseObject objectForKey:@"msg"];
+        [self editPicWithPicUrl:msg];
+    } fail:^(NSError *error) {
+        NSLog(@"Error:%@",error);
+    }];
 }
 
 @end

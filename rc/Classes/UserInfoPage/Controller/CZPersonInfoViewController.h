@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CZPersonInfoViewController : UITableViewController
+@interface CZPersonInfoViewController : UITableViewController<UINavigationControllerDelegate,UIImagePickerControllerDelegate>
 
 @end

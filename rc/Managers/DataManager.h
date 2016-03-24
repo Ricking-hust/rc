@@ -138,11 +138,6 @@ typedef NS_ENUM(NSInteger,RcErrorType) {
                                           success:(void (^)(NSString *msg))success
                                           failure:(void (^)(NSError *error))failure;
 
--(NSURLSessionDataTask *) submitImgWithPhoto:(NSArray *)photo
-                                      userId:(NSString *)userId
-                                     success:(void (^)(NSDictionary *data))success
-                                     failure:(void (^)(NSError *error))failure;
-
 -(NSURLSessionDataTask *) getUserActivityWithUserId:(NSString *)userId
                                              opType:(NSString *)opType
                                             success:(void (^)(ActivityList *acList))success
@@ -161,6 +156,11 @@ typedef NS_ENUM(NSInteger,RcErrorType) {
 
 -(NSURLSessionDataTask *) getVersionWithSuccess:(void (^)(NSString *msg))success
                                         failure:(void (^)(NSError *error))failure;
+
+- (void)uploadImgWithImage:(UIImage *)image
+                fileName:(NSString *)fileName
+                 success:(void (^)(id responseObject))success
+                    fail:(void (^)(NSError *error))failure;
 
 #pragma mark - Login & Profile
 
