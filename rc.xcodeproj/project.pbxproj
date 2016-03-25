@@ -154,6 +154,7 @@
 		56E8427B1C4BA74C00D1D198 /* CZTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8427A1C4BA74C00D1D198 /* CZTimeCell.m */; };
 		56E8427E1C4BB8E500D1D198 /* CZActivityInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8427D1C4BB8E500D1D198 /* CZActivityInfoCell.m */; };
 		56E8C6701C8A2BD000435758 /* CZRemintTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8C66F1C8A2BD000435758 /* CZRemintTimeView.m */; };
+		56EC64B71CA55CB200B9CC6D /* CZMyActivityInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56EC64B61CA55CB200B9CC6D /* CZMyActivityInfoViewController.m */; };
 		56F02CAA1CA2884B00E0BBB4 /* MJRefreshAutoFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F02C801CA2884B00E0BBB4 /* MJRefreshAutoFooter.m */; };
 		56F02CAB1CA2884B00E0BBB4 /* MJRefreshBackFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F02C821CA2884B00E0BBB4 /* MJRefreshBackFooter.m */; };
 		56F02CAC1CA2884B00E0BBB4 /* MJRefreshComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F02C841CA2884B00E0BBB4 /* MJRefreshComponent.m */; };
@@ -499,6 +500,8 @@
 		56E8427D1C4BB8E500D1D198 /* CZActivityInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZActivityInfoCell.m; sourceTree = "<group>"; };
 		56E8C66E1C8A2BD000435758 /* CZRemintTimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZRemintTimeView.h; sourceTree = "<group>"; };
 		56E8C66F1C8A2BD000435758 /* CZRemintTimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZRemintTimeView.m; sourceTree = "<group>"; };
+		56EC64B51CA55CB200B9CC6D /* CZMyActivityInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZMyActivityInfoViewController.h; sourceTree = "<group>"; };
+		56EC64B61CA55CB200B9CC6D /* CZMyActivityInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZMyActivityInfoViewController.m; sourceTree = "<group>"; };
 		56F02C7F1CA2884B00E0BBB4 /* MJRefreshAutoFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshAutoFooter.h; sourceTree = "<group>"; };
 		56F02C801CA2884B00E0BBB4 /* MJRefreshAutoFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshAutoFooter.m; sourceTree = "<group>"; };
 		56F02C811CA2884B00E0BBB4 /* MJRefreshBackFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshBackFooter.h; sourceTree = "<group>"; };
@@ -1123,6 +1126,8 @@
 				56E523691C75BAAA00794B0E /* CZSettingViewController.m */,
 				56F7BE0F1CA3CA45005D1475 /* RCNewsNoteViewController.h */,
 				56F7BE101CA3CA45005D1475 /* RCNewsNoteViewController.m */,
+				56EC64B51CA55CB200B9CC6D /* CZMyActivityInfoViewController.h */,
+				56EC64B61CA55CB200B9CC6D /* CZMyActivityInfoViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1662,6 +1667,7 @@
 				56F02CB71CA2884B00E0BBB4 /* MJRefreshStateHeader.m in Sources */,
 				561D02011C47DA5600E4E013 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				56B9CD3B1C807A7100914F00 /* UIView+WebCacheOperation.m in Sources */,
+				56EC64B71CA55CB200B9CC6D /* CZMyActivityInfoViewController.m in Sources */,
 				C4BBA81A1C89B93300AD02EE /* RegisteViewController.m in Sources */,
 				C4C075271C89CF6C00C5E54D /* MyTextField.m in Sources */,
 				56E523611C75AAD200794B0E /* CZMyCollectionViewController.m in Sources */,

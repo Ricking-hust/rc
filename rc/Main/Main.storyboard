@@ -86,7 +86,6 @@
                     <view key="view" contentMode="scaleToFill" id="lbu-Gm-s6f">
                         <rect key="frame" x="0.0" y="0.0" width="600" height="600"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" white="1" alpha="1" colorSpace="calibratedWhite"/>
                     </view>
                     <navigationItem key="navigationItem" title="日常" id="EVZ-g9-G01">
                         <barButtonItem key="leftBarButtonItem" style="plain" id="1OR-4H-lKd">

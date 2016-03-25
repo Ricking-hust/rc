@@ -65,7 +65,7 @@
     }];
     UIImage *img = [UIImage imageNamed:@"50%loading.gif"];
     [self.logo mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.label.mas_left).offset(0);
+        make.right.equalTo(self.label.mas_left).offset(15);
         make.centerY.equalTo(self.label.mas_centerY);
         make.width.mas_equalTo(img.size.width);
         make.height.mas_equalTo(img.size.height);
@@ -133,11 +133,6 @@
 {
     [super setPullingPercent:pullingPercent];
     
-//    // 1.0 0.5 0.0
-//    // 0.5 0.0 0.5
-//    CGFloat red = 1.0 - pullingPercent * 0.5;
-//    CGFloat green = 0.5 - 0.5 * pullingPercent;
-//    CGFloat blue = 0.5 * pullingPercent;
-//    self.label.textColor = [UIColor colorWithRed:red green:green blue:blue alpha:1.0];
+
 }
 @end
