@@ -9,28 +9,12 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "rc/Classes/SchedulePage/View/RCScheduleView.m"
-            timestampString = "480578289.905751"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "47"
-            endingLineNumber = "47"
-            landmarkName = "-createTimeNode:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
             filePath = "rc/Classes/SchedulePage/Controller/RCAddScheduleViewController.m"
-            timestampString = "480520313.298936"
+            timestampString = "480579907.96184"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "110"
-            endingLineNumber = "110"
+            startingLineNumber = "112"
+            endingLineNumber = "112"
             landmarkName = "-addSchedule"
             landmarkType = "5">
          </BreakpointContent>
@@ -41,13 +25,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "rc/Classes/SchedulePage/View/RCScheduleView.m"
-            timestampString = "480578438.342284"
+            filePath = "rc/Classes/SchedulePage/Controller/RCScheduleViewController.m"
+            timestampString = "480580085.868774"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "94"
-            endingLineNumber = "94"
-            landmarkName = "-createTimeNode:"
+            startingLineNumber = "31"
+            endingLineNumber = "31"
+            landmarkName = "-viewWillAppear:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
@@ -57,29 +41,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "rc/Classes/SchedulePage/View/RCScheduleView.m"
-            timestampString = "480578438.342284"
+            filePath = "rc/Classes/SchedulePage/Controller/RCAddScheduleViewController.m"
+            timestampString = "480580021.374101"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "264"
-            endingLineNumber = "264"
-            landmarkName = "-createDefaultUpLine"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "rc/Classes/SchedulePage/View/RCScheduleView.m"
-            timestampString = "480578438.342284"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "133"
-            endingLineNumber = "133"
-            landmarkName = "-createTimeNode:"
+            startingLineNumber = "219"
+            endingLineNumber = "219"
+            landmarkName = "-getscInfo"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

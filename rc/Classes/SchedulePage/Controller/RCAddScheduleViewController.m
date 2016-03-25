@@ -109,7 +109,7 @@
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRangedAdd];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
-        [[DataManager manager] addPlanWithOpType:@"1" planId:@"" userId:[userDefaults objectForKey:@"userId"] themeId:@"" planTime:@"" plAlarmOne:@"" plAlarmTwo:@"" plAlarmThree:@"" planContent:self.downView.textView.text acPlace:self.model.acPlace success:^(NSString *msg) {
+        [[DataManager manager] addPlanWithOpType:@"1" planId:@"" userId:[userDefaults objectForKey:@"userId"] themeId:self.model.themeName planTime:self.model.planTime plAlarmOne:self.model.plAlarmOne plAlarmTwo:self.model.plAlarmTwo plAlarmThree:self.model.plAlarmThree planContent:self.model.planContent acPlace:self.model.acPlace success:^(NSString *msg) {
                 NSLog(@"Msg:%@",msg);
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
