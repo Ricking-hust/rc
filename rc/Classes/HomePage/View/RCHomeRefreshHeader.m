@@ -8,6 +8,8 @@
 
 #import "RCHomeRefreshHeader.h"
 #import "Masonry.h"
+#import "UIImage+GIF.h"
+#import "UIImageView+WebCache.h"
 @interface RCHomeRefreshHeader()
 @property (weak, nonatomic) UILabel *label;
 @property (weak, nonatomic) UIImageView *logo;
@@ -33,8 +35,8 @@
     self.label = label;
     
     // logo
-    UIImageView *logo = [[UIImageView alloc] initWithImage:[UIImage imageNamed:@"addIcon"]];
-    logo.contentMode = UIViewContentModeScaleAspectFit;
+    UIImageView *logo = [[UIImageView alloc]init];
+    logo.image = [UIImage imageNamed:@"loading.gif"];
     [self addSubview:logo];
     self.logo = logo;
     
@@ -49,12 +51,6 @@
 {
     [super placeSubviews];
     
-//    self.label.frame = self.bounds;
-//    
-//    self.logo.bounds = CGRectMake(0, 0, self.bounds.size.width, 100);
-//    self.logo.center = CGPointMake(self.mj_w * 0.5, - self.logo.mj_h + 20);
-//    
-////    self.loading.center = CGPointMake(self.mj_w - 30, self.mj_h * 0.5);
     [self.label mas_updateConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.mas_centerY);
         make.centerX.equalTo(self.mas_centerX);
@@ -67,12 +63,13 @@
         make.width.mas_equalTo(20);
         make.height.mas_equalTo(20);
     }];
+    UIImage *img = [UIImage imageNamed:@"50%loading.gif"];
     [self.logo mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.label.mas_left).offset(-5);
+        make.right.equalTo(self.label.mas_left).offset(0);
         make.centerY.equalTo(self.label.mas_centerY);
-        make.size.mas_equalTo(self.logo.image.size);
+        make.width.mas_equalTo(img.size.width);
+        make.height.mas_equalTo(img.size.height);
     }];
-  
 }
 
 #pragma mark 监听scrollView的contentOffset改变
@@ -103,22 +100,28 @@
     
     switch (state) {
         case MJRefreshStateIdle:
-            [self.loading stopAnimating];
+        {
             self.logo.hidden = NO;
-            self.logo.image = [UIImage imageNamed:@"nextIcon"];
+            UIImage *img = [UIImage imageNamed:@"50%loading.gif"];
+            self.logo.image = img;
             self.label.text = @"下拉刷新";
+        }
             break;
+            
         case MJRefreshStatePulling:
-            [self.loading stopAnimating];
+        {
             self.logo.hidden = NO;
-            self.label.text = @"松开更新";
-            self.logo.image = [UIImage imageNamed:@"backIcon"];
-
+            self.label.text = @"释放更新";
+            UIImage *img = [UIImage imageNamed:@"50%loading.gif"];
+            self.logo.image = img;
+        }
             break;
         case MJRefreshStateRefreshing:
-            self.logo.hidden = YES;
-            self.label.text = @"加载数据中……";
-            [self.loading startAnimating];
+        {
+            self.logo.hidden = NO;
+            self.label.text = @"加载中……";
+            [self.logo sd_setImageWithURL:[[NSBundle mainBundle] URLForResource:@"50%loading.gif" withExtension:nil]];
+        }
             break;
         default:
             break;

@@ -105,7 +105,7 @@
     for (int i = 0; i < count; i++) {
         UIImageView *imageView = [UIImageView new];
         [self.scrollView addSubview:imageView];
-        NSString *imageName = [NSString stringWithFormat:@"img_%d",i + 1];
+        NSString *imageName = [NSString stringWithFormat:@"ppt6_img_%d",i + 1];
         imageView.image = [UIImage imageNamed:imageName];
         [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.scrollView.mas_left).with.offset(i * rect.size.width);

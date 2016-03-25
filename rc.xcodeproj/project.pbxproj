@@ -145,6 +145,8 @@
 		56E523641C75AC1500794B0E /* CZAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E523631C75AC1500794B0E /* CZAboutUsViewController.m */; };
 		56E523671C75B1CE00794B0E /* CZFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E523661C75B1CE00794B0E /* CZFeedbackViewController.m */; };
 		56E5236A1C75BAAA00794B0E /* CZSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E523691C75BAAA00794B0E /* CZSettingViewController.m */; };
+		56E603F81CA5369000EB0446 /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 56E603F61CA5369000EB0446 /* loading.gif */; };
+		56E603F91CA5369000EB0446 /* 50%loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 56E603F71CA5369000EB0446 /* 50%loading.gif */; };
 		56E732711C9E8A58006724BA /* RCColumnTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E732701C9E8A58006724BA /* RCColumnTableView.m */; };
 		56E732741C9E9D79006724BA /* RCLeftTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E732731C9E9D79006724BA /* RCLeftTableView.m */; };
 		56E732771C9E9DF4006724BA /* RCRightTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E732761C9E9DF4006724BA /* RCRightTableView.m */; };
@@ -480,6 +482,8 @@
 		56E523661C75B1CE00794B0E /* CZFeedbackViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZFeedbackViewController.m; sourceTree = "<group>"; };
 		56E523681C75BAAA00794B0E /* CZSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZSettingViewController.h; sourceTree = "<group>"; };
 		56E523691C75BAAA00794B0E /* CZSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZSettingViewController.m; sourceTree = "<group>"; };
+		56E603F61CA5369000EB0446 /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading.gif; sourceTree = "<group>"; };
+		56E603F71CA5369000EB0446 /* 50%loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = "50%loading.gif"; sourceTree = "<group>"; };
 		56E7326E1C9E6FB7006724BA /* RCTableVieContentSizeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTableVieContentSizeDelegate.h; sourceTree = "<group>"; };
 		56E7326F1C9E8A58006724BA /* RCColumnTableView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCColumnTableView.h; sourceTree = "<group>"; };
 		56E732701C9E8A58006724BA /* RCColumnTableView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCColumnTableView.m; sourceTree = "<group>"; };
@@ -745,6 +749,7 @@
 		561D01011C47D94C00E4E013 /* rc */ = {
 			isa = PBXGroup;
 			children = (
+				56E603F51CA5368100EB0446 /* res */,
 				5683EC221C817EA1006430CB /* Main */,
 				561D01C81C47DA5600E4E013 /* Others */,
 				561D01361C47DA5600E4E013 /* Classes */,
@@ -1263,6 +1268,15 @@
 			path = View;
 			sourceTree = "<group>";
 		};
+		56E603F51CA5368100EB0446 /* res */ = {
+			isa = PBXGroup;
+			children = (
+				56E603F61CA5369000EB0446 /* loading.gif */,
+				56E603F71CA5369000EB0446 /* 50%loading.gif */,
+			);
+			path = res;
+			sourceTree = "<group>";
+		};
 		56F02C7D1CA2884B00E0BBB4 /* MJRefresh */ = {
 			isa = PBXGroup;
 			children = (
@@ -1492,6 +1506,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5683EC271C817F7B006430CB /* LaunchScreen.storyboard in Resources */,
+				56E603F91CA5369000EB0446 /* 50%loading.gif in Resources */,
 				5683EC281C817F7B006430CB /* Main.storyboard in Resources */,
 				561D01FC1C47DA5600E4E013 /* LICENSE in Resources */,
 				561D02071C47DA5600E4E013 /* LICENSE in Resources */,
@@ -1500,6 +1515,7 @@
 				56121F541CA14D8B00183DB0 /* ShareSDK.bundle in Resources */,
 				56F02CB81CA2884B00E0BBB4 /* MJRefresh.bundle in Resources */,
 				561D01D01C47DA5600E4E013 /* Assets.xcassets in Resources */,
+				56E603F81CA5369000EB0446 /* loading.gif in Resources */,
 				56121F521CA14D8B00183DB0 /* read_me.txt in Resources */,
 				56121F501CA14D8B00183DB0 /* WeiboSDK.bundle in Resources */,
 			);

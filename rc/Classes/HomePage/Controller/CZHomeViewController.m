@@ -103,6 +103,7 @@
     self.tableView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
 
 }
+
 #pragma mark UITableView + 下拉刷新 自定义文字
 - (void)pullDownToReflesh
 {
@@ -133,7 +134,7 @@
 - (void)loadNewData
 {
     NSLog(@"loadNewData");
-    [self.tableView.mj_header endRefreshing];
+    //[self.tableView.mj_header endRefreshing];
 }
 - (void)didReceiveMemoryWarning
 {
