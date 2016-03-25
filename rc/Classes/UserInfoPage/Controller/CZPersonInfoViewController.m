@@ -248,7 +248,7 @@
     self.HUD.removeFromSuperViewOnHide = YES;
     [self.view addSubview:self.HUD];
     [self.HUD showAnimated:YES];
-    [[DataManager manager] modifyAccountWithUserId:[userDefaults objectForKey:@"userId"] opType:@"2" userPwdO:@"" userPwdN:@"" username:[userDefaults objectForKey:@"userName"] userSign:[userDefaults objectForKey:@"userSign"] userPic:picurl userSex:[userDefaults objectForKey:@"userSex"] userMail:[userDefaults objectForKey:@"userMail"] cityId:@"1" success:^(NSString *msg) {
+    [[DataManager manager] modifyAccountWithUserId:[userDefaults objectForKey:@"userId"] opType:@"2" userPwdO:@"" userPwdN:@"" username:[userDefaults objectForKey:@"userName"] userSign:[userDefaults objectForKey:@"userSign"] userPic:picurl userSex:[userDefaults objectForKey:@"userSex"] userMail:[userDefaults objectForKey:@"userMail"] cityId:[userDefaults objectForKey:@"cityId"] success:^(NSString *msg) {
         @strongify(self)
         
         [userDefaults setObject:picurl forKey:@"userPic"];
@@ -287,7 +287,7 @@
         [self.view addSubview:self.HUD];
         [self.HUD showAnimated:YES];
         
-        [[DataManager manager] modifyAccountWithUserId:[userDefaults objectForKey:@"userId"] opType:@"2" userPwdO:@"" userPwdN:@"" username:textField.text userSign:[userDefaults objectForKey:@"userSign"] userPic:[userDefaults objectForKey:@"userPic"] userSex:@"" userMail:[userDefaults objectForKey:@"userMail"] cityId:@"1" success:^(NSString *msg) {
+        [[DataManager manager] modifyAccountWithUserId:[userDefaults objectForKey:@"userId"] opType:@"2" userPwdO:@"" userPwdN:@"" username:textField.text userSign:[userDefaults objectForKey:@"userSign"] userPic:[userDefaults objectForKey:@"userPic"] userSex:@"" userMail:[userDefaults objectForKey:@"userMail"] cityId:[userDefaults objectForKey:@"cityId"] success:^(NSString *msg) {
             @strongify(self);
             
             [userDefaults setObject:textField.text forKey:@"userName"];
@@ -321,7 +321,7 @@
         [self.view addSubview:self.HUD];
         [self.HUD showAnimated:YES];
         
-        [[DataManager manager] modifyAccountWithUserId:[userDefaults objectForKey:@"userId"] opType:@"2" userPwdO:@"" userPwdN:@"" username:[userDefaults objectForKey:@"userName"] userSign:[userDefaults objectForKey:@"userSign"] userPic:[userDefaults objectForKey:@"userPic"] userSex:@"1" userMail:[userDefaults objectForKey:@"userMail"] cityId:@"1" success:^(NSString *msg) {
+        [[DataManager manager] modifyAccountWithUserId:[userDefaults objectForKey:@"userId"] opType:@"2" userPwdO:@"" userPwdN:@"" username:[userDefaults objectForKey:@"userName"] userSign:[userDefaults objectForKey:@"userSign"] userPic:[userDefaults objectForKey:@"userPic"] userSex:@"1" userMail:[userDefaults objectForKey:@"userMail"] cityId:[userDefaults objectForKey:@"cityId"] success:^(NSString *msg) {
             @strongify(self)
             
             [userDefaults setObject:@"1" forKey:@"userSex"];
@@ -345,7 +345,7 @@
         [self.view addSubview:self.HUD];
         [self.HUD showAnimated:YES];
         
-        [[DataManager manager] modifyAccountWithUserId:[userDefaults objectForKey:@"userId"] opType:@"2" userPwdO:@"" userPwdN:@"" username:[userDefaults objectForKey:@"userName"] userSign:[userDefaults objectForKey:@"userSign"] userPic:[userDefaults objectForKey:@"userPic"] userSex:@"2" userMail:[userDefaults objectForKey:@"userMail"] cityId:@"1" success:^(NSString *msg) {
+        [[DataManager manager] modifyAccountWithUserId:[userDefaults objectForKey:@"userId"] opType:@"2" userPwdO:@"" userPwdN:@"" username:[userDefaults objectForKey:@"userName"] userSign:[userDefaults objectForKey:@"userSign"] userPic:[userDefaults objectForKey:@"userPic"] userSex:@"2" userMail:[userDefaults objectForKey:@"userMail"] cityId:[userDefaults objectForKey:@"cityId"] success:^(NSString *msg) {
             @strongify(self)
             
             [userDefaults setObject:@"2" forKey:@"userSex"];
@@ -391,7 +391,7 @@
         [self.view addSubview:self.HUD];
         [self.HUD showAnimated:YES];
         UITextField *textField = editControl.textFields[0];
-        [[DataManager manager] modifyAccountWithUserId:[userDefaults objectForKey:@"userId"] opType:@"2" userPwdO:@"" userPwdN:@"" username:[userDefaults objectForKey:@"userName"] userSign:[userDefaults objectForKey:@"userSign"] userPic:[userDefaults objectForKey:@"userPic"] userSex:[userDefaults objectForKey:@"userSex"] userMail:textField.text cityId:@"1" success:^(NSString *msg) {
+        [[DataManager manager] modifyAccountWithUserId:[userDefaults objectForKey:@"userId"] opType:@"2" userPwdO:@"" userPwdN:@"" username:[userDefaults objectForKey:@"userName"] userSign:[userDefaults objectForKey:@"userSign"] userPic:[userDefaults objectForKey:@"userPic"] userSex:[userDefaults objectForKey:@"userSex"] userMail:textField.text cityId:[userDefaults objectForKey:@"cityId"] success:^(NSString *msg) {
             @strongify(self)
             
             [userDefaults setObject:textField.text forKey:@"userMail"];
@@ -433,7 +433,7 @@
         [self.view addSubview:self.HUD];
         [self.HUD showAnimated:YES];
         UITextField *textField = editControl.textFields[0];
-        [[DataManager manager] modifyAccountWithUserId:[userDefaults objectForKey:@"userId"] opType:@"2" userPwdO:@"" userPwdN:@"" username:[userDefaults objectForKey:@"userName"] userSign:textField.text userPic:[userDefaults objectForKey:@"userPic"] userSex:[userDefaults objectForKey:@"userSex"] userMail:[userDefaults objectForKey:@"userMail"] cityId:@"1" success:^(NSString *msg) {
+        [[DataManager manager] modifyAccountWithUserId:[userDefaults objectForKey:@"userId"] opType:@"2" userPwdO:@"" userPwdN:@"" username:[userDefaults objectForKey:@"userName"] userSign:textField.text userPic:[userDefaults objectForKey:@"userPic"] userSex:[userDefaults objectForKey:@"userSex"] userMail:[userDefaults objectForKey:@"userMail"] cityId:[userDefaults objectForKey:@"cityId"] success:^(NSString *msg) {
             @strongify(self)
             
             [userDefaults setObject:textField.text forKey:@"userSign"];

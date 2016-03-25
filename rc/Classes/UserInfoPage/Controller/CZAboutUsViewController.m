@@ -40,7 +40,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 2;
+    return 3;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -74,14 +74,45 @@
     if (indexPath.row == 0)
     {
         cell.textLabel.text = @"产品介绍";
-    }else
-    {
+    }else if(indexPath.row == 1){
         cell.textLabel.text = @"微信平台";
+    }else{
+        cell.textLabel.text = @"检查最新版本";
     }
     cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    switch (indexPath.row) {
+        case 0:{
+            NSLog(@"Please introduce our APP");
+        }
+            break;
+        case (1):{
+            NSLog(@"wechat");
+        }
+            break;
+        case (2):{
+            NSString *versionURL = @"http://fir.im/cbsg";
+            UIAlertController *versionAlert = [UIAlertController alertControllerWithTitle:@"最新版本号" message:@"1.0" preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                
+            }];
+            UIAlertAction *configureAlert = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [[UIApplication sharedApplication] openURL:[NSURL URLWithString:versionURL]];
+            }];
+            [versionAlert addAction:cancleAction];
+            [versionAlert addAction:configureAlert];
+            
+            [self presentViewController:versionAlert animated:YES completion:nil];
+        }
+        default:
+            break;
+    }
+}
+
 - (void)createHeaderView
 {
     CGRect rect = [[UIScreen mainScreen]bounds];

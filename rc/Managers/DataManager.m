@@ -48,6 +48,7 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
         [[NSUserDefaults standardUserDefaults] setObject:user.userPic forKey:@"userPic"];
         [[NSUserDefaults standardUserDefaults] setObject:user.userSex forKey:@"userSex"];
         [[NSUserDefaults standardUserDefaults] setObject:user.userMail forKey:@"userMail"];
+        [[NSUserDefaults standardUserDefaults] setObject:user.cityId forKey:@"cityId"];
         [[NSUserDefaults standardUserDefaults] setObject:@(YES) forKey:@"userIsLogin"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     } else {
@@ -59,6 +60,7 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userSex"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userMail"];
         [[NSUserDefaults standardUserDefaults] removeObjectForKey:@"userIsLogin"];
+        [[NSUserDefaults standardUserDefaults] setObject:@"1" forKey:@"cityId"];
         [[NSUserDefaults standardUserDefaults] synchronize];
     }
 }

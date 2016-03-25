@@ -153,7 +153,7 @@
         } else {
             userId = @"-1";
         }
-        return [[DataManager manager] getActivityRecommendWithCityId:self.cityId startId:@"0" num:@"20" userId:userId success:^(ActivityList *acList) {
+        return [[DataManager manager] getActivityRecommendWithCityId:[userDefaults objectForKey:@"cityId"] startId:@"0" num:@"20" userId:userId success:^(ActivityList *acList) {
             @strongify(self);
             self.activityList = acList;
         } failure:^(NSError *error) {

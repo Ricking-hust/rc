@@ -211,7 +211,7 @@ static CGFloat const kContainViewYEditing = 60.0;
     self.passwordField.enabled = NO;
 }
 
--(void)endLogin{
+-(void)endRegiste{
     self.usernameField.enabled = YES;
     self.verifyCodeField.enabled = YES;
     self.verifyCodeButton.enabled = YES;
@@ -224,65 +224,125 @@ static CGFloat const kContainViewYEditing = 60.0;
     if (!self.isRegisting) {
        @weakify(self)
         
-        [self hideKeyboard];
-        
-        self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
-        self.HUD.removeFromSuperViewOnHide = YES;
-        [self.view addSubview:self.HUD];
-        [self.HUD showAnimated:YES];
-        if ([self checkVerifyCode:self.verifyCodeField.text]) {
-            @strongify(self);
-            [[DataManager manager] UserLoginOrRegisteWithUserphone:self.usernameField.text password:self.passwordField.text op_type:@"2" success:^(UserModel *user) {
-                @strongify(self);
-                self.HUD.mode = MBProgressHUDModeCustomView;
-                self.HUD.label.text = @"注册成功";
-                [self.HUD hideAnimated:YES afterDelay:0.6];
-                [self regBackToForwardViewController];
-            } failure:^(NSError *error) {
-                @strongify(self);
-                NSString *reasonString;
-                
-                if (error.code < 700) {
-                    reasonString = @"请检查网络状态";
-                } else {
-                    reasonString = @"请检查用户名或密码";
-                }
-                UIAlertController *alterLgnFailControl = [UIAlertController alertControllerWithTitle:@"登录失败" message:reasonString preferredStyle:UIAlertControllerStyleAlert];
-                UIAlertAction *configureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                    //[self endLogin];
-                }];
-                [alterLgnFailControl addAction:configureAction];
-                [self presentViewController:alterLgnFailControl animated:YES completion:nil];
-                
+        if ([self.usernameField.text isEqualToString:@""]|[self.verifyCodeField.text isEqualToString:@""]|[self.passwordField.text isEqualToString:@""]) {
+            NSString *message = [[NSString alloc]init];
+            if ([self.usernameField.text isEqualToString:@""]) {
+                message = @"请输入手机号";
+            } else if([self.verifyCodeField.text isEqualToString:@""]){
+                message = @"请输入验证码";
+            } else if ([self.passwordField.text isEqualToString:@""]){
+                message = @"请输入密码";
+            }
+            UIAlertController *alterNoneControl = [UIAlertController alertControllerWithTitle:@"提示" message:message preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *configureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                [self endRegiste];
             }];
+            [alterNoneControl addAction:configureAction];
+            [self presentViewController:alterNoneControl animated:YES completion:nil];
+        } else {
+            [self hideKeyboard];
+            self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+            self.HUD.removeFromSuperViewOnHide = YES;
+            [self.view addSubview:self.HUD];
+            [self.HUD showAnimated:YES];
+            if ([self checkVerifyCode:self.verifyCodeField.text]) {
+                @strongify(self);
+                [[DataManager manager] UserLoginOrRegisteWithUserphone:self.usernameField.text password:self.passwordField.text op_type:@"2" success:^(UserModel *user) {
+                    self.HUD.mode = MBProgressHUDModeCustomView;
+                    self.HUD.label.text = @"注册成功";
+                    [self.HUD hideAnimated:YES afterDelay:0.6];
+                    [self endRegiste];
+                    [self regBackToForwardViewController];
+                } failure:^(NSError *error) {
+                    NSString *reasonString;
+                    
+                    if (error.code < 700) {
+                        reasonString = @"请检查网络状态";
+                    } else {
+                        reasonString = @"请检查用户名或密码";
+                    }
+                    UIAlertController *alterLgnFailControl = [UIAlertController alertControllerWithTitle:@"注册失败" message:reasonString preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertAction *configureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        [self endRegiste];
+                    }];
+                    [alterLgnFailControl addAction:configureAction];
+                    [self presentViewController:alterLgnFailControl animated:YES completion:nil];
+                    
+                }];
+            }
+            else {
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"验证码错误";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+                [self endRegiste];
+            }
         }
-        else {
-            @strongify(self);
-            self.HUD.mode = MBProgressHUDModeCustomView;
-            self.HUD.label.text = @"验证码错误";
-            [self.HUD hideAnimated:YES afterDelay:0.6];
-        }
+        
     }
 }
 
 -(void)sendVerifyCode{
+
     //生成随机六位验证码
     int num = (arc4random()%1000000);
     NSString *randomNumber = [[NSString alloc]initWithFormat:@"%.6d",num];
     NSString *tokenStr = [NSString stringWithFormat:@"%@sms",randomNumber];
     self.MD5Str = [tokenStr MD5];
-    //发送验证码与注册信息
-    [[DataManager manager] sendMobileMsgWithMobile:self.usernameField.text type:@"0" msg:randomNumber token:self.MD5Str success:^(NSString *code) {
-        if ([code isEqualToString:@"200"]) {
-            NSLog(@"send success");
-        } else if ([code isEqualToString:@"210"]){
-            NSLog(@"send failed");
-        } else {
-            NSLog(@"请求不合法");
-        }
-    } failure:^(NSError *error) {
-        NSLog(@"Error:%@",error);
-    }];
+    if (![self.usernameField.text isEqualToString:@""]) {
+        //发送验证码与注册信息
+        [[DataManager manager] sendMobileMsgWithMobile:self.usernameField.text type:@"0" msg:randomNumber token:self.MD5Str success:^(NSString *code) {
+            if ([code isEqualToString:@"200"]) {
+                __block int timeout = 60;
+                dispatch_queue_t queue = dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0);
+                dispatch_source_t _timer = dispatch_source_create(DISPATCH_SOURCE_TYPE_TIMER, 0, 0, queue);
+                dispatch_source_set_timer(_timer, dispatch_walltime(NULL, 0),1.0*NSEC_PER_SEC, 0);
+                dispatch_source_set_event_handler(_timer, ^{
+                    if(timeout<=0){ //倒计时结束，关闭
+                        dispatch_source_cancel(_timer);
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            [self.verifyCodeButton setTitle:@"重新获取验证码" forState:UIControlStateNormal];
+                            self.verifyCodeButton.userInteractionEnabled = YES;
+                        });
+                    }else{
+                        //int minutes = timeout / 60;
+                        //int seconds = timeout % 60;
+                        dispatch_async(dispatch_get_main_queue(), ^{
+                            //设置界面的按钮显示 根据自己需求设置
+                            [self.verifyCodeButton setTitle:[NSString stringWithFormat:@"%d秒后重新获取",timeout] forState:UIControlStateNormal];
+                            self.verifyCodeButton.userInteractionEnabled = NO;
+                            
+                        });
+                        timeout--;
+                    }
+                });
+                dispatch_resume(_timer);
+            } else if ([code isEqualToString:@"210"]){
+                self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+                self.HUD.removeFromSuperViewOnHide = YES;
+                [self.view addSubview:self.HUD];
+                [self.HUD showAnimated:YES];
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"验证码获取失败";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+            } else {
+                self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+                self.HUD.removeFromSuperViewOnHide = YES;
+                [self.view addSubview:self.HUD];
+                [self.HUD showAnimated:YES];
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"请求不合法";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+            }
+        } failure:^(NSError *error) {
+            NSLog(@"Error:%@",error);
+        }];
+    } else {
+        UIAlertController *alterLgnFailControl = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入手机号" preferredStyle:UIAlertControllerStyleAlert];
+        UIAlertAction *configureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        }];
+        [alterLgnFailControl addAction:configureAction];
+        [self presentViewController:alterLgnFailControl animated:YES completion:nil];
+    }
 }
 
 -(BOOL)checkVerifyCode:(NSString *)verifyStr{

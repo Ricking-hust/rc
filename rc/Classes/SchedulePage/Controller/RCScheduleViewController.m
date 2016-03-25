@@ -142,7 +142,6 @@
         int i = 0;
         self.planListRanged[0] = [[NSMutableArray alloc]init];
         for (PlanModel *planModel in planList.list) {
-            NSLog(@"%@",[planModel.planTime substringWithRange:NSMakeRange(5, 5)]);
             if ([[planModel.planTime substringWithRange:NSMakeRange(5, 5)] isEqualToString:defaultStr]) {
                 [self.planListRanged[i] addObject:planModel];
             }else{

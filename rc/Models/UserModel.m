@@ -7,17 +7,20 @@
 //
 
 #import "UserModel.h"
+#import "NSDictionary+NotNullKey.h"
 
 @implementation UserModel
 -(instancetype)initWithDictionary:(NSDictionary *)dict{
     if (self = [super initWithDictionary:dict]) {
-        self.userId     = [dict objectForKey:@"usr_id"];
-        self.userName   = [dict objectForKey:@"usr_name"];
-        self.userPhone  = [dict objectForKey:@"usr_phone"];
-        self.userPic    = [dict objectForKey:@"usr_pic"];
-        self.userSex    = [dict objectForKey:@"usr_sex"];
-        self.userSign   = [dict objectForKey:@"usr_sign"];
-        self.userMail   = [dict objectForKey:@"usr_mail"];
+        self.userId     = [dict objectForSafeKey:@"usr_id"];
+        self.userName   = [dict objectForSafeKey:@"usr_name"];
+        self.userPhone  = [dict objectForSafeKey:@"usr_phone"];
+        self.userPic    = [dict objectForSafeKey:@"usr_pic"];
+        self.userSex    = [dict objectForSafeKey:@"usr_sex"];
+        self.userSign   = [dict objectForSafeKey:@"usr_sign"];
+        self.userMail   = [dict objectForSafeKey:@"usr_mail"];
+        
+        self.cityId = [dict objectForSafeKey:@"ct_id"];
     }
     return self;
 }

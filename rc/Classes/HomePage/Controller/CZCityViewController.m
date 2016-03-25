@@ -56,6 +56,8 @@
         self.guangzhou.locationImage.hidden = YES;
         self.shanghai.locationImage.hidden = YES;
         self.city = Beijing;
+        [userDefaults setObject:@"1" forKey:@"cityId"];
+        [self modifyCity:@"1"];
     }else if ([label.text isEqualToString:@"广州"])
     {
         UIImageView *locationImageView = [btn.superview viewWithTag:11];
@@ -64,6 +66,8 @@
         self.shanghai.locationImage.hidden = YES;
         self.wuhan.locationImage.hidden = YES;
         self.city = Guangzhou;
+        [userDefaults setObject:@"4" forKey:@"cityId"];
+        [self modifyCity:@"4"];
     }else if ([label.text isEqualToString:@"上海"])
     {
         UIImageView *locationImageView = [btn.superview viewWithTag:11];
@@ -72,6 +76,8 @@
         self.guangzhou.locationImage.hidden = YES;
         self.wuhan.locationImage.hidden = YES;
         self.city = Shanghai;
+        [userDefaults setObject:@"2" forKey:@"cityId"];
+        [self modifyCity:@"2"];
     }else
     {
         UIImageView *locationImageView = [btn.superview viewWithTag:11];
@@ -80,6 +86,8 @@
         self.guangzhou.locationImage.hidden = YES;
         self.shanghai.locationImage.hidden = YES;
         self.city = Wuhan;
+        [userDefaults setObject:@"3" forKey:@"cityId"];
+        [self modifyCity:@"3"];
     }
     long int count = self.navigationController.viewControllers.count;
     CZHomeViewController *homePage = (CZHomeViewController *)self.navigationController.viewControllers[count - 2];
@@ -170,6 +178,17 @@
     }];
     [self.guangzhou setConstraints];
 }
+
+-(void)modifyCity:(NSString *)cityId{
+    [[DataManager manager] modifyAccountWithUserId:[userDefaults objectForKey:@"userId"] opType:@"2" userPwdO:@"" userPwdN:@"" username:[userDefaults objectForKey:@"userName"] userSign:[userDefaults objectForKey:@"userSign"] userPic:[userDefaults objectForKey:@"userPic"] userSex:[userDefaults objectForKey:@"userSex"] userMail:[userDefaults objectForKey:@"userMail"] cityId:cityId success:^(NSString *msg) {
+        
+        [userDefaults setObject:cityId forKey:@"cityId"];
+    } failure:^(NSError *error) {
+        NSLog(@"Error:%@",error);;
+    }];
+
+}
+
 //获取当前设备
 - (CurrentDevice)currentDeviceSize
 {

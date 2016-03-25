@@ -281,7 +281,7 @@
     
     self.getActivityListWithIndBlock = ^(IndustryModel *model){
         @strongify(self);
-        return [[DataManager manager] checkIndustryWithCityId:@"1" industryId:model.indId startId:@"0" success:^(ActivityList *acList) {
+        return [[DataManager manager] checkIndustryWithCityId:[userDefaults objectForKey:@"cityId"] industryId:model.indId startId:@"0" success:^(ActivityList *acList) {
             @strongify(self);
             self.activityList = acList;
             [self.acByind setValue:self.activityList forKey:model.indName];

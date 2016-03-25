@@ -7,6 +7,7 @@
 //
 
 #import "BaseModel.h"
+#import "CityModel.h"
 
 @interface UserModel : BaseModel
 
@@ -17,6 +18,7 @@
 @property (nonatomic,copy) NSString *userSex;
 @property (nonatomic,copy) NSString *userPhone;
 @property (nonatomic,copy) NSString *userMail;
+@property (nonatomic,copy) NSString *cityId;
 @property (nonatomic, assign, getter = isLogin) BOOL login;
 
 
