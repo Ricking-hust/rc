@@ -13,7 +13,6 @@
 @property (nonatomic, strong) UIImageView *moreTimeImageiew;
 @property (nonatomic, strong) RCScrollView *timeNodeSV;
 @property (nonatomic, strong) RCTableView *scheduleTV;
-@property (nonatomic, strong) PlanList *planList;
 @property (nonatomic, strong) NSMutableArray *planListRanged;
 @property (nonatomic, strong) UIImageView *currentPoint;
 @end

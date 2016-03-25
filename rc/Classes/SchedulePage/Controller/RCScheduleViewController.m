@@ -85,7 +85,7 @@
     {
 
         self.sc.planListRanged = self.planListRanged;
-        self.sc.planList = self.planList;
+        self.sc.currentPoint.hidden = NO;
     }
 }
 #pragma mark - 添加行程

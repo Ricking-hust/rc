@@ -21,7 +21,6 @@
         self.timeNodeSV = [[RCScrollView alloc]init];
         self.timeNodeSV.tag = 99;
         self.scheduleTV = [[RCTableView alloc]init];
-        self.planList = [[PlanList alloc]init];
         self.planListRanged = [[NSMutableArray alloc]init];
         self.currentPoint = [[UIImageView alloc]init];
         //注册通知，监听行程数据的改变
@@ -46,7 +45,7 @@
 - (void)createTimeNode:(NSNotification *)notification
 {
     NSMutableArray *array = notification.object;
-    self.planListRanged = array;
+//    self.planListRanged = array;
     dispatch_async(dispatch_get_main_queue(), ^{
  
         for (UIView *view in self.timeNodeSV.subviews)
@@ -61,9 +60,7 @@
             for (int i = 0; i<array.count; i++)
             {
 
-                UIView *upLine = [[UIView alloc]init];
-                upLine.backgroundColor = color;
-                [self.timeNodeSV addSubview:upLine];
+                UIView *upLine = [self createLine];
                 upLine.tag = 1 +i;
                 
                 UIView *point = [[UIView alloc]init];
@@ -73,9 +70,7 @@
                 point.layer.cornerRadius = 7;
                 point.backgroundColor = color;
                 
-                UIView *downLine = [[UIView alloc]init];
-                upLine.backgroundColor = color;
-                [self.timeNodeSV addSubview:downLine];
+                UIView *downLine = [self createLine];
                 downLine.tag = 1000 +i;
 
                 if (i == array.count -1)
