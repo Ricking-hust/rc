@@ -33,6 +33,7 @@
     [self setNavigation];
     [self createButtons];
     [self startget];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 //设置导航栏
 - (void)setNavigation
