@@ -8,6 +8,7 @@
 
 #import "RegisteViewController.h"
 #import "MyTextField.h"
+#import "MBProgressHUD.h"
 #import "NSString+MD5.h"
 #import "LoginViewController.h"
 
@@ -25,6 +26,7 @@ static CGFloat const kContainViewYEditing = 60.0;
 @property (nonatomic, strong) MyTextField *usernameField;
 @property (nonatomic, strong) MyTextField *passwordField;
 @property (nonatomic,strong) MyTextField *verifyCodeField;
+@property (nonatomic, strong) MBProgressHUD    *HUD;
 @property (nonatomic,strong) UIButton *verifyCodeButton;
 @property (nonatomic,strong) UIImageView *leftUsernameView;
 @property (nonatomic,strong) UIImageView *leftPasswdView;
@@ -220,28 +222,46 @@ static CGFloat const kContainViewYEditing = 60.0;
 
 -(void)registe{
     if (!self.isRegisting) {
+       @weakify(self)
+        
         [self hideKeyboard];
         
-        [[DataManager manager] UserLoginOrRegisteWithUserphone:self.usernameField.text password:self.passwordField.text op_type:@"2" success:^(UserModel *user) {
-            [DataManager manager].user = user;
-            [self.navigationController popToRootViewControllerAnimated:YES];
-        } failure:^(NSError *error) {
-            NSString *reasonString;
-            
-            if (error.code < 700) {
-                reasonString = @"请检查网络状态";
-            } else {
-                reasonString = @"请检查用户名或密码";
-            }
-            UIAlertController *alterLgnFailControl = [UIAlertController alertControllerWithTitle:@"登录失败" message:reasonString preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *configureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                //[self endLogin];
+        self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        self.HUD.removeFromSuperViewOnHide = YES;
+        [self.view addSubview:self.HUD];
+        [self.HUD showAnimated:YES];
+        if ([self checkVerifyCode:self.verifyCodeField.text]) {
+            @strongify(self);
+            [[DataManager manager] UserLoginOrRegisteWithUserphone:self.usernameField.text password:self.passwordField.text op_type:@"2" success:^(UserModel *user) {
+                @strongify(self);
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"注册成功";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+                [self regBackToForwardViewController];
+            } failure:^(NSError *error) {
+                @strongify(self);
+                NSString *reasonString;
+                
+                if (error.code < 700) {
+                    reasonString = @"请检查网络状态";
+                } else {
+                    reasonString = @"请检查用户名或密码";
+                }
+                UIAlertController *alterLgnFailControl = [UIAlertController alertControllerWithTitle:@"登录失败" message:reasonString preferredStyle:UIAlertControllerStyleAlert];
+                UIAlertAction *configureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    //[self endLogin];
+                }];
+                [alterLgnFailControl addAction:configureAction];
+                [self presentViewController:alterLgnFailControl animated:YES completion:nil];
+                
             }];
-            [alterLgnFailControl addAction:configureAction];
-            [self presentViewController:alterLgnFailControl animated:YES completion:nil];
-            
-        }];
-        
+        }
+        else {
+            @strongify(self);
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"验证码错误";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+        }
     }
 }
 
@@ -251,11 +271,15 @@ static CGFloat const kContainViewYEditing = 60.0;
     NSString *randomNumber = [[NSString alloc]initWithFormat:@"%.6d",num];
     NSString *tokenStr = [NSString stringWithFormat:@"%@sms",randomNumber];
     self.MD5Str = [tokenStr MD5];
-    NSLog(@"randomNumber:%@",randomNumber);
-    NSLog(@"md5Str:%@",self.MD5Str);
     //发送验证码与注册信息
     [[DataManager manager] sendMobileMsgWithMobile:self.usernameField.text type:@"0" msg:randomNumber token:self.MD5Str success:^(NSString *code) {
-        
+        if ([code isEqualToString:@"200"]) {
+            NSLog(@"send success");
+        } else if ([code isEqualToString:@"210"]){
+            NSLog(@"send failed");
+        } else {
+            NSLog(@"请求不合法");
+        }
     } failure:^(NSError *error) {
         NSLog(@"Error:%@",error);
     }];

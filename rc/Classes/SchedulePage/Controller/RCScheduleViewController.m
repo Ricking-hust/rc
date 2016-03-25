@@ -69,7 +69,7 @@
     @weakify(self);
     self.getPlanListBlock = ^(){
         @strongify(self);
-        return [[DataManager manager] getPlanWithUserId:[userDefaults objectForKey:@"userId"] beginDate:@"2016-01-01" endDate:@"2016-12-31" success:^(PlanList *plList) {
+        return [[DataManager manager] getPlanWithUserId:[userDefaults objectForKey:@"userId"] beginDate:@"2016-01-01" endDate:@"2017-01-01" success:^(PlanList *plList) {
             @strongify(self);
             self.planList = plList;
         } failure:^(NSError *error) {
@@ -83,7 +83,6 @@
     [self rangePlanList:self.planList];
     if (self.planListRanged.count != 0)
     {
-
         self.sc.planListRanged = self.planListRanged;
         self.sc.currentPoint.hidden = NO;
     }
@@ -143,7 +142,8 @@
         int i = 0;
         self.planListRanged[0] = [[NSMutableArray alloc]init];
         for (PlanModel *planModel in planList.list) {
-            if ([planModel.planTime substringWithRange:NSMakeRange(5, 5)] == defaultStr) {
+            NSLog(@"%@",[planModel.planTime substringWithRange:NSMakeRange(5, 5)]);
+            if ([[planModel.planTime substringWithRange:NSMakeRange(5, 5)] isEqualToString:defaultStr]) {
                 [self.planListRanged[i] addObject:planModel];
             }else{
                 i = i+1;
