@@ -211,7 +211,11 @@
 {
     self.model.planId = [NSString stringWithFormat:@"%d",10];
     self.model.planContent = self.downView.textView.text;
-    self.model.planTime = self.downView.timeInfoLabel.text;
+    NSString *year = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(0, 4)];
+    NSString *month = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(5, 2)];
+    NSString *day = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(8, 2)];
+    NSString *time = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(12, 5)];
+    self.model.planTime = [NSString stringWithFormat:@"%@-%@-%@ %@",year, month, day, time];
     self.model.plAlarmOne = @"1";
     self.model.plAlarmTwo = @"1";
     self.model.plAlarmThree = @"1";
