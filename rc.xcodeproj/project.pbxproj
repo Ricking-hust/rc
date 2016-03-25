@@ -788,12 +788,12 @@
 		561D01361C47DA5600E4E013 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				C4B300141CA44BCC004516B0 /* NSString+MD5.h */,
-				C4B300151CA44BCC004516B0 /* NSString+MD5.m */,
 				C4BBA8181C89B93300AD02EE /* RegisteViewController.h */,
 				C4BBA8191C89B93300AD02EE /* RegisteViewController.m */,
 				C4C05EE91C85C500005E7FEE /* LoginViewController.h */,
 				C4C05EEA1C85C500005E7FEE /* LoginViewController.m */,
+				C4B300141CA44BCC004516B0 /* NSString+MD5.h */,
+				C4B300151CA44BCC004516B0 /* NSString+MD5.m */,
 				C4C075251C89CF6C00C5E54D /* MyTextField.h */,
 				C4C075261C89CF6C00C5E54D /* MyTextField.m */,
 				561D013A1C47DA5600E4E013 /* HomePage */,

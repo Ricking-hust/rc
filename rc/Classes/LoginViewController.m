@@ -8,6 +8,7 @@
 
 #import "LoginViewController.h"
 #import "MyTextField.h"
+#import "NSString+MD5.h"
 #import "RegisteViewController.h"
 #import "CZHomeViewController.h"
 static CGFloat const kContainViewYNormal = 70.0;
@@ -183,7 +184,7 @@ static CGFloat const kContainViewYEditing = 60.0;
 -(void)login{
     if (!self.isLogining) {
         [self hideKeyboard];
-        
+        //NSString *password = [self.passwordField.text MD5];
         [[DataManager manager] UserLoginOrRegisteWithUserphone:self.usernameField.text password:self.passwordField.text op_type:@"1" success:^(UserModel *user) {
             [DataManager manager].user = user;
             [self endLogin];

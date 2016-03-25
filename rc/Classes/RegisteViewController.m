@@ -261,6 +261,16 @@ static CGFloat const kContainViewYEditing = 60.0;
     }];
 }
 
+-(BOOL)checkVerifyCode:(NSString *)verifyStr{
+    NSString *verifyText = [[NSString alloc]initWithFormat:@"%@sms",verifyStr];
+    NSString *usrCode = [verifyText MD5];
+    if ([usrCode isEqualToString:self.MD5Str]) {
+        return YES;
+    } else {
+        return NO;
+    }
+}
+
 - (void)showKeyboard {
     
     if (self.isKeyboardShowing) {
