@@ -8,6 +8,7 @@
 
 #import "RCScrollView.h"
 #import "Masonry.h"
+#define Animination 0.1
 #define NodeH 114
 //每个节点的高度为104，即滚动104到下一个节点
 @interface RCScrollView ()
@@ -44,21 +45,28 @@
     [self newNodeIndex:scrollView.contentOffsetY];
     if (self.isNodeChanged == YES)
     {
-        [scrollView setContentOffsetY:([self.nodeIndex intValue]) * NodeH];
-        self.isNodeChanged = NO;
-        //设置节点状态--------
-        [self restoreNodeState];
-        [self setNodeState];
+        [UIView animateWithDuration:Animination animations:^{
+            [scrollView setContentOffsetY:([self.nodeIndex intValue]) * NodeH];
+            self.isNodeChanged = NO;
+            //设置节点状态--------
+            [self restoreNodeState];
+            [self setNodeState];
+        }];
+
+
         [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:self.nodeIndex];
     }
     if (([self.nodeIndex intValue]) == 0)
     {
         if (scrollView.contentOffsetY< 20 && scrollView.contentOffsetY >-20)
         {
-            [scrollView setContentOffsetY:0];
-            //设置节点状态----------
-            [self restoreNodeState];
-            [self setNodeState];
+            [UIView animateWithDuration:Animination animations:^{
+                [scrollView setContentOffsetY:0];
+                //设置节点状态----------
+                [self restoreNodeState];
+                [self setNodeState];
+            }];
+
             [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:self.nodeIndex];
         }
     }
@@ -71,21 +79,28 @@
         [self newNodeIndex:scrollView.contentOffsetY];
         if (self.isNodeChanged == YES)
         {
-            [scrollView setContentOffsetY:([self.nodeIndex intValue]) * NodeH];
-            self.isNodeChanged = NO;
-            //设置节点状态----------
-            [self restoreNodeState];
-            [self setNodeState];
+            [UIView animateWithDuration:Animination animations:^{
+                [scrollView setContentOffsetY:([self.nodeIndex intValue]) * NodeH];
+                self.isNodeChanged = NO;
+                //设置节点状态----------
+                [self restoreNodeState];
+                [self setNodeState];
+            }];
+
             [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:self.nodeIndex];
         }
         if (([self.nodeIndex intValue]) == 0)
         {
             if (scrollView.contentOffsetY< 20 && scrollView.contentOffsetY >-20)
             {
-                [scrollView setContentOffsetY:0];
-                //设置节点状态----------
-                [self restoreNodeState];
-                [self setNodeState];
+                [UIView animateWithDuration:Animination animations:^{
+                    [scrollView setContentOffsetY:0];
+                    
+                    //设置节点状态----------
+                    [self restoreNodeState];
+                    [self setNodeState];
+                }];
+
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:self.nodeIndex];
             }
         }
