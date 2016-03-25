@@ -8,6 +8,7 @@
 
 #import "CZMyActivityViewContoller.h"
 #import "RCMyActivityCell.h"
+#import "CZMyActivityInfoViewController.h"
 
 @interface CZMyActivityViewContoller()
 
@@ -91,9 +92,13 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 130;
-//    RCMyActivityCell *cell = (RCMyActivityCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-//    return cell.rowHeight;
     
+}
+#pragma mark - cell点击事件
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+//    CZMyActivityInfoViewController *ac = [[CZMyActivityInfoViewController alloc]init];
+//    [self.navigationController pushViewController:ac animated:YES];
 }
 - (void)setValueOfCell:(RCMyActivityCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {

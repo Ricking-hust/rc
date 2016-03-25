@@ -18,8 +18,6 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     
-    NSLog(@"%s",__func__);
-    
     // 拿到 TabBar 在拿到想应的item
     UITabBar *tabBar = self.tabBar;
     UITabBarItem *item0 = [tabBar.items objectAtIndex:0];
