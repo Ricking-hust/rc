@@ -14,6 +14,7 @@
 @property(nonatomic, weak)UIPageControl *pageControl;
 @property(nonatomic, weak)UILabel *label;
 @property(nonatomic, weak)UIView *segmentation;
+@property (nonatomic,strong) NSMutableArray *imageArray;
 
 /**
  *	类方法

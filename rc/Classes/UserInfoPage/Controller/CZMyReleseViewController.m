@@ -227,7 +227,7 @@
     @weakify(self)
     self.getUserActivityBlock = ^(){
         @strongify(self)
-        return [[DataManager manager] getUserActivityWithUserId:[userDefaults objectForKey:@"userId"] opType:@"1" success:^(ActivityList *acList) {
+        return [[DataManager manager] getUserActivityWithUserId:[userDefaults objectForKey:@"userId"] opType:@"3" success:^(ActivityList *acList) {
             @strongify(self)
             self.acList = acList;
         } failure:^(NSError *error) {

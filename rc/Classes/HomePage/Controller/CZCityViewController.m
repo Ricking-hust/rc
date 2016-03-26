@@ -141,33 +141,34 @@
         make.top.equalTo(self.view.mas_top).with.offset(74);
         make.left.and.right.bottom.equalTo(self.view);
     }];
-    CGFloat wuhanH = self.wuhan.cityBtn.imageView.image.size.height + 18 + 11 +10;
-    CGFloat padding = (kScreenWidth - 240)/4;
-    [self.wuhan mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.bgView.mas_left).offset(padding);
-        make.top.equalTo(self.bgView.mas_top).offset(28);
-        make.height.mas_equalTo(wuhanH);
-        make.width.mas_equalTo(80);
-    }];
-    [self.wuhan setConstraints];
     
+    CGFloat padding = (kScreenWidth - 240)/4;
     CGFloat beijingH = self.beijing.cityBtn.imageView.image.size.height + 18 + 11 +10;
     [self.beijing mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.wuhan.mas_right).offset(padding);
-        make.top.equalTo(self.wuhan.mas_top);
+        make.left.equalTo(self.bgView.mas_left).offset(padding);
+        make.top.equalTo(self.bgView.mas_top).offset(28);
         make.height.mas_equalTo(beijingH);
         make.width.mas_equalTo(80);
     }];
     [self.beijing setConstraints];
     
-    CGFloat shanghaiH = self.beijing.cityBtn.imageView.image.size.height + 18 + 11 +10;
+     CGFloat shanghaiH = self.beijing.cityBtn.imageView.image.size.height + 18 + 11 +10;
     [self.shanghai mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.beijing.mas_right).offset(padding);
-        make.top.equalTo(self.wuhan.mas_top);
+        make.top.equalTo(self.beijing.mas_top);
         make.height.mas_equalTo(shanghaiH);
         make.width.mas_equalTo(80);
     }];
     [self.shanghai setConstraints];
+    
+    CGFloat wuhanH = self.wuhan.cityBtn.imageView.image.size.height + 18 + 11 +10;
+    [self.wuhan mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.shanghai.mas_right).offset(padding);
+        make.top.equalTo(self.beijing.mas_top);
+        make.height.mas_equalTo(wuhanH);
+        make.width.mas_equalTo(80);
+    }];
+    [self.wuhan setConstraints];
     
     CGFloat guangzhouH = self.beijing.cityBtn.imageView.image.size.height + 18 + 11 +10;
     [self.guangzhou mas_makeConstraints:^(MASConstraintMaker *make) {

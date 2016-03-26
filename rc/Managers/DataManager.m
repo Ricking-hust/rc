@@ -169,6 +169,15 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
     }];
 }
 
+-(NSURLSessionDataTask *) getFlashWithSuccess:(void (^)(FlashActivityModel *))success failure:(void (^)(NSError *))failure{
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app.myrichang.com/Home/Activity/getFlash" parameters:nil success:^(NSURLSessionDataTask *task, id responseObject) {
+        FlashActivityModel *FlashAc = [[FlashActivityModel alloc] initWithDictionary:[responseObject objectForKey:@"data"]];
+        success(FlashAc);
+    } failure:^(NSError *error) {
+        NSLog(@"Error:%@",error);
+    }];
+}
+
 -(NSURLSessionDataTask *) getAllTagsSuccess:(void (^)(TagsList *tagList))success
                                     failure:(void (^)(NSError *error))failure{
     

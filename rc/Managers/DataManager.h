@@ -10,6 +10,7 @@
 #import "UserModel.h"
 #import "CityModel.h"
 #import "ActivityModel.h"
+#import "FlashActivityModel.h"
 #import "IndustryModel.h"
 #import "planModel.h"
 #import "TagModel.h"
@@ -34,6 +35,9 @@ typedef NS_ENUM(NSInteger,RcErrorType) {
                                      cityId:(NSString *)cityId
                                     success:(void (^)(NSString *))success
                                     failure:(void (^)(NSError *))failure;
+
+-(NSURLSessionDataTask *) getFlashWithSuccess:(void (^)(FlashActivityModel *FLashAc))success
+                                      failure:(void (^)(NSError *error))failure;
 
 -(NSURLSessionDataTask *) getAllTagsSuccess:(void (^)(TagsList *tagList))success
                                     failure:(void (^)(NSError *error))failure;

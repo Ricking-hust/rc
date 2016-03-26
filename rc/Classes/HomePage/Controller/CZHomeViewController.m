@@ -32,8 +32,11 @@
 @property (nonatomic,strong) CityList *cityList;
 @property (nonatomic,strong) NSString *cityId;
 @property (nonatomic,strong) NSMutableArray *cityNameList;
+@property (nonatomic,strong) NSString *minAcId;
 @property (nonatomic,strong) ActivityModel *activitymodel;
+@property (nonatomic,strong) FlashActivityModel *flashModel;
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListBlock)(NSString *minAcId);
+@property (nonatomic,copy) NSURLSessionDataTask *(^getFlash)();
 @property (nonatomic,copy) NSURLSessionDataTask *(^getCityListBlock)();
 @property (weak, nonatomic) IBOutlet CZCityButton *leftButton;
 
@@ -91,6 +94,7 @@
     self.city = Beijing;
     self.cityId = @"1";
     self.tableView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    self.tableView.mj_footer= [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     
 }
@@ -108,8 +112,13 @@
 #pragma mark - 更新数据
 - (void)loadNewData
 {
-    NSLog(@"loadNewData");
+    [self refreshRecomend];
     [self.tableView.mj_header endRefreshing];
+}
+
+-(void)getMoreData{
+    [self getMoreRecomend];
+    [self.tableView.mj_footer endRefreshing];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -121,6 +130,15 @@
 
 - (void)configureBlocks{
     @weakify(self);
+    self.getFlash = ^{
+        @strongify(self)
+        return [[DataManager manager] getFlashWithSuccess:^(FlashActivityModel *FLashAc) {
+            self.
+        } failure:^(NSError *error) {
+            NSLog(@"Error:%@",error);
+        }];
+    };
+    
     self.getActivityListBlock = ^(NSString *minAcId){
         @strongify(self);
         NSString *userId = [[NSString alloc]init];
@@ -129,7 +147,7 @@
         } else {
             userId = @"-1";
         }
-        return [[DataManager manager] getActivityRecommendWithCityId:[userDefaults objectForKey:@"cityId"] startId:@"0" num:@"10" userId:userId success:^(ActivityList *acList) {
+        return [[DataManager manager] getActivityRecommendWithCityId:[userDefaults objectForKey:@"cityId"] startId:minAcId num:@"10" userId:userId success:^(ActivityList *acList) {
             @strongify(self);
             self.activityList = acList;
         } failure:^(NSError *error) {
@@ -148,24 +166,30 @@
     };
 }
 
--(void)refreshRecomend{
+- (void)startget{
     
+    if (self.getActivityListBlock) {
+        self.getActivityListBlock(@"0");
+    }
 }
 
-- (void)startget{
-    if (self.getCityListBlock) {
-        self.getCityListBlock();
+-(void)refreshRecomend{
+    if (self.getActivityListBlock) {
+        self.getActivityListBlock(self.minAcId);
     }
-    
-//    if (self.getActivityListBlock) {
-//        self.getActivityListBlock();
-//    }
+}
+
+-(void)getMoreRecomend{
+    if (self.getActivityListBlock) {
+        self.getActivityListBlock(self.minAcId);
+    }
 }
 
 - (void) setActivityList:(ActivityList *)activityList{
     
     _activityList = activityList;
-    
+    ActivityModel *minModel = _activityList.list.lastObject;
+    self.minAcId = minModel.acID;
     [self.tableView reloadData];
 }
 
