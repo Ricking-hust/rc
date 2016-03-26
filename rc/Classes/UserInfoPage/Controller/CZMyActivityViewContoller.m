@@ -8,17 +8,44 @@
 
 #import "CZMyActivityViewContoller.h"
 #import "RCMyActivityCell.h"
-#import "CZMyActivityInfoViewController.h"
+#import "CZActivityInfoViewController.h"
+#import "Masonry.h"
 
 @interface CZMyActivityViewContoller()
 
-@property(nonatomic, strong) ActivityList *acList;
+@property (nonatomic, strong) ActivityList *acList;
+@property (nonatomic, strong) UIImageView *imgBackground;
+@property (nonatomic, strong) NSMutableDictionary *acCount;
 @property (nonatomic, copy) NSURLSessionDataTask *(^getUserActivityBlock)();
 
 @end
 
 @implementation CZMyActivityViewContoller
-
+- (UIImageView *)imgBackground
+{
+    if (!_imgBackground) {
+        _imgBackground = [[UIImageView alloc]init];
+        [self.view addSubview:_imgBackground];
+        [_imgBackground mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view.mas_top).offset(64);
+            make.left.equalTo(self.view.mas_left);
+            make.right.equalTo(self.view.mas_right);
+            make.bottom.equalTo(self.view.mas_bottom);
+        }];
+        _imgBackground.image = [UIImage imageNamed:@"heart_broken_icon"];
+        _imgBackground.hidden = YES;
+    }
+    return _imgBackground;
+}
+- (NSMutableDictionary *)acCount
+{
+    if (!_acCount)
+    {
+        _acCount = [[NSMutableDictionary alloc]init];
+        [_acCount setObject:@"NO" forKey:@"count"];
+    }
+    return _acCount;
+}
 - (void)viewWillAppear:(BOOL)animated
 {
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
@@ -27,11 +54,21 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    [self.acCount addObserver:self forKeyPath:@"count" options:NSKeyValueObservingOptionNew context:nil];
     [self configureBlocks];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self setNavigation];
     [self startget];
+}
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
+{
+//    if (<#condition#>) {
+//        <#statements#>
+//    }
+}
+- (void)dealloc
+{
+    [self.acCount removeObserver:self forKeyPath:@"count"];
 }
 - (void)setNavigation
 {
@@ -97,8 +134,10 @@
 #pragma mark - cell点击事件
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    CZMyActivityInfoViewController *ac = [[CZMyActivityInfoViewController alloc]init];
-//    [self.navigationController pushViewController:ac animated:YES];
+    CZActivityInfoViewController *ac = [[CZActivityInfoViewController alloc]init];
+    
+    ac.activityModelPre = self.acList.list[indexPath.row];
+    [self.navigationController pushViewController:ac animated:YES];
 }
 - (void)setValueOfCell:(RCMyActivityCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
@@ -139,8 +178,17 @@
 
 - (void) setAcList:(ActivityList *)acList{
     _acList = acList;
-    
-    [self.tableView reloadData];
+    if (_acList.list.count != 0)
+    {
+        self.tableView.hidden = NO;
+        self.imgBackground.hidden = YES;
+        [self.tableView reloadData];
+    }else
+    {
+        self.imgBackground.hidden = NO;
+        self.tableView.hidden = YES;
+    }
+
 }
 
 @end

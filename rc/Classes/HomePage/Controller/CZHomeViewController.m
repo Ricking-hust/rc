@@ -102,11 +102,6 @@
     [paths addObject:[[NSBundle mainBundle] pathForResource:@"tutor2" ofType:@"jpg"]];
     [paths addObject:[[NSBundle mainBundle] pathForResource:@"tutor3" ofType:@"jpg"]];
     [paths addObject:[[NSBundle mainBundle] pathForResource:@"tutor4" ofType:@"jpg"]];
-//    NSString *image1 = @"guide1";
-//    NSString *image2 = @"guide2";
-//    NSString *image3 = @"guide3";
-//    NSString *image4 = @"guide4";
-//    NSArray *images = [[NSArray alloc]initWithObjects:image1,image2,image3,image4, nil];
     [[KSGuideManager shared] showGuideViewWithImages:paths];
 }
 
