@@ -209,11 +209,78 @@
 
 
 #pragma mark - Table view data source
+//section头部间距
+- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
+{
+    if (section == 0)
+    {
+        return 1;
+    }
+    return 60.0/2;//section头部高度
+}
+//section头部视图
+- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+{
+    UIView *view;
+    UIColor *textcolor = [UIColor colorWithRed:131.0/255.0 green:131.0/255.0  blue:131.0/255.0  alpha:1.0];
+    if (section == 0)
+    {
+        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 1)];
+    }else if(section == 1)
+    {
+        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 60, 30)];
+        label.font = [UIFont systemFontOfSize:12];
+        label.text = @"活动详情";
+        label.textColor = textcolor;
+        [view addSubview:label];
+    }else if(section == 2)
+    {
+        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 60, 30)];
+        label.font = [UIFont systemFontOfSize:12];
+        label.text = @"发布者";
+        label.textColor = textcolor;
+        [view addSubview:label];
+      
+    }else if (section == 3)
+    {
+        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 60, 30)];
+        label.font = [UIFont systemFontOfSize:12];
+        label.text = @"主讲人";
+        label.textColor = textcolor;
+        [view addSubview:label];
+    }else
+    {
+        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 60, 30)];
+        label.font = [UIFont systemFontOfSize:12];
+        label.text = @"更多内容";
+        label.textColor = textcolor;
+        [view addSubview:label];
+    }
+    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
+    return view;
+    
+}
+//section底部间距
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    return 1;
+}
+//section底部视图
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 1)];
+    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
+    return view;
+}
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
-    return 3;
+    return 5;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -225,7 +292,8 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    switch (indexPath.section) {
+    switch (indexPath.section)
+    {
         case 0:
         {
             CZTimeCell *cell = [CZTimeCell timeCellWithTableView:tableView];
@@ -248,11 +316,24 @@
             return cell;
         }
             break;
+        case 2:
+        {
+            UITableViewCell *cell = [[UITableViewCell alloc]init];
+            return cell;
+        }
+            break;
+        case 3:
+        {
+            UITableViewCell *cell = [[UITableViewCell alloc]init];
+            return cell;
+        }
+            break;
         default:
         {
             static NSString *identifier = @"cell";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-            if (!cell){
+            if (!cell)
+            {
                 cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                 [cell.contentView addSubview:self.webView];
                 /* 忽略点击效果 */
@@ -263,6 +344,7 @@
             break;
     }
 }
+
 //cell的控件进行赋值
 - (void) setCellValue:(UITableViewCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
@@ -323,6 +405,12 @@
     }else if(indexPath.section == 1)
     {
         return [self heightForAcInfoCell];
+    }else if (indexPath.section == 2)
+    {
+        return 44;
+    }else if (indexPath.section == 3)
+    {
+        return 44;
     }else
     {
         return self.webView.frame.size.height;
@@ -539,7 +627,7 @@
 //    [self.navigationItem setLeftBarButtonItem:leftButton];
 //    
     
-    self.leftBarButton = [[RCBarButton alloc]initWithFrame:CGRectMake(0, 0, 150, 30)];
+    self.leftBarButton = [[RCBarButton alloc]initWithFrame:CGRectMake(0, 0, 200, 30)];
     [self.leftBarButton addTarget:self action:@selector(backToForwardViewController) forControlEvents:UIControlEventTouchUpInside];
     [self.leftBarButton setImage:[UIImage imageNamed:@"backIcon_white"] forState:UIControlStateNormal];
     self.leftBarButton.titleLabel.font = [UIFont systemFontOfSize:15];
@@ -767,60 +855,7 @@
     }];
 }
 
-
-
-//section头部间距
-- (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
-{
-    if (section == 0) {
-        return 1;
-    }
-    return 60.0/2;//section头部高度
-}
-//section头部视图
-- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-{
-    UIView *view;
-    UIColor *textcolor = [UIColor colorWithRed:131.0/255.0 green:131.0/255.0  blue:131.0/255.0  alpha:1.0];
-    if (section == 0)
-    {
-        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 1)];
-    }else if(section == 1)
-    {
-        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 60, 30)];
-        label.font = [UIFont systemFontOfSize:12];
-        label.text = @"活动详情";
-        label.textColor = textcolor;
-        [view addSubview:label];
-    }else
-    {
-        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 60, 30)];
-        label.font = [UIFont systemFontOfSize:12];
-        label.text = @"活动介绍";
-        label.textColor = textcolor;
-        [view addSubview:label];
-    }
-    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-    return view;
-    
-}
-//section底部间距
-- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-{
-    return 1;
-}
-//section底部视图
-- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-{
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 1)];
-    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-    return view;
-}
-
 #pragma mark - Click Event
-
 - (void)onClickCollection
 {
     self.HUD = [[MBProgressHUD alloc] initWithView:self.view];

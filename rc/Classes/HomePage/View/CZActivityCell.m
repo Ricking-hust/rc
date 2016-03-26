@@ -125,7 +125,7 @@
         make.height.mas_equalTo(35);
     }];
     [self.ac_time mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.ac_title.mas_bottom).offset(20);
+        make.top.equalTo(self.ac_title.mas_bottom).offset(10);
         make.left.equalTo(self.ac_title.mas_left);
         make.width.mas_equalTo(maxfW);
         make.height.mas_equalTo(17);
