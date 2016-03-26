@@ -407,15 +407,27 @@
         return [self heightForAcInfoCell];
     }else if (indexPath.section == 2)
     {
-        return 44;
+        return [self heightForReleaseCell];
     }else if (indexPath.section == 3)
     {
-        return 44;
+        return [self heightForSpeakerCell];
     }else
     {
         return self.webView.frame.size.height;
     }
     
+}
+- (CGFloat)heightForSpeakerCell
+{
+    CGSize maxSize = CGSizeMake(kScreenWidth - 30, MAXFLOAT);
+    CGSize size = [self sizeWithText:@"" maxSize:maxSize fontSize:14];
+    return size.height + PADDING;
+}
+- (CGFloat)heightForReleaseCell
+{
+    CGSize maxSize = CGSizeMake(kScreenWidth - 30, MAXFLOAT);
+    CGSize size = [self sizeWithText:@"" maxSize:maxSize fontSize:14];
+    return size.height + PADDING;
 }
 - (CGFloat)heightForAcInfoCell
 {
