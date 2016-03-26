@@ -11,8 +11,11 @@
 @class ActivityIntroduction;
 @interface CZActivityInfoCell : UITableViewCell
 @property (nonatomic,strong)ActivityModel *model;
+@property (nonatomic, strong)UILabel *placeLabel;
 @property (nonatomic, strong)UILabel *ac_placeLabel;
+@property (nonatomic, strong)UILabel *sizeLabel;
 @property (nonatomic, strong)UILabel *ac_sizeLabel;
+@property (nonatomic, strong)UILabel *payLabel;
 @property (nonatomic, strong)UILabel *ac_payLabel;
 
 /**
