@@ -274,8 +274,9 @@
     
     [cell.ac_poster sd_setImageWithURL:[NSURL URLWithString:ac.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     cell.ac_title.text = ac.acTitle;
-    cell.ac_time.text = ac.acTime;
-    cell.ac_place.text = ac.acPlace;
+    long int len = [ac.acTime length];
+    cell.ac_time.text = [NSString stringWithFormat:@"时间: %@", [ac.acTime substringWithRange:NSMakeRange(0, len - 3)]];
+    cell.ac_place.text = [NSString stringWithFormat:@"地点: %@", ac.acPlace];
     NSMutableArray *Artags = [[NSMutableArray alloc]init];
     
     for (TagModel *model in ac.tagsList.list) {

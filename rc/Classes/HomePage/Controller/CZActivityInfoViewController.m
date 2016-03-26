@@ -18,6 +18,7 @@
 #import "UINavigationBar+Awesome.h"
 #import "UIImageView+LBBlurredImage.h"
 #import "MBProgressHUD.h"
+#import "RCBarButton.h"
 //ShareSDK-------------------------------------------
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKExtension/SSEShareHelper.h>
@@ -266,7 +267,10 @@
 {
     if ([cell isKindOfClass:[CZTimeCell class]])
     {
-        ((CZTimeCell*)cell).timeLabel.text = self.activitymodel.acTime;
+        NSString *dateStr = [self.activitymodel.acTime substringWithRange:NSMakeRange(0, 10)];
+        NSString *week = [self weekLabelStr:dateStr];
+        NSString *time = [self.activitymodel.acTime substringWithRange:NSMakeRange(11, 5)];
+        ((CZTimeCell*)cell).timeLabel.text = [NSString stringWithFormat:@"时间: %@ %@ %@",dateStr, week, time];
         
     }else if([cell isKindOfClass:[CZActivityInfoCell class]])
     {
@@ -276,6 +280,39 @@
         ;
     }
 }
+
+- (NSString *)weekLabelStr:(NSString *)dateStr
+{
+    NSString *year = [dateStr substringWithRange:NSMakeRange(0, 4)];
+    NSString *month = [dateStr substringWithRange:NSMakeRange(5, 2)];
+    NSString *day = [dateStr substringWithRange:NSMakeRange(8, 2)];
+    NSString *strWeek = [NSString stringWithFormat:@"%@-%@-%@",year,month,day];
+    NSDateFormatter *dateformat=[[NSDateFormatter alloc]init];
+    [dateformat setDateFormat:@"yyyy-MM-dd"];//设置格式
+    [dateformat setTimeZone:[[NSTimeZone alloc]initWithName:@"Asia/Beijing"]];//指定时区
+    NSDate *date = [dateformat dateFromString:strWeek];
+    return [self weekStringFromDate:date];
+    
+}
+
+/**
+ *  根据日期返回星期
+ *
+ * @param date 指定的日期
+ *
+ * @return 返回指定日期的星期
+ */
+-(NSString *)weekStringFromDate:(NSDate *)date
+{
+    NSArray *weeks = @[[NSNull null],@"周日",@"周一",@"周二",@"周三",@"周四",@"周五",@"周六"];
+    NSCalendar *calendar =[[NSCalendar alloc]initWithCalendarIdentifier:NSCalendarIdentifierGregorian];
+    NSTimeZone *timeZone =[[NSTimeZone alloc]initWithName:@"Asia/Beijing"];
+    [calendar setTimeZone:timeZone];
+    NSCalendarUnit calendarUnit = NSCalendarUnitWeekday;
+    NSDateComponents *components = [calendar components:calendarUnit fromDate:date];
+    return [weeks objectAtIndex:components.weekday];
+}
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     if (indexPath.section == 0)
@@ -485,13 +522,21 @@
     titleLabel.font         = [UIFont systemFontOfSize:18];
     titleLabel.textColor    = [UIColor  whiteColor];
     titleLabel.textAlignment= NSTextAlignmentCenter;
-    titleLabel.text = @"活动介绍";
+    titleLabel.text = @"";
     self.navigationItem.titleView = titleLabel;
     
     //设置导航栏的左侧按钮
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(backToForwardViewController)];
-    leftButton.tintColor = [UIColor whiteColor];
-    [self.navigationItem setLeftBarButtonItem:leftButton];
+//    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(backToForwardViewController)];
+//    leftButton.tintColor = [UIColor whiteColor];
+//    [self.navigationItem setLeftBarButtonItem:leftButton];
+//    
+    
+    RCBarButton *button = [[RCBarButton alloc]initWithFrame:CGRectMake(0, 0, 150, 30)];
+    [button addTarget:self action:@selector(backToForwardViewController) forControlEvents:UIControlEventTouchUpInside];
+    [button setImage:[UIImage imageNamed:@"backIcon"] forState:UIControlStateNormal];
+    [button setTitle:@"确定" forState:UIControlStateNormal];
+    UIBarButtonItem *left = [[UIBarButtonItem alloc]initWithCustomView:button];
+    [self.navigationItem setLeftBarButtonItem:left];
     
 //    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"shareIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(didShare)];
 //    [self.navigationItem setRightBarButtonItem:rightButton];

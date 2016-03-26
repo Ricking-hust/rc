@@ -10,7 +10,7 @@
 #import "RCMyActivityCell.h"
 #import "CZActivityInfoViewController.h"
 #import "Masonry.h"
-
+#import "UINavigationBar+Awesome.h"
 @interface CZMyActivityViewContoller()
 
 @property (nonatomic, strong) ActivityList *acList;
@@ -23,17 +23,16 @@
 @implementation CZMyActivityViewContoller
 - (UIImageView *)imgBackground
 {
-    if (!_imgBackground) {
+    if (!_imgBackground)
+    {
         _imgBackground = [[UIImageView alloc]init];
+        _imgBackground.image = [UIImage imageNamed:@"heart_broken_icon"];
         [self.view addSubview:_imgBackground];
         [_imgBackground mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view.mas_top).offset(64);
-            make.left.equalTo(self.view.mas_left);
-            make.right.equalTo(self.view.mas_right);
-            make.bottom.equalTo(self.view.mas_bottom);
+            make.size.mas_equalTo(_imgBackground.image.size);
+            make.center.equalTo(self.view);
         }];
-        _imgBackground.image = [UIImage imageNamed:@"heart_broken_icon"];
-        _imgBackground.hidden = YES;
+
     }
     return _imgBackground;
 }
@@ -48,12 +47,16 @@
 }
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    
+    [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
 }
 
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     [self.acCount addObserver:self forKeyPath:@"count" options:NSKeyValueObservingOptionNew context:nil];
     [self configureBlocks];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
@@ -73,8 +76,6 @@
 - (void)setNavigation
 {
     self.navigationItem.title = @"我的活动";
-    self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
-    
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(backToForwardViewController)];
     
     [self.navigationItem setLeftBarButtonItem:leftButton];
@@ -185,8 +186,8 @@
         [self.tableView reloadData];
     }else
     {
-        self.imgBackground.hidden = NO;
-        self.tableView.hidden = YES;
+//        self.imgBackground.hidden = NO;
+//        self.tableView.hidden = YES;
     }
 
 }
