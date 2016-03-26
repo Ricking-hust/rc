@@ -133,7 +133,7 @@
     self.getFlash = ^{
         @strongify(self)
         return [[DataManager manager] getFlashWithSuccess:^(FlashActivityModel *FLashAc) {
-            self.
+            //self.
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];

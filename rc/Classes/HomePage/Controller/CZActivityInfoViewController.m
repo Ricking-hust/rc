@@ -42,6 +42,7 @@
 
 @property (nonatomic, strong) UIButton *collectionBtn;
 @property (nonatomic, strong) UIButton *addToSchedule;
+@property (nonatomic, strong) RCBarButton *leftBarButton;
 
 @property (nonatomic, strong) MBProgressHUD    *HUD;
 @property (nonatomic, strong) NSString *isCollect;
@@ -389,11 +390,12 @@
     [self setSubViewsConstraint];
     
 }
+#pragma mark - tableView的滚动事件
 // 下拉后图片拉伸的效果方法下载这个里面
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     CGFloat yOffset = scrollView.contentOffset.y;  // 偏移的y值
-    if (yOffset < 0)
+    if (yOffset <= 0)
     {
         CGFloat totalOffset = 215 + ABS(yOffset);
 
@@ -404,7 +406,13 @@
             make.height.mas_equalTo(totalOffset);
 
         }];
+        [self.leftBarButton setTitle:@"活动介绍" forState:UIControlStateNormal];
+    }else
+    {
+
+        [self.leftBarButton setTitle:self.activitymodel.acTitle forState:UIControlStateNormal];
     }
+    
 }
 
 //对tableView头进行赋值
@@ -531,11 +539,12 @@
 //    [self.navigationItem setLeftBarButtonItem:leftButton];
 //    
     
-    RCBarButton *button = [[RCBarButton alloc]initWithFrame:CGRectMake(0, 0, 150, 30)];
-    [button addTarget:self action:@selector(backToForwardViewController) forControlEvents:UIControlEventTouchUpInside];
-    [button setImage:[UIImage imageNamed:@"backIcon"] forState:UIControlStateNormal];
-    [button setTitle:@"确定" forState:UIControlStateNormal];
-    UIBarButtonItem *left = [[UIBarButtonItem alloc]initWithCustomView:button];
+    self.leftBarButton = [[RCBarButton alloc]initWithFrame:CGRectMake(0, 0, 150, 30)];
+    [self.leftBarButton addTarget:self action:@selector(backToForwardViewController) forControlEvents:UIControlEventTouchUpInside];
+    [self.leftBarButton setImage:[UIImage imageNamed:@"backIcon_white"] forState:UIControlStateNormal];
+    self.leftBarButton.titleLabel.font = [UIFont systemFontOfSize:15];
+    [self.leftBarButton setTitle:@"活动介绍" forState:UIControlStateNormal];
+    UIBarButtonItem *left = [[UIBarButtonItem alloc]initWithCustomView:self.leftBarButton];
     [self.navigationItem setLeftBarButtonItem:left];
     
 //    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"shareIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(didShare)];
