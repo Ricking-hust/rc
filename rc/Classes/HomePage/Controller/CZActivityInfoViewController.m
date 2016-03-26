@@ -493,9 +493,9 @@
     leftButton.tintColor = [UIColor whiteColor];
     [self.navigationItem setLeftBarButtonItem:leftButton];
     
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"shareIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(didShare)];
-    [self.navigationItem setRightBarButtonItem:rightButton];
-    [rightButton setTintColor:[UIColor whiteColor]];
+//    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"shareIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(didShare)];
+//    [self.navigationItem setRightBarButtonItem:rightButton];
+//    [rightButton setTintColor:[UIColor whiteColor]];
 
 }
 

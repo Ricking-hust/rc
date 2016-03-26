@@ -24,6 +24,8 @@
 //MJReflesh--------------------------------
 #import "MJRefresh.h"
 #import "RCHomeRefreshHeader.h"
+//引导员
+#import "KSGuideManager.h"
 
 @interface CZHomeViewController ()
 @property (nonatomic,strong) ActivityList *activityList;
@@ -76,6 +78,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self guide];
     self.city = Beijing;
     self.cityId =@"1";
     [self configureBlocks];
@@ -89,6 +92,17 @@
     self.cityId = @"1";
     self.tableView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
+    
+}
+- (void)guide
+{
+    NSMutableArray *paths = [NSMutableArray new];
+    
+    [paths addObject:[[NSBundle mainBundle] pathForResource:@"tutor1" ofType:@"jpg"]];
+    [paths addObject:[[NSBundle mainBundle] pathForResource:@"tutor2" ofType:@"jpg"]];
+    [paths addObject:[[NSBundle mainBundle] pathForResource:@"tutor3" ofType:@"jpg"]];
+    [paths addObject:[[NSBundle mainBundle] pathForResource:@"tutor4" ofType:@"jpg"]];
+    [[KSGuideManager shared] showGuideViewWithImages:paths];
 }
 
 #pragma mark - 更新数据

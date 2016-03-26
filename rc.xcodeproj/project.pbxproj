@@ -154,7 +154,11 @@
 		56E8427B1C4BA74C00D1D198 /* CZTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8427A1C4BA74C00D1D198 /* CZTimeCell.m */; };
 		56E8427E1C4BB8E500D1D198 /* CZActivityInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8427D1C4BB8E500D1D198 /* CZActivityInfoCell.m */; };
 		56E8C6701C8A2BD000435758 /* CZRemintTimeView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8C66F1C8A2BD000435758 /* CZRemintTimeView.m */; };
-		56EC64B71CA55CB200B9CC6D /* CZMyActivityInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56EC64B61CA55CB200B9CC6D /* CZMyActivityInfoViewController.m */; };
+		56E9D3951CA56F8B005FF799 /* KSGuideManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E9D3941CA56F8B005FF799 /* KSGuideManager.m */; };
+		56E9D39A1CA57665005FF799 /* tutor1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 56E9D3961CA57665005FF799 /* tutor1.jpg */; };
+		56E9D39B1CA57665005FF799 /* tutor3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 56E9D3971CA57665005FF799 /* tutor3.jpg */; };
+		56E9D39C1CA57665005FF799 /* tutor2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 56E9D3981CA57665005FF799 /* tutor2.jpg */; };
+		56E9D39D1CA57665005FF799 /* tutor4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 56E9D3991CA57665005FF799 /* tutor4.jpg */; };
 		56F02CAA1CA2884B00E0BBB4 /* MJRefreshAutoFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F02C801CA2884B00E0BBB4 /* MJRefreshAutoFooter.m */; };
 		56F02CAB1CA2884B00E0BBB4 /* MJRefreshBackFooter.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F02C821CA2884B00E0BBB4 /* MJRefreshBackFooter.m */; };
 		56F02CAC1CA2884B00E0BBB4 /* MJRefreshComponent.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F02C841CA2884B00E0BBB4 /* MJRefreshComponent.m */; };
@@ -500,8 +504,12 @@
 		56E8427D1C4BB8E500D1D198 /* CZActivityInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZActivityInfoCell.m; sourceTree = "<group>"; };
 		56E8C66E1C8A2BD000435758 /* CZRemintTimeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZRemintTimeView.h; sourceTree = "<group>"; };
 		56E8C66F1C8A2BD000435758 /* CZRemintTimeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZRemintTimeView.m; sourceTree = "<group>"; };
-		56EC64B51CA55CB200B9CC6D /* CZMyActivityInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZMyActivityInfoViewController.h; sourceTree = "<group>"; };
-		56EC64B61CA55CB200B9CC6D /* CZMyActivityInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZMyActivityInfoViewController.m; sourceTree = "<group>"; };
+		56E9D3931CA56F8B005FF799 /* KSGuideManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = KSGuideManager.h; sourceTree = "<group>"; };
+		56E9D3941CA56F8B005FF799 /* KSGuideManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = KSGuideManager.m; sourceTree = "<group>"; };
+		56E9D3961CA57665005FF799 /* tutor1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tutor1.jpg; sourceTree = "<group>"; };
+		56E9D3971CA57665005FF799 /* tutor3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tutor3.jpg; sourceTree = "<group>"; };
+		56E9D3981CA57665005FF799 /* tutor2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tutor2.jpg; sourceTree = "<group>"; };
+		56E9D3991CA57665005FF799 /* tutor4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = tutor4.jpg; sourceTree = "<group>"; };
 		56F02C7F1CA2884B00E0BBB4 /* MJRefreshAutoFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshAutoFooter.h; sourceTree = "<group>"; };
 		56F02C801CA2884B00E0BBB4 /* MJRefreshAutoFooter.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MJRefreshAutoFooter.m; sourceTree = "<group>"; };
 		56F02C811CA2884B00E0BBB4 /* MJRefreshBackFooter.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MJRefreshBackFooter.h; sourceTree = "<group>"; };
@@ -796,6 +804,7 @@
 		561D01361C47DA5600E4E013 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
+				56E9D3921CA56F8B005FF799 /* Guide */,
 				C4BBA8181C89B93300AD02EE /* RegisteViewController.h */,
 				C4BBA8191C89B93300AD02EE /* RegisteViewController.m */,
 				C4C05EE91C85C500005E7FEE /* LoginViewController.h */,
@@ -1126,8 +1135,6 @@
 				56E523691C75BAAA00794B0E /* CZSettingViewController.m */,
 				56F7BE0F1CA3CA45005D1475 /* RCNewsNoteViewController.h */,
 				56F7BE101CA3CA45005D1475 /* RCNewsNoteViewController.m */,
-				56EC64B51CA55CB200B9CC6D /* CZMyActivityInfoViewController.h */,
-				56EC64B61CA55CB200B9CC6D /* CZMyActivityInfoViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1276,10 +1283,23 @@
 		56E603F51CA5368100EB0446 /* res */ = {
 			isa = PBXGroup;
 			children = (
+				56E9D3961CA57665005FF799 /* tutor1.jpg */,
+				56E9D3971CA57665005FF799 /* tutor3.jpg */,
+				56E9D3981CA57665005FF799 /* tutor2.jpg */,
+				56E9D3991CA57665005FF799 /* tutor4.jpg */,
 				56E603F61CA5369000EB0446 /* loading.gif */,
 				56E603F71CA5369000EB0446 /* 50%loading.gif */,
 			);
 			path = res;
+			sourceTree = "<group>";
+		};
+		56E9D3921CA56F8B005FF799 /* Guide */ = {
+			isa = PBXGroup;
+			children = (
+				56E9D3931CA56F8B005FF799 /* KSGuideManager.h */,
+				56E9D3941CA56F8B005FF799 /* KSGuideManager.m */,
+			);
+			path = Guide;
 			sourceTree = "<group>";
 		};
 		56F02C7D1CA2884B00E0BBB4 /* MJRefresh */ = {
@@ -1512,11 +1532,15 @@
 			files = (
 				5683EC271C817F7B006430CB /* LaunchScreen.storyboard in Resources */,
 				56E603F91CA5369000EB0446 /* 50%loading.gif in Resources */,
+				56E9D39D1CA57665005FF799 /* tutor4.jpg in Resources */,
+				56E9D39A1CA57665005FF799 /* tutor1.jpg in Resources */,
 				5683EC281C817F7B006430CB /* Main.storyboard in Resources */,
 				561D01FC1C47DA5600E4E013 /* LICENSE in Resources */,
 				561D02071C47DA5600E4E013 /* LICENSE in Resources */,
+				56E9D39B1CA57665005FF799 /* tutor3.jpg in Resources */,
 				56121F4E1CA14D8B00183DB0 /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				56121F4B1CA14D8B00183DB0 /* ShareSDKUI.bundle in Resources */,
+				56E9D39C1CA57665005FF799 /* tutor2.jpg in Resources */,
 				56121F541CA14D8B00183DB0 /* ShareSDK.bundle in Resources */,
 				56F02CB81CA2884B00E0BBB4 /* MJRefresh.bundle in Resources */,
 				561D01D01C47DA5600E4E013 /* Assets.xcassets in Resources */,
@@ -1609,6 +1633,7 @@
 				561D020E1C47DA5600E4E013 /* NSArray+MASAdditions.m in Sources */,
 				56E8427E1C4BB8E500D1D198 /* CZActivityInfoCell.m in Sources */,
 				565EF6271C48EBA20067C032 /* BaseModel.m in Sources */,
+				56E9D3951CA56F8B005FF799 /* KSGuideManager.m in Sources */,
 				564596BA1C732A84006D8493 /* UIViewController+LewPopupViewController.m in Sources */,
 				561D01F81C47DA5600E4E013 /* AFSecurityPolicy.m in Sources */,
 				C4CAD1BD1C7B3943003FD0B0 /* TagModel.m in Sources */,
@@ -1667,7 +1692,6 @@
 				56F02CB71CA2884B00E0BBB4 /* MJRefreshStateHeader.m in Sources */,
 				561D02011C47DA5600E4E013 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				56B9CD3B1C807A7100914F00 /* UIView+WebCacheOperation.m in Sources */,
-				56EC64B71CA55CB200B9CC6D /* CZMyActivityInfoViewController.m in Sources */,
 				C4BBA81A1C89B93300AD02EE /* RegisteViewController.m in Sources */,
 				C4C075271C89CF6C00C5E54D /* MyTextField.m in Sources */,
 				56E523611C75AAD200794B0E /* CZMyCollectionViewController.m in Sources */,
