@@ -31,7 +31,7 @@
 @property (nonatomic,strong) NSString *cityId;
 @property (nonatomic,strong) NSMutableArray *cityNameList;
 @property (nonatomic,strong) ActivityModel *activitymodel;
-@property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListBlock)();
+@property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListBlock)(NSString *minAcId);
 @property (nonatomic,copy) NSURLSessionDataTask *(^getCityListBlock)();
 @property (weak, nonatomic) IBOutlet CZCityButton *leftButton;
 
@@ -95,7 +95,7 @@
 - (void)loadNewData
 {
     NSLog(@"loadNewData");
-    //[self.tableView.mj_header endRefreshing];
+    [self.tableView.mj_header endRefreshing];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -107,7 +107,7 @@
 
 - (void)configureBlocks{
     @weakify(self);
-    self.getActivityListBlock = ^(){
+    self.getActivityListBlock = ^(NSString *minAcId){
         @strongify(self);
         NSString *userId = [[NSString alloc]init];
         if ([userDefaults objectForKey:@"userId"]) {
@@ -115,7 +115,7 @@
         } else {
             userId = @"-1";
         }
-        return [[DataManager manager] getActivityRecommendWithCityId:[userDefaults objectForKey:@"cityId"] startId:@"0" num:@"20" userId:userId success:^(ActivityList *acList) {
+        return [[DataManager manager] getActivityRecommendWithCityId:[userDefaults objectForKey:@"cityId"] startId:@"0" num:@"10" userId:userId success:^(ActivityList *acList) {
             @strongify(self);
             self.activityList = acList;
         } failure:^(NSError *error) {
@@ -123,7 +123,7 @@
         }];
     };
     
-    self.getCityListBlock = ^(){
+    self.getCityListBlock = ^{
         @strongify(self);
         return [[DataManager manager] getCityListSuccess:^(CityList *ctList) {
             @strongify(self);
@@ -134,14 +134,18 @@
     };
 }
 
+-(void)refreshRecomend{
+    
+}
+
 - (void)startget{
     if (self.getCityListBlock) {
         self.getCityListBlock();
     }
     
-    if (self.getActivityListBlock) {
-        self.getActivityListBlock();
-    }
+//    if (self.getActivityListBlock) {
+//        self.getActivityListBlock();
+//    }
 }
 
 - (void) setActivityList:(ActivityList *)activityList{
