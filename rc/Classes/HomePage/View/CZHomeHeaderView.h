@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "FlashActivityModel.h"
 
 @interface CZHomeHeaderView : UIView
 
@@ -14,7 +15,6 @@
 @property(nonatomic, weak)UIPageControl *pageControl;
 @property(nonatomic, weak)UILabel *label;
 @property(nonatomic, weak)UIView *segmentation;
-@property (nonatomic,strong) NSMutableArray *imageArray;
 
 /**
  *	类方法
@@ -28,6 +28,6 @@
  *
  *	设置对象的属性
  */
-- (void)setView;
+- (void)setView:(NSArray *)flashArray;
 
 @end

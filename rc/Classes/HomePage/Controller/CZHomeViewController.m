@@ -34,7 +34,7 @@
 @property (nonatomic,strong) NSMutableArray *cityNameList;
 @property (nonatomic,strong) NSString *minAcId;
 @property (nonatomic,strong) ActivityModel *activitymodel;
-@property (nonatomic,strong) FlashActivityModel *flashModel;
+@property (nonatomic,strong) FlashList *flashList;
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListBlock)(NSString *minAcId);
 @property (nonatomic,copy) NSURLSessionDataTask *(^getFlash)();
 @property (nonatomic,copy) NSURLSessionDataTask *(^getCityListBlock)();
@@ -54,7 +54,6 @@
 
     //刷新数据
     [self refleshDataByCity];
-    [self startget];
 }
 - (void)refleshDataByCity
 {
@@ -85,11 +84,10 @@
     self.city = Beijing;
     self.cityId =@"1";
     [self configureBlocks];
+    [self startget];
+    
     [self createSubViews];
-    //设置tableHeaderView
-    CZHomeHeaderView *headerView = [CZHomeHeaderView headerView];
-    [headerView setView];
-    self.tableView.tableHeaderView = headerView;
+    
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.city = Beijing;
     self.cityId = @"1";
@@ -132,8 +130,8 @@
     @weakify(self);
     self.getFlash = ^{
         @strongify(self)
-        return [[DataManager manager] getFlashWithSuccess:^(FlashActivityModel *FLashAc) {
-            self.
+        return [[DataManager manager] getFlashWithSuccess:^(FlashList *fLashList) {
+            self.flashList = fLashList;
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];
@@ -171,11 +169,15 @@
     if (self.getActivityListBlock) {
         self.getActivityListBlock(@"0");
     }
+    
+    if (self.getFlash) {
+        self.getFlash();
+    }
 }
 
 -(void)refreshRecomend{
     if (self.getActivityListBlock) {
-        self.getActivityListBlock(self.minAcId);
+        self.getActivityListBlock(@"0");
     }
 }
 
@@ -183,6 +185,15 @@
     if (self.getActivityListBlock) {
         self.getActivityListBlock(self.minAcId);
     }
+}
+
+-(void) setFlashList:(FlashList *)flashList{
+    _flashList = flashList;
+    
+    //设置tableHeaderView
+    CZHomeHeaderView *headerView = [CZHomeHeaderView headerView];
+    [headerView setView:flashList.list];
+    self.tableView.tableHeaderView = headerView;
 }
 
 - (void) setActivityList:(ActivityList *)activityList{

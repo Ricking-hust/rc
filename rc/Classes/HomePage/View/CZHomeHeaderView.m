@@ -8,6 +8,7 @@
 
 #import "CZHomeHeaderView.h"
 #import "Masonry.h"
+#import "FlashActivityModel.h"
 
 #define SCROLLVIEW_HEIGHT 150   //scrollView的宽度
 #define PAGECONTROL_WIDTH 70   //pageControl的宽度
@@ -55,7 +56,7 @@
     return headerView;
 }
 
-- (void)setView
+- (void)setView:(NSArray *)flashArray
 {
     //设置父容器的大小
     CGRect rect = [[UIScreen mainScreen]bounds];
@@ -105,8 +106,9 @@
     for (int i = 0; i < count; i++) {
         UIImageView *imageView = [UIImageView new];
         [self.scrollView addSubview:imageView];
-        NSString *imageName = [NSString stringWithFormat:@"img_%d",i + 1];
-        imageView.image = [UIImage imageNamed:imageName];
+        FlashActivityModel *flashModel = flashArray[i];
+        NSString *imageName = flashModel.Image;
+        [imageView sd_setImageWithURL:[NSURL URLWithString:imageName] placeholderImage:[UIImage imageNamed:@"img_3"]];
         [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.scrollView.mas_left).with.offset(i * rect.size.width);
             make.top.equalTo(self.scrollView.mas_top);

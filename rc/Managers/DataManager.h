@@ -36,7 +36,7 @@ typedef NS_ENUM(NSInteger,RcErrorType) {
                                     success:(void (^)(NSString *))success
                                     failure:(void (^)(NSError *))failure;
 
--(NSURLSessionDataTask *) getFlashWithSuccess:(void (^)(FlashActivityModel *FLashAc))success
+-(NSURLSessionDataTask *) getFlashWithSuccess:(void (^)(FlashList *flashList))success
                                       failure:(void (^)(NSError *error))failure;
 
 -(NSURLSessionDataTask *) getAllTagsSuccess:(void (^)(TagsList *tagList))success
