@@ -16,15 +16,13 @@
     if (self = [super init])
     {
         //设置图片的显示样式
-        self.imageView.contentMode = UIViewContentModeCenter;
-        
+//        self.imageView.contentMode = UIViewContentModeCenter;
     }
     return self;
 }
 //设置标题的位置
 -(CGRect)titleRectForContentRect:(CGRect)contentRect
 {
-    NSLog(@"%f",contentRect.size.width);
     UIImage *image = [UIImage imageNamed:@"backIcon"];
     CGFloat titleW = contentRect.size.width - image.size.width;
     CGFloat titleH = contentRect.size.height;
@@ -38,11 +36,9 @@
     UIImage *image = [UIImage imageNamed:@"backIcon"];
     CGFloat imageW = image.size.width;
     CGFloat imageH = image.size.height;
-    //self.imageView.contentMode = UIViewContentModeCenter;
 #warning 在此方法，UIButton的子控件都是空，不能在此地设置图片的显示样式
     
-    //NSLog(@"%@",self.imageView);
-    return CGRectMake(0, 0, imageW, imageH);
+    return CGRectMake(0, (contentRect.size.height - image.size.height)/2, imageW, imageH);
     
 }
 
