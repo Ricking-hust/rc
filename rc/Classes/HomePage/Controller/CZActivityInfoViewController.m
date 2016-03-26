@@ -415,7 +415,6 @@
     {
         return self.webView.frame.size.height;
     }
-    
 }
 - (CGFloat)heightForSpeakerCell
 {
