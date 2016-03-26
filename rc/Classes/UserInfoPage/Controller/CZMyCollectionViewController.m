@@ -8,7 +8,8 @@
 
 #import "CZMyCollectionViewController.h"
 #import "RCMyActivityCell.h"
-
+#import "CZActivityInfoViewController.h"
+#import "UINavigationBar+Awesome.h"
 @interface CZMyCollectionViewController()
 @property(nonatomic, strong) ActivityList *acList;
 @property (nonatomic, copy) NSURLSessionDataTask *(^getUserActivityBlock)();
@@ -17,9 +18,11 @@
 
 - (void)viewWillAppear:(BOOL)animated
 {
+    [super viewWillAppear:animated];
+    
+    [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
 }
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -93,10 +96,15 @@
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     return 130;
-//    RCMyActivityCell *cell = (RCMyActivityCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
-//    return cell.rowHeight;
 }
-
+#pragma mark - cell点击事件
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    CZActivityInfoViewController *ac = [[CZActivityInfoViewController alloc]init];
+    
+    ac.activityModelPre = self.acList.list[indexPath.row];
+    [self.navigationController pushViewController:ac animated:YES];
+}
 //给单元格进行赋值
 - (void)setValueOfCell:(RCMyActivityCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {

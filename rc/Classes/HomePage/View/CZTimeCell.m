@@ -59,7 +59,7 @@
     [self.timeLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_left).with.offset(15);
         make.centerY.equalTo(self.contentView);
-        make.size.mas_equalTo(CGSizeMake(150, 20));
+        make.size.mas_equalTo(CGSizeMake(200, 20));
         
     }];
     //添加按钮约束

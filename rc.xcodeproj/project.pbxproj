@@ -67,6 +67,7 @@
 		561D02121C47DA5600E4E013 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 561D01C41C47DA5600E4E013 /* README.md */; };
 		561D02151C47DA5600E4E013 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 561D01CA1C47DA5600E4E013 /* AppDelegate.m */; };
 		562CC4461C6C962100774C22 /* CZTimeSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CC4451C6C962100774C22 /* CZTimeSelectView.m */; };
+		562FD2751CA674FA0014E5D8 /* RCBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 562FD2741CA674FA0014E5D8 /* RCBarButton.m */; };
 		56423F4B1C4FB4710072CCC3 /* CZHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56423F4A1C4FB4710072CCC3 /* CZHomeViewController.m */; };
 		564596B51C732A84006D8493 /* LewPopupBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 564596AA1C732A84006D8493 /* LewPopupBackgroundView.m */; };
 		564596B61C732A84006D8493 /* LewPopupViewAnimationDrop.m in Sources */ = {isa = PBXBuildFile; fileRef = 564596AC1C732A84006D8493 /* LewPopupViewAnimationDrop.m */; };
@@ -328,6 +329,8 @@
 		561D01CA1C47DA5600E4E013 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		562CC4441C6C962100774C22 /* CZTimeSelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTimeSelectView.h; sourceTree = "<group>"; };
 		562CC4451C6C962100774C22 /* CZTimeSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTimeSelectView.m; sourceTree = "<group>"; };
+		562FD2731CA674FA0014E5D8 /* RCBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCBarButton.h; sourceTree = "<group>"; };
+		562FD2741CA674FA0014E5D8 /* RCBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCBarButton.m; sourceTree = "<group>"; };
 		56423F491C4FB4710072CCC3 /* CZHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZHomeViewController.h; sourceTree = "<group>"; };
 		56423F4A1C4FB4710072CCC3 /* CZHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZHomeViewController.m; sourceTree = "<group>"; };
 		564596A91C732A84006D8493 /* LewPopupBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LewPopupBackgroundView.h; sourceTree = "<group>"; };
@@ -1028,6 +1031,8 @@
 		565EF5F51C48E9DB0067C032 /* View */ = {
 			isa = PBXGroup;
 			children = (
+				562FD2731CA674FA0014E5D8 /* RCBarButton.h */,
+				562FD2741CA674FA0014E5D8 /* RCBarButton.m */,
 				565EF5FB1C48EAA80067C032 /* CZHomeHeaderView.h */,
 				565EF5FC1C48EAA80067C032 /* CZHomeHeaderView.m */,
 				56E842791C4BA74C00D1D198 /* CZTimeCell.h */,
@@ -1677,6 +1682,7 @@
 				564596B61C732A84006D8493 /* LewPopupViewAnimationDrop.m in Sources */,
 				565EF6571C48EC410067C032 /* CZMyInfoViewController.m in Sources */,
 				C4C05E6D1C842126005E7FEE /* EXTScope.m in Sources */,
+				562FD2751CA674FA0014E5D8 /* RCBarButton.m in Sources */,
 				565CBFA91C6F0ED500635EA4 /* CZTagWithLabelView.m in Sources */,
 				56637D751C5611230000BF46 /* CZCityView.m in Sources */,
 				565EF6261C48EBA20067C032 /* ActivityModel.m in Sources */,

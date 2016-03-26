@@ -58,7 +58,7 @@
         self.ac_time.numberOfLines = 0;
         self.ac_time.font = [UIFont systemFontOfSize:TIME_FONTSIZE];
         [self.contentView addSubview:self.ac_time];
-        self.ac_time.alpha = 0.8;
+        self.ac_time.alpha = 0.6;
         
         //4.创建ac_place(UILable)
         UILabel *placeLabel = [[UILabel alloc]init];
@@ -66,7 +66,7 @@
         self.ac_place.numberOfLines = 0;
         self.ac_place.font = [UIFont systemFontOfSize:PLACE_FONTSIZE];
         [self.contentView addSubview:self.ac_place];
-        self.ac_place.alpha = 0.8;
+        self.ac_place.alpha = 0.6;
         
         //5.创建ac_imageTag(UIImageView)
         UIImageView *tagImage = [[UIImageView alloc]init];
@@ -81,7 +81,7 @@
         self.ac_tags.numberOfLines = 0;
         self.ac_tags.font = [UIFont systemFontOfSize:TAG_FONTSIZE];
         [self.contentView addSubview:self.ac_tags];
-        self.ac_tags.alpha = 0.8;
+        self.ac_tags.alpha = 0.6;
     }
     return self;
 }
@@ -94,7 +94,7 @@
     //名字的上边距
     CGFloat tittleTopPadding = 12;
     //1.名字的高度
-    CGSize nameSize = [self sizeWithText:self.ac_title.text maxSize:CGSizeMake(maxfW, MAXFLOAT) fontSize:TITLE_FONTSIZE];
+    CGSize nameSize = [self sizeWithText:self.ac_title.text maxSize:CGSizeMake(maxfW, 35) fontSize:TITLE_FONTSIZE];
         //1.1时间与名字之间的间距
     CGFloat timePaddingToName = 10;
     //2.时间的高度
@@ -117,11 +117,12 @@
         make.width.mas_equalTo(120);
         make.height.mas_equalTo(120);
     }];
+    self.ac_time.numberOfLines = 0;
     [self.ac_title mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.contentView.mas_top).offset(13);
         make.left.equalTo(self.ac_poster.mas_right).offset(15);
         make.width.mas_equalTo(maxfW);
-        make.height.mas_equalTo(20);
+        make.height.mas_equalTo(35);
     }];
     [self.ac_time mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.ac_title.mas_bottom).offset(20);
@@ -130,13 +131,13 @@
         make.height.mas_equalTo(17);
     }];
     [self.ac_place mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.ac_time.mas_bottom);
+        make.top.equalTo(self.ac_time.mas_bottom).offset(2);
         make.left.equalTo(self.ac_time.mas_left);
         make.width.mas_equalTo(maxfW);
         make.height.mas_equalTo(17);
     }];
     [self.ac_imageTag mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.ac_place.mas_bottom).offset(20);
+        make.top.equalTo(self.ac_place.mas_bottom).offset(15);
         make.left.equalTo(self.ac_time.mas_left);
         make.size.mas_equalTo(self.ac_imageTag.image.size);
     }];

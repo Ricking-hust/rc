@@ -9,29 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "rc/Classes/UserInfoPage/Controller/CZMyActivityViewContoller.m"
-            timestampString = "480665063.766392"
+            filePath = "rc/Classes/SchedulePage/View/RCScheduleView.m"
+            timestampString = "480669569.218139"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "186"
-            endingLineNumber = "186"
-            landmarkName = "-setAcList:"
-            landmarkType = "5">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            shouldBeEnabled = "Yes"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "rc/Classes/UserInfoPage/Controller/CZMyActivityViewContoller.m"
-            timestampString = "480665063.766392"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "138"
-            endingLineNumber = "138"
-            landmarkName = "-tableView:didSelectRowAtIndexPath:"
+            startingLineNumber = "244"
+            endingLineNumber = "244"
+            landmarkName = "-weekLabelStr:AtIndex:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>
