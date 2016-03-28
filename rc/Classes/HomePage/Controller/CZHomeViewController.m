@@ -51,6 +51,7 @@
     
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
+    [self startget];
 
     //刷新数据
     [self refleshDataByCity];
@@ -84,7 +85,6 @@
     self.city = Beijing;
     self.cityId =@"1";
     [self configureBlocks];
-    [self startget];
     
     [self createSubViews];
     
@@ -145,7 +145,13 @@
         } else {
             userId = @"-1";
         }
-        return [[DataManager manager] getActivityRecommendWithCityId:[userDefaults objectForKey:@"cityId"] startId:minAcId num:@"10" userId:userId success:^(ActivityList *acList) {
+        NSString *cityId = [[NSString alloc]init];
+        if ([userDefaults objectForKey:@"cityId"]) {
+            cityId = [userDefaults objectForKey:@"cityId"];
+        } else {
+            cityId = @"1";
+        }
+        return [[DataManager manager] getActivityRecommendWithCityId:cityId startId:minAcId num:@"10" userId:userId success:^(ActivityList *acList) {
             @strongify(self);
             self.activityList = acList;
         } failure:^(NSError *error) {

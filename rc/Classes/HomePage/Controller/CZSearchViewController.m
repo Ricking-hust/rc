@@ -149,7 +149,13 @@
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
 {
-    [[DataManager manager] getActivitySearchWithKeywords:self.searchBar.text startId:@"0" num:@"10" cityId:[userDefaults objectForKey:@"cityId"] success:^(ActivityList *acList) {
+    NSString *cityId = [[NSString alloc]init];
+    if ([userDefaults objectForKey:@"cityId"]) {
+        cityId = [userDefaults objectForKey:@"cityId"];
+    } else {
+        cityId = @"1";
+    }
+    [[DataManager manager] getActivitySearchWithKeywords:self.searchBar.text startId:@"0" num:@"10" cityId:cityId success:^(ActivityList *acList) {
         self.searchResult = acList;
         [self.tableView reloadData];
         self.tableView.hidden = NO;

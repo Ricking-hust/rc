@@ -564,7 +564,7 @@
     [self.collectionBtn addTarget:self action:@selector(onClickCollection) forControlEvents:UIControlEventTouchUpInside];
     [self.addToSchedule addTarget:self action:@selector(onClickAdd) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.addToSchedule setTitle:@"加入日程" forState:UIControlStateNormal];
+    [self.addToSchedule setTitle:@"加入行程" forState:UIControlStateNormal];
     [self.addToSchedule setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:130.0/255.0  blue:5.0/255.0  alpha:1.0]];
 
     //add tableView constraints
@@ -925,12 +925,12 @@
         [[DataManager manager] joinTripWithUserId:[userDefaults objectForKey:@"userId"] acId:self.activityModelPre.acID opType:@"1" success:^(NSString *planId) {
             if ([planId isEqualToString:@"joined"]) {
                 self.HUD.mode = MBProgressHUDModeCustomView;
-                self.HUD.label.text = @"该活动已在您的日程中(╯3╰)";
+                self.HUD.label.text = @"该活动已在您的行程中(╯3╰)";
                 [self.HUD hideAnimated:YES afterDelay:0.6];
             } else {
                 self.planId = planId;
                 self.HUD.mode = MBProgressHUDModeCustomView;
-                self.HUD.label.text = @"加入日程成功~(≧▽≦)/~";
+                self.HUD.label.text = @"加入行程成功~(≧▽≦)/~";
                 [self.HUD hideAnimated:YES afterDelay:0.6];
             }
         } failure:^(NSError *error) {
@@ -970,7 +970,7 @@
                 self.planId = planId;
                 [[DataManager manager] addPlanWithOpType:@"1" planId:self.planId userId:[userDefaults objectForKey:@"userId"] themeId:@"" planTime:@"" plAlarmOne:self.plAlarm[0] plAlarmTwo:self.plAlarm[1] plAlarmThree:self.plAlarm[2] planContent:@"" acPlace:@"" success:^(NSString *msg) {
                     self.HUD.mode = MBProgressHUDModeCustomView;
-                    self.HUD.label.text = @"加入日程提醒成功~(≧▽≦)/~";
+                    self.HUD.label.text = @"加入行程提醒成功~(≧▽≦)/~";
                     [self.HUD hideAnimated:YES afterDelay:0.6];
                 } failure:^(NSError *error) {
                     self.HUD.mode = MBProgressHUDModeCustomView;
