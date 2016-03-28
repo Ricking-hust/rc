@@ -13,6 +13,10 @@
 #import "ActivityModel.h"
 #import "CZActivityInfoViewController.h"
 #include <sys/sysctl.h>
+#define NAME_FONTSIZE 14
+#define TIME_FONTSIZE 12
+#define PLACE_FONTSIZE 12
+#define TAG_FONTSIZE  11
 @implementation CZLeftTableViewDelegate
 - (id)init
 {
@@ -66,7 +70,6 @@
         [self setCellValue:cell AtIndexPath:indexPath];
         //对cell内的控件进行布局
         [cell setSubviewConstraint];
-
         return cell;
     }
 
@@ -79,11 +82,11 @@
         return self.subHeight;
     }else
     {
-        CGFloat height = [self ContacterTableCell:self.array[indexPath.row]];
+        CGFloat height = [self contacterTableCell:self.array[indexPath.row]];
         return height;
     }
 }
-- (CGFloat)ContacterTableCell:(ActivityModel *)model
+- (CGFloat)contacterTableCell:(ActivityModel *)model
 {
     CGFloat acImageW; //图片的最大宽度,活动名的最大宽度
     CGFloat acImageH; //图片的最大高度
@@ -110,13 +113,11 @@
         rightPaddingToContentView = leftPaddintToContentView;
     }
     CGSize maxSize = CGSizeMake(acImageW - 20, MAXFLOAT);
-    CGSize acNameSize = [self sizeWithText:model.acTitle maxSize:maxSize fontSize:14];
-    CGSize acTimeSize = [self sizeWithText:model.acTime maxSize:maxSize fontSize:12];
-    CGSize acPlaceSize = [self sizeWithText:model.acPlace maxSize:maxSize fontSize:12];
-    CGSize acTagSize = [self sizeWithText:@"求职" maxSize:maxSize fontSize:12];
-    
-    //NSLog(@"name %f time %f place %f",acNameSize.height, acTimeSize.height, acPlaceSize.height);
-    return acImageH + 10 + acNameSize.height + 20 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height +10+10;
+    CGSize acNameSize = [self sizeWithText:model.acTitle maxSize:maxSize fontSize:NAME_FONTSIZE];
+    CGSize acTimeSize = [self sizeWithText:model.acTime maxSize:maxSize fontSize:TIME_FONTSIZE];
+    CGSize acPlaceSize = [self sizeWithText:model.acPlace maxSize:maxSize fontSize:PLACE_FONTSIZE];
+    CGSize acTagSize = [self sizeWithText:@"发布者在哪呢" maxSize:maxSize fontSize:TAG_FONTSIZE];
+    return acImageH + 10 + acNameSize.height + 10 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height+10;
 }
 //给单元格进行赋值
 - (void) setCellValue:(CZColumnCell *)cell AtIndexPath:(NSIndexPath *)indexPath
@@ -126,10 +127,12 @@
     ActivityModel *model = self.array[indexPath.row];
     [cell.acImageView sd_setImageWithURL:[NSURL URLWithString:model.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     cell.acNameLabel.text = model.acTitle;
-    cell.acTimeLabel.text = model.acTime;
+    int len = (int)[model.acTime length];
+    NSString *timeStr = [model.acTime substringWithRange:NSMakeRange(0, len - 3)];
+    cell.acTimeLabel.text = timeStr;
     cell.acPlaceLabel.text = model.acPlace;
 
-    cell.acTagLabel.text = @"求职";
+    cell.acTagLabel.text = @"发布者在哪呢";
     
     //添加手势
     UITapGestureRecognizer *clickGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(displayInfo:)];

@@ -19,14 +19,14 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    NSLog(@"%s",__func__);
+//    NSLog(@"%s",__func__);
     
 }
 
 #pragma mark 类第一次使用的时候被调用
 +(void)initialize
 {
-    NSLog(@"%s",__func__);
+//    NSLog(@"%s",__func__);
     
     // 设置主题
     
@@ -65,7 +65,7 @@
     UIBarButtonItem *navItem = [UIBarButtonItem appearance];
     //
     //    //是改变整个按钮背影
-    [navItem setBackButtonBackgroundImage:[UIImage imageNamed:@""] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
+//    [navItem setBackButtonBackgroundImage:[UIImage imageNamed:@"member_2"] forState:UIControlStateNormal barMetrics:UIBarMetricsDefault];
     
     //设置Item的字体大小
     [navItem setTitleTextAttributes:@{NSFontAttributeName:[UIFont systemFontOfSize:15]} forState:UIControlStateNormal];
@@ -84,14 +84,14 @@
 
 #pragma mark 导航控制器的子控制器被pop[移除]的时候会调用
 -(UIViewController *)popViewControllerAnimated:(BOOL)animated{
-    NSLog(@"%s",__func__);
+//    NSLog(@"%s",__func__);
     return [super popViewControllerAnimated:animated];
 }
 
 #pragma mark 导航控制器的子控制器被push 的时候会调用
 -(void)pushViewController:(UIViewController *)viewController animated:(BOOL)animated{
     
-    NSLog(@"%s",__func__);
+//    NSLog(@"%s",__func__);
     
     //设置 push 新控制器的时候 隐藏Tabbar
     viewController.hidesBottomBarWhenPushed = YES;

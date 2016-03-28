@@ -10,7 +10,7 @@
 #import "Masonry.h"
 #define Animination 0.1
 #define NodeH 114
-//每个节点的高度为104，即滚动104到下一个节点
+//每个节点的高度为114，即滚动114到下一个节点
 @interface RCScrollView ()
 
 @end
@@ -23,9 +23,7 @@
         self.planListRanged = [[NSMutableArray alloc]init];
         self.nodeIndex = [[NSNumber alloc]initWithInt:0];
         self.currentOffsetY = 0;
-        self.isUpRange = YES;
-        self.isDownRange = YES;
-        self.isNodeChanged = NO;
+        self.isUp = YES;
         self.upLine = [[UIView alloc]init];
         self.downLine = [[UIView alloc]init];
         self.point = [[UIView alloc]init];
@@ -41,72 +39,175 @@
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-
-    [self newNodeIndex:scrollView.contentOffsetY];
-    if (self.isNodeChanged == YES)
+    if (self.isUp)
     {
-        [UIView animateWithDuration:Animination animations:^{
-            [scrollView setContentOffsetY:([self.nodeIndex intValue]) * NodeH];
-            self.isNodeChanged = NO;
-            //设置节点状态--------
-            [self restoreNodeState];
-            [self setNodeState];
-        }];
-
-
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:self.nodeIndex];
-    }
-    if (([self.nodeIndex intValue]) == 0)
+        [self scrollEndDeceleratingUp:scrollView ToTimeNode:scrollView.contentOffsetY];
+    }else
     {
-        if (scrollView.contentOffsetY< 20 && scrollView.contentOffsetY >-20)
-        {
-            [UIView animateWithDuration:Animination animations:^{
-                [scrollView setContentOffsetY:0];
-                //设置节点状态----------
-                [self restoreNodeState];
-                [self setNodeState];
-            }];
-
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:self.nodeIndex];
-        }
+        [self scrollEndDeceleratingDown:scrollView ToTimeNode:scrollView.contentOffsetY];
     }
-
 }
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
     if (!decelerate)
     {
-        [self newNodeIndex:scrollView.contentOffsetY];
-        if (self.isNodeChanged == YES)
+        if (self.isUp)
         {
-            [UIView animateWithDuration:Animination animations:^{
-                [scrollView setContentOffsetY:([self.nodeIndex intValue]) * NodeH];
-                self.isNodeChanged = NO;
-                //设置节点状态----------
-                [self restoreNodeState];
-                [self setNodeState];
-            }];
-
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:self.nodeIndex];
+            [self scrollEndDraggingUp:scrollView ToTimeNode:scrollView.contentOffsetY];
+        }else
+        {
+            [self scrollEndDraggingDown:scrollView ToTimeNode:scrollView.contentOffsetY];
         }
-        if (([self.nodeIndex intValue]) == 0)
-        {
-            if (scrollView.contentOffsetY< 20 && scrollView.contentOffsetY >-20)
-            {
-                [UIView animateWithDuration:Animination animations:^{
-                    [scrollView setContentOffsetY:0];
-                    
-                    //设置节点状态----------
-                    [self restoreNodeState];
-                    [self setNodeState];
-                }];
 
-                [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:self.nodeIndex];
+
+    }
+}
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    if (self.currentOffsetY < scrollView.contentOffsetY)
+    {
+        self.isUp = YES;
+    }else
+    {
+        self.isUp = NO;
+    }
+}
+//EndDecelerating上拉
+- (void)scrollEndDeceleratingUp:(UIScrollView *)scrollView ToTimeNode:(CGFloat)offsetY
+{
+    int index = offsetY / NodeH;
+    CGFloat location = (offsetY-[self.nodeIndex intValue] * NodeH) / NodeH;
+    CGFloat sub = location - (int)location;
+    if (sub < 0.5)
+    {
+        index = [self.nodeIndex intValue] + (int)location;
+        
+    }else
+    {
+        index = [self.nodeIndex intValue] + (int)(location+1);
+        
+    }
+    if (index > self.planListRanged.count-1)
+    {
+        index = (int)self.planListRanged.count-1;
+    }
+    self.nodeIndex = [[NSNumber alloc]initWithInt:index];
+    [UIView animateWithDuration:0.5 animations:^{
+        [scrollView setContentOffsetY:([self.nodeIndex intValue]) * NodeH];
+        [self restoreNodeState];
+        [self setNodeState];
+    }];
+    //保存当前的Y方向滑动距离
+    self.currentOffsetY = ([self.nodeIndex intValue]) * NodeH;
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:self.nodeIndex];
+}
+//EndDecelerating下拉
+- (void)scrollEndDeceleratingDown:(UIScrollView *)scrollView ToTimeNode:(CGFloat)offsetY
+{
+    if (offsetY < 0)
+    {
+        self.nodeIndex = [[NSNumber alloc]initWithInt:0];
+    }else
+    {
+        CGFloat location = (self.currentOffsetY - offsetY)/NodeH;
+        int index = [self.nodeIndex intValue];
+        index = index - (int)location;
+        CGFloat sub = location - (int)location;
+        if (sub < 0.5)
+        {
+            ;
+        }else
+        {
+            index-- ;
+            if (index < 0)
+            {
+                index = 0;
+            }
+            
+        }
+        
+        self.nodeIndex = [[NSNumber alloc]initWithInt:index];
+    }
+    [UIView animateWithDuration:0.5 animations:^{
+        [scrollView setContentOffsetY:([self.nodeIndex intValue]) * NodeH];
+        [self restoreNodeState];
+        [self setNodeState];
+    }];
+    //保存当前的Y方向滑动距离
+    self.currentOffsetY = ([self.nodeIndex intValue]) * NodeH;
+
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:self.nodeIndex];
+}
+//EndDraggingDown下拉
+- (void)scrollEndDraggingDown:(UIScrollView *)scrollView ToTimeNode:(CGFloat)offsetY
+{
+    int index = [self.nodeIndex intValue];
+    if (offsetY < 0)
+    {
+        self.nodeIndex = [[NSNumber alloc]initWithInt:0];
+    }else
+    {
+        CGFloat location = (self.currentOffsetY - offsetY)/NodeH;
+        CGFloat sub = location - (int)location;
+        if (sub < 0.5)
+        {
+            index = [self.nodeIndex intValue] - (int)location;
+        }else
+        {
+            if ((int)location <= 0)
+            {
+                index--;
+            }else
+            {
+                index = [self.nodeIndex intValue] - (int)location-1;
+            }
+            
+            if (index < 0)
+            {
+                index = 0;
             }
         }
 
-    }
+        self.nodeIndex = [[NSNumber alloc]initWithInt:index];
 
+    }
+    [UIView animateWithDuration:0.5 animations:^{
+        [scrollView setContentOffsetY:([self.nodeIndex intValue]) * NodeH];
+        [self restoreNodeState];
+        [self setNodeState];
+    }];
+    //保存当前的Y方向滑动距离
+    self.currentOffsetY = ([self.nodeIndex intValue]) * NodeH;
+
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:self.nodeIndex];
+}
+//EndDraggingDown上拉
+- (void)scrollEndDraggingUp:(UIScrollView *)scrollView ToTimeNode:(CGFloat)offsetY
+{
+    int index = offsetY / NodeH;
+    CGFloat location = (offsetY-[self.nodeIndex intValue] * NodeH) / NodeH;
+    CGFloat sub = location - (int)location;
+    if (sub < 0.5)
+    {
+        ;
+    }else
+    {
+        index = [self.nodeIndex intValue] + (int)location +1;
+        
+    }
+    if (index > self.planListRanged.count-1)
+    {
+        index = (int)self.planListRanged.count-1;
+    }
+    self.nodeIndex = [[NSNumber alloc]initWithInt:index];
+    [UIView animateWithDuration:0.5 animations:^{
+        [scrollView setContentOffsetY:([self.nodeIndex intValue]) * NodeH];
+        [self restoreNodeState];
+        [self setNodeState];
+    }];
+    //保存当前的Y方向滑动距离
+    self.currentOffsetY = ([self.nodeIndex intValue]) * NodeH;
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:self.nodeIndex];
 }
 - (void)restoreNodeState
 {
@@ -139,57 +240,6 @@
     }];
 }
 
-- (void)upRange:(CGFloat)offsetY
-{
-    CGFloat location = offsetY/NodeH;
-    int index = (int)location;
-    CGFloat sub = location - index;
-    if (sub < 0.5 && sub > -0.5 && self.isUpRange)
-    {
-        index = (int)location;
-        self.isNodeChanged = YES;
-        self.isDownRange = NO;
-    }
-    if (location - ([self.nodeIndex intValue]) > 1)
-    {
-        self.isUpRange = YES;
-        self.isDownRange = YES;
-    }
-    self.nodeIndex = [[NSNumber alloc]initWithInt:index];
-}
-- (void)downRange:(CGFloat)offsetY
-{
-    
-    CGFloat location = offsetY/NodeH;
-    int index = (int)location;
-    CGFloat sub = location - index;
-
-    if (sub > 0.5 && sub < 1.5 && self.isDownRange)
-    {
-        index++;
-        self.isNodeChanged = YES;
-        self.isUpRange = NO;
-    }
-    if (location - ([self.nodeIndex intValue])> 0.8 && location - ([self.nodeIndex intValue]) < 1.1)
-    {
-        self.isUpRange = YES;
-        self.isDownRange = YES;
-        self.nodeIndex = [[NSNumber alloc]initWithInt:([self.nodeIndex intValue])+1];
-        self.isNodeChanged = YES;
-        return;
-    }
-    self.nodeIndex = [[NSNumber alloc]initWithInt:index];
-
-}
-- (void)newNodeIndex:(CGFloat)offsetY
-{
-    [self upRange:offsetY];
-    [self downRange:offsetY];
-    if (([self.nodeIndex intValue]) >= self.planListRanged.count)
-    {
-        self.nodeIndex = [[NSNumber alloc]initWithInt:(int)self.planListRanged.count-1];
-    }
-}
 /*
 // Only override drawRect: if you perform custom drawing.
 // An empty implementation adversely affects performance during animation.

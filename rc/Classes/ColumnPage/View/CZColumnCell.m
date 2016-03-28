@@ -9,7 +9,10 @@
 #import "CZColumnCell.h"
 #import "Masonry.h"
 #include <sys/sysctl.h>
-
+#define NAME_FONTSIZE 14
+#define TIME_FONTSIZE 12
+#define PLACE_FONTSIZE 12
+#define TAG_FONTSIZE  11
 @implementation CZColumnCell
 
 + (instancetype)cellWithTableView:(UITableView*)tableView
@@ -69,10 +72,10 @@
 {
     self.selectionStyle = UITableViewCellSelectionStyleNone;    //清除cell的点击状态
     self.backgroundColor = [UIColor clearColor];
-    self.acNameLabel.font = [UIFont systemFontOfSize:14];
-    self.acTimeLabel.font = [UIFont systemFontOfSize:12];
-    self.acPlaceLabel.font = [UIFont systemFontOfSize:12];
-    self.acTagLabel.font = [UIFont systemFontOfSize:10];
+    self.acNameLabel.font = [UIFont systemFontOfSize:NAME_FONTSIZE];
+    self.acTimeLabel.font = [UIFont systemFontOfSize:TIME_FONTSIZE];
+    self.acPlaceLabel.font = [UIFont systemFontOfSize:PLACE_FONTSIZE];
+    self.acTagLabel.font = [UIFont systemFontOfSize:TAG_FONTSIZE];
     self.acTimeLabel.alpha = 0.8;
     self.acPlaceLabel.alpha = 0.8;
     self.acNameLabel.numberOfLines = 0;
@@ -129,7 +132,7 @@
 
     //活动名约束
     CGSize maxSize = CGSizeMake(acImageW - 20, MAXFLOAT);
-    CGSize acNameSize = [self sizeWithText:self.acNameLabel.text maxSize:maxSize fontSize:14];
+    CGSize acNameSize = [self sizeWithText:self.acNameLabel.text maxSize:maxSize fontSize:NAME_FONTSIZE];
     [self.acNameLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.acImageView.mas_bottom).offset(10);
         make.left.equalTo(self.acImageView.mas_left).offset(10);
@@ -137,7 +140,7 @@
         make.height.mas_equalTo(acNameSize.height+1);
     }];
     //活动时间约束
-    CGSize acTimeSize = [self sizeWithText:self.acTimeLabel.text maxSize:maxSize fontSize:12];
+    CGSize acTimeSize = [self sizeWithText:self.acTimeLabel.text maxSize:maxSize fontSize:TIME_FONTSIZE];
     [self.acTimeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.acNameLabel.mas_bottom).offset(10);
         make.left.equalTo(self.acNameLabel.mas_left);
@@ -145,7 +148,7 @@
         make.height.mas_equalTo(acTimeSize.height+1);
     }];
     //地点约束
-    CGSize acPlaceSize = [self sizeWithText:self.acPlaceLabel.text maxSize:maxSize fontSize:12];
+    CGSize acPlaceSize = [self sizeWithText:self.acPlaceLabel.text maxSize:maxSize fontSize:PLACE_FONTSIZE];
     [self.acPlaceLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.acTimeLabel.mas_bottom);
         make.left.equalTo(self.acTimeLabel.mas_left);
@@ -155,38 +158,36 @@
     //标志图片约束
     [self.tagImageView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.acPlaceLabel.mas_left);
-        make.top.equalTo(self.acPlaceLabel.mas_bottom).offset(10);
+        make.top.equalTo(self.acPlaceLabel.mas_bottom).offset(5);
         make.size.mas_equalTo(self.tagImageView.image.size);
     }];
     //标签约束
-    CGSize acTagSize = [self sizeWithText:@"求职" maxSize:maxSize fontSize:10];
+    CGSize acTagSize = [self sizeWithText:@"发布者在哪呢" maxSize:maxSize fontSize:TAG_FONTSIZE];
     [self.acTagLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.tagImageView.mas_right).offset(4);
-        make.top.equalTo(self.tagImageView.mas_top);
+        make.top.equalTo(self.tagImageView.mas_top).offset(-2);
         make.width.mas_equalTo(acTagSize.width+1);
         make.height.mas_equalTo(acTagSize.height+1);
     }];
     
     //cell的高度
-    self.cellHeight = acImageH + 10 + acNameSize.height + 20 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height +10;
+    self.cellHeight = acImageH + 10 + acNameSize.height + 15 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height;
 
     if (self.isLeft == YES)
     {
         [self.bgView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(leftPaddintToContentView);
             make.top.equalTo(self.contentView.mas_top);
-            //make.centerY.equalTo(self.contentView.mas_centerY);
             make.width.mas_equalTo(acImageW);
-            make.height.mas_equalTo(self.cellHeight - 10);
+            make.height.mas_equalTo(self.cellHeight);
         }];
     }else
     {
         [self.bgView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.right.equalTo(self.contentView.mas_right).offset(-rightPaddingToContentView);
             make.top.equalTo(self.contentView.mas_top);
-            //make.centerY.equalTo(self.contentView.mas_centerY);
             make.width.mas_equalTo(acImageW);
-            make.height.mas_equalTo(self.cellHeight - 10);
+            make.height.mas_equalTo(self.cellHeight);
         }];
     }
 

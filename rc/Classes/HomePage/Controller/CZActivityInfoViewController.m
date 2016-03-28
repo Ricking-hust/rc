@@ -31,6 +31,7 @@
 
 #define FONTSIZE 14
 #define PADDING  10 //活动详情cell 中子控件之间的垂直间距
+#define HEADERH  215//高斯模糊图片的高度
 @interface CZActivityInfoViewController ()
 
 @property (nonatomic, strong) UIView *bottomView;
@@ -80,15 +81,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self createSubViews];
+    //[self.headerImageView addObserver:self forKeyPath:@"image" options:NSKeyValueObservingOptionNew context:nil];
     self.collectionBtn.hidden = YES;
     self.addToSchedule.hidden = YES;
     [self getData];
-
     //设置导航栏
     [self setNavigation];
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
     self.navigationController.navigationBarHidden = NO;
     
+}
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"image"])
+    {
+        NSLog(@"have");
+    }
 }
 - (void)getData
 {
@@ -138,7 +146,8 @@
     self.webView.delegate = self;
     self.webView.scrollView.scrollEnabled = NO;
     //预先加载url
-    [self.webView loadHTMLString:self.activitymodel.acHtml baseURL:nil];
+    NSURL *baseURL = [NSURL fileURLWithPath:self.activitymodel.acHtml];
+    [self.webView loadHTMLString:self.activitymodel.acHtml baseURL:baseURL];
 }
 - (void)cellValue:(NSNotification *)notification
 {
@@ -477,7 +486,13 @@
     //获取到webview的高度
     CGFloat height = [[self.webView stringByEvaluatingJavaScriptFromString:@"document.body.offsetHeight"] floatValue];
     self.webView.frame = CGRectMake(self.webView.frame.origin.x,self.webView.frame.origin.y, kScreenWidth, height);
-    
+    //给网页增加css样式
+    [webView stringByEvaluatingJavaScriptFromString:
+     @"var tagHead =document.documentElement.firstChild;"
+     "var tagStyle = document.createElement(\'style\');"
+     "tagStyle.setAttribute(\'type\', \'text/css\');"
+     "tagStyle.appendChild(document.createTextNode(\'p{padding: 5pt 5pt;font-size:14px;line-height:150%}\'));"
+     "var tagHeadAdd = tagHead.appendChild(tagStyle);"];
     [self.tableView reloadData];
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView
@@ -492,20 +507,21 @@
 - (void)layoutHeaderImageView
 {
     self.header = [[UIView alloc]init];
-    [self.header setFrame:CGRectMake(0, 0, kScreenWidth, 215)];
+    [self.header setFrame:CGRectMake(0, 0, kScreenWidth, HEADERH)];
     self.tableView.tableHeaderView = self.header;
     self.headerImageView = [[UIImageView alloc]init];
     self.headerImageView.alpha = 0.7;
-    
-    [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
-    
+
+    [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        [self.headerImageView setImageToBlur:self.headerImageView.image blurRadius:21 completionBlock:nil];
+    }];
     [self.header addSubview:self.headerImageView];
-    [self.headerImageView setImageToBlur:self.headerImageView.image blurRadius:21 completionBlock:nil];
+
     [self.headerImageView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.header.mas_top);
         make.left.equalTo(self.header.mas_left);
         make.width.mas_equalTo(kScreenWidth);
-        make.height.mas_equalTo(215);
+        make.height.mas_equalTo(HEADERH);
     }];
     //headerView中的子控件
     self.acImageView    = [[UIImageView alloc]init];
@@ -531,7 +547,7 @@
     CGFloat yOffset = scrollView.contentOffset.y;  // 偏移的y值
     if (yOffset <= 0)
     {
-        CGFloat totalOffset = 215 + ABS(yOffset);
+        CGFloat totalOffset = HEADERH + ABS(yOffset);
 
         [self.headerImageView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.header.mas_top).offset(yOffset);
@@ -540,13 +556,13 @@
             make.height.mas_equalTo(totalOffset);
 
         }];
-//        [self.leftBarButton setTitle:@"活动介绍" forState:UIControlStateNormal];
         self.barButtonView.label.text = @"活动介绍";
     }else
     {
-
-//        [self.leftBarButton setTitle:self.activitymodel.acTitle forState:UIControlStateNormal];
-        self.barButtonView.label.text = self.activitymodel.acTitle;
+        if (yOffset > HEADERH)
+        {
+           self.barButtonView.label.text = self.activitymodel.acTitle;
+        }
     }
     
 }
@@ -571,7 +587,7 @@
     }
     
     NSString *tags = [Artags componentsJoinedByString:@","];
-    self.acTagLabel.text      = tags;
+    self.acTagLabel.text      = @"发布都在哪呢";
     
 }
 #pragma mark - 创建子控件
@@ -1022,14 +1038,12 @@
         [self.HUD hideAnimated:YES afterDelay:0.6];
     }
 }
-
-//弹出提醒视图
+#pragma mark - 弹出提醒视图
 - (void)onClickRemindMe:(UIButton *)btn
 {
     CZRemindMeView *remindMeView = [CZRemindMeView remindMeView];
-    remindMeView.remindBeforeOneDay.selected = YES;
-    
-    [remindMeView.remindBeforeOneDay addTarget:self action:@selector(onClickTimeRemind:) forControlEvents:UIControlEventTouchUpInside];
+    [remindMeView.notRemind addTarget:self action:@selector(onClickTimeRemind:) forControlEvents:UIControlEventTouchUpInside];
+    [remindMeView.remindBeforeOneHour addTarget:self action:@selector(onClickTimeRemind:) forControlEvents:UIControlEventTouchUpInside];
     [remindMeView.remindBeforeTwoDay addTarget:self action:@selector(onClickTimeRemind:) forControlEvents:UIControlEventTouchUpInside];
     [remindMeView.remindBeforeThreeDay addTarget:self action:@selector(onClickTimeRemind:) forControlEvents:UIControlEventTouchUpInside];
     [remindMeView.OKbtn addTarget:self action:@selector(onClickOK:) forControlEvents:UIControlEventTouchUpInside];
@@ -1046,6 +1060,7 @@
 /**
  *  设置提醒时间,获取按钮父视图
  *  按钮对应的tag依次为
+ *  不提醒------>10
  *  提前一天----->11
  *  提前二天----->12
  *  提前三天----->13
@@ -1058,6 +1073,7 @@
     [btnArray addObject:[superView viewWithTag:11]];
     [btnArray addObject:[superView viewWithTag:12]];
     [btnArray addObject:[superView viewWithTag:13]];
+    [btnArray addObject:[superView viewWithTag:10]];
     
     BOOL isSelecte = !btn.selected;
     if (isSelecte)
@@ -1067,7 +1083,21 @@
     {
         btn.selected = NO;
     }
-    
+    if (btn.tag == 10)
+    {
+        for (int i = 0; i<btnArray.count; i++)
+        {
+            UIButton *button = btnArray[i];
+            if (button.tag != 10)
+            {
+                button.selected = NO;
+            }
+        }
+    }else
+    {
+        UIButton *button = btnArray.lastObject;
+        button.selected = NO;
+    }
 }
 
 //确定提醒时间按钮点击事件
@@ -1078,13 +1108,13 @@
     [btnArray addObject:[superView viewWithTag:11]];
     [btnArray addObject:[superView viewWithTag:12]];
     [btnArray addObject:[superView viewWithTag:13]];
+    [btnArray addObject:[superView viewWithTag:10]];
     
-    for (int i = 0; i <3; i++)
+    for (int i = 0; i <btnArray.count; i++)
     {
         UIButton *button = btnArray[i];
-        if (button.selected)
+        if (button.selected && button.tag != 10)
         {
-            NSLog(@"选中了%@按钮",button.titleLabel.text);
             self.plAlarm[i] = @"1";
         }
     }
