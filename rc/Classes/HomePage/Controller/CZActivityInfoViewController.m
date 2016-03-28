@@ -320,12 +320,46 @@
         case 2:
         {
             UITableViewCell *cell = [[UITableViewCell alloc]init];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            UIImageView *releaserPic = [[UIImageView alloc]init];
+            UILabel *releaserName = [[UILabel alloc]init];
+            [cell addSubview:releaserPic];
+            [cell addSubview:releaserName];
+            //对cell的控件进行赋值
+            [releaserPic sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.userInfo.userPic]placeholderImage:[UIImage imageNamed:@"meetingIcon"]];
+            [releaserName setText:self.activitymodel.userInfo.userName];
+            //对cell的控件进行布局
+            CGSize releaserLable = [self sizeWithText:releaserName.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:21];
+            [releaserPic mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(cell.mas_left).offset(15);
+                make.top.equalTo(cell.mas_top);
+                make.size.mas_equalTo(CGSizeMake(50, 50));
+            }];
+            [releaserName mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(releaserPic.mas_right).offset(20);
+                make.top.equalTo(cell.mas_top).offset(10);
+                make.size.mas_equalTo(releaserLable);
+            }];
             return cell;
         }
             break;
         case 3:
         {
             UITableViewCell *cell = [[UITableViewCell alloc]init];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            UILabel *acIntroduce = [[UILabel alloc]init];
+            [cell addSubview:acIntroduce];
+            //对cell的控件进行赋值
+            [acIntroduce setText:self.activitymodel.acDesc];
+            acIntroduce.font = [UIFont systemFontOfSize:15];
+            acIntroduce.numberOfLines = 0;
+            //对cell的控件进行布局
+            [acIntroduce mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(cell.mas_left).offset(5);
+                make.top.equalTo(cell.mas_top).offset(5);
+                make.right.equalTo(cell.mas_right).offset(5);
+                make.bottom.equalTo(cell.mas_bottom).offset(5);
+            }];
             return cell;
         }
             break;
@@ -359,7 +393,7 @@
     }else if([cell isKindOfClass:[CZActivityInfoCell class]])
     {
         ((CZActivityInfoCell *)cell).model = self.activitymodel;
-    }else
+    }else if(indexPath.section == 2)
     {
         ;
     }
@@ -420,14 +454,14 @@
 - (CGFloat)heightForSpeakerCell
 {
     CGSize maxSize = CGSizeMake(kScreenWidth - 30, MAXFLOAT);
-    CGSize size = [self sizeWithText:@"" maxSize:maxSize fontSize:14];
+    CGSize size = [self sizeWithText:self.activitymodel.acDesc maxSize:maxSize fontSize:14];
     return size.height + PADDING;
 }
 - (CGFloat)heightForReleaseCell
 {
     CGSize maxSize = CGSizeMake(kScreenWidth - 30, MAXFLOAT);
-    CGSize size = [self sizeWithText:@"" maxSize:maxSize fontSize:14];
-    return size.height + PADDING;
+    CGSize size = [self sizeWithText:self.activitymodel.userInfo.userName maxSize:maxSize fontSize:21];
+    return size.height + PADDING+10;
 }
 - (CGFloat)heightForAcInfoCell
 {

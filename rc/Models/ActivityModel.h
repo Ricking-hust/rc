@@ -7,7 +7,8 @@
 //
 
 #import "BaseModel.h"
-#import "TagModel.h"
+
+@class UserModel,TagsList;
 
 @interface ActivityModel : BaseModel
 
@@ -29,6 +30,7 @@
 @property (nonatomic,copy) NSString *plan;
 @property (nonatomic,copy) NSString *planId;
 
+@property (nonatomic,strong) UserModel *userInfo;
 @property (nonatomic,strong) TagsList *tagsList;
 
 @end

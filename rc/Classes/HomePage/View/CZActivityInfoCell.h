@@ -8,7 +8,6 @@
 
 #import <UIKit/UIKit.h>
 @class ActivityModel;
-@class ActivityIntroduction;
 @interface CZActivityInfoCell : UITableViewCell
 @property (nonatomic,strong)ActivityModel *model;
 @property (nonatomic, strong)UILabel *placeLabel;
