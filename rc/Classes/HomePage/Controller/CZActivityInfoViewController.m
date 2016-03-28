@@ -480,7 +480,7 @@
         make.top.equalTo(self.header.mas_top);
         make.left.equalTo(self.header.mas_left);
         make.width.mas_equalTo(kScreenWidth);
-        make.height.mas_equalTo(215);
+        make.height.mas_equalTo(HEADERH);
     }];
     //headerView中的子控件
     self.acImageView    = [[UIImageView alloc]init];
@@ -522,7 +522,6 @@
         {
            self.barButtonView.label.text = self.activitymodel.acTitle;
         }
-
     }
     
 }
@@ -547,7 +546,7 @@
     }
     
     NSString *tags = [Artags componentsJoinedByString:@","];
-    self.acTagLabel.text      = tags;
+    self.acTagLabel.text      = @"发布都在哪呢";
     
 }
 #pragma mark - 创建子控件
@@ -998,8 +997,7 @@
         [self.HUD hideAnimated:YES afterDelay:0.6];
     }
 }
-
-//弹出提醒视图
+#pragma mark - 弹出提醒视图
 - (void)onClickRemindMe:(UIButton *)btn
 {
     CZRemindMeView *remindMeView = [CZRemindMeView remindMeView];
