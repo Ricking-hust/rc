@@ -19,6 +19,7 @@
 #import "UIImageView+LBBlurredImage.h"
 #import "MBProgressHUD.h"
 #import "RCBarButton.h"
+#import "RCBarButtonView.h"
 //ShareSDK-------------------------------------------
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKExtension/SSEShareHelper.h>
@@ -42,7 +43,7 @@
 
 @property (nonatomic, strong) UIButton *collectionBtn;
 @property (nonatomic, strong) UIButton *addToSchedule;
-@property (nonatomic, strong) RCBarButton *leftBarButton;
+@property (nonatomic, strong) RCBarButtonView *barButtonView;
 
 @property (nonatomic, strong) MBProgressHUD    *HUD;
 @property (nonatomic, strong) NSString *isCollect;
@@ -505,11 +506,13 @@
             make.height.mas_equalTo(totalOffset);
 
         }];
-        [self.leftBarButton setTitle:@"活动介绍" forState:UIControlStateNormal];
+//        [self.leftBarButton setTitle:@"活动介绍" forState:UIControlStateNormal];
+        self.barButtonView.label.text = @"活动介绍";
     }else
     {
 
-        [self.leftBarButton setTitle:self.activitymodel.acTitle forState:UIControlStateNormal];
+//        [self.leftBarButton setTitle:self.activitymodel.acTitle forState:UIControlStateNormal];
+        self.barButtonView.label.text = self.activitymodel.acTitle;
     }
     
 }
@@ -633,18 +636,12 @@
     self.navigationItem.titleView = titleLabel;
     
     //设置导航栏的左侧按钮
-//    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(backToForwardViewController)];
-//    leftButton.tintColor = [UIColor whiteColor];
-//    [self.navigationItem setLeftBarButtonItem:leftButton];
-//    
-    
-    self.leftBarButton = [[RCBarButton alloc]initWithFrame:CGRectMake(0, 0, 200, 30)];
-    [self.leftBarButton addTarget:self action:@selector(backToForwardViewController) forControlEvents:UIControlEventTouchUpInside];
-    [self.leftBarButton setImage:[UIImage imageNamed:@"backIcon_white"] forState:UIControlStateNormal];
-    self.leftBarButton.titleLabel.font = [UIFont systemFontOfSize:15];
-    [self.leftBarButton setTitle:@"活动介绍" forState:UIControlStateNormal];
-    UIBarButtonItem *left = [[UIBarButtonItem alloc]initWithCustomView:self.leftBarButton];
-    [self.navigationItem setLeftBarButtonItem:left];
+    self.barButtonView = [[RCBarButtonView alloc]initWithFrame:CGRectMake(0, 0, 250, 30)];
+    [self.barButtonView setSubView];
+    [self.barButtonView.button addTarget:self action:@selector(backToForwardViewController) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithCustomView:self.barButtonView];
+    [self.navigationItem setLeftBarButtonItem:leftButton];
+
     
 //    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"shareIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(didShare)];
 //    [self.navigationItem setRightBarButtonItem:rightButton];
