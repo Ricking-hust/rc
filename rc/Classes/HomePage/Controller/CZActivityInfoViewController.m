@@ -81,7 +81,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self createSubViews];
-    //[self.headerImageView addObserver:self forKeyPath:@"image" options:NSKeyValueObservingOptionNew context:nil];
+
     self.collectionBtn.hidden = YES;
     self.addToSchedule.hidden = YES;
     [self getData];
@@ -91,13 +91,7 @@
     self.navigationController.navigationBarHidden = NO;
     
 }
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
-{
-    if ([keyPath isEqualToString:@"image"])
-    {
-        NSLog(@"have");
-    }
-}
+
 - (void)getData
 {
     dispatch_queue_t queue = dispatch_queue_create("cloumn", DISPATCH_QUEUE_CONCURRENT);
@@ -443,6 +437,11 @@
     CGSize maxSize = CGSizeMake(kScreenWidth - 30, MAXFLOAT);
     CGSize placeSize = [self sizeWithText:self.activitymodel.acPlace maxSize:maxSize fontSize:FONTSIZE];
     CGSize scaleSize = [self sizeWithText:self.activitymodel.acSize maxSize:maxSize fontSize:FONTSIZE];
+#pragma mark - acpay不能为空
+    if ([self.activitymodel.acPay isEqualToString:@""])
+    {
+        self.activitymodel.acPay = @"免费";
+    }
     CGSize paySize = [self sizeWithText:self.activitymodel.acPay maxSize:maxSize fontSize:FONTSIZE];
     return placeSize.height + scaleSize.height + paySize.height + 3 + 4 *PADDING;
 }
@@ -457,7 +456,7 @@
      @"var tagHead =document.documentElement.firstChild;"
      "var tagStyle = document.createElement(\'style\');"
      "tagStyle.setAttribute(\'type\', \'text/css\');"
-     "tagStyle.appendChild(document.createTextNode(\'p{padding: 5pt 5pt;font-size:14px;line-height:150%}\'));"
+     "tagStyle.appendChild(document.createTextNode(\'p{padding-left:5px;font-size:14px;line-height:150%}\'));"
      "var tagHeadAdd = tagHead.appendChild(tagStyle);"];
     [self.tableView reloadData];
 }
