@@ -158,7 +158,7 @@
     //标志图片约束
     [self.tagImageView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.acPlaceLabel.mas_left);
-        make.top.equalTo(self.acPlaceLabel.mas_bottom).offset(10);
+        make.top.equalTo(self.acPlaceLabel.mas_bottom).offset(5);
         make.size.mas_equalTo(self.tagImageView.image.size);
     }];
     //标签约束

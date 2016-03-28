@@ -146,7 +146,8 @@
     self.webView.delegate = self;
     self.webView.scrollView.scrollEnabled = NO;
     //预先加载url
-    [self.webView loadHTMLString:self.activitymodel.acHtml baseURL:nil];
+    NSURL *baseURL = [NSURL fileURLWithPath:self.activitymodel.acHtml];
+    [self.webView loadHTMLString:self.activitymodel.acHtml baseURL:baseURL];
 }
 - (void)cellValue:(NSNotification *)notification
 {
@@ -451,7 +452,13 @@
     //获取到webview的高度
     CGFloat height = [[self.webView stringByEvaluatingJavaScriptFromString:@"document.body.offsetHeight"] floatValue];
     self.webView.frame = CGRectMake(self.webView.frame.origin.x,self.webView.frame.origin.y, kScreenWidth, height);
-    
+    //给网页增加css样式
+    [webView stringByEvaluatingJavaScriptFromString:
+     @"var tagHead =document.documentElement.firstChild;"
+     "var tagStyle = document.createElement(\'style\');"
+     "tagStyle.setAttribute(\'type\', \'text/css\');"
+     "tagStyle.appendChild(document.createTextNode(\'p{padding: 5pt 5pt;font-size:14px;line-height:150%}\'));"
+     "var tagHeadAdd = tagHead.appendChild(tagStyle);"];
     [self.tableView reloadData];
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView
