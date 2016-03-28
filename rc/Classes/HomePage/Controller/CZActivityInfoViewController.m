@@ -993,9 +993,8 @@
 - (void)onClickRemindMe:(UIButton *)btn
 {
     CZRemindMeView *remindMeView = [CZRemindMeView remindMeView];
-    remindMeView.remindBeforeOneDay.selected = YES;
-    
-    [remindMeView.remindBeforeOneDay addTarget:self action:@selector(onClickTimeRemind:) forControlEvents:UIControlEventTouchUpInside];
+    [remindMeView.notRemind addTarget:self action:@selector(onClickTimeRemind:) forControlEvents:UIControlEventTouchUpInside];
+    [remindMeView.remindBeforeOneHour addTarget:self action:@selector(onClickTimeRemind:) forControlEvents:UIControlEventTouchUpInside];
     [remindMeView.remindBeforeTwoDay addTarget:self action:@selector(onClickTimeRemind:) forControlEvents:UIControlEventTouchUpInside];
     [remindMeView.remindBeforeThreeDay addTarget:self action:@selector(onClickTimeRemind:) forControlEvents:UIControlEventTouchUpInside];
     [remindMeView.OKbtn addTarget:self action:@selector(onClickOK:) forControlEvents:UIControlEventTouchUpInside];
@@ -1012,6 +1011,7 @@
 /**
  *  设置提醒时间,获取按钮父视图
  *  按钮对应的tag依次为
+ *  不提醒------>10
  *  提前一天----->11
  *  提前二天----->12
  *  提前三天----->13
@@ -1024,6 +1024,7 @@
     [btnArray addObject:[superView viewWithTag:11]];
     [btnArray addObject:[superView viewWithTag:12]];
     [btnArray addObject:[superView viewWithTag:13]];
+    [btnArray addObject:[superView viewWithTag:10]];
     
     BOOL isSelecte = !btn.selected;
     if (isSelecte)
@@ -1033,7 +1034,21 @@
     {
         btn.selected = NO;
     }
-    
+    if (btn.tag == 10)
+    {
+        for (int i = 0; i<btnArray.count; i++)
+        {
+            UIButton *button = btnArray[i];
+            if (button.tag != 10)
+            {
+                button.selected = NO;
+            }
+        }
+    }else
+    {
+        UIButton *button = btnArray.lastObject;
+        button.selected = NO;
+    }
 }
 
 //确定提醒时间按钮点击事件
@@ -1044,13 +1059,13 @@
     [btnArray addObject:[superView viewWithTag:11]];
     [btnArray addObject:[superView viewWithTag:12]];
     [btnArray addObject:[superView viewWithTag:13]];
+    [btnArray addObject:[superView viewWithTag:10]];
     
-    for (int i = 0; i <3; i++)
+    for (int i = 0; i <btnArray.count; i++)
     {
         UIButton *button = btnArray[i];
-        if (button.selected)
+        if (button.selected && button.tag != 10)
         {
-            NSLog(@"选中了%@按钮",button.titleLabel.text);
             self.plAlarm[i] = @"1";
         }
     }

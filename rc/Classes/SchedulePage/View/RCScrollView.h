@@ -12,10 +12,8 @@
 @property (nonatomic, strong) NSMutableArray *planListRanged;
 @property (nonatomic, strong) NSNumber *nodeIndex;
 @property (nonatomic, assign) CGFloat currentOffsetY;
-@property (nonatomic, assign) BOOL isUpRange;
-@property (nonatomic, assign) BOOL isDownRange;
-@property (nonatomic, assign) BOOL isNodeChanged;
-@property(nonatomic, strong)UIView *upLine;
-@property(nonatomic, strong)UIView *downLine;
-@property(nonatomic, strong)UIView *point;
+@property (nonatomic, assign) BOOL isUp;
+@property (nonatomic, strong) UIView *upLine;
+@property (nonatomic, strong) UIView *downLine;
+@property (nonatomic, strong) UIView *point;
 @end

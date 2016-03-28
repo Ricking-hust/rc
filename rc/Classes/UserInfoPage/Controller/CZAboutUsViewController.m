@@ -13,9 +13,17 @@
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UIImageView *appIcon;
 @property (nonatomic, strong) UILabel *appVersion;
+@property (nonatomic, strong) NSArray *teamMember;
 @end
 @implementation CZAboutUsViewController
-
+- (NSArray *)teamMember
+{
+    if (!_teamMember)
+    {
+        _teamMember = [[NSArray alloc]initWithObjects:@"日常1.0",@"生活不只有眼前的苟且", @"日常1.0", @"但行好事，莫问前程", @"不因为害怕而不去拥有", @"天道酬勤", @"很高兴遇见你", @"随心而动", @"越努力，越幸运",nil];
+    }
+    return _teamMember;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -40,7 +48,7 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 3;
+    return 2;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -115,28 +123,52 @@
 
 - (void)createHeaderView
 {
-    CGRect rect = [[UIScreen mainScreen]bounds];
-    self.headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, rect.size.width, rect.size.width * 0.4)];
+
+    self.headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 130)];
     self.appIcon    = [[UIImageView alloc]init];
     self.appVersion  = [[UILabel alloc]init];
-    self.appVersion.font = [UIFont systemFontOfSize:14];
-    self.appIcon.image = [UIImage imageNamed:@"city_1"];
+    self.appVersion.font = [UIFont systemFontOfSize:15];
+    self.appIcon.image = [UIImage imageNamed:@"logo"];
+    self.appIcon.userInteractionEnabled = YES;
     self.headerView.backgroundColor = [UIColor clearColor];
     [self.headerView addSubview:self.appVersion];
     [self.headerView addSubview:self.appIcon];
     
     self.appVersion.text = @"日常1.0";
-    [self.appIcon mas_makeConstraints:^(MASConstraintMaker *make) {
+    UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(showTeamMembers)];
+    [self.appIcon addGestureRecognizer:gesture];
+    self.appIcon.layer.cornerRadius = 35;
+    [self.appIcon mas_updateConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.headerView);
-        make.top.equalTo(self.headerView.mas_top).with.offset(self.headerView.frame.size.height * 0.15);
-        make.size.mas_equalTo(self.appIcon.image.size);
+        make.centerY.equalTo(self.headerView).offset(-5);
+        make.width.mas_equalTo(70);
+        make.height.mas_equalTo(70);
     }];
-    CGSize appVersionSize = [self sizeWithText:self.appVersion.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:14];
-    [self.appVersion mas_makeConstraints:^(MASConstraintMaker *make) {
+    CGSize appVersionSize = [self sizeWithText:self.appVersion.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:15];
+    [self.appVersion mas_updateConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.appIcon);
         make.top.equalTo(self.appIcon.mas_bottom).offset(5);
         make.size.mas_equalTo(CGSizeMake(appVersionSize.width+1, appVersionSize.height+1));
     }];
+    
+}
+- (void)showTeamMembers
+{
+    int x = [self getRandomNumber:1 to:9];
+    NSString *strImg = [NSString stringWithFormat:@"member_%d",x];
+    self.appIcon.image = [UIImage imageNamed:strImg];
+    self.appVersion.text = self.teamMember[x-1];
+    CGSize appVersionSize = [self sizeWithText:self.appVersion.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:15];
+    [self.appVersion mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.size.mas_equalTo(CGSizeMake(appVersionSize.width+1, appVersionSize.height+1));
+    }];
+}
+//获取一个随机整数，范围在[from,to]
+-(int)getRandomNumber:(int)from to:(int)to
+
+{
+    
+    return (int)(from + (arc4random() % (to - from + 1)));
     
 }
 /**

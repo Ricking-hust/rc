@@ -11,7 +11,8 @@
 @interface CZRemindMeView : UIView
 @property (nonatomic, strong) UILabel *label;
 
-@property (nonatomic, strong) UIButton *remindBeforeOneDay;
+@property (nonatomic, strong) UIButton *notRemind;
+@property (nonatomic, strong) UIButton *remindBeforeOneHour;
 @property (nonatomic, strong) UIButton *remindBeforeTwoDay;
 @property (nonatomic, strong) UIButton *remindBeforeThreeDay;
 

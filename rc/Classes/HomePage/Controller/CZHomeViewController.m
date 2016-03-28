@@ -301,7 +301,7 @@
     }
     
     NSString *tags = [Artags componentsJoinedByString:@","];
-    cell.ac_tags.text = tags;
+    cell.ac_tags.text = @"发布者在哪";
     
 }
 #pragma mark - 创建首页子控件
