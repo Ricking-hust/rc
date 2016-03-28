@@ -9,13 +9,13 @@
             shouldBeEnabled = "Yes"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
-            filePath = "rc/Classes/HomePage/View/CZActivityInfoCell.m"
-            timestampString = "480692982.122797"
+            filePath = "rc/Classes/HomePage/View/RCBarButton.m"
+            timestampString = "480836930.354125"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "82"
-            endingLineNumber = "82"
-            landmarkName = "-setSubViewsConstraint"
+            startingLineNumber = "26"
+            endingLineNumber = "26"
+            landmarkName = "-titleRectForContentRect:"
             landmarkType = "5">
          </BreakpointContent>
       </BreakpointProxy>

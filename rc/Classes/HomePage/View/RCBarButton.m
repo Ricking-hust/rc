@@ -23,7 +23,8 @@
 //设置标题的位置
 -(CGRect)titleRectForContentRect:(CGRect)contentRect
 {
-    UIImage *image = [UIImage imageNamed:@"backIcon"];
+    NSLog(@"%f",contentRect.size.width);
+    UIImage *image = [UIImage imageNamed:@"backIcon_white"];
     CGFloat titleW = contentRect.size.width - image.size.width;
     CGFloat titleH = contentRect.size.height;
     CGFloat titleX = image.size.width + 5;
@@ -33,7 +34,7 @@
 //设置图片的位置
 -(CGRect)imageRectForContentRect:(CGRect)contentRect
 {
-    UIImage *image = [UIImage imageNamed:@"backIcon"];
+    UIImage *image = [UIImage imageNamed:@"backIcon_white"];
     CGFloat imageW = image.size.width;
     CGFloat imageH = image.size.height;
 #warning 在此方法，UIButton的子控件都是空，不能在此地设置图片的显示样式
