@@ -31,6 +31,7 @@
 
 #define FONTSIZE 14
 #define PADDING  10 //活动详情cell 中子控件之间的垂直间距
+#define HEADERH  215//高斯模糊图片的高度
 @interface CZActivityInfoViewController ()
 
 @property (nonatomic, strong) UIView *bottomView;
@@ -80,15 +81,22 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self createSubViews];
+    //[self.headerImageView addObserver:self forKeyPath:@"image" options:NSKeyValueObservingOptionNew context:nil];
     self.collectionBtn.hidden = YES;
     self.addToSchedule.hidden = YES;
     [self getData];
-
     //设置导航栏
     [self setNavigation];
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
     self.navigationController.navigationBarHidden = NO;
     
+}
+- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
+{
+    if ([keyPath isEqualToString:@"image"])
+    {
+        NSLog(@"have");
+    }
 }
 - (void)getData
 {
@@ -458,15 +466,16 @@
 - (void)layoutHeaderImageView
 {
     self.header = [[UIView alloc]init];
-    [self.header setFrame:CGRectMake(0, 0, kScreenWidth, 215)];
+    [self.header setFrame:CGRectMake(0, 0, kScreenWidth, HEADERH)];
     self.tableView.tableHeaderView = self.header;
     self.headerImageView = [[UIImageView alloc]init];
     self.headerImageView.alpha = 0.7;
-    
-    [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
-    
+
+    [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        [self.headerImageView setImageToBlur:self.headerImageView.image blurRadius:21 completionBlock:nil];
+    }];
     [self.header addSubview:self.headerImageView];
-    [self.headerImageView setImageToBlur:self.headerImageView.image blurRadius:21 completionBlock:nil];
+
     [self.headerImageView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.header.mas_top);
         make.left.equalTo(self.header.mas_left);
@@ -497,7 +506,7 @@
     CGFloat yOffset = scrollView.contentOffset.y;  // 偏移的y值
     if (yOffset <= 0)
     {
-        CGFloat totalOffset = 215 + ABS(yOffset);
+        CGFloat totalOffset = HEADERH + ABS(yOffset);
 
         [self.headerImageView mas_updateConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.header.mas_top).offset(yOffset);
@@ -506,13 +515,14 @@
             make.height.mas_equalTo(totalOffset);
 
         }];
-//        [self.leftBarButton setTitle:@"活动介绍" forState:UIControlStateNormal];
         self.barButtonView.label.text = @"活动介绍";
     }else
     {
+        if (yOffset > HEADERH)
+        {
+           self.barButtonView.label.text = self.activitymodel.acTitle;
+        }
 
-//        [self.leftBarButton setTitle:self.activitymodel.acTitle forState:UIControlStateNormal];
-        self.barButtonView.label.text = self.activitymodel.acTitle;
     }
     
 }

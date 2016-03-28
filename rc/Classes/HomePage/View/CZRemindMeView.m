@@ -17,9 +17,8 @@
 
 + (instancetype)remindMeView
 {
-    CGFloat width = [[UIScreen mainScreen]bounds].size.width;
-    CGFloat heigth = width * 0.73;
-    CZRemindMeView *remindMe =[[CZRemindMeView alloc]initWithFrame:CGRectMake(0, 0, width, heigth)];
+    CGFloat heigth = 210;
+    CZRemindMeView *remindMe =[[CZRemindMeView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, heigth)];
     remindMe.backgroundColor = [UIColor whiteColor];
     remindMe.label = [[UILabel alloc]init];
     [remindMe addSubview:remindMe.label];
@@ -135,24 +134,24 @@
     //时间按钮-----------------
     [self.notRemind mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).with.offset(10);
-        make.top.equalTo(self.topSegmentView.mas_bottom).with.offset(17);
+        make.top.equalTo(self.topSegmentView.mas_bottom).with.offset(10);
         make.size.mas_equalTo(btnSize);
     }];
     [self.remindBeforeOneHour mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(15);
-        make.top.equalTo(self.notRemind.mas_bottom).offset(17);
+        make.top.equalTo(self.notRemind.mas_bottom).offset(10);
         make.size.mas_equalTo(btnSize);
     }];
     
     [self.remindBeforeTwoDay mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.remindBeforeOneHour.mas_left);
-        make.top.equalTo(self.remindBeforeOneHour.mas_bottom).with.offset(17);
+        make.top.equalTo(self.remindBeforeOneHour.mas_bottom).with.offset(10);
         make.size.mas_equalTo(btnSize);
     }];
     
     [self.remindBeforeThreeDay mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.remindBeforeOneHour.mas_left);
-        make.top.equalTo(self.remindBeforeTwoDay.mas_bottom).with.offset(17);
+        make.top.equalTo(self.remindBeforeTwoDay.mas_bottom).with.offset(10);
         make.size.mas_equalTo(btnSize);
     }];
     
