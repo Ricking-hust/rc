@@ -86,12 +86,12 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return self.acList.list.count;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
-    return self.acList.list.count;
+    return 1;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -142,18 +142,12 @@
 }
 - (void)setValueOfCell:(RCMyActivityCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-    ActivityModel *acmodel = self.acList.list[indexPath.section];
+    ActivityModel *acmodel = self.acList.list[indexPath.row];
     [cell.acImageView sd_setImageWithURL:[NSURL URLWithString:acmodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     cell.acName.text = acmodel.acTitle;
     cell.acTime.text = acmodel.acTime;
     cell.acPlace.text = acmodel.acPlace;
-    NSMutableArray *Artags = [[NSMutableArray alloc]init];
-    
-    for (TagModel *model in acmodel.tagsList.list) {
-        [Artags addObject:model.tagName];
-    }
-    NSString *tags = [Artags componentsJoinedByString:@","];
-    cell.acTag.text = @"发布者死哪去了";
+    cell.acTag.text = acmodel.userInfo.userName;
 }
 
 #pragma mark - get data

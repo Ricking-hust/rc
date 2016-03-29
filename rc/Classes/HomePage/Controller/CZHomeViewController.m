@@ -28,7 +28,8 @@
 #import "KSGuideManager.h"
 
 @interface CZHomeViewController ()
-@property (nonatomic,strong) ActivityList *activityList;
+@property (nonatomic,strong) ActivityList *acListRecived;
+@property (nonatomic,strong) NSMutableArray *acList;
 @property (nonatomic,strong) CityList *cityList;
 @property (nonatomic,strong) NSString *cityId;
 @property (nonatomic,strong) NSMutableArray *cityNameList;
@@ -151,7 +152,7 @@
         }
         return [[DataManager manager] getActivityRecommendWithCityId:cityId startId:minAcId num:@"10" userId:userId success:^(ActivityList *acList) {
             @strongify(self);
-            self.activityList = acList;
+            self.acListRecived = acList;
         } failure:^(NSError *error) {
             NSLog(@"error:%@",error);
         }];
@@ -183,6 +184,10 @@
     if (self.getActivityListBlock) {
         self.getActivityListBlock(@"0");
     }
+    [self.acList removeAllObjects];
+    for (ActivityModel *model in self.acListRecived.list) {
+        [self.acList addObject:model];
+    }
 }
 
 -(void)getMoreRecomend{
@@ -200,12 +205,21 @@
     self.tableView.tableHeaderView = headerView;
 }
 
-- (void) setActivityList:(ActivityList *)activityList{
-    
-    _activityList = activityList;
-    ActivityModel *minModel = _activityList.list.lastObject;
+-(void) setAcListRecived:(ActivityList *)acListRecived{
+    _acListRecived = acListRecived;
+    for (ActivityModel *model in acListRecived.list) {
+        [self.acList addObject:model];
+    }
+    ActivityModel *minModel = _acListRecived.list.lastObject;
     self.minAcId = minModel.acID;
     [self.tableView reloadData];
+}
+
+-(NSMutableArray *)acList{
+    if (!_acList) {
+        _acList = [[NSMutableArray alloc]init];
+    }
+    return _acList;
 }
 
 -(void) setCityList:(CityList *)cityList{
@@ -216,7 +230,7 @@
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
-    return self.activityList.list.count;
+    return self.acList.count;
     
 }
 
@@ -278,28 +292,21 @@
     
     CZActivityInfoViewController *activityInfoViewController = [[CZActivityInfoViewController alloc]init];
     activityInfoViewController.title = @"活动介绍";
-    activityInfoViewController.activityModelPre = self.activityList.list[indexPath.section];
+    activityInfoViewController.activityModelPre = self.acList[indexPath.section];
     [self.navigationController pushViewController:activityInfoViewController animated:YES];
     
 }
 //给单元格进行赋值
 - (void) setCellValue:(CZActivitycell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-    ActivityModel *ac = self.activityList.list[indexPath.section];
+    ActivityModel *ac = self.acList[indexPath.section];
     
     [cell.ac_poster sd_setImageWithURL:[NSURL URLWithString:ac.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     cell.ac_title.text = ac.acTitle;
     long int len = [ac.acTime length];
     cell.ac_time.text = [NSString stringWithFormat:@"时间: %@", [ac.acTime substringWithRange:NSMakeRange(0, len - 3)]];
     cell.ac_place.text = [NSString stringWithFormat:@"地点: %@", ac.acPlace];
-    NSMutableArray *Artags = [[NSMutableArray alloc]init];
-    
-    for (TagModel *model in ac.tagsList.list) {
-        [Artags addObject:model.tagName];
-    }
-    
-    NSString *tags = [Artags componentsJoinedByString:@","];
-    cell.ac_tags.text = @"发布者死哪去了";
+    cell.ac_tags.text = ac.userInfo.userName;
     
 }
 #pragma mark - 创建首页子控件

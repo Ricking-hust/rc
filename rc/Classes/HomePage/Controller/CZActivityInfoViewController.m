@@ -585,15 +585,7 @@
     [self.acImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     self.acTittleLabel.text   = self.activitymodel.acTitle;
     self.acTagImageView.image = [UIImage imageNamed:@"tagImage"];
-    
-    NSMutableArray *Artags = [[NSMutableArray alloc]init];
-    
-    for (TagModel *model in self.activitymodel.tagsList.list) {
-        [Artags addObject:model.tagName];
-    }
-    
-    NSString *tags = [Artags componentsJoinedByString:@","];
-    self.acTagLabel.text      = @"发布都在哪呢";
+    self.acTagLabel.text      = self.activitymodel.userInfo.userName;
     
 }
 #pragma mark - 创建子控件

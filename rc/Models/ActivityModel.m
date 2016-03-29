@@ -29,6 +29,8 @@
         self.acPay              = [dict objectForSafeKey:@"ac_pay"];
         self.acDesc             = [dict objectForSafeKey:@"ac_desc"];
         self.acPraiseNum        = [dict objectForSafeKey:@"ac_praise_num"];
+        self.acReview           = [dict objectForSafeKey:@"ac_review"];
+        self.acStatus           = [dict objectForSafeKey:@"ac_status"];
         self.acReadNum          = [dict objectForSafeKey:@"ac_read_num"];
         self.acHtml             = [dict objectForSafeKey:@"ac_html"];
         self.acCollect          = [dict objectForSafeKey:@"ac_collect"];

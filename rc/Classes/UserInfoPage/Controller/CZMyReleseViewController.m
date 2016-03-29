@@ -8,11 +8,15 @@
 
 #import "CZMyReleseViewController.h"
 #import "RCMyActivityCell.h"
+#import "CZActivityInfoViewController.h"
 #import "Masonry.h"
 
 @interface CZMyReleseViewController()
 
 @property(nonatomic, strong) ActivityList *acList;
+@property (nonatomic,strong) NSMutableArray *waitReviewAc;
+@property (nonatomic,strong) NSMutableArray *didReviewAc;
+@property (nonatomic,strong) NSMutableArray *reviewAc;
 @property (nonatomic, copy) NSURLSessionDataTask *(^getUserActivityBlock)();
 
 @end
@@ -33,6 +37,7 @@
     [self setNavigation];
     [self createButtons];
     [self startget];
+    self.reviewAc = self.waitReviewAc;
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
 }
 //设置导航栏
@@ -138,13 +143,16 @@
 
     if ([btn.titleLabel.text isEqualToString:@"待审核"])
     {
-
+        self.reviewAc = self.waitReviewAc;
         self.lineDownOfWillCheckButton.hidden = NO;
         self.lineDownOfCheckButton.hidden = YES;
+        [self.tableView reloadData];
     }else
     {
+        self.reviewAc = self.didReviewAc;
         self.lineDownOfCheckButton.hidden = NO;
         self.lineDownOfWillCheckButton.hidden = YES;
+        [self.tableView reloadData];
     }
     btn.selected = YES;
     
@@ -153,12 +161,12 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return 1;
+    return self.reviewAc.count;;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
-    return self.acList.list.count;
+    return 1;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
@@ -196,6 +204,7 @@
     [cell setSubViewConstraint];
     return cell;
 }
+
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
         return 130;
@@ -206,7 +215,7 @@
 //给单元格进行赋值
 - (void)setValueOfCell:(RCMyActivityCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-    ActivityModel *acmodel = self.acList.list[indexPath.section];
+    ActivityModel *acmodel = self.reviewAc[indexPath.row];
     [cell.acImageView sd_setImageWithURL:[NSURL URLWithString:acmodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     cell.acName.text = acmodel.acTitle;
     cell.acTime.text = acmodel.acTime;
@@ -219,6 +228,13 @@
     NSString *tags = [Artags componentsJoinedByString:@","];
     cell.acTag.text = tags;
     
+}
+
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    CZActivityInfoViewController *ac = [[CZActivityInfoViewController alloc]init];
+    
+    ac.activityModelPre = self.reviewAc[indexPath.row];
+    [self.navigationController pushViewController:ac animated:YES];
 }
 
 #pragma mark - get data
@@ -242,9 +258,36 @@
     }
 }
 
+-(NSMutableArray *)waitReviewAc{
+    if (!_waitReviewAc) {
+        _waitReviewAc = [[NSMutableArray alloc]init];
+    }
+    return _waitReviewAc;
+}
+
+-(NSMutableArray *)didReviewAc{
+    if (!_didReviewAc) {
+        _didReviewAc = [[NSMutableArray alloc]init];
+    }
+    return _didReviewAc;
+}
+
+-(NSMutableArray *)reviewAc{
+    if (!_reviewAc) {
+        _reviewAc = [[NSMutableArray alloc]init];
+    }
+    return _reviewAc;
+}
+
 - (void) setAcList:(ActivityList *)acList{
     _acList = acList;
-    
+    for (ActivityModel *model in acList.list) {
+        if ([model.acReview isEqualToString:@"0"]) {
+            [self.waitReviewAc addObject:model];
+        } else {
+            [self.didReviewAc addObject:model];
+        }
+    }
     [self.tableView reloadData];
 }
 @end
