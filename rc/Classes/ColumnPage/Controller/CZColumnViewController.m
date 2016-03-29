@@ -20,7 +20,9 @@
 #import "RCColumnInfoView.h"
 #import "UINavigationBar+Awesome.h"
 #import "RCColumnTableView.h"
-
+//MJReflesh--------------------------------
+#import "MJRefresh.h"
+#import "RCColumnTableViewReflesh.h"
 @interface CZColumnViewController ()
 
 @property (nonatomic, strong) RCColumnTableView *rcTV;
@@ -91,13 +93,22 @@
     UIView *temp = [[UIView alloc]init];
     [self.view addSubview:temp];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
+    [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loadDefaultInfo) name:@"load" object:nil];
+    [self configureBlocks];
+    self.getIndListBlock();
     [self createSubView];
-    [self getData];
+//    [self getData];
     [self addSwipeGesture];
     [self.rcTV.tableViewSate  addObserver:self forKeyPath:@"leftTableView" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     [self.rcTV.tableViewSate  addObserver:self forKeyPath:@"rightTableView" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
+    
+    self.rcTV.leftTableView.mj_header = [RCColumnTableViewReflesh headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
 }
-
+- (void)loadNewData
+{
+    NSLog(@"load");
+    [self.rcTV.leftTableView.mj_header endRefreshing];
+}
 - (void)addSwipeGesture
 {
     UISwipeGestureRecognizer *recognizer;
@@ -182,61 +193,52 @@
     }
 
 }
-
 - (void)getData
 {
-    dispatch_queue_t queue = dispatch_queue_create("cloumn", DISPATCH_QUEUE_CONCURRENT);
-    
-    dispatch_async(queue, ^{
+    dispatch_queue_t getAcSerialQueue = dispatch_queue_create("com.rc.column", NULL);
+    dispatch_async(getAcSerialQueue, ^{
+
         [self configureBlocks];
         self.getIndListBlock();
-        sleep(1);
     });
-    dispatch_async(queue, ^{
-        NSLog(@"task 2");
-        sleep(0.5);
-    });
-    
-    dispatch_barrier_async(queue, ^{
-        //NSLog(@"after task 1 and task 2");
-        sleep(0.5);
-    });
-    
-    dispatch_async(queue, ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            //更新UI
-            if (self.activityList.list.count != 0 )
-            {
-                ActivityList *defaultInd = [self.acByind valueForKey:@"互联网"];
-                NSMutableArray *leftArray = [[NSMutableArray alloc]init];
-                NSMutableArray *rightArray = [[NSMutableArray alloc]init];
-                for (int i =0; i < defaultInd.list.count; i++)
-                {
-                    if (i<(defaultInd.list.count/2))
-                    {
-                        [leftArray addObject:defaultInd.list[i]];
-                    } else
-                    {
-                        [rightArray addObject:defaultInd.list[i]];
-                    }
-                }
-                self.rightDelegate.array = rightArray;
-                self.leftDelegate.array = leftArray;
-            }else
-            {
-                //无数据或者网络异常处理
-                NSLog(@"no data");
-            }
-            
-        });
+
+    dispatch_async(getAcSerialQueue, ^{
+
+       dispatch_async(dispatch_get_main_queue(), ^{
+           //更新UI
+           if (self.activityList.list.count != 0 )
+           {
+               ActivityList *defaultInd = [self.acByind valueForKey:@"互联网"];
+               NSMutableArray *leftArray = [[NSMutableArray alloc]init];
+               NSMutableArray *rightArray = [[NSMutableArray alloc]init];
+               for (int i =0; i < defaultInd.list.count; i++)
+               {
+                   if (i<(defaultInd.list.count/2))
+                   {
+                       [leftArray addObject:defaultInd.list[i]];
+                   } else
+                   {
+                       [rightArray addObject:defaultInd.list[i]];
+                   }
+               }
+               self.rightDelegate.array = rightArray;
+               self.leftDelegate.array = leftArray;
+           }else
+           {
+               //无数据或者网络异常处理
+               NSLog(@"no data");
+           }
+
+       });
     });
 }
+
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     NSMutableDictionary *objDict = (NSMutableDictionary *)object;
     if ([[objDict valueForKey:@"leftTableView"] isEqualToString:@"YES"] && [[objDict valueForKey:@"rightTableView"]isEqualToString:@"YES"]) {
         CGFloat subHeight = self.rcTV.leftTableView.contentSize.height - self.rcTV.rightTableView.contentSize.height;
-        //NSLog(@"%@",objDict);
+
         if (subHeight < 0)
         {//左低右高
             PlanModel *model = [[PlanModel alloc]init];
@@ -265,7 +267,7 @@
     self.rcTV = [[RCColumnTableView alloc]init];
     [self.view addSubview:self.rcTV];
     [self.rcTV mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.toolScrollView.mas_bottom).offset(20);
+        make.top.equalTo(self.toolScrollView.mas_bottom).offset(10);
         make.left.equalTo(self.view.mas_left);
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom).offset(-49);
@@ -287,8 +289,8 @@
 }
 - (void)dealloc
 {
-    [self removeObserver:self forKeyPath:@"leftTableView"];
-    [self removeObserver:self forKeyPath:@"rightTableView"];
+    [self.rcTV.tableViewSate removeObserver:self forKeyPath:@"leftTableView"];
+    [self.rcTV.tableViewSate removeObserver:self forKeyPath:@"rightTableView"];
 }
 #pragma mark - 按钮点击事件的处理代码
 - (void)onClickTooBtn:(UIButton *)btn
@@ -388,17 +390,43 @@
             @strongify(self);
             self.activityList = acList;
             [self.acByind setValue:self.activityList forKey:model.indName];
+            if ([model.indName isEqualToString:@"互联网"])
+            {
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"load" object:self.activityList];
+            }
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];
     };
 }
+#pragma mark - 初次进入时加载默认数据
+- (void)loadDefaultInfo
+{
+    ActivityList *defaultInd = [self.acByind valueForKey:@"互联网"];
+    NSMutableArray *leftArray = [[NSMutableArray alloc]init];
+    NSMutableArray *rightArray = [[NSMutableArray alloc]init];
+    for (int i =0; i < defaultInd.list.count; i++)
+    {
+        if (i<(defaultInd.list.count/2))
+        {
+            [leftArray addObject:defaultInd.list[i]];
+        } else
+        {
+            [rightArray addObject:defaultInd.list[i]];
+        }
+    }
+    self.rightDelegate.array = rightArray;
+    self.leftDelegate.array = leftArray;
 
+}
 
 -(void)setIndList:(IndustryList *)indList{
     _indList = indList;
     //创建工具条按钮
-    [self showToolButtons];
+    if (_indList)
+    {
+        [self showToolButtons];
+    }
 }
 
 -(void)setActivityList:(ActivityList *)activityList{
@@ -406,7 +434,7 @@
     _activityList = activityList;
 //    if (_activityList.list.count != 0)
 //    {
-//        [self test];
+//        NSLog(@"test");
 //    }
     
 }
