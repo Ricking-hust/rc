@@ -182,55 +182,46 @@
     }
 
 }
-
 - (void)getData
 {
-    dispatch_queue_t queue = dispatch_queue_create("cloumn", DISPATCH_QUEUE_CONCURRENT);
-    
-    dispatch_async(queue, ^{
+    dispatch_queue_t getAcSerialQueue = dispatch_queue_create("com.rc.column", NULL);
+    dispatch_async(getAcSerialQueue, ^{
+
         [self configureBlocks];
         self.getIndListBlock();
-        sleep(1);
     });
-    dispatch_async(queue, ^{
-        NSLog(@"task 2");
-        sleep(0.5);
-    });
-    
-    dispatch_barrier_async(queue, ^{
-        //NSLog(@"after task 1 and task 2");
-        sleep(0.5);
-    });
-    
-    dispatch_async(queue, ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            //更新UI
-            if (self.activityList.list.count != 0 )
-            {
-                ActivityList *defaultInd = [self.acByind valueForKey:@"互联网"];
-                NSMutableArray *leftArray = [[NSMutableArray alloc]init];
-                NSMutableArray *rightArray = [[NSMutableArray alloc]init];
-                for (int i =0; i < defaultInd.list.count; i++)
-                {
-                    if (i<(defaultInd.list.count/2))
-                    {
-                        [leftArray addObject:defaultInd.list[i]];
-                    } else
-                    {
-                        [rightArray addObject:defaultInd.list[i]];
-                    }
-                }
-                self.rightDelegate.array = rightArray;
-                self.leftDelegate.array = leftArray;
-            }else
-            {
-                //无数据或者网络异常处理
-                NSLog(@"no data");
-            }
-            
-        });
+
+    dispatch_async(getAcSerialQueue, ^{
+
+       dispatch_async(dispatch_get_main_queue(), ^{
+           //更新UI
+           if (self.activityList.list.count != 0 )
+           {
+               ActivityList *defaultInd = [self.acByind valueForKey:@"互联网"];
+               NSMutableArray *leftArray = [[NSMutableArray alloc]init];
+               NSMutableArray *rightArray = [[NSMutableArray alloc]init];
+               for (int i =0; i < defaultInd.list.count; i++)
+               {
+                   if (i<(defaultInd.list.count/2))
+                   {
+                       [leftArray addObject:defaultInd.list[i]];
+                   } else
+                   {
+                       [rightArray addObject:defaultInd.list[i]];
+                   }
+               }
+               self.rightDelegate.array = rightArray;
+               self.leftDelegate.array = leftArray;
+           }else
+           {
+               //无数据或者网络异常处理
+               NSLog(@"no data");
+           }
+
+       });
     });
 }
+
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
     NSMutableDictionary *objDict = (NSMutableDictionary *)object;

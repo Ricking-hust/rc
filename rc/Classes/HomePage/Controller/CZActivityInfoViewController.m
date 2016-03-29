@@ -67,7 +67,6 @@
 @end
 
 @implementation CZActivityInfoViewController
-
 - (CGFloat)acHtmlHeight
 {
     if (!_acHtmlHeight) {
@@ -80,59 +79,38 @@
 
 - (void)viewDidLoad {
     [super viewDidLoad];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didShowActivityInfo) name:@"getActivityInfo" object:nil];
     [self createSubViews];
-
     self.collectionBtn.hidden = YES;
     self.addToSchedule.hidden = YES;
-    [self getData];
+    [self configureBlocks];
+    self.getActivityBlock();
     //设置导航栏
     [self setNavigation];
-    [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
-    self.navigationController.navigationBarHidden = NO;
     
 }
-
-- (void)getData
+- (void)dealloc
 {
-    dispatch_queue_t queue = dispatch_queue_create("cloumn", DISPATCH_QUEUE_CONCURRENT);
-    dispatch_async(queue, ^{
-        [self configureBlocks];
-         self.getActivityBlock();
-        sleep(1);
-    });
-    dispatch_async(queue, ^{
-        sleep(0.5);
-    });
     
-    dispatch_barrier_async(queue, ^{
+    [[NSNotificationCenter defaultCenter] removeObserver:self];
 
-    });
+}
+- (void)didShowActivityInfo
+{
+    self.view.backgroundColor = [UIColor whiteColor];
+    self.collectionBtn.hidden = NO;
+    self.addToSchedule.hidden = NO;
+    //设置tableView头
+    [self layoutHeaderImageView];
     
-    dispatch_async(queue, ^{
-        dispatch_async(dispatch_get_main_queue(), ^{
-            //更新UI
-            //获取活动收藏情况
-            if (self.activitymodel != nil)
-            {
-                self.view.backgroundColor = [UIColor whiteColor];
-                self.collectionBtn.hidden = NO;
-                self.addToSchedule.hidden = NO;
-                //设置tableView头
-                [self layoutHeaderImageView];
-                
-                self.tableView.delegate = self;
-                self.tableView.dataSource = self;
-                self.isCollect = self.activitymodel.acCollect;
-                [self setCollectionBtnStyle];
-                //对tableView头进行赋值
-                [self setTableViewHeader];
-                [self.tableView reloadData];
-                [self setwebViewCellH];
-            }
-
-
-        });
-    });
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    self.isCollect = self.activitymodel.acCollect;
+    [self setCollectionBtnStyle];
+    //对tableView头进行赋值
+    [self setTableViewHeader];
+    [self.tableView reloadData];
+    [self setwebViewCellH];
 }
 - (void)setwebViewCellH
 {
@@ -147,10 +125,6 @@
 {
     NSIndexSet *section = [NSIndexSet indexSetWithIndex:1];
     [self.tableView reloadSections:section withRowAnimation:UITableViewRowAnimationFade];
-}
-
--(void)dealloc{
-    [[NSNotificationCenter defaultCenter] removeObserver:self];
 }
 
 #pragma mark - Data
@@ -181,7 +155,10 @@
 -(void)setActivitymodel:(ActivityModel *)activitymodel{
     
     _activitymodel = activitymodel;
-
+    if (_activitymodel.acTitle)
+    {
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"getActivityInfo" object:_activitymodel];
+    }
 }
 
 -(NSString *)isCollect{
@@ -682,6 +659,8 @@
 
 - (void)setNavigation
 {
+    self.navigationController.navigationBarHidden = NO;
+    [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     //设置导航标题栏
     UILabel *titleLabel     = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
