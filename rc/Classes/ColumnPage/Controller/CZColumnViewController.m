@@ -107,6 +107,7 @@
 - (void)loadNewData
 {
     NSLog(@"load");
+    [self.rcTV.leftTableView.mj_header endRefreshing];
 }
 - (void)addSwipeGesture
 {
