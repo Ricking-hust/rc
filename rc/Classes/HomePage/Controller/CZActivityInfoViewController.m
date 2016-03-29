@@ -360,13 +360,13 @@
             [cell addSubview:acIntroduce];
             //对cell的控件进行赋值
             [acIntroduce setText:self.activitymodel.acDesc];
-            acIntroduce.font = [UIFont systemFontOfSize:15];
+            acIntroduce.font = [UIFont systemFontOfSize:14];
             acIntroduce.numberOfLines = 0;
             //对cell的控件进行布局
             [acIntroduce mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(cell.mas_left).offset(5);
                 make.top.equalTo(cell.mas_top).offset(5);
-                make.right.equalTo(cell.mas_right).offset(5);
+                make.right.equalTo(cell.contentView.mas_right);
                 make.bottom.equalTo(cell.mas_bottom).offset(5);
             }];
             return cell;
