@@ -102,7 +102,6 @@
 		5683EC271C817F7B006430CB /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5683EC251C817F7B006430CB /* LaunchScreen.storyboard */; };
 		5683EC281C817F7B006430CB /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5683EC261C817F7B006430CB /* Main.storyboard */; };
 		569079DE1CA8F8AA00DEBF6F /* RCBarButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 569079DD1CA8F8AA00DEBF6F /* RCBarButtonView.m */; };
-		569079E01CA963F700DEBF6F /* html.css in Resources */ = {isa = PBXBuildFile; fileRef = 569079DF1CA963F700DEBF6F /* html.css */; };
 		569773221C9AC5BD00D25338 /* RCSettingTagTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 569773211C9AC5BD00D25338 /* RCSettingTagTableViewController.m */; };
 		569773251C9ACA7500D25338 /* RCTagCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 569773241C9ACA7500D25338 /* RCTagCell.m */; };
 		569E58DD1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 569E58DC1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.m */; };
@@ -401,7 +400,6 @@
 		5683EC261C817F7B006430CB /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
 		569079DC1CA8F8AA00DEBF6F /* RCBarButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCBarButtonView.h; sourceTree = "<group>"; };
 		569079DD1CA8F8AA00DEBF6F /* RCBarButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCBarButtonView.m; sourceTree = "<group>"; };
-		569079DF1CA963F700DEBF6F /* html.css */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.css; path = html.css; sourceTree = "<group>"; };
 		569773201C9AC5BD00D25338 /* RCSettingTagTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSettingTagTableViewController.h; sourceTree = "<group>"; };
 		569773211C9AC5BD00D25338 /* RCSettingTagTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSettingTagTableViewController.m; sourceTree = "<group>"; };
 		569773231C9ACA7500D25338 /* RCTagCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTagCell.h; sourceTree = "<group>"; };
@@ -1300,7 +1298,6 @@
 		56E603F51CA5368100EB0446 /* res */ = {
 			isa = PBXGroup;
 			children = (
-				569079DF1CA963F700DEBF6F /* html.css */,
 				56E9D3961CA57665005FF799 /* tutor1.jpg */,
 				56E9D3971CA57665005FF799 /* tutor3.jpg */,
 				56E9D3981CA57665005FF799 /* tutor2.jpg */,
@@ -1550,7 +1547,6 @@
 			files = (
 				5683EC271C817F7B006430CB /* LaunchScreen.storyboard in Resources */,
 				56E603F91CA5369000EB0446 /* 50%loading.gif in Resources */,
-				569079E01CA963F700DEBF6F /* html.css in Resources */,
 				56E9D39D1CA57665005FF799 /* tutor4.jpg in Resources */,
 				56E9D39A1CA57665005FF799 /* tutor1.jpg in Resources */,
 				5683EC281C817F7B006430CB /* Main.storyboard in Resources */,

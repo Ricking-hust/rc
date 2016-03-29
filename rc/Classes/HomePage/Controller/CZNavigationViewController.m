@@ -53,14 +53,14 @@
     
     // 3.设置导航条标题的字体和颜色
     NSDictionary *titleAttr = @{
-                                NSForegroundColorAttributeName:[UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:13.0/255.0 alpha:1.0],
+                                NSForegroundColorAttributeName:[UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0],
                                 NSFontAttributeName:[UIFont systemFontOfSize:18]
                                 };
     [navBar setTitleTextAttributes:titleAttr];
     
     //设置返回按钮的样式
     //tintColor是用于导航条的所有Item
-    navBar.tintColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:13.0/255.0 alpha:1.0];
+    navBar.tintColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
     
     UIBarButtonItem *navItem = [UIBarButtonItem appearance];
     //

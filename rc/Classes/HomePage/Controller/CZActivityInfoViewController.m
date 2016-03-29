@@ -554,15 +554,23 @@
             make.height.mas_equalTo(totalOffset);
 
         }];
+
+    }
+
+    if (yOffset < HEADERH - 64)
+    {
         self.barButtonView.label.text = @"活动介绍";
+        [UIView animateWithDuration:0.5 animations:^{
+            [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
+        }];
+        
     }else
     {
-        if (yOffset > HEADERH)
-        {
-           self.barButtonView.label.text = self.activitymodel.acTitle;
-        }
+        self.barButtonView.label.text = self.activitymodel.acTitle;
+        [UIView animateWithDuration:0.5 animations:^{
+            [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor colorWithRed:14.0/255.0 green:85.0/255.0 blue:157.0/255.0 alpha:1.0]];
+        }];
     }
-    
 }
 
 //对tableView头进行赋值

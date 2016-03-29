@@ -169,21 +169,21 @@
     NSString *beforeOneHour = @"";
     NSString *beforeTwoDay = @"";
     NSString *beforeThreeDay = @"";
-    NSMutableArray *remindTime = [[NSMutableArray alloc]initWithObjects:beforeOneHour,beforeTwoDay,beforeThreeDay, nil];
+
     if ([self.model.plAlarmOne isEqualToString:@"1"])
     {
-        beforeOneHour = @"提前一小时";
+        beforeOneHour = @"提前一小时,";
     }
     if ([self.model.plAlarmTwo isEqualToString:@"1"])
     {
-        beforeTwoDay = @"提前两天";
+        beforeTwoDay = @"提前两天,";
     }
     if ([self.model.plAlarmThree isEqualToString:@"1"])
     {
         beforeThreeDay = @"提前三天";
     }
 
-    self.scRemindTime.text = [NSString stringWithFormat:@"%@,%@,%@",beforeOneHour, beforeTwoDay, beforeThreeDay];
+    self.scRemindTime.text = [NSString stringWithFormat:@"%@ %@ %@",beforeOneHour, beforeTwoDay, beforeThreeDay];
 }
 - (void)createSubView
 {

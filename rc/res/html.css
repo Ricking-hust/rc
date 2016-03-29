@@ -1,3 +1,0 @@
-String css="<head><meta charset='utf-8' /><meta name=\"viewport\" content=\"width=device-width,minimum-scale=1.0,maximum-scale=1.0,user-scalable=no\"/><style>*{font-size:14px;max-width:100%;word-break:break-all;padding:0px;margin:0px}\n#contentsss{line-height:150%;color:#646464}</style></head>";
-String head="";//"<h2>"+act.getTitle()+"</h2><hr />";
-String script="<script>window.onload=function(){content.adjust(document.getElementById(\"contentsss\").offsetHeight);}</script>";
