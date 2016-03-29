@@ -182,8 +182,16 @@
     {
         beforeThreeDay = @"提前三天";
     }
+    if ([beforeOneHour isEqualToString:@""] &&
+        [beforeTwoDay  isEqualToString:@""] &&
+        [beforeThreeDay isEqualToString:@""])
+    {
+        self.scRemindTime.text = @"不提醒";
+    }else
+    {
+        self.scRemindTime.text = [NSString stringWithFormat:@"%@ %@ %@",beforeOneHour, beforeTwoDay, beforeThreeDay];
+    }
 
-    self.scRemindTime.text = [NSString stringWithFormat:@"%@ %@ %@",beforeOneHour, beforeTwoDay, beforeThreeDay];
 }
 - (void)createSubView
 {

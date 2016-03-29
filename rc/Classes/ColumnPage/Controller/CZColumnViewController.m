@@ -348,6 +348,9 @@
     }
     self.rightDelegate.array = rightArray;
     self.leftDelegate.array = leftArray;
+    [self.rcTV.rightTableView reloadData];
+    [self.rcTV.leftTableView reloadData];
+    
 }
 -(void)didReceiveMemoryWarning
 {
