@@ -14,6 +14,10 @@
 -(instancetype)initWithDictionary:(NSDictionary *)dict{
     if (self = [super initWithDictionary:dict]) {
         self.acID               = [dict objectForSafeKey:@"ac_id"];
+        self.userInfo           = [[UserModel alloc] init];
+        self.userInfo.userId    = [dict objectForSafeKey:@"usr_id"];
+        self.userInfo.userPic   = [dict objectForSafeKey:@"usr_pic"];
+        self.userInfo.userName  = [dict objectForSafeKey:@"usr_name"];
         self.acPoster           = [dict objectForSafeKey:@"ac_poster"];
         self.acPosterTop        = [dict objectForSafeKey:@"ac_poster_top"];
         self.acTitle            = [dict objectForSafeKey:@"ac_title"];

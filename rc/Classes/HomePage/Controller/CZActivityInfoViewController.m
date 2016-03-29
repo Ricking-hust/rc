@@ -323,12 +323,56 @@
         case 2:
         {
             UITableViewCell *cell = [[UITableViewCell alloc]init];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            UIImageView *releaserPic = [[UIImageView alloc]init];
+            UILabel *releaserName = [[UILabel alloc]init];
+            releaserName.font = [UIFont systemFontOfSize:FONTSIZE];
+            
+            [cell addSubview:releaserPic];
+            [cell addSubview:releaserName];
+
+            //对cell的控件进行赋值
+   
+            [releaserPic sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.userInfo.userPic]placeholderImage:[UIImage imageNamed:@"meetingIcon"]];
+            releaserPic.layer.cornerRadius = 25;
+            [releaserPic mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(cell.mas_left).offset(15);
+                make.centerY.equalTo(cell.mas_centerY);
+                make.width.mas_equalTo(50);
+                make.height.mas_equalTo(50);
+            }];
+            
+            [releaserName setText:self.activitymodel.userInfo.userName];
+            CGSize maxSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
+            CGSize releaserLable = [self sizeWithText:releaserName.text maxSize:maxSize fontSize:FONTSIZE];
+            [releaserName mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(releaserPic.mas_right).offset(10);
+                make.centerY.equalTo(cell.mas_centerY);
+                make.size.mas_equalTo(CGSizeMake((int)releaserLable.width+1, (int)releaserLable.height+1));
+            }];
             return cell;
         }
             break;
         case 3:
         {
             UITableViewCell *cell = [[UITableViewCell alloc]init];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            UILabel *acIntroduce = [[UILabel alloc]init];
+            [cell addSubview:acIntroduce];
+            //对cell的控件进行赋值
+            [acIntroduce setText:self.activitymodel.acDesc];
+            acIntroduce.font = [UIFont systemFontOfSize:FONTSIZE];
+            acIntroduce.numberOfLines = 0;
+            //对cell的控件进行布局
+            
+            CGSize maxSize = CGSizeMake(kScreenWidth - 20, MAXFLOAT);
+            CGSize size = [self sizeWithText:self.activitymodel.acDesc maxSize:maxSize fontSize:FONTSIZE];
+            [acIntroduce mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(cell.mas_top).offset(10);
+                make.left.equalTo(cell.mas_left).offset(10);
+                make.width.mas_equalTo((int)size.width+1);
+                make.height.mas_equalTo((int)size.height+1);
+            }];
             return cell;
         }
             break;
@@ -362,7 +406,7 @@
     }else if([cell isKindOfClass:[CZActivityInfoCell class]])
     {
         ((CZActivityInfoCell *)cell).model = self.activitymodel;
-    }else
+    }else if(indexPath.section == 2)
     {
         ;
     }
@@ -411,7 +455,7 @@
         return [self heightForAcInfoCell];
     }else if (indexPath.section == 2)
     {
-        return [self heightForReleaseCell];
+        return 60;
     }else if (indexPath.section == 3)
     {
         return [self heightForSpeakerCell];
@@ -421,27 +465,16 @@
     }
 }
 - (CGFloat)heightForSpeakerCell
-{
-    CGSize maxSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
-    CGSize size = [self sizeWithText:@"" maxSize:maxSize fontSize:14];
-    return (int)size.height + PADDING;
-}
-- (CGFloat)heightForReleaseCell
-{
-    CGSize maxSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
-    CGSize size = [self sizeWithText:@"" maxSize:maxSize fontSize:14];
-    return (int)size.height + PADDING;
+{//主讲人Cell的高度
+    CGSize maxSize = CGSizeMake(kScreenWidth - 20, MAXFLOAT);
+    CGSize size = [self sizeWithText:self.activitymodel.acDesc maxSize:maxSize fontSize:FONTSIZE];
+    return (int)size.height + 2*PADDING;
 }
 - (CGFloat)heightForAcInfoCell
 {
     CGSize maxSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
     CGSize placeSize = [self sizeWithText:self.activitymodel.acPlace maxSize:maxSize fontSize:FONTSIZE];
     CGSize scaleSize = [self sizeWithText:self.activitymodel.acSize maxSize:maxSize fontSize:FONTSIZE];
-#pragma mark - acpay不能为空
-    if ([self.activitymodel.acPay isEqualToString:@""])
-    {
-        self.activitymodel.acPay = @"免费";
-    }
     CGSize paySize = [self sizeWithText:self.activitymodel.acPay maxSize:maxSize fontSize:FONTSIZE];
     return (int)placeSize.height + (int)scaleSize.height + (int)paySize.height + 3 + 4 *PADDING;
 }

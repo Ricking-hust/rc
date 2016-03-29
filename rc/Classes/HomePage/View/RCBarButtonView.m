@@ -38,6 +38,7 @@
     self.label.textColor = [UIColor whiteColor];
     
     [self.button setImage:image forState:UIControlStateNormal];
+    [self.button setImage:image forState:UIControlStateHighlighted];
     [self.button mas_updateConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(50);
         make.height.mas_equalTo(image.size.height);
