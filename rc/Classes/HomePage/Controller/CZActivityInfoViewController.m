@@ -422,19 +422,19 @@
 }
 - (CGFloat)heightForSpeakerCell
 {
-    CGSize maxSize = CGSizeMake(kScreenWidth - 30, MAXFLOAT);
+    CGSize maxSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
     CGSize size = [self sizeWithText:@"" maxSize:maxSize fontSize:14];
-    return size.height + PADDING;
+    return (int)size.height + PADDING;
 }
 - (CGFloat)heightForReleaseCell
 {
-    CGSize maxSize = CGSizeMake(kScreenWidth - 30, MAXFLOAT);
+    CGSize maxSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
     CGSize size = [self sizeWithText:@"" maxSize:maxSize fontSize:14];
-    return size.height + PADDING;
+    return (int)size.height + PADDING;
 }
 - (CGFloat)heightForAcInfoCell
 {
-    CGSize maxSize = CGSizeMake(kScreenWidth - 30, MAXFLOAT);
+    CGSize maxSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
     CGSize placeSize = [self sizeWithText:self.activitymodel.acPlace maxSize:maxSize fontSize:FONTSIZE];
     CGSize scaleSize = [self sizeWithText:self.activitymodel.acSize maxSize:maxSize fontSize:FONTSIZE];
 #pragma mark - acpay不能为空
@@ -443,7 +443,7 @@
         self.activitymodel.acPay = @"免费";
     }
     CGSize paySize = [self sizeWithText:self.activitymodel.acPay maxSize:maxSize fontSize:FONTSIZE];
-    return placeSize.height + scaleSize.height + paySize.height + 3 + 4 *PADDING;
+    return (int)placeSize.height + (int)scaleSize.height + (int)paySize.height + 3 + 4 *PADDING;
 }
 #pragma mark - UIWebView Delegate Methods
 -(void)webViewDidFinishLoad:(UIWebView *)webView

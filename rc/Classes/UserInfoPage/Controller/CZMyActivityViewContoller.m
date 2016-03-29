@@ -153,7 +153,7 @@
         [Artags addObject:model.tagName];
     }
     NSString *tags = [Artags componentsJoinedByString:@","];
-    cell.acTag.text = tags;
+    cell.acTag.text = @"发布者死哪去了";
 }
 
 #pragma mark - get data

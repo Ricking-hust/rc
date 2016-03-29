@@ -195,6 +195,7 @@
                     make.right.equalTo(cell.indecatorImageView.mas_left).with.offset(-5);
                     make.size.mas_equalTo(CGSizeMake(30, 30));
                 }];
+                cell.personIcon.layer.cornerRadius = 15;
             }else
             {
                 CGSize contentLabelSize = [self sizeWithText:cell.contentLabel.text maxSize:CGSizeMake(200, 20) fontSize:14];
@@ -206,7 +207,8 @@
             }
             if (indexPath.row == 3)
             {
-                cell.indecatorImageView.image = [UIImage imageNamed:@""];
+//                cell.indecatorImageView.image = [UIImage imageNamed:@""];
+                cell.indecatorImageView.hidden = YES;
             }
         }
             break;

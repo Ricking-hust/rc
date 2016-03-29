@@ -163,6 +163,7 @@
 {
     if (indexPath.section == 1) {
         [[DataManager manager] UserLogout];
+        [self.navigationController popToRootViewControllerAnimated:YES];
     }
     if (indexPath.section == 0 &&indexPath.row == 0)
     {//设置新消息通知
