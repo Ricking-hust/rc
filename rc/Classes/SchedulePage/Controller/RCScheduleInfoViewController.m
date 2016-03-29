@@ -143,6 +143,21 @@
     [self addSubViewToView];
 
 }
+#pragma mark - 同步用户行程
+- (void)viewWillAppear:(BOOL)animated
+{
+    [self didDisplayInfo];
+    [self addConstraint];
+    if (self.isContentUpdate == YES)
+    {
+        for (UIView *view in self.timeNodeSV.subviews)
+        {
+            [view removeFromSuperview];
+        }
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
+    }
+}
 - (void)didDisplayInfo
 {
     
@@ -150,7 +165,33 @@
     self.scTheme.text = self.model.themeName;
     self.scTime.text = self.model.planTime;
     self.scContent.text = self.model.planContent;
-    self.scRemindTime.text = self.model.plAlarmOne;
+    
+    NSString *beforeOneHour = @"";
+    NSString *beforeTwoDay = @"";
+    NSString *beforeThreeDay = @"";
+
+    if ([self.model.plAlarmOne isEqualToString:@"1"])
+    {
+        beforeOneHour = @"提前一小时,";
+    }
+    if ([self.model.plAlarmTwo isEqualToString:@"1"])
+    {
+        beforeTwoDay = @"提前两天,";
+    }
+    if ([self.model.plAlarmThree isEqualToString:@"1"])
+    {
+        beforeThreeDay = @"提前三天";
+    }
+    if ([beforeOneHour isEqualToString:@""] &&
+        [beforeTwoDay  isEqualToString:@""] &&
+        [beforeThreeDay isEqualToString:@""])
+    {
+        self.scRemindTime.text = @"不提醒";
+    }else
+    {
+        self.scRemindTime.text = [NSString stringWithFormat:@"%@ %@ %@",beforeOneHour, beforeTwoDay, beforeThreeDay];
+    }
+
 }
 - (void)createSubView
 {
@@ -406,22 +447,6 @@
     UIImage *image = [UIImage imageNamed:@"backIcon"];
     UIBarButtonItem *leftItem = [[UIBarButtonItem alloc]initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(back)];
     [self.navigationItem setLeftBarButtonItem:leftItem];
-}
-#pragma mark - 同步用户行程
-- (void)viewWillAppear:(BOOL)animated
-{
-    [self didDisplayInfo];
-    [self addConstraint];
-    if (self.isContentUpdate == YES)
-    {
-        for (UIView *view in self.timeNodeSV.subviews)
-        {
-            [view removeFromSuperview];
-        }
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
-        //行程信息已更新
-    }
 }
 #pragma mark - 编辑行程
 - (void)edit

@@ -98,7 +98,6 @@
     }
 }
 
-
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     CZMyInfoCell *cell = [CZMyInfoCell myInfoCellWithTableView:tableView];

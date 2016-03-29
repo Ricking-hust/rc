@@ -33,15 +33,24 @@
 @property (nonatomic, strong) UIScrollView *toolScrollView;
 @property (nonatomic, strong) NSMutableArray *toolButtonArray;
 
-@property (nonatomic,strong) IndustryList *indList;
-@property (nonatomic,strong) ActivityList *activityList;
+@property (nonatomic, strong) IndustryList *indList;
+@property (nonatomic, strong) ActivityList *activityList;
 
-@property (nonatomic,copy) NSURLSessionDataTask *(^getIndListBlock)();
-@property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)(IndustryModel *model);
-@property (nonatomic,copy) NSMutableDictionary *acByind;
+@property (nonatomic, copy) NSURLSessionDataTask *(^getIndListBlock)();
+@property (nonatomic, copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)(IndustryModel *model);
+@property (nonatomic, copy) NSMutableDictionary *acByind;
+@property (nonatomic, assign) int currentPage;
 @end
 
 @implementation CZColumnViewController
+- (int)currentPage
+{
+    if (!_currentPage)
+    {
+        _currentPage = 0;
+    }
+    return _currentPage;
+}
 - (NSMutableDictionary *)acByind
 {
     if (!_acByind)
@@ -84,12 +93,95 @@
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     [self createSubView];
     [self getData];
-
+    [self addSwipeGesture];
     [self.rcTV.tableViewSate  addObserver:self forKeyPath:@"leftTableView" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     [self.rcTV.tableViewSate  addObserver:self forKeyPath:@"rightTableView" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-
 }
 
+- (void)addSwipeGesture
+{
+    UISwipeGestureRecognizer *recognizer;
+    recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)];
+    [recognizer setDirection:(UISwipeGestureRecognizerDirectionRight)];
+    [self.view addGestureRecognizer:recognizer];
+
+
+    recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)];
+    [recognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
+    [self.view addGestureRecognizer:recognizer];
+}
+#pragma mark - 左右滑动手势
+- (void)handleSwipeFrom:(UISwipeGestureRecognizer *)sender
+{
+    if (sender.direction == UISwipeGestureRecognizerDirectionLeft )
+    {
+        if(self.currentPage > self.toolButtonArray.count - 1)
+        {
+            
+            self.currentPage = (int)self.toolButtonArray.count - 1;
+        }
+        
+        else if(self.currentPage != self.toolButtonArray.count - 1)
+        {
+            self.currentPage++;
+            [UIView beginAnimations:nil context:nil];
+            
+            //持续时间
+            [UIView setAnimationDuration:1.0];
+            
+            //在出动画的时候减缓速度
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+            
+            //添加动画开始及结束的代理
+            [UIView setAnimationDelegate:self];
+            [UIView setAnimationWillStartSelector:@selector(begin)];
+            [UIView setAnimationDidStopSelector:@selector(stopAnimating)];
+            
+            //动画效果
+            [UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.view cache:YES];
+            
+            //切换行业
+            [self onClickTooBtn:self.toolButtonArray[self.currentPage]];
+            
+            [UIView commitAnimations];
+        }
+    }
+
+    else if(sender.direction == UISwipeGestureRecognizerDirectionRight)
+    {
+        if(self.currentPage < 0)
+        {
+            
+            self.currentPage=0;
+        }
+        else if(self.currentPage!=0)
+        {
+            
+            self.currentPage--;
+            [UIView beginAnimations:nil context:nil];
+            
+            //持续时间
+            [UIView setAnimationDuration:1.0];
+            
+            //在出动画的时候减缓速度
+            [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
+            
+            //添加动画开始及结束的代理
+            [UIView setAnimationDelegate:self];
+            [UIView setAnimationWillStartSelector:@selector(begin)];
+            [UIView setAnimationDidStopSelector:@selector(stopAnimating)];
+            
+            //动画效果
+            [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.view cache:YES];
+            
+            //切换行业
+            [self onClickTooBtn:self.toolButtonArray[self.currentPage]];
+            
+            [UIView commitAnimations];
+        }
+    }
+
+}
 
 - (void)getData
 {
@@ -102,7 +194,6 @@
     });
     dispatch_async(queue, ^{
         NSLog(@"task 2");
-
         sleep(0.5);
     });
     
@@ -119,16 +210,18 @@
                 ActivityList *defaultInd = [self.acByind valueForKey:@"互联网"];
                 NSMutableArray *leftArray = [[NSMutableArray alloc]init];
                 NSMutableArray *rightArray = [[NSMutableArray alloc]init];
-                for (int i =0; i < defaultInd.list.count; i++) {
-                    if (i<(defaultInd.list.count/2)) {
+                for (int i =0; i < defaultInd.list.count; i++)
+                {
+                    if (i<(defaultInd.list.count/2))
+                    {
                         [leftArray addObject:defaultInd.list[i]];
-                    } else {
+                    } else
+                    {
                         [rightArray addObject:defaultInd.list[i]];
                     }
                 }
                 self.rightDelegate.array = rightArray;
                 self.leftDelegate.array = leftArray;
-
             }else
             {
                 //无数据或者网络异常处理
@@ -197,11 +290,12 @@
     [self removeObserver:self forKeyPath:@"leftTableView"];
     [self removeObserver:self forKeyPath:@"rightTableView"];
 }
+#pragma mark - 按钮点击事件的处理代码
 - (void)onClickTooBtn:(UIButton *)btn
 {
     
     [self isToolButtonSelected:btn];
-    //此处添加按钮点击事件的处理代码---------------
+    //此处按钮点击事件的处理代码添加---------------
     NSString *tagName = btn.titleLabel.text;
     if ([tagName isEqualToString:@"互联网"])
     {
@@ -254,6 +348,9 @@
     }
     self.rightDelegate.array = rightArray;
     self.leftDelegate.array = leftArray;
+    [self.rcTV.rightTableView reloadData];
+    [self.rcTV.leftTableView reloadData];
+    
 }
 -(void)didReceiveMemoryWarning
 {
@@ -350,11 +447,9 @@
 //创建工具条按钮
 - (void)showToolButtons
 {
-    //UIColor *selectedColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0] ;
-    CGRect rect = [[UIScreen mainScreen]bounds];
     CGFloat leftPadding = 10;
     CGFloat topPadding = (self.toolScrollView.frame.size.height - 30)/2;
-    CGFloat padding = rect.size.width * 0.07;
+    CGFloat padding = kScreenWidth * 0.07;
     
     //设置工具条的水平滚动范围
     CGFloat horizontalContentSize = self.indList.list.count*30 + (self.indList.list.count - 1)*padding + leftPadding + 10;

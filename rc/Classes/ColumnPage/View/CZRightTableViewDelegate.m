@@ -116,8 +116,8 @@
     CGSize acNameSize = [self sizeWithText:model.acTitle maxSize:maxSize fontSize:NAME_FONTSIZE];
     CGSize acTimeSize = [self sizeWithText:model.acTime maxSize:maxSize fontSize:TIME_FONTSIZE];
     CGSize acPlaceSize = [self sizeWithText:model.acPlace maxSize:maxSize fontSize:PLACE_FONTSIZE];
-    CGSize acTagSize = [self sizeWithText:@"发布者在哪呢" maxSize:maxSize fontSize:TAG_FONTSIZE];
-    return acImageH + 10 + acNameSize.height + 10 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height+10;
+    CGSize acTagSize = [self sizeWithText:@"发布者死哪去了" maxSize:maxSize fontSize:TAG_FONTSIZE];
+    return acImageH + 10 + acNameSize.height + 10 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height+15;
 }
 //给单元格进行赋值
 - (void) setCellValue:(CZColumnCell *)cell AtIndexPath:(NSIndexPath *)indexPath
@@ -132,7 +132,7 @@
     cell.acTimeLabel.text = timeStr;
     cell.acPlaceLabel.text = model.acPlace;
     
-    cell.acTagLabel.text = @"发布者在哪呢";
+    cell.acTagLabel.text = @"发布者死哪去了";
     
     //添加手势
     UITapGestureRecognizer *clickGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(displayInfo:)];

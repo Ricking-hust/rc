@@ -81,7 +81,7 @@
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self createSubViews];
-    //[self.headerImageView addObserver:self forKeyPath:@"image" options:NSKeyValueObservingOptionNew context:nil];
+
     self.collectionBtn.hidden = YES;
     self.addToSchedule.hidden = YES;
     [self getData];
@@ -91,13 +91,7 @@
     self.navigationController.navigationBarHidden = NO;
     
 }
-- (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
-{
-    if ([keyPath isEqualToString:@"image"])
-    {
-        NSLog(@"have");
-    }
-}
+
 - (void)getData
 {
     dispatch_queue_t queue = dispatch_queue_create("cloumn", DISPATCH_QUEUE_CONCURRENT);
@@ -332,22 +326,29 @@
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             UIImageView *releaserPic = [[UIImageView alloc]init];
             UILabel *releaserName = [[UILabel alloc]init];
+            releaserName.font = [UIFont systemFontOfSize:FONTSIZE];
+            
             [cell addSubview:releaserPic];
             [cell addSubview:releaserName];
+
             //对cell的控件进行赋值
+   
             [releaserPic sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.userInfo.userPic]placeholderImage:[UIImage imageNamed:@"meetingIcon"]];
-            [releaserName setText:self.activitymodel.userInfo.userName];
-            //对cell的控件进行布局
-            CGSize releaserLable = [self sizeWithText:releaserName.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:21];
+            releaserPic.layer.cornerRadius = 25;
             [releaserPic mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.left.equalTo(cell.mas_left).offset(15);
-                make.top.equalTo(cell.mas_top);
-                make.size.mas_equalTo(CGSizeMake(50, 50));
+                make.centerY.equalTo(cell.mas_centerY);
+                make.width.mas_equalTo(50);
+                make.height.mas_equalTo(50);
             }];
+            
+            [releaserName setText:self.activitymodel.userInfo.userName];
+            CGSize maxSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
+            CGSize releaserLable = [self sizeWithText:releaserName.text maxSize:maxSize fontSize:FONTSIZE];
             [releaserName mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(releaserPic.mas_right).offset(20);
-                make.top.equalTo(cell.mas_top).offset(10);
-                make.size.mas_equalTo(releaserLable);
+                make.left.equalTo(releaserPic.mas_right).offset(10);
+                make.centerY.equalTo(cell.mas_centerY);
+                make.size.mas_equalTo(CGSizeMake((int)releaserLable.width+1, (int)releaserLable.height+1));
             }];
             return cell;
         }
@@ -360,14 +361,17 @@
             [cell addSubview:acIntroduce];
             //对cell的控件进行赋值
             [acIntroduce setText:self.activitymodel.acDesc];
-            acIntroduce.font = [UIFont systemFontOfSize:14];
+            acIntroduce.font = [UIFont systemFontOfSize:FONTSIZE];
             acIntroduce.numberOfLines = 0;
             //对cell的控件进行布局
+            
+            CGSize maxSize = CGSizeMake(kScreenWidth - 20, MAXFLOAT);
+            CGSize size = [self sizeWithText:self.activitymodel.acDesc maxSize:maxSize fontSize:FONTSIZE];
             [acIntroduce mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(cell.mas_left).offset(5);
-                make.top.equalTo(cell.mas_top).offset(5);
-                make.right.equalTo(cell.contentView.mas_right);
-                make.bottom.equalTo(cell.mas_bottom).offset(5);
+                make.top.equalTo(cell.mas_top).offset(10);
+                make.left.equalTo(cell.mas_left).offset(10);
+                make.width.mas_equalTo((int)size.width+1);
+                make.height.mas_equalTo((int)size.height+1);
             }];
             return cell;
         }
@@ -451,7 +455,7 @@
         return [self heightForAcInfoCell];
     }else if (indexPath.section == 2)
     {
-        return [self heightForReleaseCell];
+        return 60;
     }else if (indexPath.section == 3)
     {
         return [self heightForSpeakerCell];
@@ -461,24 +465,18 @@
     }
 }
 - (CGFloat)heightForSpeakerCell
-{
-    CGSize maxSize = CGSizeMake(kScreenWidth - 30, MAXFLOAT);
-    CGSize size = [self sizeWithText:self.activitymodel.acDesc maxSize:maxSize fontSize:14];
-    return size.height + PADDING;
-}
-- (CGFloat)heightForReleaseCell
-{
-    CGSize maxSize = CGSizeMake(kScreenWidth - 30, MAXFLOAT);
-    CGSize size = [self sizeWithText:self.activitymodel.userInfo.userName maxSize:maxSize fontSize:21];
-    return size.height + PADDING+10;
+{//主讲人Cell的高度
+    CGSize maxSize = CGSizeMake(kScreenWidth - 20, MAXFLOAT);
+    CGSize size = [self sizeWithText:self.activitymodel.acDesc maxSize:maxSize fontSize:FONTSIZE];
+    return (int)size.height + 2*PADDING;
 }
 - (CGFloat)heightForAcInfoCell
 {
-    CGSize maxSize = CGSizeMake(kScreenWidth - 30, MAXFLOAT);
+    CGSize maxSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
     CGSize placeSize = [self sizeWithText:self.activitymodel.acPlace maxSize:maxSize fontSize:FONTSIZE];
     CGSize scaleSize = [self sizeWithText:self.activitymodel.acSize maxSize:maxSize fontSize:FONTSIZE];
     CGSize paySize = [self sizeWithText:self.activitymodel.acPay maxSize:maxSize fontSize:FONTSIZE];
-    return placeSize.height + scaleSize.height + paySize.height + 3 + 4 *PADDING;
+    return (int)placeSize.height + (int)scaleSize.height + (int)paySize.height + 3 + 4 *PADDING;
 }
 #pragma mark - UIWebView Delegate Methods
 -(void)webViewDidFinishLoad:(UIWebView *)webView
@@ -491,7 +489,7 @@
      @"var tagHead =document.documentElement.firstChild;"
      "var tagStyle = document.createElement(\'style\');"
      "tagStyle.setAttribute(\'type\', \'text/css\');"
-     "tagStyle.appendChild(document.createTextNode(\'p{padding: 5pt 5pt;font-size:14px;line-height:150%}\'));"
+     "tagStyle.appendChild(document.createTextNode(\'p{padding-left:5px;font-size:14px;line-height:150%}\'));"
      "var tagHeadAdd = tagHead.appendChild(tagStyle);"];
     [self.tableView reloadData];
 }
@@ -556,15 +554,23 @@
             make.height.mas_equalTo(totalOffset);
 
         }];
+
+    }
+
+    if (yOffset < HEADERH - 64)
+    {
         self.barButtonView.label.text = @"活动介绍";
+        [UIView animateWithDuration:0.5 animations:^{
+            [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
+        }];
+        
     }else
     {
-        if (yOffset > HEADERH)
-        {
-           self.barButtonView.label.text = self.activitymodel.acTitle;
-        }
+        self.barButtonView.label.text = self.activitymodel.acTitle;
+        [UIView animateWithDuration:0.5 animations:^{
+            [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor colorWithRed:14.0/255.0 green:85.0/255.0 blue:157.0/255.0 alpha:1.0]];
+        }];
     }
-    
 }
 
 //对tableView头进行赋值
