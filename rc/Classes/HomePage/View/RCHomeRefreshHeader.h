@@ -9,5 +9,7 @@
 #import "MJRefreshHeader.h"
 
 @interface RCHomeRefreshHeader : MJRefreshHeader
-
+@property (weak, nonatomic) UILabel *label;
+@property (weak, nonatomic) UIImageView *logo;
+@property (weak, nonatomic) UIActivityIndicatorView *loading;
 @end

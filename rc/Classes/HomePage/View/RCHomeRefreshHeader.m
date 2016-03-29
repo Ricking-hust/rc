@@ -11,9 +11,7 @@
 #import "UIImage+GIF.h"
 #import "UIImageView+WebCache.h"
 @interface RCHomeRefreshHeader()
-@property (weak, nonatomic) UILabel *label;
-@property (weak, nonatomic) UIImageView *logo;
-@property (weak, nonatomic) UIActivityIndicatorView *loading;
+
 @end
 @implementation RCHomeRefreshHeader
 #pragma mark - 重写方法
@@ -36,7 +34,7 @@
     
     // logo
     UIImageView *logo = [[UIImageView alloc]init];
-    logo.image = [UIImage imageNamed:@"loading.gif"];
+    logo.image = [UIImage imageNamed:@"50%loading.gif"];
     [self addSubview:logo];
     self.logo = logo;
     
