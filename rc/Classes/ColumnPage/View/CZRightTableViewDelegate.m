@@ -7,23 +7,21 @@
 //
 
 #import "CZRightTableViewDelegate.h"
-#import "RCLeftTableView.h"
-#import "RCRightTableView.h"
 #import "CZColumnCell.h"
 #import "ActivityModel.h"
 #import "CZActivityInfoViewController.h"
 #include <sys/sysctl.h>
-#define NAME_FONTSIZE 14
-#define TIME_FONTSIZE 12
+#define NAME_FONTSIZE  14
+#define TIME_FONTSIZE  12
 #define PLACE_FONTSIZE 12
-#define TAG_FONTSIZE  11
+#define TAG_FONTSIZE   11
 @implementation CZRightTableViewDelegate
 - (id)init
 {
     if (self = [super init])
     {
-        self.leftTableView = [[RCLeftTableView alloc]init];
-        self.rightTableView = [[RCRightTableView alloc]init];
+        self.leftTableView = [[UITableView alloc]init];
+        self.rightTableView = [[UITableView alloc]init];
         self.array = [[NSMutableArray alloc]init];
         self.view  = [[UIView alloc]init];
     }
@@ -33,8 +31,8 @@
 {
     if (self = [super initWithFrame:frame])
     {
-        self.leftTableView = [[RCLeftTableView alloc]init];
-        self.rightTableView = [[RCRightTableView alloc]init];
+        self.leftTableView = [[UITableView alloc]init];
+        self.rightTableView = [[UITableView alloc]init];
         self.array = [[NSMutableArray alloc]init];
         self.view  = [[UIView alloc]init];
     }
@@ -88,14 +86,9 @@
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    ActivityModel *model = self.array[indexPath.row];
-    if ([model.planId isEqualToString:@"null"])
-    {
-        return self.subHeight;
-    }else
-    {
-        return [self contacterTableCell:self.array[indexPath.row]];
-    }
+
+    CGFloat height = [self contacterTableCell:self.array[indexPath.row]];
+    return height;
 }
 - (CGFloat)contacterTableCell:(ActivityModel *)model
 {
@@ -118,7 +111,7 @@
         rightPaddingToContentView = leftPaddintToContentView;
     }else
     {
-        acImageW = 207;
+        acImageW = 177;
         acImageH = 135;
         leftPaddintToContentView = 20;
         rightPaddingToContentView = leftPaddintToContentView;
@@ -198,8 +191,7 @@
     {
         return IPhone5;
         
-    }else if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 6"] ||
-              [[self getCurrentDeviceModel] isEqualToString:@"iPhone Simulator"])
+    }else if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 6"])
     {
         return IPhone6;
     }else

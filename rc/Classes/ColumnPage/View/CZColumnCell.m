@@ -118,7 +118,7 @@
         rightPaddingToContentView = leftPaddintToContentView;
     }else
     {
-        acImageW = 207;
+        acImageW = 177;
         acImageH = 135;
         leftPaddintToContentView = 20;
         rightPaddingToContentView = leftPaddintToContentView;
@@ -200,8 +200,7 @@
     {
         return IPhone5;
         
-    }else if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 6"] ||
-              [[self getCurrentDeviceModel] isEqualToString:@"iPhone Simulator"])
+    }else if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 6"] )
     {
         return IPhone6;
     }else

@@ -13,8 +13,6 @@
 #import "IndustryModel.h"
 #import "ActivityModel.h"
 #import "DataManager.h"
-#import "RCLeftTableView.h"
-#import "RCRightTableView.h"
 #import "CZLeftTableViewDelegate.h"
 #import "CZRightTableViewDelegate.h"
 #import "UINavigationBar+Awesome.h"
@@ -25,12 +23,9 @@
 @interface CZColumnViewController ()
 
 @property (nonatomic, strong) RCColumnTableView *rcTV;
-
 @property (nonatomic, strong) CZLeftTableViewDelegate *leftDelegate;
 @property (nonatomic, strong) CZRightTableViewDelegate *rightDelegate;
 
-
-@property (nonatomic, strong) UIColor *selectedColor;
 @property (nonatomic, strong) UIScrollView *toolScrollView;
 @property (nonatomic, strong) NSMutableArray *toolButtonArray;
 
@@ -102,20 +97,26 @@
     [self.view addSubview:temp];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loadDefaultInfo) name:@"load" object:nil];
-//    [self configureBlocks];
-//    self.getIndListBlock();
     [self createSubView];
-    [self getData];
+    [self configureBlocks];
+    self.getIndListBlock();
     [self addSwipeGesture];
-    [self.rcTV.tableViewSate  addObserver:self forKeyPath:@"leftTableView" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-    [self.rcTV.tableViewSate  addObserver:self forKeyPath:@"rightTableView" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
-    
     self.rcTV.leftTableView.mj_header = [RCColumnTableViewReflesh headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    
 }
 - (void)loadNewData
 {
+    UIView *refleshView = [[UIView alloc]init];
+    refleshView.backgroundColor = [UIColor clearColor];
+    [self.rcTV addSubview:refleshView];
+    [refleshView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.rcTV.leftTableView.mas_top);
+        make.left.equalTo(self.rcTV.leftTableView.mas_left);
+        make.height.mas_equalTo(50);
+        make.width.mas_equalTo(kScreenWidth);
+    }];
     NSLog(@"load");
-    [self.rcTV.leftTableView.mj_header endRefreshing];
+//    [self.rcTV.leftTableView.mj_header endRefreshing];
 }
 - (void)addSwipeGesture
 {
@@ -146,17 +147,7 @@
         else if(self.currentPage != self.toolButtonArray.count - 1)
         {
             self.currentPage++;
-//            [UIView animateWithDuration:1 animations:^{
-//                [self.rcTV mas_updateConstraints:^(MASConstraintMaker *make) {
-//                    make.left.equalTo(self.view.mas_left).offset(-kScreenWidth);
-//                }];
-//                [self.view layoutIfNeeded];
-//            }];
-//            [UIView animateWithDuration:1 delay:0.5 options:UIViewAnimationOptionTransitionFlipFromLeft animations:^{
-//                
-//            } completion:^(BOOL finished) {
-//                [self onClickTooBtn:self.toolButtonArray[self.currentPage]];
-//            }];
+
             [UIView beginAnimations:nil context:nil];
             //持续时间
             [UIView setAnimationDuration:1.0];
@@ -189,11 +180,7 @@
         {
             
             self.currentPage--;
-//            [UIView animateWithDuration:1 delay:0.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
-//                
-//            } completion:^(BOOL finished) {
-//                [self onClickTooBtn:self.toolButtonArray[self.currentPage]];
-//            }];
+
             [UIView beginAnimations:nil context:nil];
             //持续时间
             [UIView setAnimationDuration:1.0];
@@ -259,32 +246,36 @@
 
 -(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
 {
-    NSMutableDictionary *objDict = (NSMutableDictionary *)object;
-    if ([[objDict valueForKey:@"leftTableView"] isEqualToString:@"YES"] && [[objDict valueForKey:@"rightTableView"]isEqualToString:@"YES"]) {
-        CGFloat subHeight = self.rcTV.leftTableView.contentSize.height - self.rcTV.rightTableView.contentSize.height;
 
-        if (subHeight < 0)
-        {//左低右高
-            PlanModel *model = [[PlanModel alloc]init];
-            model.planId = @"null";
-            [self.leftDelegate.array addObject:model];
-            self.leftDelegate.subHeight = ABS(subHeight);
-            [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
-            [self.rcTV.leftTableView reloadData];
-            
-        }else if (subHeight > 0)
-        {//左高右低
-            PlanModel *model = [[PlanModel alloc]init];
-            model.planId = @"null";
-            [self.rightDelegate.array addObject:model];
-            self.rightDelegate.subHeight = ABS(subHeight);
-            [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
-            [self.rcTV.rightTableView reloadData];
-        }else
-        {//等高
-            ;
-        }
-    }
+//    NSMutableDictionary *objDict = (NSMutableDictionary *)object;
+//    if ([[objDict valueForKey:@"leftTableView"] isEqualToString:@"YES"] && [[objDict valueForKey:@"rightTableView"]isEqualToString:@"YES"])
+//    {
+//        CGFloat subHeight = self.rcTV.leftTableView.contentSize.height - self.rcTV.rightTableView.contentSize.height;
+//
+//        if (subHeight < 0)
+//        {//左低右高
+//            [self.rcTV.leftTableView setContentSize:CGSizeMake(0, self.rcTV.rightTableView.contentSize.height)];
+////            PlanModel *model = [[PlanModel alloc]init];
+////            model.planId = @"null";
+////            [self.leftDelegate.array addObject:model];
+////            self.leftDelegate.subHeight = ABS(subHeight);
+//            [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
+//            [self.rcTV.leftTableView reloadData];
+//            
+//        }else if (subHeight > 0)
+//        {//左高右低
+//            [self.rcTV.rightTableView setContentSize:CGSizeMake(0, self.rcTV.leftTableView.contentSize.height)];
+////            PlanModel *model = [[PlanModel alloc]init];
+////            model.planId = @"null";
+////            [self.rightDelegate.array addObject:model];
+////            self.rightDelegate.subHeight = ABS(subHeight);
+//            [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
+//            [self.rcTV.rightTableView reloadData];
+//        }else
+//        {//等高
+//            ;
+//        }
+//    }
 }
 - (void)createSubView
 {
@@ -311,11 +302,6 @@
     self.leftDelegate.view = self.view;
     self.rightDelegate.view = self.view;
 }
-- (void)dealloc
-{
-    [self.rcTV.tableViewSate removeObserver:self forKeyPath:@"leftTableView"];
-    [self.rcTV.tableViewSate removeObserver:self forKeyPath:@"rightTableView"];
-}
 #pragma mark - 按钮点击事件的处理代码
 - (void)onClickTooBtn:(UIButton *)btn
 {
@@ -325,39 +311,32 @@
     NSString *tagName = btn.titleLabel.text;
     if ([tagName isEqualToString:@"互联网"])
     {
-        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
-        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
+
         [self updateDateSourceByInd:tagName];
     }else if ([tagName isEqualToString:@"大学"])
     {
-        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
-        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
+
         [self updateDateSourceByInd:tagName];
         //[self change:tagName];
     }else if ([tagName isEqualToString:@"传媒"])
     {
-        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
-        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
+
         [self updateDateSourceByInd:tagName];
     }else if ([tagName isEqualToString:@"创业"])
     {
-        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
-        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
+
         [self updateDateSourceByInd:tagName];
     }else if ([tagName isEqualToString:@"金融"])
     {
-        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
-        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
+
         [self updateDateSourceByInd:tagName];
     }else if ([tagName isEqualToString:@"人文"])
     {
-        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
-        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
+
         [self updateDateSourceByInd:tagName];
     }else
     {
-        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
-        [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
+
         [self updateDateSourceByInd:tagName];
     }
 }
@@ -370,6 +349,7 @@
 }
 - (void)updateDateSourceByInd:(NSString *)ind
 {
+
     ActivityList *defaultInd = [self.acByind valueForKey:ind];
     NSMutableArray *leftArray = [[NSMutableArray alloc]init];
     NSMutableArray *rightArray = [[NSMutableArray alloc]init];
@@ -384,7 +364,16 @@
     self.leftDelegate.array = leftArray;
     [self.rcTV.rightTableView reloadData];
     [self.rcTV.leftTableView reloadData];
-    
+    if (self.rcTV.leftTableView.contentSize.height > self.rcTV.rightTableView.contentSize.height)
+    {
+        [self.rcTV.rightTableView setContentSize:CGSizeMake(0, self.rcTV.leftTableView.contentSize.height)];
+    }else if(self.rcTV.leftTableView.contentSize.height < self.rcTV.rightTableView.contentSize.height)
+    {
+        [self.rcTV.leftTableView setContentSize:CGSizeMake(0, self.rcTV.rightTableView.contentSize.height)];
+    }else
+    {
+        
+    }
 }
 -(void)didReceiveMemoryWarning
 {
@@ -452,6 +441,13 @@
     }
     rightDelegate.array = rightArray;
     leftDelegate.array = leftArray;
+    if (rc.leftTableView.contentSize.height > rc.rightTableView.contentSize.height)
+    {
+        [rc.rightTableView setContentSize:CGSizeMake(0, rc.leftTableView.contentSize.height)];
+    }else
+    {
+        [rc.leftTableView setContentSize:CGSizeMake(0, rc.rightTableView.contentSize.height)];
+    }
     [rc.leftTableView reloadData];
     [rc.rightTableView reloadData];
 
@@ -474,6 +470,18 @@
     }
     self.rightDelegate.array = rightArray;
     self.leftDelegate.array = leftArray;
+    [self.rcTV.leftTableView reloadData];
+    [self.rcTV.rightTableView reloadData];
+    if (self.rcTV.leftTableView.contentSize.height > self.rcTV.rightTableView.contentSize.height)
+    {
+        [self.rcTV.rightTableView setContentSize:CGSizeMake(0, self.rcTV.leftTableView.contentSize.height)];
+    }else if(self.rcTV.leftTableView.contentSize.height < self.rcTV.rightTableView.contentSize.height)
+    {
+        [self.rcTV.leftTableView setContentSize:CGSizeMake(0, self.rcTV.rightTableView.contentSize.height)];
+    }else
+    {
+        
+    }
 
 }
 - (RCColumnTableView *)createTableView:(int)index ToContainer:(UIView *)container
@@ -514,10 +522,8 @@
 - (void)handlePan:(UIPanGestureRecognizer *)recognizer
 {
     CGPoint point = [recognizer translationInView:self.view];
-    NSLog(@"x %f",point.x);
-    CGFloat originX = recognizer.view.center.x;
     recognizer.view.center = CGPointMake(recognizer.view.center.x + point.x, recognizer.view.center.y);
-//    recognizer.view.center = CGPointMake(recognizer.view.center.x + point.x, recognizer.view.center.y);
+
     if (recognizer.state == UIGestureRecognizerStateChanged)
     {
         if (ABS(point.x) > kScreenWidth/2)
@@ -530,7 +536,6 @@
             recognizer.view.center = CGPointMake(recognizer.view.center.x - point.x, recognizer.view.center.y);
         }
 
-        //[recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
     }
 }
 - (void)createRCColumnTableView:(IndustryList *)indList
@@ -570,15 +575,6 @@
 {
     _activityList = activityList;
     
-}
-#pragma mark - 懒加载，创建主题色
-
-- (UIColor *)selectedColor
-{
-    if (!_selectedColor) {
-        _selectedColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:3.0/255.0 alpha:1.0];
-    }
-    return _selectedColor;
 }
 #pragma mark - 懒加载，创建toolScrollView
 - (UIScrollView *)toolScrollView

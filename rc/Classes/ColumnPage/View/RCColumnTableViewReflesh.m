@@ -8,6 +8,7 @@
 
 #import "RCColumnTableViewReflesh.h"
 #import "Masonry.h"
+#import "RCColumnTableView.h"
 @implementation RCColumnTableViewReflesh
 
 #pragma mark 在这里设置子控件的位置和尺寸
@@ -34,6 +35,42 @@
         make.width.mas_equalTo(img.size.width);
         make.height.mas_equalTo(img.size.height);
     }];
+}
+#pragma mark 监听控件的刷新状态
+- (void)setState:(MJRefreshState)state
+{
+    MJRefreshCheckState;
+    
+    switch (state) {
+        case MJRefreshStateIdle:
+        {
+            self.logo.hidden = NO;
+            UIImage *img = [UIImage imageNamed:@"50%loading.gif"];
+            self.logo.image = img;
+            self.label.text = @"下拉刷新";
+            RCColumnTableView *rc = (RCColumnTableView *)((UITableView *)self.superview).superview;
+            NSLog(@"%@",rc.a);
+        }
+            break;
+            
+        case MJRefreshStatePulling:
+        {
+            self.logo.hidden = NO;
+            self.label.text = @"释放更新";
+            UIImage *img = [UIImage imageNamed:@"50%loading.gif"];
+            self.logo.image = img;
+        }
+            break;
+        case MJRefreshStateRefreshing:
+        {
+            self.logo.hidden = NO;
+            self.label.text = @"加载中……";
+            [self.logo sd_setImageWithURL:[[NSBundle mainBundle] URLForResource:@"50%loading.gif" withExtension:nil]];
+        }
+            break;
+        default:
+            break;
+    }
 }
 
 @end

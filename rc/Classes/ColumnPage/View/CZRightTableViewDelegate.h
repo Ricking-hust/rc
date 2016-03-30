@@ -7,12 +7,9 @@
 //
 
 #import <Foundation/Foundation.h>
-@class RCLeftTableView;
-@class RCRightTableView;
 @interface CZRightTableViewDelegate : UIView<UITableViewDelegate, UITableViewDataSource>
-@property (nonatomic, strong) RCLeftTableView *leftTableView;
-@property (nonatomic, strong) RCRightTableView *rightTableView;
-@property (nonatomic, assign) CGFloat subHeight;
+@property (nonatomic, strong) UITableView *leftTableView;
+@property (nonatomic, strong) UITableView *rightTableView;
 @property (nonatomic, strong) NSMutableArray *array;
 @property (nonatomic, strong) UIView *view;
 @end

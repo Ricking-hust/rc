@@ -7,8 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-#import "RCTableVieContentSizeDelegate.h"
 @class RCColumnInfoView;
-@interface CZColumnViewController : UIViewController<RCTableVieContentSizeDelegate>
+@interface CZColumnViewController : UIViewController
 
 @end
