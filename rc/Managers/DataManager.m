@@ -9,7 +9,6 @@
 
 #import "DataManager.h"
 
-
 typedef NS_ENUM(NSInteger,RcRequestMethod){
     RcRequestMethodJSONGET    = 1,
     RcRequestMethodHTTPPOST   = 2,
