@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 @class RCColumnInfoView;
-@interface CZColumnViewController : UIViewController
+@interface CZColumnViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 
 @end
