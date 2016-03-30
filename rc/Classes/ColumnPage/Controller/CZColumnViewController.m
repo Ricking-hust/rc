@@ -85,8 +85,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
+    
+    NSLog(@"left %f",self.rcTV.leftTableView.contentSize.height);
+    NSLog(@"right %f",self.rcTV.rightTableView.contentSize.height);
 }
 
 #pragma mark - ViewDidLoad
@@ -106,17 +108,12 @@
 }
 - (void)loadNewData
 {
-    UIView *refleshView = [[UIView alloc]init];
-    refleshView.backgroundColor = [UIColor clearColor];
-    [self.rcTV addSubview:refleshView];
-    [refleshView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.rcTV.leftTableView.mas_top);
-        make.left.equalTo(self.rcTV.leftTableView.mas_left);
-        make.height.mas_equalTo(50);
-        make.width.mas_equalTo(kScreenWidth);
-    }];
-    NSLog(@"load");
-//    [self.rcTV.leftTableView.mj_header endRefreshing];
+    // 模拟延迟加载数据，因此2秒后才调用（真实开发中，可以移除这段gcd代码）
+    dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(2.0 * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
+        // 结束刷新
+        [self.rcTV.leftTableView.mj_header endRefreshing];
+    });
+
 }
 - (void)addSwipeGesture
 {
@@ -243,40 +240,6 @@
        });
     });
 }
-
--(void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary *)change context:(void *)context
-{
-
-//    NSMutableDictionary *objDict = (NSMutableDictionary *)object;
-//    if ([[objDict valueForKey:@"leftTableView"] isEqualToString:@"YES"] && [[objDict valueForKey:@"rightTableView"]isEqualToString:@"YES"])
-//    {
-//        CGFloat subHeight = self.rcTV.leftTableView.contentSize.height - self.rcTV.rightTableView.contentSize.height;
-//
-//        if (subHeight < 0)
-//        {//左低右高
-//            [self.rcTV.leftTableView setContentSize:CGSizeMake(0, self.rcTV.rightTableView.contentSize.height)];
-////            PlanModel *model = [[PlanModel alloc]init];
-////            model.planId = @"null";
-////            [self.leftDelegate.array addObject:model];
-////            self.leftDelegate.subHeight = ABS(subHeight);
-//            [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
-//            [self.rcTV.leftTableView reloadData];
-//            
-//        }else if (subHeight > 0)
-//        {//左高右低
-//            [self.rcTV.rightTableView setContentSize:CGSizeMake(0, self.rcTV.leftTableView.contentSize.height)];
-////            PlanModel *model = [[PlanModel alloc]init];
-////            model.planId = @"null";
-////            [self.rightDelegate.array addObject:model];
-////            self.rightDelegate.subHeight = ABS(subHeight);
-//            [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
-//            [self.rcTV.rightTableView reloadData];
-//        }else
-//        {//等高
-//            ;
-//        }
-//    }
-}
 - (void)createSubView
 {
     self.rcTV = [[RCColumnTableView alloc]init];
@@ -301,6 +264,11 @@
     //将self.view添加到tableView代理的响应链中
     self.leftDelegate.view = self.view;
     self.rightDelegate.view = self.view;
+    
+    UITableView *tv = [[UITableView alloc]initWithFrame:CGRectMake(0, 0, 100, 600)];
+    [self.rcTV addSubview:tv];
+    
+    self.rcTV.mj_header = [RCColumnTableViewReflesh headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
 }
 #pragma mark - 按钮点击事件的处理代码
 - (void)onClickTooBtn:(UIButton *)btn
@@ -472,6 +440,9 @@
     self.leftDelegate.array = leftArray;
     [self.rcTV.leftTableView reloadData];
     [self.rcTV.rightTableView reloadData];
+    
+    NSLog(@"lh %f",self.rcTV.leftTableView.contentSize.height);
+    NSLog(@"rh %f",self.self.rcTV.rightTableView.contentSize.height);
     if (self.rcTV.leftTableView.contentSize.height > self.rcTV.rightTableView.contentSize.height)
     {
         [self.rcTV.rightTableView setContentSize:CGSizeMake(0, self.rcTV.leftTableView.contentSize.height)];
@@ -480,9 +451,11 @@
         [self.rcTV.leftTableView setContentSize:CGSizeMake(0, self.rcTV.rightTableView.contentSize.height)];
     }else
     {
-        
+        ;
     }
-
+    NSLog(@"after");
+    NSLog(@"lh %f",self.rcTV.leftTableView.contentSize.height);
+    NSLog(@"rh %f",self.self.rcTV.rightTableView.contentSize.height);
 }
 - (RCColumnTableView *)createTableView:(int)index ToContainer:(UIView *)container
 {

@@ -14,11 +14,11 @@
     if (self = [super init])
     {
         self.leftTableView = [[UITableView alloc]init];
+        self.leftTableView.tag = 100;
         self.rightTableView = [[UITableView alloc]init];
         self.leftTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         self.rightTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         self.view = [[UIView alloc]init];
-        self.a = @"tableview";
     }
     [self setSubView];
     return self;
@@ -56,7 +56,7 @@
         make.width.mas_equalTo(kScreenWidth/2);
     }];
     [self.rightTableView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.leftTableView.mas_right);
+        make.right.equalTo(self.mas_right);
         make.top.equalTo(self.mas_top);
         make.bottom.equalTo(self.mas_bottom);
         make.width.mas_equalTo(kScreenWidth/2);

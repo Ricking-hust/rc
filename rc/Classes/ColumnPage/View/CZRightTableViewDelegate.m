@@ -167,6 +167,10 @@
     [super nextResponder];
     return self.view;
 }
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+    [self.leftTableView setContentOffset:self.rightTableView.contentOffset];
+}
 /**
  *  计算字体的长和宽
  *
@@ -234,12 +238,6 @@
     if ([platform isEqualToString:@"i386"])      return @"iPhone Simulator";
     if ([platform isEqualToString:@"x86_64"])    return @"iPhone Simulator";
     return platform;
-}
-
-
-- (void)scrollViewDidScroll:(UIScrollView *)scrollView
-{
-    [self.leftTableView setContentOffset:self.rightTableView.contentOffset];
 }
 
 @end

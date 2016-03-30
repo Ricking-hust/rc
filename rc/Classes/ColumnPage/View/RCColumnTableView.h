@@ -7,9 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-@interface RCColumnTableView : UIView
+@interface RCColumnTableView : UIScrollView
 @property(nonatomic, strong) UITableView *leftTableView;
 @property(nonatomic, strong) UITableView *rightTableView;
 @property(nonatomic, strong) UIView *view;
-@property(nonatomic, strong) NSString *a;
 @end

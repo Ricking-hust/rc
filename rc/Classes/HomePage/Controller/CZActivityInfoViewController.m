@@ -545,7 +545,7 @@
     {
         self.barButtonView.label.text = self.activitymodel.acTitle;
         [UIView animateWithDuration:0.5 animations:^{
-            [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor colorWithRed:14.0/255.0 green:85.0/255.0 blue:157.0/255.0 alpha:1.0]];
+            [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0]];
         }];
     }
 }

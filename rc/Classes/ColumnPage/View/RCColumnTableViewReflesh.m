@@ -12,30 +12,30 @@
 @implementation RCColumnTableViewReflesh
 
 #pragma mark 在这里设置子控件的位置和尺寸
-- (void)placeSubviews
-{
-    [super placeSubviews];
-    
-    [self.label mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(self.mas_centerY);
-        make.centerX.equalTo(self.mas_centerX).offset(kScreenWidth/4);
-        make.width.mas_equalTo(100);
-        make.height.mas_equalTo(20);
-    }];
-    [self.loading mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.label.mas_left).offset(-5);
-        make.centerY.equalTo(self.label.mas_centerY);
-        make.width.mas_equalTo(20);
-        make.height.mas_equalTo(20);
-    }];
-    UIImage *img = [UIImage imageNamed:@"50%loading.gif"];
-    [self.logo mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.label.mas_left).offset(15);
-        make.centerY.equalTo(self.label.mas_centerY);
-        make.width.mas_equalTo(img.size.width);
-        make.height.mas_equalTo(img.size.height);
-    }];
-}
+//- (void)placeSubviews
+//{
+//    [super placeSubviews];
+//    
+//    [self.label mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.centerY.equalTo(self.mas_centerY);
+//        make.centerX.equalTo(self.mas_centerX).offset(kScreenWidth/4);
+//        make.width.mas_equalTo(100);
+//        make.height.mas_equalTo(20);
+//    }];
+//    [self.loading mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.right.equalTo(self.label.mas_left).offset(-5);
+//        make.centerY.equalTo(self.label.mas_centerY);
+//        make.width.mas_equalTo(20);
+//        make.height.mas_equalTo(20);
+//    }];
+//    UIImage *img = [UIImage imageNamed:@"50%loading.gif"];
+//    [self.logo mas_updateConstraints:^(MASConstraintMaker *make) {
+//        make.right.equalTo(self.label.mas_left).offset(15);
+//        make.centerY.equalTo(self.label.mas_centerY);
+//        make.width.mas_equalTo(img.size.width);
+//        make.height.mas_equalTo(img.size.height);
+//    }];
+//}
 #pragma mark 监听控件的刷新状态
 - (void)setState:(MJRefreshState)state
 {
@@ -48,8 +48,6 @@
             UIImage *img = [UIImage imageNamed:@"50%loading.gif"];
             self.logo.image = img;
             self.label.text = @"下拉刷新";
-            RCColumnTableView *rc = (RCColumnTableView *)((UITableView *)self.superview).superview;
-            NSLog(@"%@",rc.a);
         }
             break;
             

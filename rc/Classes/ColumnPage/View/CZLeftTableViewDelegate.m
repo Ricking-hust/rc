@@ -10,6 +10,7 @@
 #import "CZColumnCell.h"
 #import "ActivityModel.h"
 #import "CZActivityInfoViewController.h"
+#import "Masonry.h"
 #include <sys/sysctl.h>
 #define NAME_FONTSIZE 14
 #define TIME_FONTSIZE 12
@@ -148,8 +149,6 @@
     CZActivityInfoViewController *info = [[CZActivityInfoViewController alloc]init];
     info.title = @"活动介绍";
     info.activityModelPre = self.array[view.tag];
-//    UIViewController *vc = [[UIViewController alloc]init];
-//    vc.view.backgroundColor = [UIColor whiteColor];
 
     [[self viewController].navigationController pushViewController:info animated:YES];
 }
@@ -172,7 +171,12 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     [self.rightTableView setContentOffset:self.leftTableView.contentOffset];
+
 }
+//- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
+//{
+//    NSLog(@"dfs");
+//}
 /**
  *  计算字体的长和宽
  *
