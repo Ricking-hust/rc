@@ -29,6 +29,17 @@
     }
     return self;
 }
+- (id)initWithFrame:(CGRect)frame
+{
+    if (self = [super initWithFrame:frame])
+    {
+        self.leftTableView = [[RCLeftTableView alloc]init];
+        self.rightTableView = [[RCRightTableView alloc]init];
+        self.array = [[NSMutableArray alloc]init];
+        self.view  = [[UIView alloc]init];
+    }
+    return self;
+}
 - (void)setArray:(NSMutableArray *)array
 {
     _array = array;

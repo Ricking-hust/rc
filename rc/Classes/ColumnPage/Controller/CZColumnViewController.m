@@ -17,7 +17,6 @@
 #import "RCRightTableView.h"
 #import "CZLeftTableViewDelegate.h"
 #import "CZRightTableViewDelegate.h"
-#import "RCColumnInfoView.h"
 #import "UINavigationBar+Awesome.h"
 #import "RCColumnTableView.h"
 //MJReflesh--------------------------------
@@ -42,9 +41,18 @@
 @property (nonatomic, copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)(IndustryModel *model);
 @property (nonatomic, copy) NSMutableDictionary *acByind;
 @property (nonatomic, assign) int currentPage;
+@property (nonatomic, strong) NSMutableDictionary *columnTableView;
 @end
 
 @implementation CZColumnViewController
+- (NSMutableDictionary *)columnTableView
+{
+    if (!_columnTableView)
+    {
+        _columnTableView = [[NSMutableDictionary alloc]init];
+    }
+    return _columnTableView;
+}
 - (int)currentPage
 {
     if (!_currentPage)
@@ -94,10 +102,10 @@
     [self.view addSubview:temp];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loadDefaultInfo) name:@"load" object:nil];
-    [self configureBlocks];
-    self.getIndListBlock();
+//    [self configureBlocks];
+//    self.getIndListBlock();
     [self createSubView];
-//    [self getData];
+    [self getData];
     [self addSwipeGesture];
     [self.rcTV.tableViewSate  addObserver:self forKeyPath:@"leftTableView" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
     [self.rcTV.tableViewSate  addObserver:self forKeyPath:@"rightTableView" options:NSKeyValueObservingOptionNew|NSKeyValueObservingOptionOld context:NULL];
@@ -120,7 +128,10 @@
     recognizer = [[UISwipeGestureRecognizer alloc] initWithTarget:self action:@selector(handleSwipeFrom:)];
     [recognizer setDirection:(UISwipeGestureRecognizerDirectionLeft)];
     [self.view addGestureRecognizer:recognizer];
+
+    
 }
+
 #pragma mark - 左右滑动手势
 - (void)handleSwipeFrom:(UISwipeGestureRecognizer *)sender
 {
@@ -135,8 +146,18 @@
         else if(self.currentPage != self.toolButtonArray.count - 1)
         {
             self.currentPage++;
+//            [UIView animateWithDuration:1 animations:^{
+//                [self.rcTV mas_updateConstraints:^(MASConstraintMaker *make) {
+//                    make.left.equalTo(self.view.mas_left).offset(-kScreenWidth);
+//                }];
+//                [self.view layoutIfNeeded];
+//            }];
+//            [UIView animateWithDuration:1 delay:0.5 options:UIViewAnimationOptionTransitionFlipFromLeft animations:^{
+//                
+//            } completion:^(BOOL finished) {
+//                [self onClickTooBtn:self.toolButtonArray[self.currentPage]];
+//            }];
             [UIView beginAnimations:nil context:nil];
-            
             //持续时间
             [UIView setAnimationDuration:1.0];
             
@@ -149,8 +170,7 @@
             [UIView setAnimationDidStopSelector:@selector(stopAnimating)];
             
             //动画效果
-            [UIView setAnimationTransition:UIViewAnimationTransitionCurlDown forView:self.view cache:YES];
-            
+            [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:YES];
             //切换行业
             [self onClickTooBtn:self.toolButtonArray[self.currentPage]];
             
@@ -169,8 +189,12 @@
         {
             
             self.currentPage--;
+//            [UIView animateWithDuration:1 delay:0.5 options:UIViewAnimationOptionCurveEaseInOut animations:^{
+//                
+//            } completion:^(BOOL finished) {
+//                [self onClickTooBtn:self.toolButtonArray[self.currentPage]];
+//            }];
             [UIView beginAnimations:nil context:nil];
-            
             //持续时间
             [UIView setAnimationDuration:1.0];
             
@@ -183,7 +207,7 @@
             [UIView setAnimationDidStopSelector:@selector(stopAnimating)];
             
             //动画效果
-            [UIView setAnimationTransition:UIViewAnimationTransitionCurlUp forView:self.view cache:YES];
+            [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:YES];
             
             //切换行业
             [self onClickTooBtn:self.toolButtonArray[self.currentPage]];
@@ -309,6 +333,7 @@
         [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
         [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
         [self updateDateSourceByInd:tagName];
+        //[self change:tagName];
     }else if ([tagName isEqualToString:@"传媒"])
     {
         [self.rcTV.tableViewSate setValue:@"NO" forKey:@"leftTableView"];
@@ -335,6 +360,13 @@
         [self.rcTV.tableViewSate setValue:@"NO" forKey:@"rightTableView"];
         [self updateDateSourceByInd:tagName];
     }
+}
+- (void)change:(NSString *)ind
+{
+    RCColumnTableView *rc = [self.columnTableView valueForKey:ind];
+    [rc mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.view.mas_left);
+    }];
 }
 - (void)updateDateSourceByInd:(NSString *)ind
 {
@@ -390,6 +422,8 @@
             @strongify(self);
             self.activityList = acList;
             [self.acByind setValue:self.activityList forKey:model.indName];
+            //按行业加载数据
+            //[self loadData:acList ByIndustry:model.indName];
             if ([model.indName isEqualToString:@"互联网"])
             {
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"load" object:self.activityList];
@@ -398,6 +432,29 @@
             NSLog(@"Error:%@",error);
         }];
     };
+}
+- (void)loadData:(ActivityList *)activityList ByIndustry:(NSString *)industry
+{
+    RCColumnTableView *rc = [self.columnTableView valueForKey:industry];
+    CZLeftTableViewDelegate *leftDelegate = [rc viewWithTag:20];
+    CZRightTableViewDelegate *rightDelegate = [rc viewWithTag:30];
+    NSMutableArray *leftArray = [[NSMutableArray alloc]init];
+    NSMutableArray *rightArray = [[NSMutableArray alloc]init];
+    for (int i =0; i < activityList.list.count; i++)
+    {
+        if (i<(activityList.list.count/2))
+        {
+            [leftArray addObject:activityList.list[i]];
+        } else
+        {
+            [rightArray addObject:activityList.list[i]];
+        }
+    }
+    rightDelegate.array = rightArray;
+    leftDelegate.array = leftArray;
+    [rc.leftTableView reloadData];
+    [rc.rightTableView reloadData];
+
 }
 #pragma mark - 初次进入时加载默认数据
 - (void)loadDefaultInfo
@@ -419,23 +476,99 @@
     self.leftDelegate.array = leftArray;
 
 }
+- (RCColumnTableView *)createTableView:(int)index ToContainer:(UIView *)container
+{
+    RCColumnTableView *rcTV = [[RCColumnTableView alloc]init];
+    [container addSubview:rcTV];
+    [rcTV mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.toolScrollView.mas_bottom).offset(10);
+        make.left.equalTo(self.view.mas_left).offset(index*kScreenWidth);
+        make.width.mas_equalTo(kScreenWidth);
+        make.bottom.equalTo(self.view.mas_bottom).offset(-49);
+    }];
+    rcTV.view = self.view;
+    CZLeftTableViewDelegate *leftDelegate = [[CZLeftTableViewDelegate alloc]initWithFrame:CGRectZero];
+    CZRightTableViewDelegate *rightDelegate = [[CZRightTableViewDelegate alloc]initWithFrame:CGRectZero];
+    leftDelegate.tag = 20;
+    rightDelegate.tag = 30;
+    [rcTV addSubview:leftDelegate];
+    [rcTV addSubview:rightDelegate];
+    
+    leftDelegate.leftTableView = rcTV.leftTableView;
+    leftDelegate.rightTableView = rcTV.rightTableView;
+    rightDelegate.leftTableView = rcTV.leftTableView;
+    rightDelegate.rightTableView = rcTV.rightTableView;
+    
+    rcTV.leftTableView.delegate = leftDelegate;
+    rcTV.leftTableView.dataSource = leftDelegate;
+    rcTV.rightTableView.delegate  = rightDelegate;
+    rcTV.rightTableView.dataSource = rightDelegate;
+    
+    //将self.view添加到tableView代理的响应链中
+    leftDelegate.view = self.view;
+    rightDelegate.view = self.view;
 
--(void)setIndList:(IndustryList *)indList{
+    return rcTV;
+}
+#pragma mark - 拖动事件处理
+- (void)handlePan:(UIPanGestureRecognizer *)recognizer
+{
+    CGPoint point = [recognizer translationInView:self.view];
+    NSLog(@"x %f",point.x);
+    CGFloat originX = recognizer.view.center.x;
+    recognizer.view.center = CGPointMake(recognizer.view.center.x + point.x, recognizer.view.center.y);
+//    recognizer.view.center = CGPointMake(recognizer.view.center.x + point.x, recognizer.view.center.y);
+    if (recognizer.state == UIGestureRecognizerStateChanged)
+    {
+        if (ABS(point.x) > kScreenWidth/2)
+        {
+            [recognizer.view mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.left.equalTo(self.view.mas_left).offset(-kScreenWidth);
+            }];
+        }else
+        {
+            recognizer.view.center = CGPointMake(recognizer.view.center.x - point.x, recognizer.view.center.y);
+        }
+
+        //[recognizer setTranslation:CGPointMake(0, 0) inView:self.view];
+    }
+}
+- (void)createRCColumnTableView:(IndustryList *)indList
+{
+    UIView *container = [[UIView alloc]init];
+    container.backgroundColor = [UIColor clearColor];
+    [self.view addSubview:container];
+    [container mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.toolScrollView.mas_bottom).offset(10);
+        make.left.equalTo(self.view.mas_left);
+        make.width.mas_equalTo(kScreenWidth *self.indList.list.count);
+        make.bottom.equalTo(self.view.mas_bottom).offset(-49);
+    }];
+    
+    UIPanGestureRecognizer *pan = [[UIPanGestureRecognizer alloc]initWithTarget:self action:@selector(handlePan:)];
+    [container addGestureRecognizer:pan];
+    for (int i = 0; i < indList.list.count; i++)
+    {
+        RCColumnTableView *rc = [self createTableView:i ToContainer:container];
+        IndustryModel *model = indList.list[i];
+        [self.columnTableView setObject:rc forKey:model.indName];
+    }
+    
+}
+-(void)setIndList:(IndustryList *)indList
+{
     _indList = indList;
     //创建工具条按钮
     if (_indList)
     {
         [self showToolButtons];
+        //[self createRCColumnTableView:_indList];
     }
 }
 
--(void)setActivityList:(ActivityList *)activityList{
-    
+-(void)setActivityList:(ActivityList *)activityList
+{
     _activityList = activityList;
-//    if (_activityList.list.count != 0)
-//    {
-//        NSLog(@"test");
-//    }
     
 }
 #pragma mark - 懒加载，创建主题色

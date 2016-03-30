@@ -54,14 +54,14 @@
     self.leftTableView.tag = 11;
     self.rightTableView.tag = 12;
 
-    [self.leftTableView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.leftTableView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.mas_top);
         make.left.equalTo(self.mas_left);
         make.bottom.equalTo(self.mas_bottom);
         make.width.mas_equalTo(kScreenWidth/2);
     }];
-    [self.rightTableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.mas_right);
+    [self.rightTableView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.leftTableView.mas_right);
         make.top.equalTo(self.mas_top);
         make.bottom.equalTo(self.mas_bottom);
         make.width.mas_equalTo(kScreenWidth/2);
