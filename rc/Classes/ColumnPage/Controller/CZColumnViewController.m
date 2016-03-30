@@ -35,7 +35,9 @@
 @property (nonatomic, strong) MyTableView *rightTableView;
 @property (nonatomic, strong) NSMutableArray *leftArray;
 @property (nonatomic, strong) NSMutableArray *rightArray;
-@property (nonatomic, assign) CGFloat contentSizeHeight;
+@property (nonatomic, assign) CGFloat contentSizeH;
+@property (nonatomic, assign) CGFloat leftHeight;
+@property (nonatomic, assign) CGFloat rightHeight;
 
 @property (nonatomic, strong) CZLeftTableViewDelegate *leftDelegate;
 @property (nonatomic, strong) CZRightTableViewDelegate *rightDelegate;
@@ -54,13 +56,29 @@
 @end
 
 @implementation CZColumnViewController
-- (CGFloat)contentSizeHeight
+- (CGFloat)leftHeight
 {
-    if (!_contentSizeHeight)
+    if (!_leftHeight)
     {
-        _contentSizeHeight = 0;
+        _leftHeight = 0;
     }
-    return _contentSizeHeight;
+    return _leftHeight;
+}
+- (CGFloat)rightHeight
+{
+    if (!_rightHeight)
+    {
+        _rightHeight = 0;
+    }
+    return _rightHeight;
+}
+- (CGFloat)contentSizeH
+{
+    if (!_contentSizeH)
+    {
+        _contentSizeH = 0;
+    }
+    return _contentSizeH;
 }
 - (NSMutableArray *)leftArray
 {
@@ -94,6 +112,7 @@
     if (!_leftTableView)
     {
         _leftTableView = [[MyTableView alloc]init];
+        _leftTableView.tag = 10;
         [self.superTableView addSubview:_leftTableView];
         _leftTableView.delegate = self;
         _leftTableView.dataSource = self;
@@ -106,6 +125,7 @@
     if (!_rightTableView)
     {
         _rightTableView = [[MyTableView alloc]init];
+        _rightTableView.tag = 20;
         [self.superTableView addSubview:_rightTableView];
         _rightTableView.delegate = self;
         _rightTableView.dataSource = self;
@@ -171,19 +191,20 @@
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(loadDefaultInfo) name:@"load" object:nil];
     [[NSNotificationCenter defaultCenter]addObserver:self selector:@selector(addjustContentSize:) name:@"contentSize" object:nil];
-//    [self createSubView];
+
     [self createTableView];
     [self configureBlocks];
     self.getIndListBlock();
     [self addSwipeGesture];
 
     self.superTableView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
-//    self.superTableView.mj_header = [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
 }
+#pragma mark - 下拉刷新
 - (void)loadNewData
 {
     
 }
+#pragma mark - 上拉刷新
 - (void)getMoreData
 {
     
@@ -191,19 +212,34 @@
 - (void)addjustContentSize:(NSNotification *)notification
 {
 //    MyTableView *tv = (MyTableView *)notification.object;
-//    if (tv.contentSize.height > self.contentSizeHeight)
+//    if (tv.tag == 10)
 //    {
-//        self.contentSizeHeight = tv.contentSizeHeight;
-//        self.superTableView.contentSize = CGSizeMake(0, self.contentSizeHeight);
-//        
-//        [self.rightTableView setContentSize:CGSizeMake(0, self.contentSizeHeight)];
-//        [self.leftTableView setContentSize:CGSizeMake(0, self.contentSizeHeight)];
+//        self.leftHeight = tv.contentSize.height;
 //    }else
 //    {
-//        self.superTableView.contentSize = CGSizeMake(0, tv.contentSize.height);
-//        
-//        [self.rightTableView setContentSize:CGSizeMake(0, tv.contentSize.height)];
-//        [self.leftTableView setContentSize:CGSizeMake(0, tv.contentSize.height)];
+//        self.rightHeight = tv.contentSize.height;
+//    }
+//    if (self.leftHeight!=0 && self.rightHeight!=0)
+//    {
+//        self.contentSizeH = self.leftHeight - self.rightHeight;
+//        if (self.contentSizeH < 0)
+//        {//左低右高
+//            ActivityModel *model = [[ActivityModel alloc]init];
+//            model.acTitle = @"null";
+//            [self.leftArray addObject:model];
+//            [self.leftTableView reloadData];
+//        }else if (self.contentSizeH > 0)
+//        {//左高右低
+//            ActivityModel *model = [[ActivityModel alloc]init];
+//            model.acTitle = @"null";
+//            [self.rightArray addObject:model];
+//            [self.rightTableView reloadData];
+//        }else
+//        {//等高
+//            ;
+//        }
+//
+//
 //    }
 }
 #pragma mark - 创建tableView
@@ -256,26 +292,19 @@
     {
         if(self.currentPage > self.toolButtonArray.count - 1)
         {
-            
             self.currentPage = (int)self.toolButtonArray.count - 1;
-        }
-        
-        else if(self.currentPage != self.toolButtonArray.count - 1)
+        }else if(self.currentPage != self.toolButtonArray.count - 1)
         {
             self.currentPage++;
-
             [UIView beginAnimations:nil context:nil];
             //持续时间
             [UIView setAnimationDuration:1.0];
-            
             //在出动画的时候减缓速度
             [UIView setAnimationCurve:UIViewAnimationCurveEaseOut];
-            
             //添加动画开始及结束的代理
             [UIView setAnimationDelegate:self];
             [UIView setAnimationWillStartSelector:@selector(begin)];
             [UIView setAnimationDidStopSelector:@selector(stopAnimating)];
-            
             //动画效果
             [UIView setAnimationTransition:UIViewAnimationTransitionNone forView:self.view cache:YES];
             //切换行业
@@ -283,9 +312,7 @@
             
             [UIView commitAnimations];
         }
-    }
-
-    else if(sender.direction == UISwipeGestureRecognizerDirectionRight)
+    }else if(sender.direction == UISwipeGestureRecognizerDirectionRight)
     {
         if(self.currentPage < 0)
         {
@@ -693,26 +720,48 @@
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+    
     if (tableView.tag == 10)
     {
-        //1 创建可重用的自定义cell
-        CZColumnCell *cell = [CZColumnCell cellWithTableView:tableView];
-        cell.isLeft = YES;
-        //对cell内的控件进行赋值
-        [self setCellValue:cell AtIndexPath:indexPath InTableView:tableView];
-        //对cell内的控件进行布局
-        [cell setSubviewConstraint];
-        return cell;
+
+        ActivityModel *model = self.leftArray[indexPath.row];
+        if ([model.acTitle isEqualToString:@"null"])
+        {
+            UITableViewCell *cell = [[UITableViewCell alloc]init];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+        }else
+        {
+            //1 创建可重用的自定义cell
+            CZColumnCell *cell = [CZColumnCell cellWithTableView:tableView];
+            cell.isLeft = YES;
+            //对cell内的控件进行赋值
+            [self setCellValue:cell AtIndexPath:indexPath InTableView:tableView];
+            //对cell内的控件进行布局
+            [cell setSubviewConstraint];
+            return cell;
+        }
+
     }else
     {
-        //1 创建可重用的自定义cell
-        CZColumnCell *cell = [CZColumnCell cellWithTableView:tableView];
-        cell.isLeft = NO;
-        //对cell内的控件进行赋值
-        [self setCellValue:cell AtIndexPath:indexPath InTableView:tableView];
-        //对cell内的控件进行布局
-        [cell setSubviewConstraint];
-        return cell;
+        ActivityModel *model = self.rightArray[indexPath.row];
+        if ([model.acTitle isEqualToString:@"null"])
+        {
+            UITableViewCell *cell = [[UITableViewCell alloc]init];
+            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+            return cell;
+        }else
+        {
+            //1 创建可重用的自定义cell
+            CZColumnCell *cell = [CZColumnCell cellWithTableView:tableView];
+            cell.isLeft = NO;
+            //对cell内的控件进行赋值
+            [self setCellValue:cell AtIndexPath:indexPath InTableView:tableView];
+            //对cell内的控件进行布局
+            [cell setSubviewConstraint];
+            return cell;
+        }
+
     }
     
 }
@@ -736,13 +785,30 @@
     
     if (tableView.tag == 10)
     {
-        
-        CGFloat height = [self contacterTableCell:self.leftArray[indexPath.row]];
-        return height;
+        ActivityModel *model = self.rightArray[indexPath.row];
+        if ([model.acTitle isEqualToString:@"null"])
+        {
+            return ABS(self.contentSizeH);
+        }else
+        {
+            
+            CGFloat height = [self contacterTableCell:self.leftArray[indexPath.row]];
+            return height;
+        }
+
     }else
     {
-        CGFloat height = [self contacterTableCell:self.rightArray[indexPath.row]];
-        return height;
+        ActivityModel *model = self.rightArray[indexPath.row];
+        if ([model.acTitle isEqualToString:@"null"])
+        {
+            return ABS(self.contentSizeH);
+        }else
+        {
+            
+            CGFloat height = [self contacterTableCell:self.rightArray[indexPath.row]];
+            return height;
+        }
+
     }
 }
 - (CGFloat)contacterTableCell:(ActivityModel *)model
