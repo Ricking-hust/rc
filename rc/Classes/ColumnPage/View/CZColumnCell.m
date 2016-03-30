@@ -65,7 +65,6 @@
         self.bgView = [[UIView alloc]init];
     }
     [self setSubViewProperty];
-    self.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
     return self;
 }
 - (void)setSubViewProperty
