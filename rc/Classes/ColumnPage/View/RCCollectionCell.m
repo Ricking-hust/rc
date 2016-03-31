@@ -1,67 +1,46 @@
 //
-//  CZColumnCell.m
+//  RCCollectionCell.m
 //  rc
 //
-//  Created by AlanZhang on 16/3/10.
+//  Created by AlanZhang on 16/3/31.
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
 
-#import "CZColumnCell.h"
+#import "RCCollectionCell.h"
 #import "Masonry.h"
 #include <sys/sysctl.h>
 #define NAME_FONTSIZE 14
 #define TIME_FONTSIZE 12
 #define PLACE_FONTSIZE 12
 #define TAG_FONTSIZE  11
-@implementation CZColumnCell
-
-+ (instancetype)cellWithTableView:(UITableView*)tableView
-{
-    static NSString *reuseId = @"columnCell";
-    CZColumnCell * cell = (CZColumnCell*)[tableView dequeueReusableCellWithIdentifier:reuseId];
-    if (!cell)
-    {
-        cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
-    }
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;//禁用cell的点击事件
-    cell.backgroundColor = [UIColor clearColor];
-    return cell;
-    
-}
-- (instancetype) initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])
-    {
-        self.acImageView = [[UIImageView alloc]init];
-        self.acNameLabel = [[UILabel alloc]init];
-        self.acTimeLabel = [[UILabel alloc]init];
-        self.acPlaceLabel = [[UILabel alloc]init];
-        self.tagImageView = [[UIImageView alloc]init];
-        self.acTagLabel = [[UILabel alloc]init];
-        self.device = [self currentDeviceSize];
-        self.isLeft = NO;
-        self.cellHeight = 44;
-        self.bgView = [[UIView alloc]init];
-    }
-    [self setSubViewProperty];
-    return self;
-    
-}
-
+@implementation RCCollectionCell
 - (id)init
 {
     if (self = [super init])
     {
-        self.acImageView = [[UIImageView alloc]init];
-        self.acNameLabel = [[UILabel alloc]init];
-        self.acTimeLabel = [[UILabel alloc]init];
-        self.acPlaceLabel = [[UILabel alloc]init];
-        self.tagImageView = [[UIImageView alloc]init];
-        self.acTagLabel = [[UILabel alloc]init];
         self.device = [self currentDeviceSize];
-        self.isLeft = NO;
-        self.cellHeight = 44;
+        self.acImage = [[UIImageView alloc]init];
+        self.acName = [[UILabel alloc]init];
+        self.acTime = [[UILabel alloc]init];
+        self.acPlace = [[UILabel alloc]init];
+        self.acRelease = [[UILabel alloc]init];
+        self.acTagImgeView = [[UIImageView alloc]init];
+        self.bgView = [[UIView alloc]init];
+    }
+    [self setSubViewProperty];
+    return self;
+}
+- (id)initWithFrame:(CGRect)frame
+{
+    if (self = [super initWithFrame:frame])
+    {
+        self.device = [self currentDeviceSize];
+        self.acImage = [[UIImageView alloc]init];
+        self.acName = [[UILabel alloc]init];
+        self.acTime = [[UILabel alloc]init];
+        self.acPlace = [[UILabel alloc]init];
+        self.acRelease = [[UILabel alloc]init];
+        self.acTagImgeView = [[UIImageView alloc]init];
         self.bgView = [[UIView alloc]init];
     }
     [self setSubViewProperty];
@@ -69,33 +48,32 @@
 }
 - (void)setSubViewProperty
 {
-    self.selectionStyle = UITableViewCellSelectionStyleNone;    //清除cell的点击状态
     self.backgroundColor = [UIColor clearColor];
-    self.acNameLabel.font = [UIFont systemFontOfSize:NAME_FONTSIZE];
-    self.acTimeLabel.font = [UIFont systemFontOfSize:TIME_FONTSIZE];
-    self.acPlaceLabel.font = [UIFont systemFontOfSize:PLACE_FONTSIZE];
-    self.acTagLabel.font = [UIFont systemFontOfSize:TAG_FONTSIZE];
-    self.acTimeLabel.alpha = 0.8;
-    self.acPlaceLabel.alpha = 0.8;
-    self.acNameLabel.numberOfLines = 0;
-    self.acTimeLabel.numberOfLines = 0;
-    self.acPlaceLabel.numberOfLines = 0;
+    self.acName.font = [UIFont systemFontOfSize:NAME_FONTSIZE];
+    self.acTime.font = [UIFont systemFontOfSize:TIME_FONTSIZE];
+    self.acPlace.font = [UIFont systemFontOfSize:PLACE_FONTSIZE];
+    self.acRelease.font = [UIFont systemFontOfSize:TAG_FONTSIZE];
+    self.acTime.alpha = 0.8;
+    self.acPlace.alpha = 0.8;
+    self.acName.numberOfLines = 0;
+    self.acTime.numberOfLines = 0;
+    self.acPlace.numberOfLines = 0;
     [self.contentView addSubview:self.bgView];
-    [self.bgView addSubview:self.acImageView];
-    [self.bgView addSubview:self.acNameLabel];
-    [self.bgView addSubview:self.acTimeLabel];
-    [self.bgView addSubview:self.acPlaceLabel];
-    [self.bgView addSubview:self.tagImageView];
-    [self.bgView addSubview:self.acTagLabel];
+    [self.contentView addSubview:self.acImage];
+    [self.contentView addSubview:self.acName];
+    [self.contentView addSubview:self.acTime];
+    [self.contentView addSubview:self.acPlace];
+    [self.contentView addSubview:self.acRelease];
+    [self.contentView addSubview:self.acTagImgeView];
+    
     self.bgView.backgroundColor = [UIColor whiteColor];
     [self.bgView.layer setShadowColor:[UIColor blackColor].CGColor];//设置View的阴影颜色
     [self.bgView.layer setShadowOpacity:0.5f];//设置阴影的透明度
     [self.bgView.layer setShadowOffset:CGSizeMake(0.5, 0.5)];//设置View Shadow的偏移量
-
-    self.tagImageView.image = [UIImage imageNamed:@"tagImage"];
+    
+    self.acTagImgeView.image = [UIImage imageNamed:@"tagImage"];
     
 }
-
 - (void)setSubviewConstraint
 {
     CGFloat acImageW; //图片的最大宽度,活动名的最大宽度
@@ -122,74 +100,57 @@
         leftPaddintToContentView = 20;
         rightPaddingToContentView = leftPaddintToContentView;
     }
-    [self.acImageView mas_updateConstraints:^(MASConstraintMaker *make) {
+    [self.acImage mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.bgView.mas_left);
         make.top.equalTo(self.bgView.mas_top);
         make.right.equalTo(self.bgView.mas_right);
         make.height.mas_equalTo(acImageH);
     }];
-
+    
     //活动名约束
     CGSize maxSize = CGSizeMake(acImageW - 20, MAXFLOAT);
-    CGSize acNameSize = [self sizeWithText:self.acNameLabel.text maxSize:maxSize fontSize:NAME_FONTSIZE];
-    [self.acNameLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.acImageView.mas_bottom).offset(10);
-        make.left.equalTo(self.acImageView.mas_left).offset(10);
+    CGSize acNameSize = [self sizeWithText:self.acName.text maxSize:maxSize fontSize:NAME_FONTSIZE];
+    [self.acName mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.acImage.mas_bottom).offset(10);
+        make.left.equalTo(self.acImage.mas_left).offset(10);
         make.width.mas_equalTo(acNameSize.width +1);
         make.height.mas_equalTo(acNameSize.height+1);
     }];
     //活动时间约束
-    CGSize acTimeSize = [self sizeWithText:self.acTimeLabel.text maxSize:maxSize fontSize:TIME_FONTSIZE];
-    [self.acTimeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.acNameLabel.mas_bottom).offset(10);
-        make.left.equalTo(self.acNameLabel.mas_left);
+    CGSize acTimeSize = [self sizeWithText:self.acTime.text maxSize:maxSize fontSize:TIME_FONTSIZE];
+    [self.acTime mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.acName.mas_bottom).offset(10);
+        make.left.equalTo(self.acName.mas_left);
         make.width.mas_equalTo(acTimeSize.width+1);
         make.height.mas_equalTo(acTimeSize.height+1);
     }];
     //地点约束
-    CGSize acPlaceSize = [self sizeWithText:self.acPlaceLabel.text maxSize:maxSize fontSize:PLACE_FONTSIZE];
-    [self.acPlaceLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.acTimeLabel.mas_bottom);
-        make.left.equalTo(self.acTimeLabel.mas_left);
+    CGSize acPlaceSize = [self sizeWithText:self.acPlace.text maxSize:maxSize fontSize:PLACE_FONTSIZE];
+    [self.acPlace mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.acTime.mas_bottom);
+        make.left.equalTo(self.acTime.mas_left);
         make.width.mas_equalTo(acPlaceSize.width+1);
         make.height.mas_equalTo(acPlaceSize.height+1);
     }];
     //标志图片约束
-    [self.tagImageView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.acPlaceLabel.mas_left);
-        make.top.equalTo(self.acPlaceLabel.mas_bottom).offset(5);
-        make.size.mas_equalTo(self.tagImageView.image.size);
+    [self.acTagImgeView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.acPlace.mas_left);
+        make.top.equalTo(self.acPlace.mas_bottom).offset(5);
+        make.size.mas_equalTo(self.acTagImgeView.image.size);
     }];
     //标签约束
     CGSize acTagSize = [self sizeWithText:@"发布者在哪呢" maxSize:maxSize fontSize:TAG_FONTSIZE];
-    [self.acTagLabel mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.tagImageView.mas_right).offset(4);
-        make.top.equalTo(self.tagImageView.mas_top).offset(-2);
+    [self.acRelease mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.acTagImgeView.mas_right).offset(4);
+        make.top.equalTo(self.acTagImgeView.mas_top).offset(-2);
         make.width.mas_equalTo(acTagSize.width+1);
         make.height.mas_equalTo(acTagSize.height+1);
     }];
     
-    //cell的高度
-    self.cellHeight = acImageH + 10 + acNameSize.height + 15 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height;
-
-    if (self.isLeft == YES)
-    {
-        [self.bgView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).offset(leftPaddintToContentView);
-            make.top.equalTo(self.contentView.mas_top);
-            make.width.mas_equalTo(acImageW);
-            make.height.mas_equalTo(self.cellHeight);
-        }];
-    }else
-    {
-        [self.bgView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.right.equalTo(self.contentView.mas_right).offset(-rightPaddingToContentView);
-            make.top.equalTo(self.contentView.mas_top);
-            make.width.mas_equalTo(acImageW);
-            make.height.mas_equalTo(self.cellHeight);
-        }];
-    }
-
+    [self.bgView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.edges.mas_equalTo(UIEdgeInsetsMake(3, 3, 3, 3));
+    }];
+    
 }
 //获取当前设备
 - (CurrentDevice)currentDeviceSize
@@ -244,12 +205,7 @@
     return platform;
 }
 
-- (void)setSelected:(BOOL)selected animated:(BOOL)animated
-{
-    [super setSelected:selected animated:animated];
 
-    // Configure the view for the selected state
-}
 /**
  *  计算字体的长和宽
  *
