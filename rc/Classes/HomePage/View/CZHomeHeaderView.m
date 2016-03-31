@@ -99,7 +99,7 @@
         make.top.equalTo(self.label.mas_bottom).with.offset(10.0f);
         make.size.mas_equalTo(CGSizeMake(rect.size.width, 14.0/2));
     }];
-    int count = 4;
+    int count = (int)flashArray.count;
     
 #pragma mark - 设置从服务器接收的图片
     //创建ImageView

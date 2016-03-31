@@ -146,38 +146,48 @@
 }
 - (void)didSelectCellAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (self.isLogin == NO)
-    {//如果用户未登录，则跳至登录界面
-        //to do here ------------------------
-
-        LoginViewController *loginViewController = [[LoginViewController alloc]init];
-        [self.navigationController pushViewController:loginViewController animated:YES];
-        
-    }else
-    {//如果用户已登录，则跳至相关界面
+    //如果用户已登录，则跳至相关界面
         switch (indexPath.section)
         {
             case 0:
             {
+                if (self.isLogin == NO)
+                {//如果用户未登录，则跳至登录界面
+                    //to do here ------------------------
+                    
+                    LoginViewController *loginViewController = [[LoginViewController alloc]init];
+                    [self.navigationController pushViewController:loginViewController animated:YES];
+                    
+                }else{
                     CZPersonInfoViewController *personInfoViewController = [[CZPersonInfoViewController alloc]init];
                     [self.navigationController pushViewController:personInfoViewController animated:YES];
+                }
             }
                 break;
                 
             case 1:
             {
-                if (indexPath.row == 0)
-                {
-                    CZMyActivityViewContoller *myActivityViewController = [[CZMyActivityViewContoller alloc]init];
-                    [self.navigationController pushViewController:myActivityViewController animated:YES];
-                }else if (indexPath.row == 1)
-                {
-                    CZMyReleseViewController *myReleseViewController = [[CZMyReleseViewController alloc]init];
-                    [self.navigationController pushViewController:myReleseViewController animated:YES];
-                }else
-                {
-                    CZMyCollectionViewController *myCollectionViewController = [[CZMyCollectionViewController alloc]init];
-                    [self.navigationController pushViewController:myCollectionViewController animated:YES];
+                if (self.isLogin == NO)
+                {//如果用户未登录，则跳至登录界面
+                    //to do here ------------------------
+                    
+                    LoginViewController *loginViewController = [[LoginViewController alloc]init];
+                    [self.navigationController pushViewController:loginViewController animated:YES];
+                    
+                }else {
+                    if (indexPath.row == 0)
+                    {
+                        CZMyActivityViewContoller *myActivityViewController = [[CZMyActivityViewContoller alloc]init];
+                        [self.navigationController pushViewController:myActivityViewController animated:YES];
+                    }else if (indexPath.row == 1)
+                    {
+                        CZMyReleseViewController *myReleseViewController = [[CZMyReleseViewController alloc]init];
+                        [self.navigationController pushViewController:myReleseViewController animated:YES];
+                    }else
+                    {
+                        CZMyCollectionViewController *myCollectionViewController = [[CZMyCollectionViewController alloc]init];
+                        [self.navigationController pushViewController:myCollectionViewController animated:YES];
+                    }
                 }
             }
                 break;
@@ -195,8 +205,6 @@
             }
                 break;
         }
-
-    }
 }
 - (void)setCell:(CZMyInfoCell *)cell WithIndexPath:(NSIndexPath *)indexPath
 {
