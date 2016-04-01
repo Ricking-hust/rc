@@ -65,8 +65,8 @@
 		561D02101C47DA5600E4E013 /* View+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 561D01C01C47DA5600E4E013 /* View+MASAdditions.m */; };
 		561D02111C47DA5600E4E013 /* ViewController+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 561D01C31C47DA5600E4E013 /* ViewController+MASAdditions.m */; };
 		561D02121C47DA5600E4E013 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 561D01C41C47DA5600E4E013 /* README.md */; };
-		561D02151C47DA5600E4E013 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 561D01CA1C47DA5600E4E013 /* AppDelegate.m */; };
 		56218A971CADF541003549DB /* RCColumnScrollViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 56218A961CADF541003549DB /* RCColumnScrollViewDelegate.m */; };
+		56218A9A1CADFCE3003549DB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 56218A991CADFCE3003549DB /* AppDelegate.m */; };
 		562CC4461C6C962100774C22 /* CZTimeSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CC4451C6C962100774C22 /* CZTimeSelectView.m */; };
 		562FD2751CA674FA0014E5D8 /* RCBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 562FD2741CA674FA0014E5D8 /* RCBarButton.m */; };
 		563FC6BA1CACE74F00B7DD25 /* RCCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 563FC6B91CACE74F00B7DD25 /* RCCollectionViewController.m */; };
@@ -323,10 +323,10 @@
 		561D01C21C47DA5600E4E013 /* ViewController+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+MASAdditions.h"; sourceTree = "<group>"; };
 		561D01C31C47DA5600E4E013 /* ViewController+MASAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+MASAdditions.m"; sourceTree = "<group>"; };
 		561D01C41C47DA5600E4E013 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		561D01C91C47DA5600E4E013 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		561D01CA1C47DA5600E4E013 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		56218A951CADF541003549DB /* RCColumnScrollViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCColumnScrollViewDelegate.h; sourceTree = "<group>"; };
 		56218A961CADF541003549DB /* RCColumnScrollViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCColumnScrollViewDelegate.m; sourceTree = "<group>"; };
+		56218A981CADFCE3003549DB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		56218A991CADFCE3003549DB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		562CC4441C6C962100774C22 /* CZTimeSelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTimeSelectView.h; sourceTree = "<group>"; };
 		562CC4451C6C962100774C22 /* CZTimeSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTimeSelectView.m; sourceTree = "<group>"; };
 		562FD2731CA674FA0014E5D8 /* RCBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCBarButton.h; sourceTree = "<group>"; };
@@ -758,7 +758,6 @@
 			children = (
 				56E603F51CA5368100EB0446 /* res */,
 				5683EC221C817EA1006430CB /* Main */,
-				561D01C81C47DA5600E4E013 /* Others */,
 				561D01361C47DA5600E4E013 /* Classes */,
 				565EF6121C48EBA20067C032 /* Managers */,
 				565EF6191C48EBA20067C032 /* Models */,
@@ -801,6 +800,8 @@
 			isa = PBXGroup;
 			children = (
 				56E9D3921CA56F8B005FF799 /* Guide */,
+				56218A981CADFCE3003549DB /* AppDelegate.h */,
+				56218A991CADFCE3003549DB /* AppDelegate.m */,
 				C4BBA8181C89B93300AD02EE /* RegisteViewController.h */,
 				C4BBA8191C89B93300AD02EE /* RegisteViewController.m */,
 				C4C05EE91C85C500005E7FEE /* LoginViewController.h */,
@@ -970,15 +971,6 @@
 				561D01C31C47DA5600E4E013 /* ViewController+MASAdditions.m */,
 			);
 			path = Masonry;
-			sourceTree = "<group>";
-		};
-		561D01C81C47DA5600E4E013 /* Others */ = {
-			isa = PBXGroup;
-			children = (
-				561D01C91C47DA5600E4E013 /* AppDelegate.h */,
-				561D01CA1C47DA5600E4E013 /* AppDelegate.m */,
-			);
-			path = Others;
 			sourceTree = "<group>";
 		};
 		564596A81C732A84006D8493 /* popupViewController */ = {
@@ -1578,6 +1570,7 @@
 				565EF6281C48EBA20067C032 /* CityModel.m in Sources */,
 				C459AD8E1C8D9633009922EE /* NSDictionary+NotNullKey.m in Sources */,
 				561D020D1C47DA5600E4E013 /* MASViewConstraint.m in Sources */,
+				56218A9A1CADFCE3003549DB /* AppDelegate.m in Sources */,
 				561D01FA1C47DA5600E4E013 /* AFURLResponseSerialization.m in Sources */,
 				56B9CD381C807A7100914F00 /* UIImage+WebP.m in Sources */,
 				56F02CB31CA2884B00E0BBB4 /* MJRefreshBackNormalFooter.m in Sources */,
@@ -1662,7 +1655,6 @@
 				56A191E21C756A3100E03B41 /* CZMyInfoCell.m in Sources */,
 				56B9CD311C807A7100914F00 /* SDWebImageDownloader.m in Sources */,
 				561D02091C47DA5600E4E013 /* MASConstraint.m in Sources */,
-				561D02151C47DA5600E4E013 /* AppDelegate.m in Sources */,
 				C43EEB691CA68C2700B83670 /* FlashActivityModel.m in Sources */,
 				564596B61C732A84006D8493 /* LewPopupViewAnimationDrop.m in Sources */,
 				565EF6571C48EC410067C032 /* CZMyInfoViewController.m in Sources */,

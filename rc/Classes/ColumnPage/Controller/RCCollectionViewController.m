@@ -156,7 +156,7 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     
     cell.acRelease.text = model.userInfo.userName;
 }
-#pragma mark - UICollectionViewDelegateFlowLayout
+#pragma mark - UICollectionViewCell的点击事件
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     RCCollectionView *cv = (RCCollectionView *)collectionView;
