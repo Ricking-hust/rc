@@ -178,6 +178,8 @@
 		56F7BE111CA3CA45005D1475 /* RCNewsNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F7BE101CA3CA45005D1475 /* RCNewsNoteViewController.m */; };
 		C409CFF41C9A7B0500D01F9D /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C409CFF31C9A7B0500D01F9D /* MBProgressHUD.m */; };
 		C43EEB691CA68C2700B83670 /* FlashActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C43EEB681CA68C2700B83670 /* FlashActivityModel.m */; };
+		C457D6C91CAE514B00075D9B /* RCColumnScrollViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C457D6C81CAE514B00075D9B /* RCColumnScrollViewDelegate.m */; };
+		C457D6CC1CAE51ED00075D9B /* RCReleaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C457D6CB1CAE51ED00075D9B /* RCReleaseCell.m */; };
 		C459AD8E1C8D9633009922EE /* NSDictionary+NotNullKey.m in Sources */ = {isa = PBXBuildFile; fileRef = C459AD8D1C8D9633009922EE /* NSDictionary+NotNullKey.m */; };
 		C465906C1CAE421900590ED9 /* ResetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C465906B1CAE421900590ED9 /* ResetPasswordViewController.m */; };
 		C46A93D01C85DA5E009626F6 /* ScrollViewFrameAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = C46A93CD1C85DA5E009626F6 /* ScrollViewFrameAccessor.m */; };
@@ -546,6 +548,10 @@
 		C409CFF31C9A7B0500D01F9D /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = ../MBProgressHUD.m; sourceTree = "<group>"; };
 		C43EEB671CA68C2700B83670 /* FlashActivityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashActivityModel.h; sourceTree = "<group>"; };
 		C43EEB681CA68C2700B83670 /* FlashActivityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlashActivityModel.m; sourceTree = "<group>"; };
+		C457D6C71CAE514B00075D9B /* RCColumnScrollViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCColumnScrollViewDelegate.h; sourceTree = "<group>"; };
+		C457D6C81CAE514B00075D9B /* RCColumnScrollViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCColumnScrollViewDelegate.m; sourceTree = "<group>"; };
+		C457D6CA1CAE51ED00075D9B /* RCReleaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCReleaseCell.h; sourceTree = "<group>"; };
+		C457D6CB1CAE51ED00075D9B /* RCReleaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCReleaseCell.m; sourceTree = "<group>"; };
 		C459AD8C1C8D9633009922EE /* NSDictionary+NotNullKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+NotNullKey.h"; sourceTree = "<group>"; };
 		C459AD8D1C8D9633009922EE /* NSDictionary+NotNullKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+NotNullKey.m"; sourceTree = "<group>"; };
 		C465906A1CAE421900590ED9 /* ResetPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetPasswordViewController.h; sourceTree = "<group>"; };
@@ -1260,6 +1266,10 @@
 				563FC6BC1CACF83E00B7DD25 /* RCCollectionCell.m */,
 				563FC6C61CAD444F00B7DD25 /* CZButtonView.h */,
 				563FC6C41CAD444700B7DD25 /* CZButtonView.m */,
+				C457D6C71CAE514B00075D9B /* RCColumnScrollViewDelegate.h */,
+				C457D6C81CAE514B00075D9B /* RCColumnScrollViewDelegate.m */,
+				C457D6CA1CAE51ED00075D9B /* RCReleaseCell.h */,
+				C457D6CB1CAE51ED00075D9B /* RCReleaseCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1598,6 +1608,7 @@
 				56B9CD391C807A7100914F00 /* UIImageView+HighlightedWebCache.m in Sources */,
 				56B9CD301C807A7100914F00 /* SDWebImageDecoder.m in Sources */,
 				56F7BE111CA3CA45005D1475 /* RCNewsNoteViewController.m in Sources */,
+				C457D6C91CAE514B00075D9B /* RCColumnScrollViewDelegate.m in Sources */,
 				561D01FE1C47DA5600E4E013 /* AFAutoPurgingImageCache.m in Sources */,
 				56F02CB91CA2884B00E0BBB4 /* MJRefreshConst.m in Sources */,
 				C4CAD1BE1C7B3943003FD0B0 /* ThemeModel.m in Sources */,
@@ -1667,6 +1678,7 @@
 				566094651C9C1A9000433AD8 /* RCTableView.m in Sources */,
 				56B9CD321C807A7100914F00 /* SDWebImageDownloaderOperation.m in Sources */,
 				56B9CD2D1C807A7100914F00 /* NSData+ImageContentType.m in Sources */,
+				C457D6CC1CAE51ED00075D9B /* RCReleaseCell.m in Sources */,
 				564596B81C732A84006D8493 /* LewPopupViewAnimationSlide.m in Sources */,
 				56A191E21C756A3100E03B41 /* CZMyInfoCell.m in Sources */,
 				56B9CD311C807A7100914F00 /* SDWebImageDownloader.m in Sources */,
