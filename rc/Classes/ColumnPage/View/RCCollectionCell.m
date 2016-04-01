@@ -78,27 +78,20 @@
 {
     CGFloat acImageW; //图片的最大宽度,活动名的最大宽度
     CGFloat acImageH; //图片的最大高度
-    CGFloat leftPaddintToContentView;
-    CGFloat rightPaddingToContentView;
     if (self.device == IPhone5)
     {
         acImageW = 142;
         acImageH = 110;
-        leftPaddintToContentView = 12;
-        rightPaddingToContentView = leftPaddintToContentView;
         
     }else if (self.device == IPhone6)
     {
         acImageW = 165;
         acImageH = 125;
-        leftPaddintToContentView = 15;
-        rightPaddingToContentView = leftPaddintToContentView;
+
     }else
     {
         acImageW = 177;
         acImageH = 135;
-        leftPaddintToContentView = 20;
-        rightPaddingToContentView = leftPaddintToContentView;
     }
     [self.acImage mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.bgView.mas_left);
@@ -146,9 +139,13 @@
         make.width.mas_equalTo(acTagSize.width+1);
         make.height.mas_equalTo(acTagSize.height+1);
     }];
-    
+    CGFloat heigth = acImageH + 10 + (int)acNameSize.height + 10 + (int)acTimeSize.height + (int)acPlaceSize.height + 10 + (int)acTagSize.height+5;
     [self.bgView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.edges.mas_equalTo(UIEdgeInsetsMake(3, 3, 3, 3));
+//        make.edges.mas_equalTo(UIEdgeInsetsMake(3, 3, 3, 3));
+        make.top.equalTo(self.contentView.mas_top);
+        make.centerX.equalTo(self.contentView.mas_centerX);
+        make.width.mas_equalTo(acImageW);
+        make.height.mas_equalTo(heigth);
     }];
     
 }

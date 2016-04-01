@@ -28,7 +28,7 @@
 #define TAG_FONTSIZE  11
 
 @interface RCCollectionViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, CustomCollectionViewLayoutDelegate>
-
+@property (nonatomic, assign) CurrentDevice device;
 @property (nonatomic, strong) UIScrollView *toolScrollView;
 @property (nonatomic, strong) NSMutableArray *toolButtonArray;
 @property (nonatomic, strong) IndustryList *indList;
@@ -43,6 +43,14 @@
 @implementation RCCollectionViewController
 
 static NSString * const reuseIdentifier = @"RCColumnCell";
+- (CurrentDevice)device
+{
+    if (!_device)
+    {
+        _device = [self currentDeviceSize];
+    }
+    return _device;
+}
 - (RCColumnScrollViewDelegate *)scrollViewDelegate
 {
     if (!_scrollViewDelegate)
@@ -130,11 +138,10 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     
     if (!cell)
     {
-        cell = [[RCCollectionCell alloc]init];
+
         // Well, nothingreally. Never again
-        
+        cell = [[RCCollectionCell alloc]initWithFrame:CGRectZero];
     }
-    
     [self collectionView:collectionView setCellValue:cell AtIndexPath:indexPath];
     [cell setSubviewConstraint];
     return cell;
@@ -173,35 +180,27 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 {
     CGFloat acImageW; //图片的最大宽度,活动名的最大宽度
     CGFloat acImageH; //图片的最大高度
-    CGFloat leftPaddintToContentView;
-    CGFloat rightPaddingToContentView;
-    if ([self currentDeviceSize] == IPhone5)
+    if (self.device == IPhone5)
     {
         acImageW = 142;
         acImageH = 110;
-        leftPaddintToContentView = 12;
-        rightPaddingToContentView = leftPaddintToContentView;
         
-    }else if ([self currentDeviceSize]  == IPhone6)
+    }else if (self.device   == IPhone6)
     {
         acImageW = 165;
         acImageH = 125;
-        leftPaddintToContentView = 15;
-        rightPaddingToContentView = leftPaddintToContentView;
     }else
     {
         acImageW = 177;
         acImageH = 135;
-        leftPaddintToContentView = 20;
-        rightPaddingToContentView = leftPaddintToContentView;
     }
     CGSize maxSize = CGSizeMake(acImageW - 20, MAXFLOAT);
     CGSize acNameSize = [self sizeWithText:model.acTitle maxSize:maxSize fontSize:NAME_FONTSIZE];
     CGSize acTimeSize = [self sizeWithText:model.acTime maxSize:maxSize fontSize:TIME_FONTSIZE];
     CGSize acPlaceSize = [self sizeWithText:model.acPlace maxSize:maxSize fontSize:PLACE_FONTSIZE];
     CGSize acTagSize = [self sizeWithText:model.userInfo.userName maxSize:maxSize fontSize:TAG_FONTSIZE];
-    CGFloat heigth = acImageH + 10 + acNameSize.height + 10 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height+10;
-    return CGSizeMake(100, heigth);
+    CGFloat heigth = acImageH + 10 + (int)acNameSize.height + 10 + (int)acTimeSize.height + (int)acPlaceSize.height + 10 + (int)acTagSize.height+5;
+    return CGSizeMake(acImageH, heigth);
 }
 #pragma mark - 返回每个cell的高度
 - (CGFloat)collectionView:(RCCollectionView *)collectionView waterFlowLayout:(RCCollectionViewLayout *)waterFlowLayout heightForWidth:(CGFloat)width atIndexPath:(NSIndexPath *)indexPath
@@ -300,6 +299,7 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 {
     RCCollectionViewLayout *layout= [[RCCollectionViewLayout alloc]init];
     layout.layoutDelegate = self;
+    
     RCCollectionView * collectionView = [[RCCollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
     collectionView.indName = indName;
     collectionView.backgroundColor = [UIColor clearColor];

@@ -7,7 +7,7 @@
 //
 
 #import "RCCollectionViewLayout.h"
-
+#import "RCCollectionView.h"
 @interface RCCollectionViewLayout ()
 
 /* Key: 第几列; Value: 保存每列的cell的底部y值 */
@@ -21,6 +21,7 @@
     if (self) {
         self.columnMargin = 10;
         self.rowMargin = 10;
+//        self.insets = UIEdgeInsetsMake(<#CGFloat top#>, <#CGFloat left#>, <#CGFloat bottom#>, <#CGFloat right#>)
         self.insets = UIEdgeInsetsMake(10, 10, 10, 10);
         self.count = 2;
     }
@@ -83,7 +84,7 @@
     }];
     
     CGFloat width = (self.collectionView.frame.size.width - self.insets.left - self.insets.right - self.columnMargin * (self.count - 1)) / self.count;
-    CGFloat height = [self.layoutDelegate collectionView:self.collectionView waterFlowLayout:self heightForWidth:width atIndexPath:indexPath];
+    CGFloat height = [self.layoutDelegate collectionView:(RCCollectionView*)self.collectionView waterFlowLayout:self heightForWidth:width atIndexPath:indexPath];
     CGFloat x = self.insets.left + (width + self.columnMargin) * [minYForColumn integerValue];
     CGFloat y = self.rowMargin + [self.cellInfo[minYForColumn] floatValue];
     
