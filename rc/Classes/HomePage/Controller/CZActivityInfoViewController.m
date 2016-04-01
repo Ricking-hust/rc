@@ -198,7 +198,7 @@
     {
         return 1;
     }
-    return 60.0/2;//section头部高度
+    return 30;
 }
 //section头部视图
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -364,10 +364,6 @@
     {
         RCReleaseCell *rcell = (RCReleaseCell *)cell;
         [rcell.imgIcon sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.userInfo.userPic]placeholderImage:[UIImage imageNamed:@"meetingIcon"]];
-//        [rcell.imgIcon sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.userInfo.userPic] placeholderImage:[UIImage imageNamed:@"meetingIcon"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
-//            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:2];
-//            [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-//        }];
 
         [rcell.label setText:self.activitymodel.userInfo.userName];
     }else
