@@ -21,7 +21,6 @@
     if (self) {
         self.columnMargin = 10;
         self.rowMargin = 10;
-//        self.insets = UIEdgeInsetsMake(<#CGFloat top#>, <#CGFloat left#>, <#CGFloat bottom#>, <#CGFloat right#>)
         self.insets = UIEdgeInsetsMake(10, 10, 10, 10);
         self.count = 2;
     }
