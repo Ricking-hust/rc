@@ -154,6 +154,7 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+#pragma mark - 标签选择确定按钮
 - (void)updateMyTag
 {
     self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -179,7 +180,16 @@
         [self.HUD hideAnimated:YES afterDelay:0.6];
         NSLog(@"Error:%@",error);
     }];
-    [self pause];
+    if (self.isShake)
+    {
+        [self pause];
+        self.isShake = NO;
+    }else
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+
+    
 }
 #pragma mark - Table view data source
 
@@ -338,7 +348,7 @@
                 if ([model.tagName isEqualToString:button.titleLabel.text]) {
                     [self.myTags removeObject:model];
                     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                 }
             }
         }
@@ -358,7 +368,7 @@
                 if ([model.tagName isEqualToString:button.titleLabel.text]) {
                     [self.myTags addObject:model];
                     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                 }
             }
         }

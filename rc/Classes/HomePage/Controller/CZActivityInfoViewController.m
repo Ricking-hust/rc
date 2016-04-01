@@ -20,6 +20,7 @@
 #import "MBProgressHUD.h"
 #import "RCBarButton.h"
 #import "RCBarButtonView.h"
+#import "RCReleaseCell.h"
 //ShareSDK-------------------------------------------
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKExtension/SSEShareHelper.h>
@@ -151,7 +152,7 @@
     _activityModelPre = activityModelPre;
     
 }
-
+#pragma mark - 数据下载完毕
 -(void)setActivitymodel:(ActivityModel *)activitymodel{
     
     _activitymodel = activitymodel;
@@ -197,7 +198,7 @@
     {
         return 1;
     }
-    return 60.0/2;//section头部高度
+    return 30;
 }
 //section头部视图
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -299,34 +300,10 @@
             break;
         case 2:
         {
-            UITableViewCell *cell = [[UITableViewCell alloc]init];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            UIImageView *releaserPic = [[UIImageView alloc]init];
-            UILabel *releaserName = [[UILabel alloc]init];
-            releaserName.font = [UIFont systemFontOfSize:FONTSIZE];
+            RCReleaseCell *cell = [[RCReleaseCell alloc]init];
+            [self setCellValue:cell AtIndexPath:indexPath];
+            [cell setSubViewsConstraint];
             
-            [cell addSubview:releaserPic];
-            [cell addSubview:releaserName];
-
-            //对cell的控件进行赋值
-   
-            [releaserPic sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.userInfo.userPic]placeholderImage:[UIImage imageNamed:@"meetingIcon"]];
-            releaserPic.layer.cornerRadius = 25;
-            [releaserPic mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(cell.mas_left).offset(15);
-                make.centerY.equalTo(cell.mas_centerY);
-                make.width.mas_equalTo(50);
-                make.height.mas_equalTo(50);
-            }];
-            
-            [releaserName setText:self.activitymodel.userInfo.userName];
-            CGSize maxSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
-            CGSize releaserLable = [self sizeWithText:releaserName.text maxSize:maxSize fontSize:FONTSIZE];
-            [releaserName mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.left.equalTo(releaserPic.mas_right).offset(10);
-                make.centerY.equalTo(cell.mas_centerY);
-                make.size.mas_equalTo(CGSizeMake((int)releaserLable.width+1, (int)releaserLable.height+1));
-            }];
             return cell;
         }
             break;
@@ -383,7 +360,13 @@
     }else if([cell isKindOfClass:[CZActivityInfoCell class]])
     {
         ((CZActivityInfoCell *)cell).model = self.activitymodel;
-    }else if(indexPath.section == 2)
+    }else if([cell isKindOfClass:[RCReleaseCell class]])
+    {
+        RCReleaseCell *rcell = (RCReleaseCell *)cell;
+        [rcell.imgIcon sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.userInfo.userPic]placeholderImage:[UIImage imageNamed:@"meetingIcon"]];
+
+        [rcell.label setText:self.activitymodel.userInfo.userName];
+    }else
     {
         ;
     }
@@ -669,7 +652,7 @@
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithCustomView:self.barButtonView];
     [self.navigationItem setLeftBarButtonItem:leftButton];
 
-    
+#pragma mark - 顶部右侧分享按键
 //    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"shareIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(didShare)];
 //    [self.navigationItem setRightBarButtonItem:rightButton];
 //    [rightButton setTintColor:[UIColor whiteColor]];

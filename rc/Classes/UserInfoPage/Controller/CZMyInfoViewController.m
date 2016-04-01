@@ -211,10 +211,13 @@
     if (indexPath.section == 0)
     {
         if (self.isLogin == NO) {
-            cell.imgIcon.image = [UIImage imageNamed:@"Beijing_Icon"];
+            cell.imgIcon.image = [UIImage imageNamed:@"logo"];
+            cell.imgIcon.layer.cornerRadius=33;
+            cell.imgIcon.layer.masksToBounds = YES;
             cell.contentLable.text = @"未登录";
         } else {
             [cell.imgIcon sd_setImageWithURL:[NSURL URLWithString:[userDefaults objectForKey:@"userPic"]] placeholderImage:[ UIImage imageNamed:@"20160102.png"]];
+            cell.imgIcon.layer.masksToBounds = YES;
             cell.imgIcon.layer.cornerRadius=33;
             cell.contentLable.text = [userDefaults objectForKey:@"userName"];
         }

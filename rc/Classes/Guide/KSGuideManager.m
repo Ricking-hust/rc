@@ -135,6 +135,8 @@ static NSString *identifier = @"Cell";
         
         [self.window addSubview:self.view];
         [self.window addSubview:self.pageControl];
+#pragma mark - 修改--》隐藏pageControl
+        self.pageControl.hidden = YES;
         
         [ud setBool:YES forKey:[NSString stringWithFormat:@"Guide_%@", version]];
         [ud synchronize];
@@ -161,15 +163,25 @@ static NSString *identifier = @"Cell";
     cell.imageView.frame = CGRectMake(0, 0, size.width, size.height);
     cell.imageView.image = [UIImage imageWithContentsOfFile:path];
     cell.imageView.center = CGPointMake(kScreenBounds.size.width / 2, kScreenBounds.size.height / 2);
-
-    if (indexPath.row == self.images.count - 1) {
-        [cell.button setHidden:NO];
-        [cell.button addTarget:self action:@selector(nextButtonHandler:) forControlEvents:UIControlEventTouchUpInside];
-    } else {
-        [cell.button setHidden:YES];
-    }
+    
+#pragma mark - 修改-->隐藏最后个引导页面的按钮
+//    if (indexPath.row == self.images.count - 1) {
+//        [cell.button setHidden:NO];
+//        [cell.button addTarget:self action:@selector(nextButtonHandler:) forControlEvents:UIControlEventTouchUpInside];
+//    } else {
+//
+//        [cell.button setHidden:YES];
+//    }
 
     return cell;
+}
+#pragma mark - 增加---》最后一页的点击事件
+-(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath{
+    if (indexPath.row == self.images.count - 1){
+        [self.view removeFromSuperview];
+        [self setWindow:nil];
+        [self setView:nil];
+    }
 }
 
 - (CGSize)adapterSizeImageSize:(CGSize)is compareSize:(CGSize)cs

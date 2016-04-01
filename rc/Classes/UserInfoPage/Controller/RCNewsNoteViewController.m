@@ -25,11 +25,12 @@
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     
-    if ([DataManager manager].user.isLogin) {
-        self.getPlanListBlock();
-    } else {
-        [self showLoginOrNotView];
-    }
+//    if ([DataManager manager].user.isLogin)
+//    {
+//        self.getPlanListBlock();
+//    } else {
+//        [self showLoginOrNotView];
+//    }
 }
 //-------
 - (void)viewDidLoad
@@ -38,7 +39,7 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     [self setNavigation];
-    [self configureBlocks];
+//    [self configureBlocks];
 }
 -(void)configureBlocks{
     @weakify(self);
@@ -134,14 +135,28 @@
     return cell;
     
 }
+#pragma mark - 监听消息通知的开关
 - (void)onSwitchValueChanged:(UISwitch *)s
 {
     if (s.on)
     {
         NSLog(@"on");
+        [self settingNotification];
     }else
     {
         NSLog(@"off");
+    }
+}
+- (void)settingNotification
+{
+    
+    if ([[UIApplication sharedApplication]currentUserNotificationSettings].types != UIUserNotificationTypeNone)
+    {
+        
+        //[self addLocalNotification];
+    }else
+    {
+        [[UIApplication sharedApplication]registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound  categories:nil]];
     }
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
