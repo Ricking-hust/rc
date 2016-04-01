@@ -11,6 +11,7 @@
 #import "NSString+MD5.h"
 #import "Masonry.h"
 #import "RegisteViewController.h"
+#import "ResetPasswordViewController.h"
 #import "CZHomeViewController.h"
 static CGFloat const kContainViewYNormal = 70.0;
 
@@ -27,7 +28,7 @@ static CGFloat const kContainViewYNormal = 70.0;
 @property (nonatomic, strong) MyTextField *passwordField;
 @property (nonatomic,strong) UIImageView *leftUsernameView;
 @property (nonatomic,strong) UIImageView *leftPasswdView;
-@property (nonatomic,strong) UIButton *forgetPwd;
+@property (nonatomic,strong) UIButton *forgetPwdButton;
 @property (nonatomic, strong) UIButton    *loginButton;
 
 @property (nonatomic, assign) BOOL isKeyboardShowing;
@@ -90,7 +91,7 @@ static CGFloat const kContainViewYNormal = 70.0;
         make.height.equalTo(@30);
     }];
     
-    [self.forgetPwd mas_updateConstraints:^(MASConstraintMaker *make) {
+    [self.forgetPwdButton mas_updateConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.passwordField.mas_right);
         make.top.equalTo(self.passwordField.mas_bottom).offset(15);
         make.size.mas_equalTo(CGSizeMake(forgetSize.width+1, forgetSize.height+1));
@@ -164,13 +165,13 @@ static CGFloat const kContainViewYNormal = 70.0;
     self.passwordField.leftViewMode = UITextFieldViewModeAlways;
     [self.containView addSubview:self.passwordField];
     
-    self.forgetPwd = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.forgetPwd setTitle:@"忘记密码?" forState:UIControlStateNormal];
-    [self.forgetPwd setTitleColor:RGB(0xFD8529, 1) forState:UIControlStateNormal];
-    self.forgetPwd.titleLabel.font = [UIFont systemFontOfSize:12.0];
-    [self.forgetPwd setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
-    self.forgetPwd.layer.borderWidth = 0;
-    [self.containView addSubview:self.forgetPwd];
+    self.forgetPwdButton = [UIButton buttonWithType:UIButtonTypeCustom];
+    [self.forgetPwdButton setTitle:@"忘记密码?" forState:UIControlStateNormal];
+    [self.forgetPwdButton setTitleColor:RGB(0xFD8529, 1) forState:UIControlStateNormal];
+    self.forgetPwdButton.titleLabel.font = [UIFont systemFontOfSize:12.0];
+    [self.forgetPwdButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
+    self.forgetPwdButton.layer.borderWidth = 0;
+    [self.containView addSubview:self.forgetPwdButton];
     
     self.loginButton = [UIButton buttonWithType:UIButtonTypeCustom];
     [self.loginButton setTitle:@"登录" forState:UIControlStateNormal];
@@ -186,6 +187,7 @@ static CGFloat const kContainViewYNormal = 70.0;
     [self.usernameField addTarget:self action:@selector(goPassword) forControlEvents:UIControlEventEditingDidEndOnExit];
     //[self.passwordField addTarget:self action:@selector(changePwdIcon) forControlEvents:UIControlEventEditingDidBegin];
     [self.passwordField addTarget:self action:@selector(login) forControlEvents:UIControlEventEditingDidEndOnExit];
+    [self.forgetPwdButton addTarget:self action:@selector(goResetPwd) forControlEvents:UIControlEventTouchUpInside];
     [self.loginButton addTarget:self action:@selector(login) forControlEvents:UIControlEventTouchUpInside];
 
 }
@@ -236,6 +238,11 @@ static CGFloat const kContainViewYNormal = 70.0;
 
 -(void)goPassword{
     [self.passwordField becomeFirstResponder];
+}
+
+-(void)goResetPwd{
+    ResetPasswordViewController *resetViewController = [[ResetPasswordViewController alloc]init];
+    [self.navigationController pushViewController:resetViewController animated:YES];
 }
 
 - (void)logBackToMyInfoViewController

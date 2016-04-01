@@ -1,27 +1,24 @@
 //
-//  RegisteViewController.m
+//  resetPasswordViewController.m
 //  rc
 //
-//  Created by 余笃 on 16/3/4.
+//  Created by 余笃 on 16/4/1.
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
 
-#import "RegisteViewController.h"
+#import "resetPasswordViewController.h"
 #import "MyTextField.h"
-#import "MBProgressHUD.h"
 #import "NSString+MD5.h"
+#import "MBProgressHUD.h"
 #import "Masonry.h"
 #import "LoginViewController.h"
 
 static CGFloat const kContainViewYNormal = 70.0;
 
-@interface RegisteViewController ()
-
+@interface ResetPasswordViewController ()
 @property (nonatomic, strong) UIImageView *backgroundImageView;
 
 @property (nonatomic, strong) UIView      *containView;
-
-@property (nonatomic, strong) UILabel     *logoLabel;
 
 @property (nonatomic, strong) MyTextField *usernameField;
 @property (nonatomic, strong) MyTextField *passwordField;
@@ -35,11 +32,11 @@ static CGFloat const kContainViewYNormal = 70.0;
 
 @property (nonatomic,strong) NSString *MD5Str;
 @property (nonatomic, assign) BOOL isKeyboardShowing;
-@property (nonatomic,assign) BOOL isRegisting;
+@property (nonatomic,assign) BOOL isReseting;
 
 @end
 
-@implementation RegisteViewController
+@implementation ResetPasswordViewController
 
 -(NSString *)MD5Str{
     if (!_MD5Str) {
@@ -53,7 +50,7 @@ static CGFloat const kContainViewYNormal = 70.0;
     if (self) {
         
         self.isKeyboardShowing = NO;
-        self.isRegisting = NO;
+        self.isReseting = NO;
     }
     return self;
 }
@@ -64,10 +61,8 @@ static CGFloat const kContainViewYNormal = 70.0;
     self.view.backgroundColor = [UIColor whiteColor];
     
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"cross_icon"] style:UIBarButtonItemStylePlain target:self action:@selector(regBackToForwardViewController)];
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithTitle:@"登录" style:UIBarButtonItemStylePlain target:self action:@selector(regBackToForwardViewController)];
-    
+    self.navigationItem.title = @"找回密码";
     [self.navigationItem setLeftBarButtonItem:leftButton];
-    [self.navigationItem setRightBarButtonItem:rightButton];
     
     [self configureViews];
     [self configureTextField];
@@ -84,10 +79,9 @@ static CGFloat const kContainViewYNormal = 70.0;
     self.backgroundImageView.frame = self.view.frame;
     
     self.containView.frame = (CGRect){0,kContainViewYNormal,kScreenWidth,kScreenHeight};
-    self.logoLabel.center = (CGPoint){kScreenWidth/2,80};
     [self.usernameField mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.containView.mas_left).offset(50);
-        make.top.equalTo(self.containView.mas_top).offset(162);
+        make.top.equalTo(self.containView.mas_top).offset(26);
         make.right.equalTo(self.containView.mas_right).offset(-50);
         make.height.equalTo(@30);
     }];
@@ -127,13 +121,6 @@ static CGFloat const kContainViewYNormal = 70.0;
     
     self.containView = [[UIView alloc] init];
     [self.view addSubview:self.containView];
-    
-    self.logoLabel = [[UILabel alloc] init];
-    self.logoLabel.text = @"日常";
-    self.logoLabel.font = [UIFont fontWithName:@"Kailasa" size:36];
-    self.logoLabel.textColor = [UIColor blackColor];
-    [self.logoLabel sizeToFit];
-    [self.containView addSubview:self.logoLabel];
     
 }
 
@@ -189,7 +176,7 @@ static CGFloat const kContainViewYNormal = 70.0;
     self.passwordField.textAlignment = NSTextAlignmentCenter;
     self.passwordField.textColor = [UIColor blackColor];
     self.passwordField.font = [UIFont systemFontOfSize:14];
-    self.passwordField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入密码"        attributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:0.6 alpha:1.000],
+    self.passwordField.attributedPlaceholder = [[NSAttributedString alloc] initWithString:@"请输入新密码"        attributes:@{NSForegroundColorAttributeName:[UIColor colorWithWhite:0.6 alpha:1.000],
                                                                                                                        NSFontAttributeName:[UIFont italicSystemFontOfSize:14]}];
     self.passwordField.secureTextEntry = YES;
     self.passwordField.keyboardType = UIKeyboardTypeASCIICapable;
@@ -205,7 +192,7 @@ static CGFloat const kContainViewYNormal = 70.0;
     [self.containView addSubview:self.passwordField];
     
     self.registeButton = [UIButton buttonWithType:UIButtonTypeCustom];
-    [self.registeButton setTitle:@"注册" forState:UIControlStateNormal];
+    [self.registeButton setTitle:@"确定" forState:UIControlStateNormal];
     self.registeButton.titleLabel.font = [UIFont systemFontOfSize:18];
     [self.registeButton setTitleColor:[UIColor whiteColor] forState:UIControlStateNormal];
     [self.registeButton setTitleColor:[UIColor blueColor] forState:UIControlStateHighlighted];
@@ -214,12 +201,9 @@ static CGFloat const kContainViewYNormal = 70.0;
     self.registeButton.layer.borderWidth = 0.5;
     [self.containView addSubview:self.registeButton];
     
-    //[self.usernameField addTarget:self action:@selector(showKeyboard) forControlEvents:UIControlEventEditingDidBegin];
     [self.usernameField addTarget:self action:@selector(goVerify) forControlEvents:UIControlEventEditingDidEndOnExit];
-    //[self.verifyCodeField addTarget:self action:@selector(showKeyboard) forControlEvents:UIControlEventEditingDidBegin];
     [self.verifyCodeField addTarget:self action:@selector(goPassWord) forControlEvents:UIControlEventEditingDidEndOnExit];
     [self.verifyCodeButton addTarget:self action:@selector(sendVerifyCode) forControlEvents:UIControlEventTouchUpInside];
-    //[self.passwordField addTarget:self action:@selector(showKeyboard) forControlEvents:UIControlEventEditingDidBegin];
     [self.passwordField addTarget:self action:@selector(registe) forControlEvents:UIControlEventEditingDidEndOnExit];
     [self.registeButton addTarget:self action:@selector(registe) forControlEvents:UIControlEventTouchUpInside];
 }
@@ -227,8 +211,8 @@ static CGFloat const kContainViewYNormal = 70.0;
 
 #pragma mark - private methods
 
--(void)beginRegiste{
-    self.isRegisting = YES;
+-(void)beginReset{
+    self.isReseting = YES;
     
     self.usernameField.enabled = NO;
     self.verifyCodeField.enabled = NO;
@@ -236,18 +220,18 @@ static CGFloat const kContainViewYNormal = 70.0;
     self.passwordField.enabled = NO;
 }
 
--(void)endRegiste{
+-(void)endReset{
     self.usernameField.enabled = YES;
     self.verifyCodeField.enabled = YES;
     self.verifyCodeButton.enabled = YES;
     self.passwordField.enabled = YES;
     
-    self.isRegisting = NO;
+    self.isReseting = NO;
 }
 
 -(void)registe{
-    if (!self.isRegisting) {
-       @weakify(self)
+    if (!self.isReseting) {
+        @weakify(self)
         
         if ([self.usernameField.text isEqualToString:@""]|[self.verifyCodeField.text isEqualToString:@""]|[self.passwordField.text isEqualToString:@""]) {
             NSString *message = [[NSString alloc]init];
@@ -260,7 +244,7 @@ static CGFloat const kContainViewYNormal = 70.0;
             }
             UIAlertController *alterNoneControl = [UIAlertController alertControllerWithTitle:@"提示" message:message preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *configureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                [self endRegiste];
+                [self endReset];
             }];
             [alterNoneControl addAction:configureAction];
             [self presentViewController:alterNoneControl animated:YES completion:nil];
@@ -271,34 +255,27 @@ static CGFloat const kContainViewYNormal = 70.0;
             [self.HUD showAnimated:YES];
             if ([self checkVerifyCode:self.verifyCodeField.text]) {
                 @strongify(self);
-                [[DataManager manager] UserLoginOrRegisteWithUserphone:self.usernameField.text password:self.passwordField.text op_type:@"2" success:^(UserModel *user) {
+                [[DataManager manager] resetPwdWithMobile:self.usernameField.text passwd:self.passwordField.text success:^(NSString *msg) {
                     self.HUD.mode = MBProgressHUDModeCustomView;
-                    self.HUD.label.text = @"注册成功";
+                    self.HUD.label.text = @"密码重置成功";
                     [self.HUD hideAnimated:YES afterDelay:0.6];
-                    [self endRegiste];
+                    [self endReset];
                     [self regBackToForwardViewController];
                 } failure:^(NSError *error) {
-                    NSString *reasonString;
-                    
-                    if (error.code < 700) {
-                        reasonString = @"请检查网络状态";
-                    } else {
-                        reasonString = @"请检查用户名或密码";
-                    }
-                    UIAlertController *alterLgnFailControl = [UIAlertController alertControllerWithTitle:@"注册失败" message:reasonString preferredStyle:UIAlertControllerStyleAlert];
+                    UIAlertController *alterLgnFailControl = [UIAlertController alertControllerWithTitle:@"重置失败" message:@"请重试" preferredStyle:UIAlertControllerStyleAlert];
                     UIAlertAction *configureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
-                        [self endRegiste];
+                        [self endReset];
                     }];
                     [alterLgnFailControl addAction:configureAction];
                     [self presentViewController:alterLgnFailControl animated:YES completion:nil];
-                    
                 }];
+
             }
             else {
                 self.HUD.mode = MBProgressHUDModeCustomView;
                 self.HUD.label.text = @"验证码错误";
                 [self.HUD hideAnimated:YES afterDelay:0.6];
-                [self endRegiste];
+                [self endReset];
             }
         }
         
@@ -306,7 +283,7 @@ static CGFloat const kContainViewYNormal = 70.0;
 }
 
 -(void)sendVerifyCode{
-
+    
     //生成随机六位验证码
     int num = (arc4random()%1000000);
     NSString *randomNumber = [[NSString alloc]initWithFormat:@"%.6d",num];
@@ -391,5 +368,6 @@ static CGFloat const kContainViewYNormal = 70.0;
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 
 @end

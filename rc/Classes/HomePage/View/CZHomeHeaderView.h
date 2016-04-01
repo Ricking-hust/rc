@@ -15,7 +15,8 @@
 @property(nonatomic, weak)UIPageControl *pageControl;
 @property(nonatomic, weak)UILabel *label;
 @property(nonatomic, weak)UIView *segmentation;
-
+@property(nonatomic, weak)UIView *superView;
+@property (nonatomic,strong) NSArray *acList;
 /**
  *	类方法
  *

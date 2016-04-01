@@ -185,9 +185,6 @@
         self.getActivityListBlock(@"0");
     }
     [self.acList removeAllObjects];
-    for (ActivityModel *model in self.acListRecived.list) {
-        [self.acList addObject:model];
-    }
 }
 
 -(void)getMoreRecomend{
@@ -201,6 +198,8 @@
     
     //设置tableHeaderView
     CZHomeHeaderView *headerView = [CZHomeHeaderView headerView];
+    headerView.superView = self.view;
+    
     [headerView setView:flashList.list];
     self.tableView.tableHeaderView = headerView;
 }
@@ -405,6 +404,5 @@
     CZSearchViewController *searchViewController = [[CZSearchViewController alloc]init];
     [self.navigationController pushViewController:searchViewController animated:YES];
 }
-
 
 @end
