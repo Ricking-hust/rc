@@ -330,7 +330,7 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 {
     //获取当前的collectionView
     RCCollectionView *collectionView = [self getCurrentCollectionView];
-    NSLog(@"");
+    [collectionView.mj_footer endRefreshing];
 }
 - (RCCollectionView *)getCurrentCollectionView
 {
