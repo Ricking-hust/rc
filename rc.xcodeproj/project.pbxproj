@@ -67,6 +67,7 @@
 		561D02121C47DA5600E4E013 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 561D01C41C47DA5600E4E013 /* README.md */; };
 		56218A971CADF541003549DB /* RCColumnScrollViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 56218A961CADF541003549DB /* RCColumnScrollViewDelegate.m */; };
 		56218A9A1CADFCE3003549DB /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 56218A991CADFCE3003549DB /* AppDelegate.m */; };
+		56218A9D1CAE0402003549DB /* RCReleaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56218A9C1CAE0402003549DB /* RCReleaseCell.m */; };
 		562CC4461C6C962100774C22 /* CZTimeSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CC4451C6C962100774C22 /* CZTimeSelectView.m */; };
 		562FD2751CA674FA0014E5D8 /* RCBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 562FD2741CA674FA0014E5D8 /* RCBarButton.m */; };
 		563FC6BA1CACE74F00B7DD25 /* RCCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 563FC6B91CACE74F00B7DD25 /* RCCollectionViewController.m */; };
@@ -327,6 +328,8 @@
 		56218A961CADF541003549DB /* RCColumnScrollViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCColumnScrollViewDelegate.m; sourceTree = "<group>"; };
 		56218A981CADFCE3003549DB /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		56218A991CADFCE3003549DB /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		56218A9B1CAE0402003549DB /* RCReleaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCReleaseCell.h; sourceTree = "<group>"; };
+		56218A9C1CAE0402003549DB /* RCReleaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCReleaseCell.m; sourceTree = "<group>"; };
 		562CC4441C6C962100774C22 /* CZTimeSelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTimeSelectView.h; sourceTree = "<group>"; };
 		562CC4451C6C962100774C22 /* CZTimeSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTimeSelectView.m; sourceTree = "<group>"; };
 		562FD2731CA674FA0014E5D8 /* RCBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCBarButton.h; sourceTree = "<group>"; };
@@ -1040,6 +1043,8 @@
 				569773241C9ACA7500D25338 /* RCTagCell.m */,
 				5663D0901CA38BC800526FEF /* RCHomeRefreshHeader.h */,
 				5663D0911CA38BC800526FEF /* RCHomeRefreshHeader.m */,
+				56218A9B1CAE0402003549DB /* RCReleaseCell.h */,
+				56218A9C1CAE0402003549DB /* RCReleaseCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1648,6 +1653,7 @@
 				563FC6C51CAD444700B7DD25 /* CZButtonView.m in Sources */,
 				563FC6C01CACFBA400B7DD25 /* RCCollectionView.m in Sources */,
 				563FC6BA1CACE74F00B7DD25 /* RCCollectionViewController.m in Sources */,
+				56218A9D1CAE0402003549DB /* RCReleaseCell.m in Sources */,
 				566094651C9C1A9000433AD8 /* RCTableView.m in Sources */,
 				56B9CD321C807A7100914F00 /* SDWebImageDownloaderOperation.m in Sources */,
 				56B9CD2D1C807A7100914F00 /* NSData+ImageContentType.m in Sources */,

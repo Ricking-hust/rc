@@ -348,7 +348,7 @@
                 if ([model.tagName isEqualToString:button.titleLabel.text]) {
                     [self.myTags removeObject:model];
                     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                 }
             }
         }
@@ -368,7 +368,7 @@
                 if ([model.tagName isEqualToString:button.titleLabel.text]) {
                     [self.myTags addObject:model];
                     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationAutomatic];
+                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                 }
             }
         }
