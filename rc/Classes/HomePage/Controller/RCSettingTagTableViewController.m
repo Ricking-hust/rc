@@ -154,6 +154,7 @@
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+#pragma mark - 标签选择确定按钮
 - (void)updateMyTag
 {
     self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -179,7 +180,16 @@
         [self.HUD hideAnimated:YES afterDelay:0.6];
         NSLog(@"Error:%@",error);
     }];
-    [self pause];
+    if (self.isShake)
+    {
+        [self pause];
+        self.isShake = NO;
+    }else
+    {
+        [self.navigationController popViewControllerAnimated:YES];
+    }
+
+    
 }
 #pragma mark - Table view data source
 
