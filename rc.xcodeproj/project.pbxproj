@@ -66,6 +66,7 @@
 		561D02111C47DA5600E4E013 /* ViewController+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 561D01C31C47DA5600E4E013 /* ViewController+MASAdditions.m */; };
 		561D02121C47DA5600E4E013 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 561D01C41C47DA5600E4E013 /* README.md */; };
 		561D02151C47DA5600E4E013 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 561D01CA1C47DA5600E4E013 /* AppDelegate.m */; };
+		56218A971CADF541003549DB /* RCColumnScrollViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 56218A961CADF541003549DB /* RCColumnScrollViewDelegate.m */; };
 		562CC4461C6C962100774C22 /* CZTimeSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CC4451C6C962100774C22 /* CZTimeSelectView.m */; };
 		562FD2751CA674FA0014E5D8 /* RCBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 562FD2741CA674FA0014E5D8 /* RCBarButton.m */; };
 		563FC6BA1CACE74F00B7DD25 /* RCCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 563FC6B91CACE74F00B7DD25 /* RCCollectionViewController.m */; };
@@ -324,6 +325,8 @@
 		561D01C41C47DA5600E4E013 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
 		561D01C91C47DA5600E4E013 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
 		561D01CA1C47DA5600E4E013 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
+		56218A951CADF541003549DB /* RCColumnScrollViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCColumnScrollViewDelegate.h; sourceTree = "<group>"; };
+		56218A961CADF541003549DB /* RCColumnScrollViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCColumnScrollViewDelegate.m; sourceTree = "<group>"; };
 		562CC4441C6C962100774C22 /* CZTimeSelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTimeSelectView.h; sourceTree = "<group>"; };
 		562CC4451C6C962100774C22 /* CZTimeSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTimeSelectView.m; sourceTree = "<group>"; };
 		562FD2731CA674FA0014E5D8 /* RCBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCBarButton.h; sourceTree = "<group>"; };
@@ -1264,6 +1267,8 @@
 				563FC6BC1CACF83E00B7DD25 /* RCCollectionCell.m */,
 				563FC6C61CAD444F00B7DD25 /* CZButtonView.h */,
 				563FC6C41CAD444700B7DD25 /* CZButtonView.m */,
+				56218A951CADF541003549DB /* RCColumnScrollViewDelegate.h */,
+				56218A961CADF541003549DB /* RCColumnScrollViewDelegate.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1678,6 +1683,7 @@
 				56F02CB71CA2884B00E0BBB4 /* MJRefreshStateHeader.m in Sources */,
 				561D02011C47DA5600E4E013 /* UIActivityIndicatorView+AFNetworking.m in Sources */,
 				56B9CD3B1C807A7100914F00 /* UIView+WebCacheOperation.m in Sources */,
+				56218A971CADF541003549DB /* RCColumnScrollViewDelegate.m in Sources */,
 				C4BBA81A1C89B93300AD02EE /* RegisteViewController.m in Sources */,
 				C4C075271C89CF6C00C5E54D /* MyTextField.m in Sources */,
 				56E523611C75AAD200794B0E /* CZMyCollectionViewController.m in Sources */,
