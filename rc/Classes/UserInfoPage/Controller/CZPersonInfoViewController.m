@@ -134,6 +134,7 @@
             {
                 cell.tittle.text = @"头像";
                 [cell.personIcon sd_setImageWithURL:[userDefaults objectForKey:@"userPic"] placeholderImage:[UIImage imageNamed:@"about_icon"]];
+                cell.personIcon.layer.masksToBounds = YES; 
             }else if (indexPath.row == 1)
             {
                 cell.tittle.text = @"昵称";

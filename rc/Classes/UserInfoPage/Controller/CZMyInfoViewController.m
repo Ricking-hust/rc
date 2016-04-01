@@ -204,6 +204,7 @@
     {
         if (self.isLogin == NO) {
             cell.imgIcon.image = [UIImage imageNamed:@"Beijing_Icon"];
+            cell.imgIcon.layer.masksToBounds = YES;
             cell.contentLable.text = @"未登录";
         } else {
             [cell.imgIcon sd_setImageWithURL:[NSURL URLWithString:[userDefaults objectForKey:@"userPic"]] placeholderImage:[ UIImage imageNamed:@"20160102.png"]];

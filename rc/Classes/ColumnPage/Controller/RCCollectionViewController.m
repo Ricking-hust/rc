@@ -203,13 +203,13 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     CGFloat heigth = acImageH + 10 + acNameSize.height + 10 + acTimeSize.height + acPlaceSize.height + 10 + acTagSize.height+10;
     return CGSizeMake(100, heigth);
 }
-//#pragma mark - CustomCollectionViewLayoutDelegate
+#pragma mark - 返回每个cell的高度
 - (CGFloat)collectionView:(RCCollectionView *)collectionView waterFlowLayout:(RCCollectionViewLayout *)waterFlowLayout heightForWidth:(CGFloat)width atIndexPath:(NSIndexPath *)indexPath
 {
     //取出数据
     RCCollectionView *cv = (RCCollectionView *)collectionView;
     ActivityList *activityList = [self.activityListByInd valueForKey:cv.indName];
-     return [self sizeByActivityModel:activityList.list[indexPath.row] ForSepcifiedCell:indexPath].height;
+    return [self sizeByActivityModel:activityList.list[indexPath.row] ForSepcifiedCell:indexPath].height;
 }
 #pragma mark <UICollectionViewDelegate>
 
