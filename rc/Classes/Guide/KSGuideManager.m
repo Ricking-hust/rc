@@ -163,15 +163,15 @@ static NSString *identifier = @"Cell";
     cell.imageView.frame = CGRectMake(0, 0, size.width, size.height);
     cell.imageView.image = [UIImage imageWithContentsOfFile:path];
     cell.imageView.center = CGPointMake(kScreenBounds.size.width / 2, kScreenBounds.size.height / 2);
-
-    if (indexPath.row == self.images.count - 1) {
+    
 #pragma mark - 修改-->隐藏最后个引导页面的按钮
+//    if (indexPath.row == self.images.count - 1) {
 //        [cell.button setHidden:NO];
 //        [cell.button addTarget:self action:@selector(nextButtonHandler:) forControlEvents:UIControlEventTouchUpInside];
-    } else {
-#pragma mark - 修改-->隐藏最后个引导页面的按钮
-        //[cell.button setHidden:YES];
-    }
+//    } else {
+//
+//        [cell.button setHidden:YES];
+//    }
 
     return cell;
 }
