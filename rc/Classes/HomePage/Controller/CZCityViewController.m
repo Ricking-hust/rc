@@ -57,7 +57,9 @@
         self.shanghai.locationImage.hidden = YES;
         self.city = Beijing;
         [userDefaults setObject:@"1" forKey:@"cityId"];
-        [self modifyCity:@"1"];
+        if ([DataManager manager].user.isLogin) {
+            [self modifyCity:@"1"];
+        }
     }else if ([label.text isEqualToString:@"广州"])
     {
         UIImageView *locationImageView = [btn.superview viewWithTag:11];
@@ -67,7 +69,9 @@
         self.wuhan.locationImage.hidden = YES;
         self.city = Guangzhou;
         [userDefaults setObject:@"4" forKey:@"cityId"];
-        [self modifyCity:@"4"];
+        if ([DataManager manager].user.isLogin) {
+            [self modifyCity:@"4"];
+        }
     }else if ([label.text isEqualToString:@"上海"])
     {
         UIImageView *locationImageView = [btn.superview viewWithTag:11];
@@ -77,7 +81,9 @@
         self.wuhan.locationImage.hidden = YES;
         self.city = Shanghai;
         [userDefaults setObject:@"2" forKey:@"cityId"];
-        [self modifyCity:@"2"];
+        if ([DataManager manager].user.isLogin) {
+            [self modifyCity:@"2"];
+        }
     }else
     {
         UIImageView *locationImageView = [btn.superview viewWithTag:11];
@@ -87,13 +93,17 @@
         self.shanghai.locationImage.hidden = YES;
         self.city = Wuhan;
         [userDefaults setObject:@"3" forKey:@"cityId"];
-        [self modifyCity:@"3"];
+        if ([DataManager manager].user.isLogin) {
+            [self modifyCity:@"3"];
+        }
     }
     long int count = self.navigationController.viewControllers.count;
     CZHomeViewController *homePage = (CZHomeViewController *)self.navigationController.viewControllers[count - 2];
     homePage.city = self.city;
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh" object:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
+
 - (void)locateCity
 {
     if (_city == Wuhan)

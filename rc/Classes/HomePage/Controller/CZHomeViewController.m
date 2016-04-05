@@ -49,12 +49,15 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     
     //刷新数据
     [self refleshDataByCity];
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
 }
 - (void)refleshDataByCity
 {
@@ -90,6 +93,7 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.city = Beijing;
     self.cityId = @"1";
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshRecomend) name:@"refresh" object:nil];
     self.tableView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
     self.tableView.mj_footer= [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
@@ -404,6 +408,10 @@
 {
     CZSearchViewController *searchViewController = [[CZSearchViewController alloc]init];
     [self.navigationController pushViewController:searchViewController animated:YES];
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refresh" object:nil];
 }
 
 @end

@@ -14,7 +14,7 @@
 {
     if (self = [super init])
     {
-        self.indName = [[NSString alloc]init];
+        self.indModel = [[IndustryModel alloc]init];
     }
     return self;
 }
@@ -22,7 +22,7 @@
 {
     if (self = [super initWithFrame:frame collectionViewLayout:layout])
     {
-        self.indName = [[NSString alloc]init];
+        self.indModel = [[IndustryModel alloc]init];
 
     }
     return self;
