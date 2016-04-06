@@ -19,9 +19,9 @@
 }
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-
-
-
+    
+    
+    
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {

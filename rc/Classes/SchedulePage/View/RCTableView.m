@@ -49,6 +49,7 @@
 - (void)refleshData:(NSNotification *)notification
 {
     NSNumber *timeNode = notification.object;
+    NSLog(@"%@",notification.object);
     self.nodeIndex = notification.object;
     self.scArray = self.planListRanged[[timeNode intValue]];
     [self reloadData];

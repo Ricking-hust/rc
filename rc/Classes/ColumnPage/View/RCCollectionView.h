@@ -7,8 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class IndustryModel;
 @interface RCCollectionView : UICollectionView
-@property (nonatomic, strong) NSString *indName;
+@property (nonatomic, strong) IndustryModel *indModel;
 
 @end

@@ -38,7 +38,9 @@
 @property (nonatomic, strong) RCColumnScrollViewDelegate *scrollViewDelegate;
 
 @property (nonatomic, copy) NSURLSessionDataTask *(^getIndListBlock)();
-@property (nonatomic, copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)(IndustryModel *model);@end
+@property (nonatomic, copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)(IndustryModel *model);
+@property (nonatomic,copy) NSURLSessionDataTask *(^refreshAcListWithIndBlock)(IndustryModel *model);
+@end
 
 @implementation RCCollectionViewController
 
@@ -127,7 +129,7 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     RCCollectionView *cv = (RCCollectionView *)collectionView;
-    ActivityList *activityList = [self.activityListByInd valueForKey:cv.indName];
+    ActivityList *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
 
     return activityList.list.count;
 }
@@ -151,7 +153,7 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 {
 
     RCCollectionView *cv = (RCCollectionView *)collectionView;
-    ActivityList *activityList = [self.activityListByInd valueForKey:cv.indName];
+    ActivityList *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
     
     ActivityModel *model = activityList.list[indexPath.row];
     [cell.acImage sd_setImageWithURL:[NSURL URLWithString:model.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
@@ -167,7 +169,7 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     RCCollectionView *cv = (RCCollectionView *)collectionView;
-    ActivityList *activityList = [self.activityListByInd valueForKey:cv.indName];
+    ActivityList *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
     
     CZActivityInfoViewController *info = [[CZActivityInfoViewController alloc]init];
     info.title = @"活动介绍";
@@ -207,7 +209,7 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 {
     //取出数据
     RCCollectionView *cv = (RCCollectionView *)collectionView;
-    ActivityList *activityList = [self.activityListByInd valueForKey:cv.indName];
+    ActivityList *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
     return [self sizeByActivityModel:activityList.list[indexPath.row] ForSepcifiedCell:indexPath].height;
 }
 #pragma mark <UICollectionViewDelegate>
@@ -276,13 +278,34 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
             NSLog(@"Error:%@",error);
         }];
     };
+    
+    self.refreshAcListWithIndBlock = ^(IndustryModel *model){
+        @strongify(self);
+        NSString *cityId = [[NSString alloc]init];
+        if ([userDefaults objectForKey:@"cityId"]) {
+            cityId = [userDefaults objectForKey:@"cityId"];
+        } else {
+            cityId = @"1";
+        }
+        return [[DataManager manager] checkIndustryWithCityId:cityId industryId:model.indId startId:@"0" success:^(ActivityList *acList) {
+            @strongify(self);
+            self.activityList = acList;
+            [self refreshData];
+        } failure:^(NSError *error) {
+            NSLog(@"Error:%@",error);
+        }];
+    };
 }
 - (void)loadData:(ActivityList *)activityList ByIndustry:(IndustryModel *)model
 {
     long int index = [self.indList.list indexOfObject:model];
-    RCCollectionView *collectionView = [self createCollectionView:(int)index WithIndName:model.indName];
+    RCCollectionView *collectionView = [self createCollectionView:(int)index WithIndModel:model];
     [self.collectionViewByInd setObject:collectionView forKey:model.indName];
     [self.activityListByInd setObject:activityList forKey:model.indName];
+}
+
+-(void)refreshData{
+    [self.collectionView reloadData];
 }
 -(void)setIndList:(IndustryList *)indList
 {
@@ -295,13 +318,13 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     }
 }
 #pragma mark - 根据行业在indlist中的下标生成对应的collectionView
-- (RCCollectionView *)createCollectionView:(int)index WithIndName:(NSString *)indName
+- (RCCollectionView *)createCollectionView:(int)index WithIndModel:(IndustryModel *)indModel
 {
     RCCollectionViewLayout *layout= [[RCCollectionViewLayout alloc]init];
     layout.layoutDelegate = self;
     
     RCCollectionView * collectionView = [[RCCollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
-    collectionView.indName = indName;
+    collectionView.indModel = indModel;
     collectionView.backgroundColor = [UIColor clearColor];
     collectionView.delegate = self;
     collectionView.dataSource = self;
@@ -321,9 +344,13 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 #pragma mark - 下拉对应的collectionView刷新数据
 - (void)loadNewData
 {
+    
     //获取当前的collectionView
     RCCollectionView *collectionView = [self getCurrentCollectionView];
     [collectionView.mj_header endRefreshing];
+    if (self.refreshAcListWithIndBlock) {
+        self.refreshAcListWithIndBlock(collectionView.indModel);
+    }
 }
 #pragma mark - 上拉对应的collectionView刷新数据
 -(void)getMoreData

@@ -65,9 +65,7 @@
 }
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
 {
-//    if (<#condition#>) {
-//        <#statements#>
-//    }
+    
 }
 - (void)dealloc
 {

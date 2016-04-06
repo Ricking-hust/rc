@@ -153,7 +153,6 @@
         }
     } else {
         self.planListRanged = nil;
-        NSLog(@"Fuck");
     }
     //若使用此方法，需将planListRanged改为copy类型
     //    PlanModel *rPlModel = planList.list[0];

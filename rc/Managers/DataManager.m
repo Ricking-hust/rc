@@ -273,8 +273,16 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
                                  @"usr_id":userId,
                                  };
     return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app.myrichang.com/Home/Activity/getActivityRecommend" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
-        ActivityList *acList = [[ActivityList alloc] initWithArray:[responseObject objectForKey:@"data"]];
-        success(acList);
+        NSDictionary *returnMessage = [[NSDictionary alloc]initWithDictionary:responseObject];
+        NSNumber *code = [returnMessage objectForKey:@"code"];
+        NSNumber *successcode = [NSNumber numberWithLong:200];
+        if ([code isEqualToNumber:successcode]) {
+            ActivityList *acList = [[ActivityList alloc] initWithArray:[responseObject objectForKey:@"data"]];
+            success(acList);
+        } else {
+            ActivityList *acList = nil;
+            success(acList);
+        }
     } failure:^(NSError *error) {
         failure(error);
     }];
@@ -325,7 +333,6 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
                                  @"op_type":opType
                                  };
     return [ self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app.myrichang.com/Home/Activity/joinTrip" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
-        //NSString *code = [[NSString alloc] initWithString:[responseObject objectForKey:@"code"]];
         NSString *code = [[NSString alloc] initWithFormat:@"%@",[responseObject objectForKey:@"code"]];
         if ([code isEqualToString:@"200"]) {
             NSString *planId = [[NSString alloc] initWithString:[responseObject objectForKey:@"pl_id"]];
@@ -625,6 +632,23 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
     }
     
     self.user = nil;
+}
+
+-(NSURLSessionDataTask *)resetPwdWithMobile:(NSString *)mobile
+                                     passwd:(NSString *)passwd
+                                    success:(void (^)(NSString *code))success
+                                    failure:(void (^)(NSError *error))failure{
+    NSDictionary *parameters = @{
+                                 @"mobile":mobile,
+                                 @"passwd":passwd
+                                 };
+    return [[DataManager manager] requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app.myrichang.com/Home/Person/reset" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSString *code = [[NSString alloc] initWithFormat:@"%@",[responseObject objectForKey:@"code"]];
+        success(code);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+    
 }
 
 -(NSURLSessionDataTask *) sendMobileMsgWithMobile:(NSString *)mobile

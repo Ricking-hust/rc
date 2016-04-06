@@ -49,12 +49,15 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     
     //刷新数据
     [self refleshDataByCity];
+}
+
+-(void)viewWillDisappear:(BOOL)animated{
+    [super viewWillDisappear:animated];
 }
 - (void)refleshDataByCity
 {
@@ -90,6 +93,7 @@
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.city = Beijing;
     self.cityId = @"1";
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshRecomend) name:@"refresh" object:nil];
     self.tableView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
     self.tableView.mj_footer= [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
@@ -116,7 +120,6 @@
 
 -(void)getMoreData{
     [self getMoreRecomend];
-    [self.tableView.mj_footer endRefreshing];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -186,14 +189,16 @@
         self.getActivityListBlock(@"0");
     }
     [self.acList removeAllObjects];
-    for (ActivityModel *model in self.acListRecived.list) {
-        [self.acList addObject:model];
-    }
 }
 
 -(void)getMoreRecomend{
-    if (self.getActivityListBlock) {
-        self.getActivityListBlock(self.minAcId);
+    if ([self.minAcId isKindOfClass:[NSString class]]) {
+        if (self.getActivityListBlock) {
+            self.getActivityListBlock(self.minAcId);
+        }
+        [self.tableView.mj_footer endRefreshing];
+    } else {
+        [self.tableView.mj_footer endRefreshingWithNoMoreData];
     }
 }
 
@@ -202,6 +207,8 @@
     
     //设置tableHeaderView
     CZHomeHeaderView *headerView = [CZHomeHeaderView headerView];
+    headerView.superView = self.view;
+    
     [headerView setView:flashList.list];
     self.tableView.tableHeaderView = headerView;
 }
@@ -300,14 +307,17 @@
 //给单元格进行赋值
 - (void) setCellValue:(CZActivitycell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-    ActivityModel *ac = self.acList[indexPath.section];
-    
-    [cell.ac_poster sd_setImageWithURL:[NSURL URLWithString:ac.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
-    cell.ac_title.text = ac.acTitle;
-    long int len = [ac.acTime length];
-    cell.ac_time.text = [NSString stringWithFormat:@"时间: %@", [ac.acTime substringWithRange:NSMakeRange(0, len - 3)]];
-    cell.ac_place.text = [NSString stringWithFormat:@"地点: %@", ac.acPlace];
-    cell.ac_tags.text = ac.userInfo.userName;
+    if (!(self.acList.count == 0)) {
+        ActivityModel *ac = self.acList[indexPath.section];
+        
+        [cell.ac_poster sd_setImageWithURL:[NSURL URLWithString:ac.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
+        cell.ac_title.text = ac.acTitle;
+        long int len = [ac.acTime length];
+        cell.ac_time.text = [NSString stringWithFormat:@"时间: %@", [ac.acTime substringWithRange:NSMakeRange(0, len - 3)]];
+        cell.ac_place.text = [NSString stringWithFormat:@"地点: %@", ac.acPlace];
+        cell.ac_tags.text = ac.userInfo.userName;
+        
+    }
     
 }
 #pragma mark - 创建首页子控件
@@ -407,5 +417,8 @@
     [self.navigationController pushViewController:searchViewController animated:YES];
 }
 
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refresh" object:nil];
+}
 
 @end

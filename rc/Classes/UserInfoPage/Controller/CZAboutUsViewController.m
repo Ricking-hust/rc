@@ -20,7 +20,7 @@
 {
     if (!_teamMember)
     {
-        _teamMember = [[NSArray alloc]initWithObjects:@"日常1.0",@"生活不只有眼前的苟且", @"日常1.0", @"但行好事，莫问前程", @"不因为害怕而不去拥有", @"天道酬勤", @"很高兴遇见你", @"随心而动", @"越努力，越幸运",nil];
+        _teamMember = [[NSArray alloc]initWithObjects:@"日常1.0",@"生活不只有眼前的苟且", @"白日旧梦", @"但行好事，莫问前程", @"不因为害怕而不去拥有", @"天道酬勤", @"很高兴遇见你", @"随心而动", @"越努力，越幸运",nil];
     }
     return _teamMember;
 }

@@ -8,6 +8,7 @@
 
 #import "CZHomeHeaderView.h"
 #import "Masonry.h"
+#import "CZActivityInfoViewController.h"
 #import "FlashActivityModel.h"
 
 #define SCROLLVIEW_HEIGHT 150   //scrollView的宽度
@@ -53,11 +54,22 @@
     headerView.segmentation = view;
     [headerView addSubview:view];
     
+    
+    headerView.superView = view;
+    
     return headerView;
 }
 
+-(NSArray *)acList{
+    if (!_acList) {
+        _acList = [[NSArray alloc]init];
+    }
+    return _acList;
+};
+
 - (void)setView:(NSArray *)flashArray
 {
+    self.acList = flashArray;
     //设置父容器的大小
     CGRect rect = [[UIScreen mainScreen]bounds];
     [self setFrame:CGRectMake(0, 0, rect.size.width, SCROLLVIEW_HEIGHT + 70.0f/2 + 14.0f/2)];
@@ -99,16 +111,24 @@
         make.top.equalTo(self.label.mas_bottom).with.offset(10.0f);
         make.size.mas_equalTo(CGSizeMake(rect.size.width, 14.0/2));
     }];
-    int count = 4;
+    int count = (int)flashArray.count;
     
 #pragma mark - 设置从服务器接收的图片
     //创建ImageView
     for (int i = 0; i < count; i++) {
         UIImageView *imageView = [UIImageView new];
+        UIButton *button = [UIButton buttonWithType:UIButtonTypeCustom];
+        [self.scrollView addSubview:button];
+        [button addTarget:self action:@selector(imageButton:) forControlEvents:UIControlEventTouchUpInside];
         [self.scrollView addSubview:imageView];
         FlashActivityModel *flashModel = flashArray[i];
         NSString *imageName = flashModel.Image;
         [imageView sd_setImageWithURL:[NSURL URLWithString:imageName] placeholderImage:[UIImage imageNamed:@"img_3"]];
+        [button mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.scrollView.mas_left).with.offset(i * rect.size.width);
+            make.top.equalTo(self.scrollView.mas_top);
+            make.size.equalTo(self.scrollView);
+        }];
         [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.scrollView.mas_left).with.offset(i * rect.size.width);
             make.top.equalTo(self.scrollView.mas_top);
@@ -133,6 +153,7 @@
 
 }
 
+
 //添加定时器
 - (void)addTimerObj
 {
@@ -142,7 +163,23 @@
     NSRunLoop *runloop = [NSRunLoop currentRunLoop];
     [runloop addTimer:timer forMode:NSRunLoopCommonModes];
 }
-
+- (UIResponder *)nextResponder
+{
+    [super nextResponder];
+    return self.superView;
+}
+-(UIViewController *)viewController {
+    /// Finds the view's view controller.
+    
+    // Traverse responder chain. Return first found view controller, which will be the view's view controller.
+    UIResponder *responder = self;
+    while ((responder = [responder nextResponder]))
+        if ([responder isKindOfClass: [UIViewController class]])
+            return (UIViewController *)responder;
+    
+    // If the view controller isn't found, return nil.
+    return nil;
+}
 
 - (void) nextImage
 {
@@ -166,6 +203,12 @@
     }];
 }
 
+-(void)imageButton:(UIButton *)button{
+    CZActivityInfoViewController *activityInfoView = [[CZActivityInfoViewController alloc]init];
+    activityInfoView.title = @"活动介绍";
+    activityInfoView.activityModelPre = self.acList[self.pageControl.currentPage];
+    [[self viewController].navigationController pushViewController:activityInfoView animated:YES];
+}
 
 #pragma mark - scrollView代理方法
 
@@ -188,8 +231,6 @@
     [self addTimerObj];
     
 }
-
-
 
 
 /*
