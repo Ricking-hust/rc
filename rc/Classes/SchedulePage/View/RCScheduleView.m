@@ -45,7 +45,6 @@
 - (void)createTimeNode:(NSNotification *)notification
 {
     NSMutableArray *array = notification.object;
-//    self.planListRanged = array;
     dispatch_async(dispatch_get_main_queue(), ^{
  
         for (UIView *view in self.timeNodeSV.subviews)
@@ -140,10 +139,9 @@
                 make.width.equalTo(lastNode.mas_width);
                 make.height.mas_equalTo(kScreenHeight - 64 - 35 -49 - (20 + 80 + 14));
             }];
-            if (self.planListRanged.count > 1) {
-                CGFloat height = kScreenHeight - 64 - 35 -49 + (20 + 80 + 14) * self.planListRanged.count;
-                self.timeNodeSV.contentSize = CGSizeMake(0, height);
-            }
+#pragma mark - 设置Y方向上的滚动距离
+            CGFloat height = kScreenHeight - 64 - 35 -49 + (20 + 80 + 14) * array.count;
+            self.timeNodeSV.contentSize = CGSizeMake(0, height);
         }else
         {
             defaultLine.hidden = YES;
@@ -170,35 +168,42 @@
 }
 - (void)didSelectTimeNode:(UITapGestureRecognizer *)gesture
 {
-    //设置当前节点状态
-        //1.获取tag
+    //1.获取tag
     NSInteger pointTag = gesture.view.tag;
     NSInteger upLineTag = pointTag - 100 + 1;
     NSInteger downLineTag = pointTag - 100 + 1000;
-    UIView *upLine = [self.timeNodeSV viewWithTag:upLineTag];
-    UIView *point = [self.timeNodeSV viewWithTag:pointTag];
-    UIView *downLine = [self.timeNodeSV viewWithTag:downLineTag];
-    [self setNodeState:upLine WithPoint:point AnddownLine:downLine];
-
-    //还原上个节点状态
-    [self restoreNodeState:self.timeNodeSV.upLine WithPoint:self.timeNodeSV.point AnddownLine:self.timeNodeSV.downLine];
-    self.timeNodeSV.upLine = upLine;
-    self.timeNodeSV.point = point;
-    self.timeNodeSV.downLine = downLine;
-    //更新行程tableView
+    if ([self.timeNodeSV.nodeIndex intValue] == upLineTag-1)
+    {
+        ;
+    }else
+    {
+        //设置当前节点状态
+        UIView *upLine = [self.timeNodeSV viewWithTag:upLineTag];
+        UIView *point = [self.timeNodeSV viewWithTag:pointTag];
+        UIView *downLine = [self.timeNodeSV viewWithTag:downLineTag];
+        [self setNodeState:upLine WithPoint:point AnddownLine:downLine];
+        
+        //还原上个节点状态
+        [self restoreNodeState:self.timeNodeSV.upLine WithPoint:self.timeNodeSV.point AnddownLine:self.timeNodeSV.downLine];
+        self.timeNodeSV.upLine = upLine;
+        self.timeNodeSV.point = point;
+        self.timeNodeSV.downLine = downLine;
+        //更新行程tableView
         //1.获取nodeIndex
-    NSInteger index = pointTag - 100;
+        NSInteger index = pointTag - 100;
         //2.发送刷新数据通知
-    NSNumber *nodexIndex = [[NSNumber alloc]initWithInt:(int)index];
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:nodexIndex];
-    //设置scrollView的nodeIndex
+        NSNumber *nodexIndex = [[NSNumber alloc]initWithInt:(int)index];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:nodexIndex];
+        //设置scrollView的nodeIndex
         //1.发送新节点下标通知
-    [[NSNotificationCenter defaultCenter]postNotificationName:@"sendTimeNodeScrollView" object:nodexIndex];
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"sendTimeNodeScrollView" object:nodexIndex];
         //2.设置scrollView的位移
-    [UIView animateWithDuration:0.5 animations:^{
+        [UIView animateWithDuration:0.5 animations:^{
             [self.timeNodeSV setContentOffsetY:([nodexIndex intValue]) *114];
-    }];
+        }];
 
+    }
+    
 }
 - (void)restoreNodeState:(UIView *)upLine WithPoint:(UIView *)point AnddownLine:(UIView *)downLine
 {

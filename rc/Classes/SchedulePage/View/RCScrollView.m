@@ -92,7 +92,7 @@
         index = (int)self.planListRanged.count-1;
     }
     self.nodeIndex = [[NSNumber alloc]initWithInt:index];
-    [UIView animateWithDuration:0.1 animations:^{
+    [UIView animateWithDuration:0.01 animations:^{
         [scrollView setContentOffsetY:([self.nodeIndex intValue]) * NodeH];
         [self restoreNodeState];
         [self setNodeState];
@@ -128,7 +128,7 @@
         
         self.nodeIndex = [[NSNumber alloc]initWithInt:index];
     }
-    [UIView animateWithDuration:0.1 animations:^{
+    [UIView animateWithDuration:0.01 animations:^{
         [scrollView setContentOffsetY:([self.nodeIndex intValue]) * NodeH];
         [self restoreNodeState];
         [self setNodeState];
@@ -171,7 +171,7 @@
         self.nodeIndex = [[NSNumber alloc]initWithInt:index];
 
     }
-    [UIView animateWithDuration:0.1 animations:^{
+    [UIView animateWithDuration:0.01 animations:^{
         [scrollView setContentOffsetY:([self.nodeIndex intValue]) * NodeH];
         [self restoreNodeState];
         [self setNodeState];
@@ -200,7 +200,7 @@
         index = (int)self.planListRanged.count-1;
     }
     self.nodeIndex = [[NSNumber alloc]initWithInt:index];
-    [UIView animateWithDuration:0.1 animations:^{
+    [UIView animateWithDuration:0.01 animations:^{
         [scrollView setContentOffsetY:([self.nodeIndex intValue]) * NodeH];
         [self restoreNodeState];
         [self setNodeState];
