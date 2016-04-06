@@ -35,6 +35,8 @@
 - (void)getTimeNodeScrollView:(NSNotification *)notification
 {
     self.nodeIndex = notification.object;
+    self.currentOffsetY = 0;
+    [self setContentOffsetY:0];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -46,6 +48,7 @@
     {
         [self scrollEndDeceleratingDown:scrollView ToTimeNode:scrollView.contentOffsetY];
     }
+    self.isUp = NO;
 }
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
@@ -58,7 +61,7 @@
         {
             [self scrollEndDraggingDown:scrollView ToTimeNode:scrollView.contentOffsetY];
         }
-
+        self.isUp = NO;
 
     }
 }
