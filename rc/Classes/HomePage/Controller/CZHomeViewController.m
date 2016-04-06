@@ -120,7 +120,6 @@
 
 -(void)getMoreData{
     [self getMoreRecomend];
-    [self.tableView.mj_footer endRefreshing];
 }
 - (void)didReceiveMemoryWarning
 {
@@ -193,8 +192,13 @@
 }
 
 -(void)getMoreRecomend{
-    if (self.getActivityListBlock) {
-        self.getActivityListBlock(self.minAcId);
+    if ([self.minAcId isKindOfClass:[NSString class]]) {
+        if (self.getActivityListBlock) {
+            self.getActivityListBlock(self.minAcId);
+        }
+        [self.tableView.mj_footer endRefreshing];
+    } else {
+        [self.tableView.mj_footer endRefreshingWithNoMoreData];
     }
 }
 
@@ -303,14 +307,17 @@
 //给单元格进行赋值
 - (void) setCellValue:(CZActivitycell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-    ActivityModel *ac = self.acList[indexPath.section];
-    
-    [cell.ac_poster sd_setImageWithURL:[NSURL URLWithString:ac.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
-    cell.ac_title.text = ac.acTitle;
-    long int len = [ac.acTime length];
-    cell.ac_time.text = [NSString stringWithFormat:@"时间: %@", [ac.acTime substringWithRange:NSMakeRange(0, len - 3)]];
-    cell.ac_place.text = [NSString stringWithFormat:@"地点: %@", ac.acPlace];
-    cell.ac_tags.text = ac.userInfo.userName;
+    if (!(self.acList.count == 0)) {
+        ActivityModel *ac = self.acList[indexPath.section];
+        
+        [cell.ac_poster sd_setImageWithURL:[NSURL URLWithString:ac.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
+        cell.ac_title.text = ac.acTitle;
+        long int len = [ac.acTime length];
+        cell.ac_time.text = [NSString stringWithFormat:@"时间: %@", [ac.acTime substringWithRange:NSMakeRange(0, len - 3)]];
+        cell.ac_place.text = [NSString stringWithFormat:@"地点: %@", ac.acPlace];
+        cell.ac_tags.text = ac.userInfo.userName;
+        
+    }
     
 }
 #pragma mark - 创建首页子控件
