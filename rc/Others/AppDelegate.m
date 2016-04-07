@@ -9,24 +9,10 @@
 #import "AppDelegate.h"
 //＝＝＝＝＝＝＝＝＝＝ShareSDK头文件＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 #import <ShareSDK/ShareSDK.h>
-#import <ShareSDKConnector/ShareSDKConnector.h>
-//以下是ShareSDK必须添加的依赖库：
-//1、libicucore.dylib
-//2、libz.dylib
-//3、libstdc++.dylib
-//4、JavaScriptCore.framework
-
-//＝＝＝＝＝＝＝＝＝＝以下是各个平台SDK的头文件，根据需要继承的平台添加＝＝＝
-//腾讯开放平台（对应QQ和QQ空间）SDK头文件
-#import <TencentOpenAPI/TencentOAuth.h>
 #import <TencentOpenAPI/QQApiInterface.h>
-//以下是腾讯SDK的依赖库：
-//libsqlite3.dylib
-
-//微信SDK头文件
+#import <TencentOpenAPI/TencentOAuth.h>
 #import "WXApi.h"
-//以下是微信SDK的依赖库：
-//libsqlite3.dylib
+#import "WeiboSDK.h"
 
 @interface AppDelegate ()
 
@@ -37,65 +23,60 @@
 
 - (void)initShareSDK
 {
-    /**
-     *  设置ShareSDK的appKey，如果尚未在ShareSDK官网注册过App，请移步到http://mob.com/login 登录后台进行应用注册，
-     *  在将生成的AppKey传入到此方法中。我们Demo提供的appKey为内部测试使用，可能会修改配置信息，请不要使用。
-     *  方法中的第二个参数用于指定要使用哪些社交平台，以数组形式传入。第三个参数为需要连接社交平台SDK时触发，
-     *  在此事件中写入连接代码。第四个参数则为配置本地社交平台时触发，根据返回的平台类型来配置平台信息。
-     *  如果您使用的时服务端托管平台信息时，第二、四项参数可以传入nil，第三项参数则根据服务端托管平台来决定要连接的社交SDK。
-     */
-    [ShareSDK registerApp:@"10c6f1c7e6778"
-          activePlatforms:@[
-                            @(SSDKPlatformTypeTencentWeibo),
-                            @(SSDKPlatformTypeWechat),
-                            @(SSDKPlatformTypeQQ),
-                            @(SSDKPlatformSubTypeQZone)
-                            ]
-                 onImport:^(SSDKPlatformType platformType) {
-                     
-                     switch (platformType)
-                     {
-                         case SSDKPlatformTypeWechat:
-                             [ShareSDKConnector connectWeChat:[WXApi class] delegate:self];
-                             break;
-                         case SSDKPlatformTypeQQ:
-                             [ShareSDKConnector connectQQ:[QQApiInterface class]
-                                        tencentOAuthClass:[TencentOAuth class]];
-                             break;
-
-                        default:
-                             
-                             break;
-                     }
-                 }
-          onConfiguration:^(SSDKPlatformType platformType, NSMutableDictionary *appInfo) {
-              
-              switch (platformType)
-              {
-                case SSDKPlatformTypeWechat:
-                      [appInfo SSDKSetupWeChatByAppId:@"wx4868b35061f87885"
-                                            appSecret:@"64020361b8ec4c99936c0e3999a9f249"];
-                      break;
-                case SSDKPlatformTypeQQ:
-                      [appInfo SSDKSetupQQByAppId:@"1105202519"
-                                           appKey:@"qzexjzmL9UOo7wNx"
-                                         authType:SSDKAuthTypeBoth];
-                default:
-                      break;
-              }
-          }];
+    [ShareSDK registerApp:@"10c6f1c7e6778"];//字符串api20为您的ShareSDK的AppKey
+    
+    //添加新浪微博应用 注册网址 http://open.weibo.com
+    [ShareSDK connectSinaWeiboWithAppKey:@"568898243"
+                               appSecret:@"38a4f8204cc784f81f9f0daaf31e02e3"
+                             redirectUri:@"http://www.sharesdk.cn"];
+    //当使用新浪微博客户端分享的时候需要按照下面的方法来初始化新浪的平台
+    [ShareSDK  connectSinaWeiboWithAppKey:@"568898243"
+                                appSecret:@"38a4f8204cc784f81f9f0daaf31e02e3"
+                              redirectUri:@"http://www.sharesdk.cn"
+                              weiboSDKCls:[WeiboSDK class]];
+    
+    //添加腾讯微博应用 注册网址 http://dev.t.qq.com
+    [ShareSDK connectTencentWeiboWithAppKey:@"801307650"
+                                  appSecret:@"ae36f4ee3946e1cbb98d6965b0b2ff5c"
+                                redirectUri:@"http://www.sharesdk.cn"];
+    
+    //添加QQ空间应用  注册网址  http://connect.qq.com/intro/login/
+    [ShareSDK connectQZoneWithAppKey:@"1105314728"
+                           appSecret:@"BTJicvrNeJiYng6U"
+                   qqApiInterfaceCls:[QQApiInterface class]
+                     tencentOAuthCls:[TencentOAuth class]];
+    
+    //添加QQ应用  注册网址   http://mobile.qq.com/api/
+    [ShareSDK connectQQWithQZoneAppKey:@"1105314728"
+                     qqApiInterfaceCls:[QQApiInterface class]
+                       tencentOAuthCls:[TencentOAuth class]];
+    
+    //添加微信应用----->注册网址 http://open.weixin.qq.com/
+    [ShareSDK connectWeChatWithAppId:@"1105314728" wechatCls:[WXApi class]];
+    
+}
+- (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
+{
+    return [ShareSDK handleOpenURL:url wxDelegate:self];
 }
 
+- (BOOL)application:(UIApplication *)application openURL:(NSURL *)url sourceApplication:(NSString *)sourceApplication annotation:(id)annotation
+{
+    return [ShareSDK handleOpenURL:url
+                 sourceApplication:sourceApplication
+                        annotation:annotation
+                        wxDelegate:self];
+}
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification*)notification
-
 {
     
 }
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
     [self initShareSDK];
     //设置消息通知
-    [self settingNotification];
+    //[self settingNotification];
     return YES;
 }
 - (void)settingNotification

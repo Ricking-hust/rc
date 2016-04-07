@@ -23,12 +23,8 @@
 #import "RCReleaseCell.h"
 //ShareSDK-------------------------------------------
 #import <ShareSDK/ShareSDK.h>
-#import <ShareSDKExtension/SSEShareHelper.h>
-#import <ShareSDKUI/ShareSDK+SSUI.h>
-#import <ShareSDKUI/SSUIShareActionSheetStyle.h>
-#import <ShareSDKUI/SSUIShareActionSheetCustomItem.h>
-#import <ShareSDK/ShareSDK+Base.h>
-#import <ShareSDKExtension/ShareSDK+Extension.h>
+//#import <ShareSDK/ShareSDK.h>
+//#import <ShareSDKUI/ShareSDK+SSUI.h>
 
 #define FONTSIZE 14
 #define PADDING  10 //活动详情cell 中子控件之间的垂直间距
@@ -653,113 +649,16 @@
     [self.navigationItem setLeftBarButtonItem:leftButton];
 
 #pragma mark - 顶部右侧分享按键
-//    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"shareIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(didShare)];
-//    [self.navigationItem setRightBarButtonItem:rightButton];
-//    [rightButton setTintColor:[UIColor whiteColor]];
+    UIImage *image =[UIImage imageNamed:@"shareIcon"];
+    UIButton *shareButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
+    [shareButton setImage:image forState:UIControlStateNormal];
+    [shareButton addTarget:self action:@selector(didShare:) forControlEvents:UIControlEventTouchUpInside];
+    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithCustomView:shareButton];
+    [self.navigationItem setRightBarButtonItem:rightButton];
+    [rightButton setTintColor:[UIColor whiteColor]];
 
 }
 
-#pragma mark - 弹出分享平台
-/**
- *  显示分享菜单
- *
- *  @param view 容器视图
- */
-- (void)showShareActionSheet:(UIView *)view
-{
-    /**
-     * 在简单分享中，只要设置共有分享参数即可分享到任意的社交平台
-     **/
-    __weak CZActivityInfoViewController *theController = self;
-    
-    //1、创建分享参数（必要）
-    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
-    
-    NSArray* imageArray = @[[UIImage imageNamed:@"shareToQQ"]];
-    [shareParams SSDKSetupShareParamsByText:@"分享内容"
-                                     images:imageArray
-                                        url:[NSURL URLWithString:@"http://www.mob.com"]
-                                      title:@"分享标题"
-                                       type:SSDKContentTypeAuto];
-    
-    //2、分享
-    [ShareSDK showShareActionSheet:view
-                             items:nil
-                       shareParams:shareParams
-               onShareStateChanged:^(SSDKResponseState state, SSDKPlatformType platformType, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error, BOOL end) {
-                   
-                   switch (state) {
-                           
-                       case SSDKResponseStateBegin:
-                       {
-                           [theController showLoadingView:YES];
-                           break;
-                       }
-                       case SSDKResponseStateSuccess:
-                       {
-                           //Facebook Messenger、WhatsApp等平台捕获不到分享成功或失败的状态，最合适的方式就是对这些平台区别对待
-                           if (platformType == SSDKPlatformTypeFacebookMessenger)
-                           {
-                               break;
-                           }
-                           
-                           UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"分享成功" message:nil preferredStyle:UIAlertControllerStyleAlert];
-                           UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                           [alert addAction:okAction];
-                           [self presentViewController:alert animated:YES completion:nil];
-                           break;
-                       }
-                       case SSDKResponseStateFail:
-                       {
-                           if (platformType == SSDKPlatformTypeSMS && [error code] == 201)
-                           {
-                               
-                               UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"分享失败" message:@"失败原因可能是：1、短信应用没有设置帐号；2、设备不支持短信应用；3、短信应用在iOS 7以上才能发送带附件的短信。" preferredStyle:UIAlertControllerStyleAlert];
-                               UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                               [alert addAction:okAction];
-                               [self presentViewController:alert animated:YES completion:nil];
-                               break;
-                           }
-                           else if(platformType == SSDKPlatformTypeMail && [error code] == 201)
-                           {
-
-                               UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"分享失败" message:@"失败原因可能是：1、邮件应用没有设置帐号；2、设备不支持邮件应用；"preferredStyle:UIAlertControllerStyleAlert];
-                               UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                               [alert addAction:okAction];
-                               [self presentViewController:alert animated:YES completion:nil];
-                               break;
-                           }
-                           else
-                           {
-                               
-                               UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"分享失败" message:[NSString stringWithFormat:@"%@",error] preferredStyle:UIAlertControllerStyleAlert];
-                               UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"OK" style:UIAlertActionStyleDefault handler:nil];
-                               [alert addAction:okAction];
-                               [self presentViewController:alert animated:YES completion:nil];
-                               break;
-                           }
-                           break;
-                       }
-                       case SSDKResponseStateCancel:
-                       {
-                           UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"分享已取消" message:[NSString stringWithFormat:@"%@",error] preferredStyle:UIAlertControllerStyleAlert];
-                           UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
-                           [alert addAction:okAction];
-                           [self presentViewController:alert animated:YES completion:nil];
-                           break;
-                       }
-                       default:
-                           break;
-                   }
-                   
-                   if (state != SSDKResponseStateBegin)
-                   {
-                       [theController showLoadingView:NO];
-                   }
-                   
-               }];
-    
-}
 - (void)showLoadingView:(BOOL)flag
 {
     if (flag)
@@ -772,78 +671,58 @@
         [self.panelView removeFromSuperview];
     }
 }
-/**
- *  简单分享
- */
-- (void)simplyShare
+
+- (void)didShare:(id)sender
 {
-    /**
-     * 在简单分享中，只要设置共有分享参数即可分享到任意的社交平台
-     **/
-    __weak CZActivityInfoViewController *theController = self;
-    [self showLoadingView:YES];
+    //1、创建分享参数
+    //构造分享内容
+    id<ISSContent> publishContent = [ShareSDK content:self.activitymodel.acTitle
+                                       defaultContent:@"日常"
+                                                image:[ShareSDK imageWithUrl:self.activitymodel.acPoster]
+                                                title:[self.activitymodel.acTheme valueForKey:@"theme_name"]
+                                                  url:[NSString stringWithFormat:@"http://myrichang.com/activity.php?id=%@",self.activitymodel.acID]
+                                          description:@"这是一条测试信息"
+                                            mediaType:SSPublishContentMediaTypeNews];
+    //创建弹出菜单容器
+    id<ISSContainer> container = [ShareSDK container];
+    [container setIPadContainerWithView:sender arrowDirect:UIPopoverArrowDirectionUp];
     
-    //创建分享参数
-    NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
-    
-    NSArray* imageArray = @[[UIImage imageNamed:@"shareToQQ"]];
-    
-    if (imageArray) {
-        
-        [shareParams SSDKSetupShareParamsByText:@"分享内容"
-                                         images:imageArray
-                                            url:[NSURL URLWithString:@"http://www.qq.com"]
-                                          title:@"分享标题"
-                                           type:SSDKContentTypeImage];
-        
-        //进行分享
-        [ShareSDK share:SSDKPlatformTypeQQ
-             parameters:shareParams
-         onStateChanged:^(SSDKResponseState state, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error) {
-             
-             [theController showLoadingView:NO];
-             
-             switch (state) {
-                 case SSDKResponseStateSuccess:
-                 {
-
-                     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"分享成功" message:nil preferredStyle:UIAlertControllerStyleAlert];
-                     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
-                     [alert addAction:okAction];
-                     [self presentViewController:alert animated:YES completion:nil];
-                     break;
-                 }
-                 case SSDKResponseStateFail:
-                 {
-
-                     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"分享失败" message:[NSString stringWithFormat:@"%@", error] preferredStyle:UIAlertControllerStyleAlert];
-                     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
-                     [alert addAction:okAction];
-                     [self presentViewController:alert animated:YES completion:nil];
-                     
-                     break;
-                 }
-                 case SSDKResponseStateCancel:
-                 {
-
-                     UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"分享已取消" message:nil preferredStyle:UIAlertControllerStyleAlert];
-                     UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
-                     [alert addAction:okAction];
-                     [self presentViewController:alert animated:YES completion:nil];
-                     break;
-                 }
-                 default:
-                     break;
-             }
-         }];
-    }
-}
-
-- (void)didShare
-{
-
-//    [self showShareActionSheet:self.tableView.visibleCells.firstObject];
-    [self simplyShare];
+    //弹出分享菜单
+    [ShareSDK showShareActionSheet:container
+                         shareList:nil
+                           content:publishContent
+                     statusBarTips:YES
+                       authOptions:nil
+                      shareOptions:nil
+                            result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+                                
+                                if (state == SSResponseStateSuccess)
+                                {
+                                    NSLog(@"分享成功");
+                                }
+                                else if (state == SSResponseStateFail)
+                                {
+                                    NSLog(@"分享失败,错误码:%ld,错误描述:%@", [error errorCode], [error errorDescription]);
+                                }
+                            }];
+//    [ShareSDK getUserInfoWithType:ShareTypeQQSpace
+//                      authOptions:nil
+//                           result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
+//                               
+//                               if (result)
+//                               {
+//                                   //打印输出用户uid：
+//                                   NSLog(@"uid = %@",[userInfo uid]);
+//                                   //打印输出用户昵称：
+//                                   NSLog(@"name = %@",[userInfo nickname]);
+//                                   //打印输出用户头像地址：
+//                                   NSLog(@"icon = %@",[userInfo profileImage]);
+//                                   
+//                               }else{
+//                                       
+//                                       NSLog(@"授权失败!error code == %d, error code == %@", [error errorCode], [error errorDescription]);
+//                               }
+//                           }];
     
 }
 - (void)setSubViewsConstraint
