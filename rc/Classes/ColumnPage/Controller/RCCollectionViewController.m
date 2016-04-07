@@ -91,11 +91,17 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     // Uncomment the following line to preserve selection between presentations
     // self.clearsSelectionOnViewWillAppear = NO;
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshColumn) name:@"refreshColumn" object:nil];
     [self initScrollView];
     [self configureBlocks];
     self.getIndListBlock();
-    // Do any additional setup after loading the view.
 }
+
+-(void)refreshColumn{
+    self.getIndListBlock();
+    [self.collectionView reloadData];
+}
+
 #pragma mark - 初始化，scrollView用于平移多个collectionView
 - (void)initScrollView
 {

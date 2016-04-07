@@ -76,7 +76,6 @@
         }
     } else {
         self.planListRanged = nil;
-        NSLog(@"Fuck");
     }
 }
 

@@ -842,7 +842,11 @@
     if ([DataManager manager].user.isLogin) {
         [[DataManager manager] joinTripWithUserId:[userDefaults objectForKey:@"userId"] acId:self.activityModelPre.acID opType:@"1" success:^(NSString *planId) {
             if ([planId isEqualToString:@"joined"]) {
-                [[DataManager manager] addPlanWithOpType:@"2" planId:self.activitymodel.planId userId:[userDefaults objectForKey:@"userId"] themeId:@"" planTime:@"" plAlarmOne:self.plAlarm[0] plAlarmTwo:self.plAlarm[1] plAlarmThree:self.plAlarm[2] planContent:@"" acPlace:@"" success:^(NSString *msg) {
+                NSLog(@"plAlarm1:%@",self.plAlarm[0]);
+                NSLog(@"plAlarm2:%@",self.plAlarm[1]);
+                NSLog(@"plAlarm3:%@",self.plAlarm[2]);
+                NSLog(@"planId:%@",self.activitymodel.planId);
+                [[DataManager manager] addPlanWithOpType:@"2" planId:self.activitymodel.planId userId:[userDefaults objectForKey:@"userId"] themeId:self.activitymodel.acTheme planTime:self.activitymodel.acTime plAlarmOne:self.plAlarm[0] plAlarmTwo:self.plAlarm[1] plAlarmThree:self.plAlarm[2] planContent:@"" acPlace:@"" success:^(NSString *msg) {
                     self.HUD.mode = MBProgressHUDModeCustomView;
                     self.HUD.label.text = @"修改提醒成功~(≧▽≦)/~";
                     [self.HUD hideAnimated:YES afterDelay:0.6];
@@ -930,6 +934,7 @@
             if (button.tag != 10)
             {
                 button.selected = NO;
+                self.plAlarm[i] = @"0";
             }
         }
     }else
@@ -955,6 +960,8 @@
         if (button.selected && button.tag != 10)
         {
             self.plAlarm[i] = @"1";
+        } else {
+            self.plAlarm[i] = @"0";
         }
     }
     

@@ -101,6 +101,7 @@
     CZHomeViewController *homePage = (CZHomeViewController *)self.navigationController.viewControllers[count - 2];
     homePage.city = self.city;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh" object:nil];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshColumn" object:nil];
     [self.navigationController popViewControllerAnimated:YES];
 }
 
