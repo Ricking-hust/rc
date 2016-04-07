@@ -28,6 +28,7 @@
 #import "KSGuideManager.h"
 
 @interface CZHomeViewController ()
+typedef void (^HomeViewBlock)(id);
 @property (nonatomic,strong) ActivityList *acListRecived;
 @property (nonatomic,strong) NSMutableArray *acList;
 @property (nonatomic,strong) CityList *cityList;
@@ -36,6 +37,7 @@
 @property (nonatomic,strong) NSString *minAcId;
 @property (nonatomic,strong) ActivityModel *activitymodel;
 @property (nonatomic,strong) FlashList *flashList;
+@property (nonatomic,copy) HomeViewBlock refreshBlock;
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListBlock)(NSString *minAcId);
 @property (nonatomic,copy) NSURLSessionDataTask *(^getFlash)();
 @property (nonatomic,copy) NSURLSessionDataTask *(^getCityListBlock)();

@@ -39,14 +39,7 @@
     }
     return _timeNodeSVAdd;
 }
-- (PlanModel *)model
-{
-    if (!_model)
-    {
-        _model = [[PlanModel alloc]init];
-    }
-    return _model;
-}
+
 - (NSMutableArray *)planListRangedAdd
 {
     if (!_planListRangedAdd)
@@ -62,6 +55,7 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self initModel];
     
     [self setNavigation];
     
@@ -75,6 +69,14 @@
     UIBarButtonItem *rigthButton = [[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(addSchedule)];
     [self.navigationItem setRightBarButtonItem:rigthButton];
 }
+
+-(void)initModel{
+    self.model = [[PlanModel alloc]init];
+    self.model.plAlarmOne = @"0";
+    self.model.plAlarmTwo = @"0";
+    self.model.plAlarmThree = @"0";
+}
+
 #pragma mark - remindView点击事件
 - (void)onClickRemindView
 {
@@ -110,6 +112,9 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRangedAdd];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
         NSString *themeId = [self getThemeId:self.model.themeName];
+        NSLog(@"P1:%@",self.model.plAlarmOne);
+        NSLog(@"P2:%@",self.model.plAlarmTwo);
+        NSLog(@"P3:%@",self.model.plAlarmThree);
         [[DataManager manager] addPlanWithOpType:@"1" planId:@"" userId:[userDefaults objectForKey:@"userId"] themeId:themeId planTime:self.model.planTime plAlarmOne:self.model.plAlarmOne plAlarmTwo:self.model.plAlarmTwo plAlarmThree:self.model.plAlarmThree planContent:self.model.planContent acPlace:self.model.acPlace success:^(NSString *msg) {
                 NSLog(@"Msg:%@",msg);
         } failure:^(NSError *error) {
@@ -216,9 +221,6 @@
     NSString *day = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(8, 2)];
     NSString *time = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(12, 5)];
     self.model.planTime = [NSString stringWithFormat:@"%@-%@-%@ %@",year, month, day, time];
-    self.model.plAlarmOne = @"1";
-    self.model.plAlarmTwo = @"1";
-    self.model.plAlarmThree = @"1";
     self.model.userId = @"1";
     self.model.acId = @"1";
     self.model.themeName = self.upView.themeNameLabel.text;

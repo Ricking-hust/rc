@@ -239,12 +239,15 @@
         long int count = self.navigationController.viewControllers.count;
         RCScheduleInfoViewController *sc = self.navigationController.viewControllers[count -2];
         sc.isContentUpdate = YES;
-//        NSString *themeId = [self getThemeId:self.model.themeName];
-//        [[DataManager manager] addPlanWithOpType:@"1" planId:@"" userId:[userDefaults objectForKey:@"userId"] themeId:themeId planTime:self.model.planTime plAlarmOne:self.model.plAlarmOne plAlarmTwo:self.model.plAlarmTwo plAlarmThree:self.model.plAlarmThree planContent:self.model.planContent acPlace:self.model.acPlace success:^(NSString *msg) {
-//            NSLog(@"Msg:%@",msg);
-//        } failure:^(NSError *error) {
-//            NSLog(@"Error:%@",error);
-//        }];
+        NSString *themeId = [self getThemeId:self.model.themeName];
+        NSLog(@"plAlarmOne:%@",self.model.plAlarmOne);
+        NSLog(@"plAlarmTwo:%@",self.model.plAlarmTwo);
+        NSLog(@"plAlarmThree:%@",self.model.plAlarmThree);
+        [[DataManager manager] addPlanWithOpType:@"2" planId:self.model.planId userId:[userDefaults objectForKey:@"userId"] themeId:themeId planTime:self.model.planTime plAlarmOne:self.model.plAlarmOne plAlarmTwo:self.model.plAlarmTwo plAlarmThree:self.model.plAlarmThree planContent:self.model.planContent acPlace:self.model.acPlace success:^(NSString *msg) {
+            NSLog(@"Msg:%@",msg);
+        } failure:^(NSError *error) {
+            NSLog(@"Error:%@",error);
+        }];
         [self.navigationController popViewControllerAnimated:YES];
     }else
     {
