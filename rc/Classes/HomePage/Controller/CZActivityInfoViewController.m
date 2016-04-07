@@ -676,12 +676,12 @@
 {
     //1、创建分享参数
     //构造分享内容
-    id<ISSContent> publishContent = [ShareSDK content:self.activitymodel.acTitle
+    id<ISSContent> publishContent = [ShareSDK content:self.activitymodel.acDesc
                                        defaultContent:@"日常"
                                                 image:[ShareSDK imageWithUrl:self.activitymodel.acPoster]
-                                                title:[self.activitymodel.acTheme valueForKey:@"theme_name"]
+                                                title:self.activitymodel.acTitle
                                                   url:[NSString stringWithFormat:@"http://myrichang.com/activity.php?id=%@",self.activitymodel.acID]
-                                          description:@"这是一条测试信息"
+                                          description:self.activitymodel.acTitle
                                             mediaType:SSPublishContentMediaTypeNews];
     //创建弹出菜单容器
     id<ISSContainer> container = [ShareSDK container];

@@ -35,10 +35,10 @@
                               redirectUri:@"http://www.sharesdk.cn"
                               weiboSDKCls:[WeiboSDK class]];
     
-    //添加腾讯微博应用 注册网址 http://dev.t.qq.com
-    [ShareSDK connectTencentWeiboWithAppKey:@"801307650"
-                                  appSecret:@"ae36f4ee3946e1cbb98d6965b0b2ff5c"
-                                redirectUri:@"http://www.sharesdk.cn"];
+//    //添加腾讯微博应用 注册网址 http://dev.t.qq.com
+//    [ShareSDK connectTencentWeiboWithAppKey:@"801307650"
+//                                  appSecret:@"ae36f4ee3946e1cbb98d6965b0b2ff5c"
+//                                redirectUri:@"http://www.sharesdk.cn"];
     
     //添加QQ空间应用  注册网址  http://connect.qq.com/intro/login/
     [ShareSDK connectQZoneWithAppKey:@"1105314728"
@@ -52,7 +52,9 @@
                        tencentOAuthCls:[TencentOAuth class]];
     
     //添加微信应用----->注册网址 http://open.weixin.qq.com/
-    [ShareSDK connectWeChatWithAppId:@"1105314728" wechatCls:[WXApi class]];
+    [ShareSDK connectWeChatWithAppId:@"wx121f7d44b47dc773"
+                           appSecret:@"e07e40dac0996340421e5d727e505754"
+                           wechatCls:[WXApi class]];
     
 }
 - (BOOL)application:(UIApplication *)application handleOpenURL:(NSURL *)url
