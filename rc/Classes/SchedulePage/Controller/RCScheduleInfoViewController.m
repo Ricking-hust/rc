@@ -241,9 +241,6 @@
         {
             [view removeFromSuperview];
         }
-
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
     }
     self.timeNodeIndex = [[NSNumber alloc]initWithInt:0];
     [self.navigationController popViewControllerAnimated:YES];

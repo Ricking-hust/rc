@@ -540,7 +540,7 @@
     
     [self.acImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     self.acTittleLabel.text   = self.activitymodel.acTitle;
-    self.acTagImageView.image = [UIImage imageNamed:@"tagImage"];
+    self.acTagImageView.image = [UIImage imageNamed:@"tagImage_white"];
     self.acTagLabel.text      = self.activitymodel.userInfo.userName;
     
 }

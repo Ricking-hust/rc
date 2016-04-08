@@ -240,15 +240,15 @@
         RCScheduleInfoViewController *sc = self.navigationController.viewControllers[count -2];
         sc.isContentUpdate = YES;
         NSString *themeId = [self getThemeId:self.model.themeName];
-        NSLog(@"plAlarmOne:%@",self.model.plAlarmOne);
-        NSLog(@"plAlarmTwo:%@",self.model.plAlarmTwo);
-        NSLog(@"plAlarmThree:%@",self.model.plAlarmThree);
+
         [[DataManager manager] addPlanWithOpType:@"2" planId:self.model.planId userId:[userDefaults objectForKey:@"userId"] themeId:themeId planTime:self.model.planTime plAlarmOne:self.model.plAlarmOne plAlarmTwo:self.model.plAlarmTwo plAlarmThree:self.model.plAlarmThree planContent:self.model.planContent acPlace:self.model.acPlace success:^(NSString *msg) {
             NSLog(@"Msg:%@",msg);
+            //修改成功即返回上个界面
+            [self.navigationController popViewControllerAnimated:YES];
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];
-        [self.navigationController popViewControllerAnimated:YES];
+
     }else
     {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入内容" preferredStyle:UIAlertControllerStyleAlert];

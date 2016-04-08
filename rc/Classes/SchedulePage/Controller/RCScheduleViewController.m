@@ -155,6 +155,10 @@
                 [self.planListRanged[i] addObject:planModel];
             }
         }
+        //将数组倒序
+        NSMutableArray *arr  = self.planListRanged;
+        NSEnumerator *enumer = [arr reverseObjectEnumerator];
+        self.planListRanged = [[NSMutableArray alloc]initWithArray:[enumer allObjects]];
     } else {
         self.planListRanged = nil;
     }

@@ -51,6 +51,7 @@
         [self scrollEndDeceleratingDown:scrollView ToTimeNode:scrollView.contentOffsetY];
     }
     self.isUp = NO;
+    //设置当前
 }
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {

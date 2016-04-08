@@ -104,7 +104,7 @@
             return 35+130 - image.size.height * 0.205;
         }else
         {
-            return 35;
+            return 64;
         }
 
     }else
@@ -150,18 +150,56 @@
     [super nextResponder];
     return self.view;
 }
-
+#pragma mark - 判断指定的行程是否已经发生
+- (BOOL)isHappened:(PlanModel *)plmodel
+{
+    
+    
+    NSString *year = [plmodel.planTime substringWithRange:NSMakeRange(0, 4)];
+    NSString *month = [plmodel.planTime substringWithRange:NSMakeRange(5, 2)];
+    NSString *day = [plmodel.planTime substringWithRange:NSMakeRange(8, 2)];
+    NSString *strDate = [NSString stringWithFormat:@"%@%@%@",year,month,day];
+    NSInteger intDate = [strDate integerValue];//指定行程的日期
+    
+    NSDate *date = [NSDate date];
+    NSDateFormatter *dateformat=[[NSDateFormatter alloc]init];
+    [dateformat setDateFormat:@"yyyyMMdd"];//设置格式
+    [dateformat setTimeZone:[[NSTimeZone alloc]initWithName:@"Asia/Beijing"]];//指定时区
+    NSString *currentStrDate = [dateformat stringFromDate:date];
+    NSInteger currentIntDate = [currentStrDate integerValue];//当前日期
+    
+    if (intDate > currentIntDate || intDate == currentIntDate)
+    {
+        return NO;
+    }else
+    {
+        return YES;
+    }
+    
+}
 - (void)setValueToCell:(CZScheduleInfoCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
     
     PlanModel *plmodel = self.scArray[indexPath.row-1];
-    cell.tagImageView.image = [self getTagImageFormNString:plmodel.themeName];
+    cell.tagImageView.image = [UIImage imageNamed:[self getTagImageFormNString:plmodel.themeName]];
     cell.tagLabel.text = plmodel.themeName;
     NSString *timeText = [plmodel.planTime substringWithRange:NSMakeRange(11, 5)];
     cell.timeLabel.text = timeText;
     cell.contentLabel.text = plmodel.planContent;
     //cell.placeLabel.text = plmodel.acPlace;
     cell.bgView.tag = indexPath.row - 1;
+    //判断此行程是否已发生
+    BOOL isHappened = [self isHappened:plmodel];
+    if (isHappened == YES)
+    {
+        cell.tagLabel.textColor = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
+        cell.contentLabel.textColor = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
+        cell.timeLabel.textColor = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
+        NSString *imgStr = [self getTagImageFormNString:plmodel.themeName];
+        cell.tagImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@Grey",imgStr]];
+
+    }
+    
 }
 - (void)addCellConstraint:(CZScheduleInfoCell *)cell
 {
@@ -217,32 +255,32 @@
     CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
     return nameSize;
 }
-- (UIImage *)getTagImageFormNString:(NSString *)str
+- (NSString *)getTagImageFormNString:(NSString *)str
 {
     if ([str isEqualToString:@"运动"])
     {
-        return [UIImage imageNamed:@"sportSmallIcon"];
+        return @"sportSmallIcon";
     }else if ([str isEqualToString:@"约会"])
     {
-        return [UIImage imageNamed:@"appointmentSmallIcon"];
+        return @"appointmentSmallIcon";
     }else if ([str isEqualToString:@"出差"])
     {
-        return [UIImage imageNamed:@"businessSmallIcon"];
+        return @"businessSmallIcon";
     }else if ([str isEqualToString:@"会议"])
     {
-        return [UIImage imageNamed:@"meetingSmallIcon"];
+        return @"meetingSmallIcon";
     }else if ([str isEqualToString:@"购物"])
     {
-        return [UIImage imageNamed:@"shoppingSmallIcon"];
+        return @"shoppingSmallIcon";
     }else if ([str isEqualToString:@"娱乐"])
     {
-        return [UIImage imageNamed:@"entertainmentSmallIcon"];
+        return @"entertainmentSmallIcon";
     }else if ([str isEqualToString:@"聚会"])
     {
-        return [UIImage imageNamed:@"partSmallIcon"];
+        return @"partSmallIcon";
     }else
     {
-        return [UIImage imageNamed:@"otherSmallIcon"];
+        return @"otherSmallIcon";
     }
     
 }
