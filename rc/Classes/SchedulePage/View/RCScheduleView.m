@@ -11,6 +11,8 @@
 #import "PlanModel.h"
 #import "RCScrollView.h"
 #import "RCTableView.h"
+#define NodeH 113
+//每个节点的高度为113，即滚动113到下一个节点
 @implementation RCScheduleView
 
 - (id)init
@@ -33,6 +35,7 @@
 {
     if (planListRanged.count !=0) {
         _planListRanged = planListRanged;
+        
         self.timeNodeSV.planListRanged = _planListRanged;
         self.scheduleTV.planListRanged = _planListRanged;
         self.scheduleTV.scArray = _planListRanged.firstObject;
@@ -44,18 +47,24 @@
 
 - (void)createTimeNode:(NSNotification *)notification
 {
-    NSMutableArray *array = notification.object;
     dispatch_async(dispatch_get_main_queue(), ^{
- 
+         NSMutableArray *array = notification.object;
+//        //将数组倒序
+//        NSMutableArray *arr  = notification.object;
+//        NSEnumerator *enumer = [arr reverseObjectEnumerator];
+//        
+//        array = [[NSMutableArray alloc]initWithArray:[enumer allObjects]];
+        
         for (UIView *view in self.timeNodeSV.subviews)
         {
             [view removeFromSuperview];
         }
-        UIColor *color = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
         UIView *defaultLine = [self createDefaultUpLine];
-        UIView *lastNode = [[UIView alloc]init];
+
         if (array.count != 0)
         {
+            UIColor *color = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
+            UIView *lastNode = [[UIView alloc]init];
             for (int i = 0; i<array.count; i++)
             {
 
@@ -91,24 +100,23 @@
                 [self.timeNodeSV addSubview:point];
                 [self.timeNodeSV addSubview:dayLabel];
                 [self.timeNodeSV addSubview:weekLabel];
-#pragma mark - 修改plistranged begin
+                
                 dayLabel.text = [self dayLabelStr:array AtIndex:i];
                 weekLabel.text = [self weekLabelStr:array AtIndex:i];
-#pragma mark - end 
                 
-                //10为上线的高度，14为节点的高度，60为下线的高度
-                CGFloat upLineTopPadding = 130 + (20 + 14 + 80 )* i;
+                //20为上线的高度，13为节点的高度，80为下线的高度
+                CGFloat upLineTopPadding = 130 + (20 + 13 + 80 )* i;
                 [upLine mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(self.timeNodeSV.mas_top).offset(upLineTopPadding);
                     make.left.equalTo(self.timeNodeSV.mas_left).offset(67);
-                    make.width.mas_equalTo(3);
+                    make.width.mas_equalTo(2);
                     make.height.mas_equalTo(20);
                 }];
                 [point mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(upLine.mas_bottom);
-                    make.left.equalTo(upLine.mas_left).offset(-6);
-                    make.width.mas_equalTo(14);
-                    make.height.mas_equalTo(14);
+                    make.left.equalTo(upLine.mas_left).offset(-5.5);
+                    make.width.mas_equalTo(13);
+                    make.height.mas_equalTo(13);
                 }];
                 [downLine mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(point.mas_bottom);
@@ -128,20 +136,46 @@
                     make.width.mas_equalTo(30);
                     make.height.mas_equalTo(12);
                 }];
+                //判断此行程是否已发生
+                NSArray *temp = array[i];
+                BOOL isHappened = [self isHappened:temp.firstObject];
+                if (isHappened == YES)
+                {
+                    point.backgroundColor = [UIColor colorWithRed:189.0/255.0 green:189.0/255.0 blue:189.0/255.0 alpha:1.0];
+                    dayLabel.textColor = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
+                    weekLabel.textColor = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];;
+                }
             }
-            UIView *lastLine = [[UIView alloc]init];
-            lastLine.backgroundColor = [UIColor colorWithRed:189.0/255.0 green:189.0/255.0 blue:189.0/255.0 alpha:1.0];
+            lastNode.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
+            CGFloat upLineTopPadding = 130 + (20 + 13 + 80 )* array.count;
+            UIView *lastLine = [[UIView alloc]initWithFrame:CGRectMake(67, upLineTopPadding-70, 2, kScreenHeight - 64 - 35 -49 - (20 + 80 + 14))];
+            lastLine.backgroundColor = [UIColor redColor];
             [self.timeNodeSV addSubview:lastLine];
+            CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+            gradientLayer.frame = lastLine.bounds;
+            [lastLine.layer addSublayer:gradientLayer];
             
-            [lastLine mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(lastNode.mas_bottom);
-                make.left.equalTo(lastNode.mas_left);
-                make.width.equalTo(lastNode.mas_width);
-                make.height.mas_equalTo(kScreenHeight - 64 - 35 -49 - (20 + 80 + 14));
-            }];
+            //set gradient colors
+            gradientLayer.colors = @[(__bridge id)[UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0].CGColor, (__bridge id)[UIColor colorWithRed:226.0/255.0 green:226.0/255.0 blue:224.0/255.0 alpha:1.0].CGColor];
+            
+            //set gradient start and end points
+            gradientLayer.startPoint = CGPointMake(0, 0);
+            gradientLayer.endPoint = CGPointMake(1, 1);
+            
+//            [lastLine mas_updateConstraints:^(MASConstraintMaker *make) {
+//                make.top.equalTo(lastNode.mas_bottom);
+//                make.left.equalTo(lastNode.mas_left);
+//                make.width.equalTo(lastNode.mas_width);
+//                make.height.mas_equalTo(kScreenHeight - 64 - 35 -49 - (20 + 80 + 14));
+//            }];
 #pragma mark - 设置Y方向上的滚动距离
-            CGFloat height = kScreenHeight - 64 - 35 -49 + (20 + 80 + 14) * array.count;
-            self.timeNodeSV.contentSize = CGSizeMake(0, height);
+            if (array.count == 1) {
+                self.timeNodeSV.contentSize = CGSizeMake(0, 0);
+            }else{
+                CGFloat height = kScreenHeight - 64 - 35 -49 + (20 + 80 + 13) * array.count;
+                self.timeNodeSV.contentSize = CGSizeMake(0, height);
+            }
+
         }else
         {
             defaultLine.hidden = YES;
@@ -166,6 +200,34 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNodeSV" object:self.timeNodeSV];
     });
 }
+#pragma mark - 判断指定的行程是否已经发生
+- (BOOL)isHappened:(PlanModel *)plmodel
+{
+    
+    
+    NSString *year = [plmodel.planTime substringWithRange:NSMakeRange(0, 4)];
+    NSString *month = [plmodel.planTime substringWithRange:NSMakeRange(5, 2)];
+    NSString *day = [plmodel.planTime substringWithRange:NSMakeRange(8, 2)];
+    NSString *strDate = [NSString stringWithFormat:@"%@%@%@",year,month,day];
+    NSInteger intDate = [strDate integerValue];//指定行程的日期
+
+    NSDate *date = [NSDate date];
+    NSDateFormatter *dateformat=[[NSDateFormatter alloc]init];
+    [dateformat setDateFormat:@"yyyyMMdd"];//设置格式
+    [dateformat setTimeZone:[[NSTimeZone alloc]initWithName:@"Asia/Beijing"]];//指定时区
+    NSString *currentStrDate = [dateformat stringFromDate:date];
+    NSInteger currentIntDate = [currentStrDate integerValue];//当前日期
+    
+    if (intDate > currentIntDate || intDate == currentIntDate)
+    {
+        return NO;
+    }else
+    {
+        return YES;
+    }
+
+}
+#pragma mark - 时间点的点击事件
 - (void)didSelectTimeNode:(UITapGestureRecognizer *)gesture
 {
     //1.获取tag
@@ -198,8 +260,8 @@
         //1.发送新节点下标通知
         [[NSNotificationCenter defaultCenter]postNotificationName:@"sendTimeNodeScrollView" object:nodexIndex];
         //2.设置scrollView的位移
-        [UIView animateWithDuration:0.5 animations:^{
-            [self.timeNodeSV setContentOffsetY:([nodexIndex intValue]) *114];
+        [UIView animateWithDuration:0.1 animations:^{
+            [self.timeNodeSV setContentOffsetY:([nodexIndex intValue]) *NodeH];
         }];
 
     }
@@ -275,7 +337,7 @@
     [view mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.timeNodeSV.mas_top);
         make.left.equalTo(self.timeNodeSV).offset(67);
-        make.size.mas_equalTo(CGSizeMake(3, 130));
+        make.size.mas_equalTo(CGSizeMake(2, 130));
     }];
     return view;
 }

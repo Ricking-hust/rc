@@ -12,4 +12,5 @@
 @optional
 - (void)passPlanListRanged:(NSMutableArray *)planListRanged;
 - (void)passTimeNodeScrollView:(id)timeNodeSV;
+- (void)passScheduleView:(id)sc;
 @end

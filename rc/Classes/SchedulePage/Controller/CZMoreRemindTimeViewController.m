@@ -217,7 +217,7 @@
     self.beforeThreeDay = [[CZRemindView alloc]init];
     
     self.notRemind.label.text = @"不提醒";
-    self.beforeOneDay.label.text = @"前一天";
+    self.beforeOneDay.label.text = @"前一小时";
     self.beforeTwoDay.label.text = @"前二天";
     self.beforeThreeDay.label.text = @"前三天";
     

@@ -9,8 +9,8 @@
 #import "RCScrollView.h"
 #import "Masonry.h"
 #define Animination 0.1
-#define NodeH 114
-//每个节点的高度为114，即滚动114到下一个节点
+#define NodeH 113
+//每个节点的高度为113，即滚动113到下一个节点
 @interface RCScrollView ()
 
 @end
@@ -29,9 +29,11 @@
         self.point = [[UIView alloc]init];
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getTimeNodeScrollView:) name:@"sendTimeNodeScrollView" object:nil];
+
     }
     return self;
 }
+
 - (void)getTimeNodeScrollView:(NSNotification *)notification
 {
     self.nodeIndex = notification.object;
@@ -49,6 +51,7 @@
         [self scrollEndDeceleratingDown:scrollView ToTimeNode:scrollView.contentOffsetY];
     }
     self.isUp = NO;
+    //设置当前
 }
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {

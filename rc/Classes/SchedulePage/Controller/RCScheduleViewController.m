@@ -28,6 +28,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+#pragma mark - 增加begin
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
+#pragma mark - 增加end
     self.isLogin = [DataManager manager].user.isLogin;
     if (self.isLogin)
     {
@@ -151,6 +155,10 @@
                 [self.planListRanged[i] addObject:planModel];
             }
         }
+        //将数组倒序
+        NSMutableArray *arr  = self.planListRanged;
+        NSEnumerator *enumer = [arr reverseObjectEnumerator];
+        self.planListRanged = [[NSMutableArray alloc]initWithArray:[enumer allObjects]];
     } else {
         self.planListRanged = nil;
     }

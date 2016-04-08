@@ -541,7 +541,7 @@
     
     [self.acImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     self.acTittleLabel.text   = self.activitymodel.acTitle;
-    self.acTagImageView.image = [UIImage imageNamed:@"tagImage"];
+    self.acTagImageView.image = [UIImage imageNamed:@"tagImage_white"];
     self.acTagLabel.text      = self.activitymodel.userInfo.userName;
     
 }
@@ -677,12 +677,12 @@
 {
     //1、创建分享参数
     //构造分享内容
-    id<ISSContent> publishContent = [ShareSDK content:self.activitymodel.acTitle
+    id<ISSContent> publishContent = [ShareSDK content:self.activitymodel.acDesc
                                        defaultContent:@"日常"
                                                 image:[ShareSDK imageWithUrl:self.activitymodel.acPoster]
-                                                title:[self.activitymodel.acTheme valueForKey:@"theme_name"]
+                                                title:self.activitymodel.acTitle
                                                   url:[NSString stringWithFormat:@"http://myrichang.com/activity.php?id=%@",self.activitymodel.acID]
-                                          description:@"这是一条测试信息"
+                                          description:self.activitymodel.acTitle
                                             mediaType:SSPublishContentMediaTypeNews];
     //创建弹出菜单容器
     id<ISSContainer> container = [ShareSDK container];
@@ -706,24 +706,6 @@
                                     NSLog(@"分享失败,错误码:%ld,错误描述:%@", [error errorCode], [error errorDescription]);
                                 }
                             }];
-//    [ShareSDK getUserInfoWithType:ShareTypeQQSpace
-//                      authOptions:nil
-//                           result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
-//                               
-//                               if (result)
-//                               {
-//                                   //打印输出用户uid：
-//                                   NSLog(@"uid = %@",[userInfo uid]);
-//                                   //打印输出用户昵称：
-//                                   NSLog(@"name = %@",[userInfo nickname]);
-//                                   //打印输出用户头像地址：
-//                                   NSLog(@"icon = %@",[userInfo profileImage]);
-//                                   
-//                               }else{
-//                                       
-//                                       NSLog(@"授权失败!error code == %d, error code == %@", [error errorCode], [error errorDescription]);
-//                               }
-//                           }];
     
 }
 - (void)setSubViewsConstraint
