@@ -188,6 +188,10 @@
     cell.contentLabel.text = plmodel.planContent;
     //cell.placeLabel.text = plmodel.acPlace;
     cell.bgView.tag = indexPath.row - 1;
+    
+    cell.tagLabel.alpha = 0.8;
+    cell.contentLabel.alpha = 0.8;
+    cell.timeLabel.alpha = 0.8;
     //判断此行程是否已发生
     BOOL isHappened = [self isHappened:plmodel];
     if (isHappened == YES)
@@ -197,7 +201,11 @@
         cell.timeLabel.textColor = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
         NSString *imgStr = [self getTagImageFormNString:plmodel.themeName];
         cell.tagImageView.image = [UIImage imageNamed:[NSString stringWithFormat:@"%@Grey",imgStr]];
-
+    }else
+    {
+        cell.tagLabel.textColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.9];
+        cell.contentLabel.textColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.9];
+        cell.timeLabel.textColor = [UIColor colorWithRed:0/255.0 green:0/255.0 blue:0/255.0 alpha:0.9];
     }
     
 }
