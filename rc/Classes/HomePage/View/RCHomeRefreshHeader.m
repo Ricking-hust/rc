@@ -51,7 +51,7 @@
     
     [self.label mas_updateConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.mas_centerY);
-        make.centerX.equalTo(self.mas_centerX);
+        make.centerX.equalTo(self.mas_centerX).offset(20);
         make.width.mas_equalTo(100);
         make.height.mas_equalTo(20);
     }];
