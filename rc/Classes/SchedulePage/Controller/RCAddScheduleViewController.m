@@ -13,7 +13,9 @@
 #import "RCScrollView.h"
 #import "LoginViewController.h"
 #import "CZMoreRemindTimeViewController.h"
+
 @interface RCAddScheduleViewController ()
+
 @property (nonatomic, strong) PlanModel *model;
 @property (nonatomic, strong) RCScrollView *timeNodeSVAdd;
 
@@ -30,7 +32,6 @@
 }
 
 #pragma mark - 懒加载
-
 - (RCScrollView *)timeNodeSVAdd
 {
     if (!_timeNodeSVAdd)
@@ -109,18 +110,19 @@
         {
             [view removeFromSuperview];
         }
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRangedAdd];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
+#pragma mark - 修改begin
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRangedAdd];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
+#pragma mark - 修改end
         NSString *themeId = [self getThemeId:self.model.themeName];
-        NSLog(@"P1:%@",self.model.plAlarmOne);
-        NSLog(@"P2:%@",self.model.plAlarmTwo);
-        NSLog(@"P3:%@",self.model.plAlarmThree);
+
         [[DataManager manager] addPlanWithOpType:@"1" planId:@"" userId:[userDefaults objectForKey:@"userId"] themeId:themeId planTime:self.model.planTime plAlarmOne:self.model.plAlarmOne plAlarmTwo:self.model.plAlarmTwo plAlarmThree:self.model.plAlarmThree planContent:self.model.planContent acPlace:self.model.acPlace success:^(NSString *msg) {
+            [self.navigationController popViewControllerAnimated:YES];
                 NSLog(@"Msg:%@",msg);
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];
-        [self.navigationController popViewControllerAnimated:YES];
+        
         
     }else
     {

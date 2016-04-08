@@ -29,9 +29,11 @@
         self.point = [[UIView alloc]init];
 
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getTimeNodeScrollView:) name:@"sendTimeNodeScrollView" object:nil];
+
     }
     return self;
 }
+
 - (void)getTimeNodeScrollView:(NSNotification *)notification
 {
     self.nodeIndex = notification.object;

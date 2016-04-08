@@ -11,6 +11,8 @@
 #import "PlanModel.h"
 #import "RCScrollView.h"
 #import "RCTableView.h"
+#define NodeH 113
+//每个节点的高度为113，即滚动113到下一个节点
 @implementation RCScheduleView
 
 - (id)init
@@ -164,6 +166,7 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNodeSV" object:self.timeNodeSV];
     });
 }
+#pragma mark - 时间点的点击事件
 - (void)didSelectTimeNode:(UITapGestureRecognizer *)gesture
 {
     //1.获取tag
@@ -196,8 +199,8 @@
         //1.发送新节点下标通知
         [[NSNotificationCenter defaultCenter]postNotificationName:@"sendTimeNodeScrollView" object:nodexIndex];
         //2.设置scrollView的位移
-        [UIView animateWithDuration:0.5 animations:^{
-            [self.timeNodeSV setContentOffsetY:([nodexIndex intValue]) *114];
+        [UIView animateWithDuration:0.1 animations:^{
+            [self.timeNodeSV setContentOffsetY:([nodexIndex intValue]) *NodeH];
         }];
 
     }

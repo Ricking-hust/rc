@@ -38,6 +38,7 @@
     self.separatorStyle = UITableViewCellSeparatorStyleNone;
     return self;
 }
+
 - (void)getTimeNodeSV:(NSNotification *)notification
 {
     self.timeNodeSV = notification.object;
@@ -65,7 +66,6 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-
     return self.scArray.count + 1;
  
 }
@@ -98,8 +98,15 @@
 {
     if (indexPath.row == 0)
     {
-        UIImage *image = [UIImage imageNamed:@"bg_background1"];
-        return 35+130 - image.size.height * 0.20;
+        if (self.scArray.count == 1)
+        {
+            UIImage *image = [UIImage imageNamed:@"bg_background1"];
+            return 35+130 - image.size.height * 0.205;
+        }else
+        {
+            return 35;
+        }
+
     }else
     {
         CZScheduleInfoCell *cell = (CZScheduleInfoCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];

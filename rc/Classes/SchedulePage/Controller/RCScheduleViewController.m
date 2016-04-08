@@ -28,6 +28,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
+#pragma mark - 增加begin
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
+#pragma mark - 增加end
     self.isLogin = [DataManager manager].user.isLogin;
     if (self.isLogin)
     {

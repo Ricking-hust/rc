@@ -43,7 +43,6 @@
     [self.bgView addSubview:self.contentLabel];
     [self.contentView addSubview:self.bgView];
     UIImage *image = [UIImage imageNamed:@"bg_background1"];
-    NSLog(@"%f",image.size.height);
     self.bgView.layer.contents = (id) image.CGImage;    // 如果需要背景透明加上下面这句
     self.bgView.layer.backgroundColor = [UIColor clearColor].CGColor;
 }
