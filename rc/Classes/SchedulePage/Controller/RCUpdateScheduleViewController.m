@@ -259,10 +259,10 @@
                 NSDate *dateP3 = [NSDate dateWithTimeInterval:-259200 sinceDate:date];
                 [remindma scheduleLocalNotificationWithDate:dateP3 Title:self.model.planContent notiID:self.model.planId];
             }
+            [self.navigationController popViewControllerAnimated:YES];
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];
-        [self.navigationController popViewControllerAnimated:YES];
     }else
     {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入内容" preferredStyle:UIAlertControllerStyleAlert];

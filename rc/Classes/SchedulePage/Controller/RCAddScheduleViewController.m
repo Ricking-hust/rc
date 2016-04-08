@@ -110,8 +110,6 @@
         {
             [view removeFromSuperview];
         }
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRangedAdd];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
         NSString *themeId = [self getThemeId:self.model.themeName];
         [[DataManager manager] addPlanWithOpType:@"1" planId:@"" userId:[userDefaults objectForKey:@"userId"] themeId:themeId planTime:self.model.planTime plAlarmOne:self.model.plAlarmOne plAlarmTwo:self.model.plAlarmTwo plAlarmThree:self.model.plAlarmThree planContent:self.model.planContent acPlace:self.model.acPlace success:^(NSString *replanId) {
             RemindManager *remindma = [[RemindManager alloc]init];
@@ -128,11 +126,11 @@
             if ([self.self.model.plAlarmThree isEqualToString:@"1"]) {
                 NSDate *dateP3 = [NSDate dateWithTimeInterval:-259200 sinceDate:date];
                 [remindma scheduleLocalNotificationWithDate:dateP3 Title:self.model.planContent notiID:replanId];
+            [self.navigationController popViewControllerAnimated:YES];
             }
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];
-        [self.navigationController popViewControllerAnimated:YES];
         
     }else
     {
