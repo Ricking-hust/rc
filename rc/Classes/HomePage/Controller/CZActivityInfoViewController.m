@@ -705,24 +705,6 @@
                                     NSLog(@"分享失败,错误码:%ld,错误描述:%@", [error errorCode], [error errorDescription]);
                                 }
                             }];
-//    [ShareSDK getUserInfoWithType:ShareTypeQQSpace
-//                      authOptions:nil
-//                           result:^(BOOL result, id<ISSPlatformUser> userInfo, id<ICMErrorInfo> error) {
-//                               
-//                               if (result)
-//                               {
-//                                   //打印输出用户uid：
-//                                   NSLog(@"uid = %@",[userInfo uid]);
-//                                   //打印输出用户昵称：
-//                                   NSLog(@"name = %@",[userInfo nickname]);
-//                                   //打印输出用户头像地址：
-//                                   NSLog(@"icon = %@",[userInfo profileImage]);
-//                                   
-//                               }else{
-//                                       
-//                                       NSLog(@"授权失败!error code == %d, error code == %@", [error errorCode], [error errorDescription]);
-//                               }
-//                           }];
     
 }
 - (void)setSubViewsConstraint

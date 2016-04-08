@@ -65,7 +65,9 @@
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+
     return self.scArray.count + 1;
+ 
 }
 
 
@@ -96,7 +98,8 @@
 {
     if (indexPath.row == 0)
     {
-        return 35;
+        UIImage *image = [UIImage imageNamed:@"bg_background1"];
+        return 35+130 - image.size.height * 0.20;
     }else
     {
         CZScheduleInfoCell *cell = (CZScheduleInfoCell *)[self tableView:tableView cellForRowAtIndexPath:indexPath];
@@ -150,7 +153,7 @@
     NSString *timeText = [plmodel.planTime substringWithRange:NSMakeRange(11, 5)];
     cell.timeLabel.text = timeText;
     cell.contentLabel.text = plmodel.planContent;
-    cell.placeLabel.text = plmodel.acPlace;
+    //cell.placeLabel.text = plmodel.acPlace;
     cell.bgView.tag = indexPath.row - 1;
 }
 - (void)addCellConstraint:(CZScheduleInfoCell *)cell

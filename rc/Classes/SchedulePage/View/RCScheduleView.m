@@ -44,9 +44,8 @@
 
 - (void)createTimeNode:(NSNotification *)notification
 {
-    NSMutableArray *array = notification.object;
     dispatch_async(dispatch_get_main_queue(), ^{
- 
+         NSMutableArray *array = notification.object;
         for (UIView *view in self.timeNodeSV.subviews)
         {
             [view removeFromSuperview];
@@ -91,24 +90,23 @@
                 [self.timeNodeSV addSubview:point];
                 [self.timeNodeSV addSubview:dayLabel];
                 [self.timeNodeSV addSubview:weekLabel];
-#pragma mark - 修改plistranged begin
+                
                 dayLabel.text = [self dayLabelStr:array AtIndex:i];
                 weekLabel.text = [self weekLabelStr:array AtIndex:i];
-#pragma mark - end 
                 
-                //10为上线的高度，14为节点的高度，60为下线的高度
-                CGFloat upLineTopPadding = 130 + (20 + 14 + 80 )* i;
+                //20为上线的高度，13为节点的高度，80为下线的高度
+                CGFloat upLineTopPadding = 130 + (20 + 13 + 80 )* i;
                 [upLine mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(self.timeNodeSV.mas_top).offset(upLineTopPadding);
                     make.left.equalTo(self.timeNodeSV.mas_left).offset(67);
-                    make.width.mas_equalTo(3);
+                    make.width.mas_equalTo(2);
                     make.height.mas_equalTo(20);
                 }];
                 [point mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(upLine.mas_bottom);
-                    make.left.equalTo(upLine.mas_left).offset(-6);
-                    make.width.mas_equalTo(14);
-                    make.height.mas_equalTo(14);
+                    make.left.equalTo(upLine.mas_left).offset(-5.5);
+                    make.width.mas_equalTo(13);
+                    make.height.mas_equalTo(13);
                 }];
                 [downLine mas_updateConstraints:^(MASConstraintMaker *make) {
                     make.top.equalTo(point.mas_bottom);
@@ -275,7 +273,7 @@
     [view mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.timeNodeSV.mas_top);
         make.left.equalTo(self.timeNodeSV).offset(67);
-        make.size.mas_equalTo(CGSizeMake(3, 130));
+        make.size.mas_equalTo(CGSizeMake(2, 130));
     }];
     return view;
 }

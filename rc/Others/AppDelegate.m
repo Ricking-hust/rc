@@ -26,12 +26,12 @@
     [ShareSDK registerApp:@"10c6f1c7e6778"];//字符串api20为您的ShareSDK的AppKey
     
     //添加新浪微博应用 注册网址 http://open.weibo.com
-    [ShareSDK connectSinaWeiboWithAppKey:@"568898243"
-                               appSecret:@"38a4f8204cc784f81f9f0daaf31e02e3"
+    [ShareSDK connectSinaWeiboWithAppKey:@"2386672952"
+                               appSecret:@"9097df09bd441ac7824d67aaaff2d420"
                              redirectUri:@"http://www.sharesdk.cn"];
     //当使用新浪微博客户端分享的时候需要按照下面的方法来初始化新浪的平台
-    [ShareSDK  connectSinaWeiboWithAppKey:@"568898243"
-                                appSecret:@"38a4f8204cc784f81f9f0daaf31e02e3"
+    [ShareSDK  connectSinaWeiboWithAppKey:@"2386672952"
+                                appSecret:@"9097df09bd441ac7824d67aaaff2d420"
                               redirectUri:@"http://www.sharesdk.cn"
                               weiboSDKCls:[WeiboSDK class]];
     
