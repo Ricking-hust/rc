@@ -427,7 +427,7 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
                                plAlarmThree:(NSString *)plAlarmThree
                                 planContent:(NSString *)planContent
                                     acPlace:(NSString *)acPlace
-                                    success:(void (^)(NSString *msg))success
+                                    success:(void (^)(NSString *replanId))success
                                     failure:(void (^)(NSError *error))failure{
     NSDictionary *parameters = @{
                                  @"op_type":opType,
@@ -442,8 +442,21 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
                                  @"ac_place":acPlace,
                                  };
     return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app.myrichang.com/Home/Plan/addPlan" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
-        NSString *msg = [[NSString alloc] initWithString:[responseObject objectForKey:@"msg"]];
-        success(msg);
+        NSString *code = [[NSString alloc] initWithFormat:@"%@",[responseObject objectForKey:@"code"]];
+        if ([code isEqualToString:@"200"]) {
+            if ([opType isEqualToString:@"1"]) {
+                NSDictionary *data = [[NSDictionary alloc] initWithDictionary:[responseObject objectForKey:@"data"]];
+                NSString *replanId = [NSString stringWithString:[data objectForKey:@"pl_id"]];
+                success(replanId);
+            } else {
+                NSString *replanId = @"failed";
+                success(replanId);
+            }
+            
+        } else {
+            NSString *replanId = planId;
+            success(replanId);
+        }
     } failure:^(NSError *error) {
         failure(error);
     }];

@@ -118,7 +118,7 @@ typedef NS_ENUM(NSInteger,RcErrorType) {
                                plAlarmThree:(NSString *)plAlarmThree
                                 planContent:(NSString *)planContent
                                     acPlace:(NSString *)acPlace
-                                    success:(void (^)(NSString *msg))success
+                                    success:(void (^)(NSString *replanId))success
                                     failure:(void (^)(NSError *error))failure;
 
 -(NSURLSessionDataTask *) delPlanWithUserId:(NSString *)userId

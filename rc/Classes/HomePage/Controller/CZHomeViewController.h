@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 
 @interface CZHomeViewController : UIViewController <UITableViewDelegate, UITableViewDataSource>
-@property (nonatomic, assign) City city;
+@property (nonatomic,strong) CityModel *ctmodel;
 @property (strong, nonatomic) UIView *searchView;
 @property (strong, nonatomic) UITableView *tableView;
 @end

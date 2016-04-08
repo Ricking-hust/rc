@@ -31,8 +31,6 @@
 typedef void (^HomeViewBlock)(id);
 @property (nonatomic,strong) ActivityList *acListRecived;
 @property (nonatomic,strong) NSMutableArray *acList;
-@property (nonatomic,strong) CityList *cityList;
-@property (nonatomic,strong) NSString *cityId;
 @property (nonatomic,strong) NSMutableArray *cityNameList;
 @property (nonatomic,strong) NSString *minAcId;
 @property (nonatomic,strong) ActivityModel *activitymodel;
@@ -55,6 +53,7 @@ typedef void (^HomeViewBlock)(id);
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     
     //刷新数据
+    [self configuerCity];
     [self refleshDataByCity];
 }
 
@@ -63,22 +62,19 @@ typedef void (^HomeViewBlock)(id);
 }
 - (void)refleshDataByCity
 {
-    if (self.city == Beijing)
+    NSLog(@"cityID:%@",self.ctmodel.cityID);
+    if ([self.ctmodel.cityID isEqualToString:@"1"])
     {
         [self.leftButton setTitle:@"北京" forState:UIControlStateNormal];
-        self.cityId = @"1";
-    }else if (self.city == Shanghai)
+    }else if ([self.ctmodel.cityID isEqualToString:@"2"])
     {
         [self.leftButton setTitle:@"上海" forState:UIControlStateNormal];
-        self.cityId = @"2";
-    }else if (self.city == Wuhan)
+    }else if ([self.ctmodel.cityID isEqualToString:@"3"])
     {
         [self.leftButton setTitle:@"武汉" forState:UIControlStateNormal];
-        self.cityId = @"3";
     }else
     {
         [self.leftButton setTitle:@"广州" forState:UIControlStateNormal];
-        self.cityId = @"4";
     }
     //刷新
 }
@@ -86,15 +82,11 @@ typedef void (^HomeViewBlock)(id);
 {
     [super viewDidLoad];
     [self guide];
-    self.city = Beijing;
-    self.cityId =@"1";
     [self configureBlocks];
     [self startget];
     [self createSubViews];
     
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.city = Beijing;
-    self.cityId = @"1";
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshRecomend) name:@"refresh" object:nil];
     self.tableView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
     self.tableView.mj_footer= [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
@@ -111,6 +103,16 @@ typedef void (^HomeViewBlock)(id);
     [paths addObject:[[NSBundle mainBundle] pathForResource:@"tutor3" ofType:@"jpg"]];
     [paths addObject:[[NSBundle mainBundle] pathForResource:@"tutor4" ofType:@"jpg"]];
     [[KSGuideManager shared] showGuideViewWithImages:paths];
+}
+
+-(void)configuerCity{
+    if ([[userDefaults objectForKey:@"cityId"] isEqualToString:@""]) {
+        self.ctmodel.cityID = @"1";
+        [userDefaults setObject:@"1" forKey:@"cityId"];
+    } else {
+        self.ctmodel.cityID = [userDefaults objectForKey:@"cityId"];
+    }
+
 }
 
 #pragma mark - 更新数据
@@ -164,15 +166,15 @@ typedef void (^HomeViewBlock)(id);
         }];
     };
     
-    self.getCityListBlock = ^{
-        @strongify(self);
-        return [[DataManager manager] getCityListSuccess:^(CityList *ctList) {
-            @strongify(self);
-            self.cityList = ctList;
-        } failure:^(NSError *error) {
-            NSLog(@"Error:%@",error);
-        }];
-    };
+//    self.getCityListBlock = ^{
+//        @strongify(self);
+//        return [[DataManager manager] getCityListSuccess:^(CityList *ctList) {
+//            @strongify(self);
+//            self.cityList = ctList;
+//        } failure:^(NSError *error) {
+//            NSLog(@"Error:%@",error);
+//        }];
+//    };
 }
 
 - (void)startget{
@@ -232,8 +234,11 @@ typedef void (^HomeViewBlock)(id);
     return _acList;
 }
 
--(void) setCityList:(CityList *)cityList{
-    _cityList = cityList;
+-(CityModel *)ctmodel{
+    if (!_ctmodel) {
+        _ctmodel = [[CityModel alloc]init];
+    }
+    return _ctmodel;
 }
 
 #pragma mark - Tableview 数据源
@@ -395,10 +400,10 @@ typedef void (^HomeViewBlock)(id);
     }];
 }
 #pragma mark - 城市选择
-- (IBAction)didSelectCity:(UIButton *)sender
+- (IBAction)didSelectCity:(UIButton *)sender··
 {
     CZCityViewController *cityViewController = [[CZCityViewController alloc]init];
-    cityViewController.city = self.city;
+    cityViewController.ctmodel = self.ctmodel;
     [self.navigationController pushViewController:cityViewController animated:YES];
 
 }

@@ -97,11 +97,6 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     self.getIndListBlock();
 }
 
--(void)refreshColumn{
-    self.getIndListBlock();
-    [self.collectionView reloadData];
-}
-
 #pragma mark - 初始化，scrollView用于平移多个collectionView
 - (void)initScrollView
 {
@@ -259,7 +254,6 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
             self.indList = indList;
             for (IndustryModel *model in self.indList.list) {
                 self.getActivityListWithIndBlock(model);
-                
             }
             
         } failure:^(NSError *error) {
@@ -296,12 +290,13 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
         return [[DataManager manager] checkIndustryWithCityId:cityId industryId:model.indId startId:@"0" success:^(ActivityList *acList) {
             @strongify(self);
             self.activityList = acList;
-            [self refreshData];
+            [self refreshData:acList ByIndustry:model];
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];
     };
 }
+
 - (void)loadData:(ActivityList *)activityList ByIndustry:(IndustryModel *)model
 {
     long int index = [self.indList.list indexOfObject:model];
@@ -310,8 +305,10 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     [self.activityListByInd setObject:activityList forKey:model.indName];
 }
 
--(void)refreshData{
-    [self.collectionView reloadData];
+-(void)refreshData:(ActivityList *)acList ByIndustry:(IndustryModel *)model{
+    RCCollectionView *collectionView = [self.collectionViewByInd objectForKey:model.indName];
+    [self.activityListByInd setObject:acList forKey:model.indName];
+    [collectionView reloadData];
 }
 -(void)setIndList:(IndustryList *)indList
 {
@@ -350,12 +347,20 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 #pragma mark - 下拉对应的collectionView刷新数据
 - (void)loadNewData
 {
-    
     //获取当前的collectionView
     RCCollectionView *collectionView = [self getCurrentCollectionView];
     [collectionView.mj_header endRefreshing];
     if (self.refreshAcListWithIndBlock) {
         self.refreshAcListWithIndBlock(collectionView.indModel);
+    }
+}
+
+//同时刷新所有collectionView
+-(void)refreshColumn{
+    if (self.refreshAcListWithIndBlock) {
+        for (IndustryModel *indModel in self.indList.list) {
+            self.refreshAcListWithIndBlock(indModel);
+        }
     }
 }
 #pragma mark - 上拉对应的collectionView刷新数据
@@ -548,6 +553,10 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     //计算文本的大小
     CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
     return nameSize;
+}
+
+-(void)dealloc{
+    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refreshColumn" object:nil];
 }
 
 @end

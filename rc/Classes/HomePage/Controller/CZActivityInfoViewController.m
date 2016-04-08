@@ -12,6 +12,7 @@
 #import "CZTimeCell.h"
 #import "CZActivityInfoCell.h"
 #import "CZRemindMeView.h"
+#import "RemindManager.h"
 #import "UIViewController+LewPopupViewController.h"
 #import "LewPopupViewAnimationSlide.h"
 #import "UIImageView+WebCache.h"
@@ -842,36 +843,65 @@
     if ([DataManager manager].user.isLogin) {
         [[DataManager manager] joinTripWithUserId:[userDefaults objectForKey:@"userId"] acId:self.activityModelPre.acID opType:@"1" success:^(NSString *planId) {
             if ([planId isEqualToString:@"joined"]) {
-                NSLog(@"plAlarm1:%@",self.plAlarm[0]);
-                NSLog(@"plAlarm2:%@",self.plAlarm[1]);
-                NSLog(@"plAlarm3:%@",self.plAlarm[2]);
-                NSLog(@"planId:%@",self.activitymodel.planId);
-                [[DataManager manager] addPlanWithOpType:@"2" planId:self.activitymodel.planId userId:[userDefaults objectForKey:@"userId"] themeId:self.activitymodel.acTheme planTime:self.activitymodel.acTime plAlarmOne:self.plAlarm[0] plAlarmTwo:self.plAlarm[1] plAlarmThree:self.plAlarm[2] planContent:@"" acPlace:@"" success:^(NSString *msg) {
+                [[DataManager manager] addPlanWithOpType:@"2" planId:self.activitymodel.planId userId:[userDefaults objectForKey:@"userId"] themeId:self.activitymodel.acTheme planTime:self.activitymodel.acTime plAlarmOne:self.plAlarm[0] plAlarmTwo:self.plAlarm[1] plAlarmThree:self.plAlarm[2] planContent:@"" acPlace:@"" success:^(NSString *replanId) {
+                    RemindManager *remindma = [[RemindManager alloc]init];
+                    //先清除与本活动相关的所有本地通知
+                    [remindma removeLocalNotificationWithNotificationId:self.activitymodel.planId];
+                    //添加本地推送
+                    NSDate *date = [remindma dateFromString:self.activitymodel.acTime];
+                    if ([self.plAlarm[0] isEqualToString:@"1"]) {
+                        NSDate *dateP1 = [NSDate dateWithTimeInterval:-3600 sinceDate:date];
+                        [remindma scheduleLocalNotificationWithDate:dateP1 Title:self.activitymodel.acTitle notiID:planId];
+                    }
+                    if ([self.plAlarm[2] isEqualToString:@"1"]) {
+                        NSDate *dateP2 = [NSDate dateWithTimeInterval:-86400 sinceDate:date];
+                        [remindma scheduleLocalNotificationWithDate:dateP2 Title:self.activitymodel.acTitle notiID:planId];
+                    }
+                    if ([self.plAlarm[3] isEqualToString:@"1"]) {
+                        NSDate *dateP3 = [NSDate dateWithTimeInterval:-259200 sinceDate:date];
+                        [remindma scheduleLocalNotificationWithDate:dateP3 Title:self.activitymodel.acTitle notiID:planId];
+                    }
+                    //弹出提示框
                     self.HUD.mode = MBProgressHUDModeCustomView;
-                    self.HUD.label.text = @"修改提醒成功~(≧▽≦)/~";
+                    self.HUD.label.text = @"修改提醒成功";
                     [self.HUD hideAnimated:YES afterDelay:0.6];
                 } failure:^(NSError *error) {
                     self.HUD.mode = MBProgressHUDModeCustomView;
-                    self.HUD.label.text = @"操作失败~>_<~ ";
+                    self.HUD.label.text = @"操作失败";
                     [self.HUD hideAnimated:YES afterDelay:0.6];
                     NSLog(@"Error:%@",error);
                 }];
             } else {
                 self.planId = planId;
-                [[DataManager manager] addPlanWithOpType:@"1" planId:self.planId userId:[userDefaults objectForKey:@"userId"] themeId:@"" planTime:@"" plAlarmOne:self.plAlarm[0] plAlarmTwo:self.plAlarm[1] plAlarmThree:self.plAlarm[2] planContent:@"" acPlace:@"" success:^(NSString *msg) {
+                [[DataManager manager] addPlanWithOpType:@"1" planId:self.planId userId:[userDefaults objectForKey:@"userId"] themeId:@"" planTime:@"" plAlarmOne:self.plAlarm[0] plAlarmTwo:self.plAlarm[1] plAlarmThree:self.plAlarm[2] planContent:@"" acPlace:@"" success:^(NSString *replanId) {
+                    RemindManager *remindma = [[RemindManager alloc]init];
+                    //添加本地推送
+                    NSDate *date = [remindma dateFromString:self.activitymodel.acTime];
+                    if ([self.plAlarm[0] isEqualToString:@"1"]) {
+                        NSDate *dateP1 = [NSDate dateWithTimeInterval:-3600 sinceDate:date];
+                        [remindma scheduleLocalNotificationWithDate:dateP1 Title:self.activitymodel.acTitle notiID:planId];
+                    }
+                    if ([self.plAlarm[2] isEqualToString:@"1"]) {
+                        NSDate *dateP2 = [NSDate dateWithTimeInterval:-86400 sinceDate:date];
+                        [remindma scheduleLocalNotificationWithDate:dateP2 Title:self.activitymodel.acTitle notiID:planId];
+                    }
+                    if ([self.plAlarm[3] isEqualToString:@"1"]) {
+                        NSDate *dateP3 = [NSDate dateWithTimeInterval:-259200 sinceDate:date];
+                        [remindma scheduleLocalNotificationWithDate:dateP3 Title:self.activitymodel.acTitle notiID:planId];
+                    }
                     self.HUD.mode = MBProgressHUDModeCustomView;
-                    self.HUD.label.text = @"加入行程提醒成功~(≧▽≦)/~";
+                    self.HUD.label.text = @"加入行程提醒成功";
                     [self.HUD hideAnimated:YES afterDelay:0.6];
                 } failure:^(NSError *error) {
                     self.HUD.mode = MBProgressHUDModeCustomView;
-                    self.HUD.label.text = @"操作失败~>_<~ ";
+                    self.HUD.label.text = @"操作失败";
                     [self.HUD hideAnimated:YES afterDelay:0.6];
                     NSLog(@"Error:%@",error);
                 }];
             }
         } failure:^(NSError *error) {
             self.HUD.mode = MBProgressHUDModeCustomView;
-            self.HUD.label.text = @"操作失败~>_<~ ";
+            self.HUD.label.text = @"操作失败";
             [self.HUD hideAnimated:YES afterDelay:0.6];
             NSLog(@"Error:%@",error);
         }];
@@ -1029,6 +1059,5 @@
     CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
     return nameSize;
 }
-
 
 @end

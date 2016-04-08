@@ -13,6 +13,7 @@
 #import "RCScrollView.h"
 #import "LoginViewController.h"
 #import "CZMoreRemindTimeViewController.h"
+#import "RemindManager.h"
 @interface RCAddScheduleViewController ()
 @property (nonatomic, strong) PlanModel *model;
 @property (nonatomic, strong) RCScrollView *timeNodeSVAdd;
@@ -112,11 +113,22 @@
         [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRangedAdd];
         [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
         NSString *themeId = [self getThemeId:self.model.themeName];
-        NSLog(@"P1:%@",self.model.plAlarmOne);
-        NSLog(@"P2:%@",self.model.plAlarmTwo);
-        NSLog(@"P3:%@",self.model.plAlarmThree);
-        [[DataManager manager] addPlanWithOpType:@"1" planId:@"" userId:[userDefaults objectForKey:@"userId"] themeId:themeId planTime:self.model.planTime plAlarmOne:self.model.plAlarmOne plAlarmTwo:self.model.plAlarmTwo plAlarmThree:self.model.plAlarmThree planContent:self.model.planContent acPlace:self.model.acPlace success:^(NSString *msg) {
-                NSLog(@"Msg:%@",msg);
+        [[DataManager manager] addPlanWithOpType:@"1" planId:@"" userId:[userDefaults objectForKey:@"userId"] themeId:themeId planTime:self.model.planTime plAlarmOne:self.model.plAlarmOne plAlarmTwo:self.model.plAlarmTwo plAlarmThree:self.model.plAlarmThree planContent:self.model.planContent acPlace:self.model.acPlace success:^(NSString *replanId) {
+            RemindManager *remindma = [[RemindManager alloc]init];
+            //添加本地推送
+            NSDate *date = [remindma dateFromString:self.model.planTime];
+            if ([self.model.plAlarmOne isEqualToString:@"1"]) {
+                NSDate *dateP1 = [NSDate dateWithTimeInterval:-3600 sinceDate:date];
+                [remindma scheduleLocalNotificationWithDate:dateP1 Title:self.model.planContent notiID:replanId];
+            }
+            if ([self.self.model.plAlarmTwo isEqualToString:@"1"]) {
+                NSDate *dateP2 = [NSDate dateWithTimeInterval:-86400 sinceDate:date];
+                [remindma scheduleLocalNotificationWithDate:dateP2 Title:self.model.planContent notiID:replanId];
+            }
+            if ([self.self.model.plAlarmThree isEqualToString:@"1"]) {
+                NSDate *dateP3 = [NSDate dateWithTimeInterval:-259200 sinceDate:date];
+                [remindma scheduleLocalNotificationWithDate:dateP3 Title:self.model.planContent notiID:replanId];
+            }
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];

@@ -98,8 +98,8 @@ static CGFloat const kContainViewYNormal = 70.0;
     }];
     
     [self.loginButton mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.containView.mas_left).offset(37.5);
-        make.right.equalTo(self.containView.mas_right).offset(-37.5);
+        make.left.equalTo(self.containView.mas_left).offset(50);
+        make.right.equalTo(self.containView.mas_right).offset(-50);
         make.top.equalTo(self.passwordField.mas_bottom).offset(60);
         make.height.equalTo(@45);
     }];

@@ -44,6 +44,13 @@
     [self.navigationController popViewControllerAnimated:YES];
 }
 
+-(CityModel *)ctmodel{
+    if (!_ctmodel) {
+        _ctmodel = [[CityModel alloc]init];
+    }
+    return _ctmodel;
+}
+
 #pragma mark - 城市选择按钮点击事件
 - (void)onClickCity:(UIButton *)btn
 {
@@ -55,7 +62,7 @@
         self.wuhan.locationImage.hidden = YES;
         self.guangzhou.locationImage.hidden = YES;
         self.shanghai.locationImage.hidden = YES;
-        self.city = Beijing;
+        self.ctmodel.cityID = @"1";
         [userDefaults setObject:@"1" forKey:@"cityId"];
         if ([DataManager manager].user.isLogin) {
             [self modifyCity:@"1"];
@@ -67,7 +74,7 @@
         self.beijing.locationImage.hidden = YES;
         self.shanghai.locationImage.hidden = YES;
         self.wuhan.locationImage.hidden = YES;
-        self.city = Guangzhou;
+        self.ctmodel.cityID = @"4";
         [userDefaults setObject:@"4" forKey:@"cityId"];
         if ([DataManager manager].user.isLogin) {
             [self modifyCity:@"4"];
@@ -79,7 +86,7 @@
         self.beijing.locationImage.hidden = YES;
         self.guangzhou.locationImage.hidden = YES;
         self.wuhan.locationImage.hidden = YES;
-        self.city = Shanghai;
+        self.ctmodel.cityID = @"2";
         [userDefaults setObject:@"2" forKey:@"cityId"];
         if ([DataManager manager].user.isLogin) {
             [self modifyCity:@"2"];
@@ -91,7 +98,7 @@
         self.beijing.locationImage.hidden = YES;
         self.guangzhou.locationImage.hidden = YES;
         self.shanghai.locationImage.hidden = YES;
-        self.city = Wuhan;
+        self.ctmodel.cityID = @"3";
         [userDefaults setObject:@"3" forKey:@"cityId"];
         if ([DataManager manager].user.isLogin) {
             [self modifyCity:@"3"];
@@ -99,7 +106,7 @@
     }
     long int count = self.navigationController.viewControllers.count;
     CZHomeViewController *homePage = (CZHomeViewController *)self.navigationController.viewControllers[count - 2];
-    homePage.city = self.city;
+    homePage.ctmodel = self.ctmodel;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh" object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshColumn" object:nil];
     [self.navigationController popViewControllerAnimated:YES];
@@ -107,13 +114,13 @@
 
 - (void)locateCity
 {
-    if (_city == Wuhan)
+    if ([_ctmodel.cityID isEqualToString:@"3"])
     {
         self.wuhan.locationImage.hidden = NO;
-    }else if (_city == Shanghai)
+    }else if ([_ctmodel.cityID isEqualToString:@"2"])
     {
         self.shanghai.locationImage.hidden = NO;
-    }else if (_city == Beijing)
+    }else if ([_ctmodel.cityID isEqualToString:@"1"])
     {
         self.beijing.locationImage.hidden = NO;
     }else

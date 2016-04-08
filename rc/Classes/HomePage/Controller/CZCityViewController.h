@@ -9,8 +9,9 @@
 #import <UIKit/UIKit.h>
 
 @class CZCityView;
+@class CityModel;
 @interface CZCityViewController : UIViewController
-@property (nonatomic, assign) City city;
+@property (nonatomic,strong) CityModel *ctmodel;
 @property (nonatomic, strong) CZCityView *beijing;
 @property (nonatomic, strong) CZCityView *shanghai;
 @property (nonatomic, strong) CZCityView *guangzhou;
