@@ -234,7 +234,7 @@
 		56121F6E1CA14E9500183DB0 /* ImageIO.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ImageIO.framework; path = System/Library/Frameworks/ImageIO.framework; sourceTree = SDKROOT; };
 		56121F701CA14EA000183DB0 /* AdSupport.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AdSupport.framework; path = System/Library/Frameworks/AdSupport.framework; sourceTree = SDKROOT; };
 		56121F721CA14EAA00183DB0 /* libsqlite3.tbd */ = {isa = PBXFileReference; lastKnownFileType = "sourcecode.text-based-dylib-definition"; name = libsqlite3.tbd; path = usr/lib/libsqlite3.tbd; sourceTree = SDKROOT; };
-		561D00FF1C47D94C00E4E013 /* rc.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = rc.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		561D00FF1C47D94C00E4E013 /* 日常.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "日常.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		561D01031C47D94C00E4E013 /* main.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		561D01131C47D94C00E4E013 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		561D01181C47D94C00E4E013 /* rcTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = rcTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -686,7 +686,7 @@
 		561D01001C47D94C00E4E013 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				561D00FF1C47D94C00E4E013 /* rc.app */,
+				561D00FF1C47D94C00E4E013 /* 日常.app */,
 				561D01181C47D94C00E4E013 /* rcTests.xctest */,
 				561D01231C47D94C00E4E013 /* rcUITests.xctest */,
 			);
@@ -1487,7 +1487,7 @@
 			);
 			name = rc;
 			productName = rc;
-			productReference = 561D00FF1C47D94C00E4E013 /* rc.app */;
+			productReference = 561D00FF1C47D94C00E4E013 /* 日常.app */;
 			productType = "com.apple.product-type.application";
 		};
 		561D01171C47D94C00E4E013 /* rcTests */ = {
@@ -1852,6 +1852,7 @@
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
+				PRODUCT_NAME = "";
 				PROVISIONING_PROFILE = "e6f2a85b-11fa-4a40-92a2-d158cc6bfc19";
 				SDKROOT = iphoneos;
 			};
@@ -1890,6 +1891,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "";
 				PROVISIONING_PROFILE = "e6f2a85b-11fa-4a40-92a2-d158cc6bfc19";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -1930,7 +1932,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rc.ios;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "日常";
 				PROVISIONING_PROFILE = "";
 			};
 			name = Debug;
@@ -1969,7 +1971,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rc.ios;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "日常";
 				PROVISIONING_PROFILE = "";
 			};
 			name = Release;
@@ -2055,6 +2057,7 @@
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
 				MTL_ENABLE_DEBUG_INFO = NO;
+				PRODUCT_NAME = "";
 				PROVISIONING_PROFILE = "e6f2a85b-11fa-4a40-92a2-d158cc6bfc19";
 				SDKROOT = iphoneos;
 				VALIDATE_PRODUCT = YES;
@@ -2095,7 +2098,7 @@
 				);
 				OTHER_LDFLAGS = "-ObjC";
 				PRODUCT_BUNDLE_IDENTIFIER = com.rc.ios;
-				PRODUCT_NAME = "$(TARGET_NAME)";
+				PRODUCT_NAME = "日常";
 				PROVISIONING_PROFILE = "";
 			};
 			name = "adhoc distribution";
