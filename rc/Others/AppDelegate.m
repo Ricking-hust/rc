@@ -24,17 +24,17 @@
 - (void)initShareSDK
 {
     [ShareSDK registerApp:@"10c6f1c7e6778"];//字符串api20为您的ShareSDK的AppKey
-    
-    //添加新浪微博应用 注册网址 http://open.weibo.com
-    [ShareSDK connectSinaWeiboWithAppKey:@"2386672952"
-                               appSecret:@"9097df09bd441ac7824d67aaaff2d420"
-                             redirectUri:@"http://www.sharesdk.cn"];
-    //当使用新浪微博客户端分享的时候需要按照下面的方法来初始化新浪的平台
-    [ShareSDK  connectSinaWeiboWithAppKey:@"2386672952"
-                                appSecret:@"9097df09bd441ac7824d67aaaff2d420"
-                              redirectUri:@"http://www.sharesdk.cn"
-                              weiboSDKCls:[WeiboSDK class]];
-    
+#pragma mark - 新浪微博等app上线拿到应用ID再实现
+//    //添加新浪微博应用 注册网址 http://open.weibo.com
+//    [ShareSDK connectSinaWeiboWithAppKey:@"2386672952"
+//                               appSecret:@"9097df09bd441ac7824d67aaaff2d420"
+//                             redirectUri:@"http://www.sharesdk.cn"];
+//    //当使用新浪微博客户端分享的时候需要按照下面的方法来初始化新浪的平台
+//    [ShareSDK  connectSinaWeiboWithAppKey:@"2386672952"
+//                                appSecret:@"9097df09bd441ac7824d67aaaff2d420"
+//                              redirectUri:@"http://www.sharesdk.cn"
+//                              weiboSDKCls:[WeiboSDK class]];
+#pragma mark - 腾讯微博已死
 //    //添加腾讯微博应用 注册网址 http://dev.t.qq.com
 //    [ShareSDK connectTencentWeiboWithAppKey:@"801307650"
 //                                  appSecret:@"ae36f4ee3946e1cbb98d6965b0b2ff5c"
