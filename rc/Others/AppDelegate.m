@@ -14,7 +14,8 @@
 #import <TencentOpenAPI/TencentOAuth.h>
 #import "WXApi.h"
 #import "WeiboSDK.h"
-
+#import "RCScheduleViewController.h"
+#import "LoginViewController.h"
 @interface AppDelegate ()
 
 @end
@@ -70,12 +71,31 @@
                         annotation:annotation
                         wxDelegate:self];
 }
+
+//本地通知回调函数，当应用程序在前台时调用
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification*)notification
 {
     //实现本地通知的触发处理
     NSLog(@"%@",notification.userInfo);
+    //[self showAlertView:@"此处应跳转到行程界面"];
+    
+    RCScheduleViewController *scheduleViewController = [[RCScheduleViewController alloc]init];
+    [self.window.rootViewController showDetailViewController:scheduleViewController sender:nil];
     RemindManager *remanager = [[RemindManager alloc]init];
     [remanager removeLocalNotificationWithNotificationId:[notification.userInfo objectForKey:@"id"]];
+}
+
+//在非本App界面时收到本地消息
+//-(void)application:(UIApplication *)application handleActionWithIdentifier:(NSString *)identifier forLocalNotification:(UILocalNotification *)notification withResponseInfo:(NSDictionary *)responseInfo completionHandler:(void (^)())completionHandler{
+//    
+//}
+
+- (void)showAlertView:(NSString *)message
+{
+    UIAlertController *alert = [UIAlertController alertControllerWithTitle:nil message:message preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *action = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
+    [alert addAction:action];
+    [self.window.rootViewController showDetailViewController:alert sender:nil];
 }
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {

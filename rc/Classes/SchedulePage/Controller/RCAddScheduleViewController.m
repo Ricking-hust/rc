@@ -116,8 +116,10 @@
             //添加本地推送
             NSDate *date = [remindma dateFromString:self.model.planTime];
             if ([self.model.plAlarmOne isEqualToString:@"1"]) {
-                NSDate *dateP1 = [NSDate dateWithTimeInterval:-3600 sinceDate:date];
-                [remindma scheduleLocalNotificationWithDate:dateP1 Title:self.model.planContent notiID:replanId];
+//                NSDate *dateP1 = [NSDate dateWithTimeInterval:-3600 sinceDate:date];
+//                [remindma scheduleLocalNotificationWithDate:dateP1 Title:self.model.planContent notiID:replanId];
+                RemindManager *remindma = [[RemindManager alloc]init];
+                [remindma scheduleLocalNotificationWithDate:[NSDate dateWithTimeIntervalSinceNow:10] Title:@"test" notiID:@"test"];
             }
             if ([self.self.model.plAlarmTwo isEqualToString:@"1"]) {
                 NSDate *dateP2 = [NSDate dateWithTimeInterval:-86400 sinceDate:date];
@@ -131,7 +133,6 @@
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];
-        
     }else
     {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入内容" preferredStyle:UIAlertControllerStyleAlert];
