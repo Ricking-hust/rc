@@ -55,6 +55,7 @@
 //        
 //        array = [[NSMutableArray alloc]initWithArray:[enumer allObjects]];
         
+        
         for (UIView *view in self.timeNodeSV.subviews)
         {
             [view removeFromSuperview];

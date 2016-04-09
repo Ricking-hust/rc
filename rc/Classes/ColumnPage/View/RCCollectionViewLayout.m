@@ -8,6 +8,7 @@
 
 #import "RCCollectionViewLayout.h"
 #import "RCCollectionView.h"
+#include <sys/sysctl.h>
 @interface RCCollectionViewLayout ()
 
 /* Key: 第几列; Value: 保存每列的cell的底部y值 */
@@ -21,7 +22,18 @@
     if (self) {
         self.columnMargin = 10;
         self.rowMargin = 10;
-        self.insets = UIEdgeInsetsMake(10, 10, 10, 10);
+//        UIEdgeInsetsMake(<#CGFloat top#>, <#CGFloat left#>, <#CGFloat bottom#>, <#CGFloat right#>)
+//        if ([self currentDeviceSize] == IPhone5)
+//        {
+//            self.insets = UIEdgeInsetsMake(0, 15, 15, 15);
+//        }else if ([self currentDeviceSize] == IPhone6)
+//        {
+//            self.insets = UIEdgeInsetsMake(0, 15, 10, 7.5);
+//        }else
+//        {
+//            self.insets = UIEdgeInsetsMake(0, 15, 15, 15);
+//        }
+        self.insets = UIEdgeInsetsMake(15, 15, 15, 15);
         self.count = 2;
     }
     return self;
@@ -81,8 +93,8 @@
             minYForColumn = columnIndex;
         }
     }];
-    
     CGFloat width = (self.collectionView.frame.size.width - self.insets.left - self.insets.right - self.columnMargin * (self.count - 1)) / self.count;
+
     CGFloat height = [self.layoutDelegate collectionView:(RCCollectionView*)self.collectionView waterFlowLayout:self heightForWidth:width atIndexPath:indexPath];
     CGFloat x = self.insets.left + (width + self.columnMargin) * [minYForColumn integerValue];
     CGFloat y = self.rowMargin + [self.cellInfo[minYForColumn] floatValue];
@@ -110,5 +122,73 @@
     
     return CGSizeMake(width, maxY + self.insets.bottom);
 }
+- (CGFloat)getWidthByDevice
+{
+    if ([self currentDeviceSize] == IPhone5)
+    {
+        return 142;
+        
+    }else if ([self currentDeviceSize]   == IPhone6)
+    {
+        return 165;
 
+    }else
+    {
+        return 177;
+    }
+
+}
+#pragma mark - 获取机型用于适配
+- (CurrentDevice)currentDeviceSize
+{
+    if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 4"] ||
+        [[self getCurrentDeviceModel] isEqualToString:@"iPhone 5"])
+    {
+        return IPhone5;
+        
+    }else if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 6"] ||
+              [[self getCurrentDeviceModel] isEqualToString:@"iPhone Simulator"])
+    {
+        return IPhone6;
+    }else
+    {
+        return Iphone6Plus;
+    }
+}
+//获得设备型号
+- (NSString *)getCurrentDeviceModel
+{
+    int mib[2];
+    size_t len;
+    char *machine;
+    
+    mib[0] = CTL_HW;
+    mib[1] = HW_MACHINE;
+    sysctl(mib, 2, NULL, &len, NULL, 0);
+    machine = malloc(len);
+    sysctl(mib, 2, machine, &len, NULL, 0);
+    
+    NSString *platform = [NSString stringWithCString:machine encoding:NSASCIIStringEncoding];
+    free(machine);
+    
+    if ([platform isEqualToString:@"iPhone1,1"]) return @"iPhone 2G (A1203)";
+    if ([platform isEqualToString:@"iPhone1,2"]) return @"iPhone 3G (A1241/A1324)";
+    if ([platform isEqualToString:@"iPhone2,1"]) return @"iPhone 3GS (A1303/A1325)";
+    if ([platform isEqualToString:@"iPhone3,1"]) return @"iPhone 4";
+    if ([platform isEqualToString:@"iPhone3,2"]) return @"iPhone 4";
+    if ([platform isEqualToString:@"iPhone3,3"]) return @"iPhone 4";
+    if ([platform isEqualToString:@"iPhone4,1"]) return @"iPhone 4";
+    if ([platform isEqualToString:@"iPhone5,1"]) return @"iPhone 5";
+    if ([platform isEqualToString:@"iPhone5,2"]) return @"iPhone 5";
+    if ([platform isEqualToString:@"iPhone5,3"]) return @"iPhone 5";
+    if ([platform isEqualToString:@"iPhone5,4"]) return @"iPhone 5";
+    if ([platform isEqualToString:@"iPhone6,1"]) return @"iPhone 5";
+    if ([platform isEqualToString:@"iPhone6,2"]) return @"iPhone 5";
+    if ([platform isEqualToString:@"iPhone7,1"]) return @"iPhone 6 Plus";
+    if ([platform isEqualToString:@"iPhone7,2"]) return @"iPhone 6";
+    
+    if ([platform isEqualToString:@"i386"])      return @"iPhone Simulator";
+    if ([platform isEqualToString:@"x86_64"])    return @"iPhone Simulator";
+    return platform;
+}
 @end

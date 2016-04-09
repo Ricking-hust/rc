@@ -213,10 +213,11 @@
     self.upView.tagImgView.image = [self getThemeImage:self.model.themeName];
     self.downView.textView.text = self.model.planContent;
     self.downView.textView.alpha = 1.0;
+    NSInteger len = [self.model.planTime length];
     NSString *year = [self.model.planTime substringWithRange:NSMakeRange(0, 4)];
     NSString *month = [self.model.planTime substringWithRange:NSMakeRange(5, 2)];
     NSString *day = [self.model.planTime substringWithRange:NSMakeRange(8, 2)];
-    NSString *time = [self.model.planTime substringWithRange:NSMakeRange(11, 5)];
+    NSString *time = [self.model.planTime substringWithRange:NSMakeRange(len - 5, 5)];
     self.downView.timeInfoLabel.text = [NSString stringWithFormat:@"%@年%@月%@日 %@",year,month,day,time];
     CGSize timeSize = [self sizeWithText:self.downView.timeInfoLabel.text maxSize:CGSizeMake(MAXFLOAT, 20) fontSize:14];
     [self.downView.timeInfoLabel mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -331,8 +332,8 @@
         NSString *month = [model.planTime substringWithRange:NSMakeRange(5, 2)];
         NSString *day = [model.planTime substringWithRange:NSMakeRange(8, 2)];
         int dataCmp = [[NSString stringWithFormat:@"%@%@%@",year, month, day] intValue];
-        if (currentDate < dataCmp)
-        {//比当前时间早
+        if (currentDate > dataCmp)
+        {
             if (i == 0)
             {
                 NSMutableArray *newscArray = [[NSMutableArray alloc]init];
@@ -345,12 +346,12 @@
                 NSMutableArray *newscArray = [[NSMutableArray alloc]init];
                 newModel.planTime = strCurrentDate;
                 [newscArray addObject:newModel];
-                [self.planListRangedUpdate insertObject:newscArray atIndex:i];
+                [self.planListRangedUpdate insertObject:newscArray atIndex:i-1];
                 break;
             }
-        }else if (currentDate > dataCmp)
-        {//比当前时间晚
-            //continue;
+        }else if (currentDate < dataCmp)
+        {
+            ;
         }else
         {
             NSMutableArray *newscArray = [[NSMutableArray alloc]initWithArray:self.planListRangedUpdate[i]];
@@ -360,6 +361,37 @@
             [self.planListRangedUpdate insertObject:newscArray atIndex:i];
             break;
         }
+#pragma mark - 修改，此时planListRanged是逆序 begin
+//        if (currentDate < dataCmp)
+//        {//比当前时间早
+//            if (i == 0)
+//            {
+//                NSMutableArray *newscArray = [[NSMutableArray alloc]init];
+//                newModel.planTime = strCurrentDate;
+//                [newscArray addObject:newModel];
+//                [self.planListRangedUpdate insertObject:newscArray atIndex:i];
+//                break;
+//            }else
+//            {
+//                NSMutableArray *newscArray = [[NSMutableArray alloc]init];
+//                newModel.planTime = strCurrentDate;
+//                [newscArray addObject:newModel];
+//                [self.planListRangedUpdate insertObject:newscArray atIndex:i];
+//                break;
+//            }
+//        }else if (currentDate > dataCmp)
+//        {//比当前时间晚
+//            //continue;
+//        }else
+//        {
+//            NSMutableArray *newscArray = [[NSMutableArray alloc]initWithArray:self.planListRangedUpdate[i]];
+//            newModel.planTime = strCurrentDate;
+//            [newscArray addObject:newModel];
+//            [self.planListRangedUpdate removeObjectAtIndex:i];
+//            [self.planListRangedUpdate insertObject:newscArray atIndex:i];
+//            break;
+//        }
+#pragma mark - 修改，此时planListRanged是逆序 end
     }
     if (i == self.self.planListRangedUpdate.count)
     {
@@ -668,6 +700,7 @@
     NSString *time = self.times[rowTime];
     
     self.downView.timeInfoLabel.text = [NSString stringWithFormat:@"%@年%@月%@日 %@", year, month, day, time];
+    self.model.planTime = self.downView.timeInfoLabel.text;
     CGSize timeInfoSize = [self sizeWithText:self.downView.timeInfoLabel.text maxSize:CGSizeMake(MAXFLOAT, 20) fontSize:14];
     [self.downView.timeInfoLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(timeInfoSize.width+1, timeInfoSize.height+1));

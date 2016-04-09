@@ -160,8 +160,8 @@
         NSString *month = [model.planTime substringWithRange:NSMakeRange(5, 2)];
         NSString *day = [model.planTime substringWithRange:NSMakeRange(8, 2)];
         int dataCmp = [[NSString stringWithFormat:@"%@%@%@",year, month, day] intValue];
-        if (currentDate < dataCmp)
-        {//比当前时间早
+        if (currentDate > dataCmp)
+        {
             if (i == 0)
             {
                 NSMutableArray *newscArray = [[NSMutableArray alloc]init];
@@ -174,12 +174,12 @@
                 NSMutableArray *newscArray = [[NSMutableArray alloc]init];
                 newModel.planTime = strCurrentDate;
                 [newscArray addObject:newModel];
-                [self.planListRangedAdd insertObject:newscArray atIndex:i];
+                [self.planListRangedAdd insertObject:newscArray atIndex:i-1];
                 break;
             }
-        }else if (currentDate > dataCmp)
-        {//比当前时间晚
-            //continue;
+        }else if (currentDate < dataCmp)
+        {
+            ;
         }else
         {
             NSMutableArray *newscArray = [[NSMutableArray alloc]initWithArray:self.planListRangedAdd[i]];
@@ -189,6 +189,37 @@
             [self.planListRangedAdd insertObject:newscArray atIndex:i];
             break;
         }
+#pragma mark - 修改，此时planListRanged是逆序 begin
+//        if (currentDate < dataCmp)
+//        {//比当前时间早
+//            if (i == 0)
+//            {
+//                NSMutableArray *newscArray = [[NSMutableArray alloc]init];
+//                newModel.planTime = strCurrentDate;
+//                [newscArray addObject:newModel];
+//                [self.planListRangedAdd insertObject:newscArray atIndex:i];
+//                break;
+//            }else
+//            {
+//                NSMutableArray *newscArray = [[NSMutableArray alloc]init];
+//                newModel.planTime = strCurrentDate;
+//                [newscArray addObject:newModel];
+//                [self.planListRangedAdd insertObject:newscArray atIndex:i];
+//                break;
+//            }
+//        }else if (currentDate > dataCmp)
+//        {//比当前时间晚
+//            //continue;
+//        }else
+//        {
+//            NSMutableArray *newscArray = [[NSMutableArray alloc]initWithArray:self.planListRangedAdd[i]];
+//            newModel.planTime = strCurrentDate;
+//            [newscArray addObject:newModel];
+//            [self.planListRangedAdd removeObjectAtIndex:i];
+//            [self.planListRangedAdd insertObject:newscArray atIndex:i];
+//            break;
+//        }
+#pragma mark - 修改，此时planListRanged是逆序 end
     }
     if (i == self.planListRangedAdd.count)
     {

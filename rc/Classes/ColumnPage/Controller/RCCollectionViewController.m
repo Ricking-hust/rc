@@ -147,6 +147,7 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     }
     [self collectionView:collectionView setCellValue:cell AtIndexPath:indexPath];
     [cell setSubviewConstraint];
+
     return cell;
 
 }
@@ -523,7 +524,7 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     if ([platform isEqualToString:@"x86_64"])    return @"iPhone Simulator";
     return platform;
 }
-//获取当前设备
+#pragma mark - 获取机型用于适配
 - (CurrentDevice)currentDeviceSize
 {
     if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 4"] ||
