@@ -155,6 +155,7 @@
                 [self.planListRanged[i] addObject:planModel];
             }
         }
+#pragma mark - 修改数组倒序
         //将数组倒序
         NSMutableArray *arr  = self.planListRanged;
         NSEnumerator *enumer = [arr reverseObjectEnumerator];
