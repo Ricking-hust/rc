@@ -126,8 +126,8 @@
             if ([self.self.model.plAlarmThree isEqualToString:@"1"]) {
                 NSDate *dateP3 = [NSDate dateWithTimeInterval:-259200 sinceDate:date];
                 [remindma scheduleLocalNotificationWithDate:dateP3 Title:self.model.planContent notiID:replanId];
-            [self.navigationController popViewControllerAnimated:YES];
             }
+            [self.navigationController popViewControllerAnimated:YES];
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];
@@ -135,7 +135,7 @@
     }else
     {
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入内容" preferredStyle:UIAlertControllerStyleAlert];
-        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"确实" style:UIAlertActionStyleDefault handler:nil];
+        UIAlertAction *ok = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:nil];
         [alert addAction:ok];
         [self presentViewController:alert animated:YES completion:nil];
     }
