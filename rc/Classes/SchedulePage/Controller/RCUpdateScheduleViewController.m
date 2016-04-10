@@ -235,7 +235,7 @@
         NSString *year = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(0, 4)];
         NSString *month = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(5, 2)];
         NSString *day = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(8, 2)];
-        NSString *time = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(11, 6)];
+        NSString *time = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(12, 5)];
         self.model.planTime = [NSString stringWithFormat:@"%@-%@-%@ %@",year,month,day,time];
         [self sortByDay:self.model];
         long int count = self.navigationController.viewControllers.count;
@@ -319,7 +319,7 @@
     NSString *year = [newModel.planTime substringWithRange:NSMakeRange(0, 4)];
     NSString *month = [newModel.planTime substringWithRange:NSMakeRange(5, 2)];
     NSString *day = [newModel.planTime substringWithRange:NSMakeRange(8, 2)];
-    NSString *time = [newModel.planTime substringWithRange:NSMakeRange(12, 5)];
+    NSString *time = [newModel.planTime substringWithRange:NSMakeRange(11, 5)];
     int currentDate = [[NSString stringWithFormat:@"%@%@%@",year, month, day] intValue];
     NSString *strCurrentDate = [NSString stringWithFormat:@"%@-%@-%@ %@",year,month,day,time];
     for (i = 0; i < self.planListRangedUpdate.count; i++)
@@ -700,7 +700,7 @@
     NSString *time = self.times[rowTime];
     
     self.downView.timeInfoLabel.text = [NSString stringWithFormat:@"%@年%@月%@日 %@", year, month, day, time];
-    self.model.planTime = self.downView.timeInfoLabel.text;
+    self.model.planTime = [NSString stringWithFormat:@"%@-%@-%@ %@", year, month, day, time];;
     CGSize timeInfoSize = [self sizeWithText:self.downView.timeInfoLabel.text maxSize:CGSizeMake(MAXFLOAT, 20) fontSize:14];
     [self.downView.timeInfoLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.size.mas_equalTo(CGSizeMake(timeInfoSize.width+1, timeInfoSize.height+1));
