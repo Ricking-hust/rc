@@ -210,24 +210,34 @@
 }
 #pragma mark - 删除行程
 - (void)deleteSC{
-    self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    self.HUD.removeFromSuperViewOnHide = YES;
-    [self.view addSubview:self.HUD];
-    [self.HUD showAnimated:YES];
-    
-    NSArray *plArray = self.planListRanged[([self.timeNodeIndex intValue])];
-    PlanModel *model = plArray[self.index];
-    [[DataManager manager] delPlanWithUserId:[userDefaults objectForKey:@"userId"] planId:model.planId success:^(NSString *msg) {
-        self.HUD.mode = MBProgressHUDModeCustomView;
-        self.HUD.label.text = @"删除成功！";
-        [self.HUD hideAnimated:YES afterDelay:0.6];
-        [self deleteSCNative];
-    } failure:^(NSError *error) {
-        self.HUD.mode = MBProgressHUDModeCustomView;
-        self.HUD.label.text = @"操作失败";
-        [self.HUD hideAnimated:YES afterDelay:0.6];
-        NSLog(@"Error:%@",error);
+    UIAlertController *configureDel = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定删除该行程" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+        
     }];
+    UIAlertAction *configureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+        self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        self.HUD.removeFromSuperViewOnHide = YES;
+        [self.view addSubview:self.HUD];
+        [self.HUD showAnimated:YES];
+        
+        NSArray *plArray = self.planListRanged[([self.timeNodeIndex intValue])];
+        PlanModel *model = plArray[self.index];
+        [[DataManager manager] delPlanWithUserId:[userDefaults objectForKey:@"userId"] planId:model.planId success:^(NSString *msg) {
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"删除成功！";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+            [self deleteSCNative];
+        } failure:^(NSError *error) {
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"操作失败";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+            NSLog(@"Error:%@",error);
+        }];
+    }];
+    [configureDel addAction:cancleAction];
+    [configureDel addAction:configureAction];
+    
+    [self presentViewController:configureDel animated:YES completion:nil];
 }
 
 - (void)deleteSCNative

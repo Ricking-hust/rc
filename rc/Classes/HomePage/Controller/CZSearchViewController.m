@@ -135,6 +135,7 @@
 - (void)onClickTagBtn:(UIButton *)btn
 {
     self.searchBar.text = btn.titleLabel.text;
+    [self searchBarSearchButtonClicked:self.searchBar];
 }
 #pragma mark - 取消
 - (void)onClick:(UIButton *)btn

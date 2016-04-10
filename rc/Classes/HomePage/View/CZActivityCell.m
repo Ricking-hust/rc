@@ -109,7 +109,7 @@
     CGFloat tagBottomPadding = 12;
     
     //cell高度
-    self.cellHeight = tittleTopPadding + nameSize.height + timeSize.height + placeSize.height + tagSize.height + timePaddingToName + tagPaddingToPlace + 15;
+    self.cellHeight = tittleTopPadding + nameSize.height + timeSize.height + placeSize.height + tagSize.height + timePaddingToName + tagPaddingToPlace + 15;;
     [self.ac_poster mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_left).offset(10);
         make.centerY.equalTo(self.contentView.mas_centerY);

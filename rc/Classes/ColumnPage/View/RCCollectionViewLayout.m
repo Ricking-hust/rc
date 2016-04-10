@@ -103,7 +103,7 @@
     
     // 创建属性
     UICollectionViewLayoutAttributes *attrs = [UICollectionViewLayoutAttributes layoutAttributesForCellWithIndexPath:indexPath];
-    attrs.frame = CGRectMake(x, y, width, height);
+    attrs.frame = CGRectMake(x, y-20, width, height);
     return attrs;
 }
 

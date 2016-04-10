@@ -32,14 +32,14 @@
 @property (nonatomic, strong) UIScrollView *toolScrollView;
 @property (nonatomic, strong) NSMutableArray *toolButtonArray;
 @property (nonatomic, strong) IndustryList *indList;
-@property (nonatomic, strong) ActivityList *activityList;
+@property (nonatomic, strong) ActivityList *acListRecived;
 @property (nonatomic, strong) NSMutableDictionary *collectionViewByInd;
 @property (nonatomic, strong) NSMutableDictionary *activityListByInd;
 @property (nonatomic, strong) RCColumnScrollViewDelegate *scrollViewDelegate;
 
 @property (nonatomic, copy) NSURLSessionDataTask *(^getIndListBlock)();
 @property (nonatomic, copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)(IndustryModel *model);
-@property (nonatomic,copy) NSURLSessionDataTask *(^refreshAcListWithIndBlock)(IndustryModel *model);
+@property (nonatomic,copy) NSURLSessionDataTask *(^refreshAcListWithIndBlock)(IndustryModel *model,NSString *minAcId);
 @end
 
 @implementation RCCollectionViewController
@@ -130,9 +130,9 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     RCCollectionView *cv = (RCCollectionView *)collectionView;
-    ActivityList *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
+    NSMutableArray *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
 
-    return activityList.list.count;
+    return activityList.count;
 }
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -155,9 +155,9 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 {
 
     RCCollectionView *cv = (RCCollectionView *)collectionView;
-    ActivityList *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
+    NSMutableArray *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
     
-    ActivityModel *model = activityList.list[indexPath.row];
+    ActivityModel *model = activityList[indexPath.row];
     [cell.acImage sd_setImageWithURL:[NSURL URLWithString:model.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     cell.acName.text = model.acTitle;
     int len = (int)[model.acTime length];
@@ -171,11 +171,11 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     RCCollectionView *cv = (RCCollectionView *)collectionView;
-    ActivityList *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
+    NSMutableArray *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
     
     CZActivityInfoViewController *info = [[CZActivityInfoViewController alloc]init];
     info.title = @"活动介绍";
-    info.activityModelPre = activityList.list[indexPath.row];
+    info.activityModelPre = activityList[indexPath.row];
 
     [self.navigationController pushViewController:info animated:YES];
 }
@@ -211,8 +211,8 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 {
     //取出数据
     RCCollectionView *cv = (RCCollectionView *)collectionView;
-    ActivityList *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
-    return [self sizeByActivityModel:activityList.list[indexPath.row] ForSepcifiedCell:indexPath].height;
+    NSMutableArray *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
+    return [self sizeByActivityModel:activityList[indexPath.row] ForSepcifiedCell:indexPath].height;
 }
 #pragma mark <UICollectionViewDelegate>
 
@@ -272,15 +272,14 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
         }
         return [[DataManager manager] checkIndustryWithCityId:cityId industryId:model.indId startId:@"0" success:^(ActivityList *acList) {
             @strongify(self);
-            self.activityList = acList;
             //按行业加载数据
-            [self loadData:acList ByIndustry:model];
+            [self loadData:acList.list ByIndustry:model];
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];
     };
     
-    self.refreshAcListWithIndBlock = ^(IndustryModel *model){
+    self.refreshAcListWithIndBlock = ^(IndustryModel *model,NSString *minAcId){
         @strongify(self);
         NSString *cityId = [[NSString alloc]init];
         if ([userDefaults objectForKey:@"cityId"]) {
@@ -288,29 +287,56 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
         } else {
             cityId = @"1";
         }
-        return [[DataManager manager] checkIndustryWithCityId:cityId industryId:model.indId startId:@"0" success:^(ActivityList *acList) {
+        return [[DataManager manager] checkIndustryWithCityId:cityId industryId:model.indId startId:minAcId success:^(ActivityList *acList) {
             @strongify(self);
-            self.activityList = acList;
-            [self refreshData:acList ByIndustry:model];
+            if ([minAcId isEqualToString:@"0"]) {
+                [self refreshData:acList.list ByIndustry:model];
+            } else {
+                if (acList == nil) {
+                     RCCollectionView *collectionView = [self getCurrentCollectionView];
+                    [collectionView.mj_footer endRefreshingWithNoMoreData];
+                } else {
+                    [self getMoreData:acList.list ByIndustry:model];
+                }
+            }
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
         }];
     };
 }
 
-- (void)loadData:(ActivityList *)activityList ByIndustry:(IndustryModel *)model
+- (void)loadData:(NSArray *)acListRecived ByIndustry:(IndustryModel *)model
 {
     long int index = [self.indList.list indexOfObject:model];
     RCCollectionView *collectionView = [self createCollectionView:(int)index WithIndModel:model];
+    NSMutableArray *acList = [[NSMutableArray alloc]init];
+    for (ActivityModel *model in acListRecived) {
+        [acList addObject:model];
+    }
     [self.collectionViewByInd setObject:collectionView forKey:model.indName];
-    [self.activityListByInd setObject:activityList forKey:model.indName];
+    [self.activityListByInd setObject:acList forKey:model.indName];
 }
 
--(void)refreshData:(ActivityList *)acList ByIndustry:(IndustryModel *)model{
+-(void)refreshData:(NSArray *)acListRecived ByIndustry:(IndustryModel *)model{
     RCCollectionView *collectionView = [self.collectionViewByInd objectForKey:model.indName];
+    NSMutableArray *acList = [[NSMutableArray alloc]init];
+    for (ActivityModel *model in acListRecived) {
+        [acList addObject:model];
+    }
     [self.activityListByInd setObject:acList forKey:model.indName];
     [collectionView reloadData];
 }
+
+-(void)getMoreData:(NSArray *)acListRecived ByIndustry:(IndustryModel *)model{
+    RCCollectionView *collectionView = [self.collectionViewByInd objectForKey:model.indName];
+    NSMutableArray *acList = [self.activityListByInd objectForKey:model.indName];
+    for (ActivityModel *model in acListRecived) {
+        [acList addObject:model];
+    }
+    [self.activityListByInd setObject:acList forKey:model.indName];
+    [collectionView reloadData];
+}
+
 -(void)setIndList:(IndustryList *)indList
 {
     _indList = indList;
@@ -350,17 +376,18 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 {
     //获取当前的collectionView
     RCCollectionView *collectionView = [self getCurrentCollectionView];
-    [collectionView.mj_header endRefreshing];
     if (self.refreshAcListWithIndBlock) {
-        self.refreshAcListWithIndBlock(collectionView.indModel);
+        self.refreshAcListWithIndBlock(collectionView.indModel,@"0");
     }
+    [collectionView.mj_header endRefreshing];
+    [collectionView.mj_footer endRefreshing];
 }
 
 //同时刷新所有collectionView
 -(void)refreshColumn{
     if (self.refreshAcListWithIndBlock) {
         for (IndustryModel *indModel in self.indList.list) {
-            self.refreshAcListWithIndBlock(indModel);
+            self.refreshAcListWithIndBlock(indModel,@"0");
         }
     }
 }
@@ -369,6 +396,13 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 {
     //获取当前的collectionView
     RCCollectionView *collectionView = [self getCurrentCollectionView];
+    NSMutableArray *acList = [self.activityListByInd objectForKey:collectionView.indModel.indName];
+    ActivityModel *minModel = acList.lastObject;
+    NSString *minId = minModel.acID;
+    NSLog(@"mindId:%@",minId);
+    if (self.refreshAcListWithIndBlock) {
+        self.refreshAcListWithIndBlock(collectionView.indModel,minId);
+    }
     [collectionView.mj_footer endRefreshing];
 }
 - (RCCollectionView *)getCurrentCollectionView
@@ -385,9 +419,9 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     }
     return [self.collectionViewByInd valueForKey:indName];
 }
--(void)setActivityList:(ActivityList *)activityList
+-(void)setAcListRecived:(ActivityList *)acListRecived
 {
-    _activityList = activityList;
+    _acListRecived = acListRecived;
     
 }
 #pragma mark - 懒加载，创建toolScrollView

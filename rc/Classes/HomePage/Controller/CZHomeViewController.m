@@ -120,6 +120,7 @@ typedef void (^HomeViewBlock)(id);
 {
     [self refreshRecomend];
     [self.tableView.mj_header endRefreshing];
+    [self.tableView.mj_footer endRefreshing];
 }
 
 -(void)getMoreData{
