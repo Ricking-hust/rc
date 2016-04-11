@@ -42,6 +42,7 @@
 - (void)getTimeNodeSV:(NSNotification *)notification
 {
     self.timeNodeSV = notification.object;
+
 }
 - (void)getTimeNodeScrollView:(NSNotification *)notification
 {

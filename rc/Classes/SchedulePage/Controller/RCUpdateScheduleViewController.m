@@ -29,6 +29,7 @@
 @property (nonatomic, assign, readonly) CGFloat textViewH;          //textView的高度
 @property (nonatomic, strong) NSString *localTime;
 @property (nonatomic, strong) PlanModel *model;
+@property (nonatomic, weak) id<RCSettingRemindTimeDelegate> settingRemindDelegate;
 @end
 @implementation RCUpdateScheduleViewController
 #pragma mark - 修改行程代理

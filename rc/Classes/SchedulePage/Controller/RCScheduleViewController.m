@@ -20,7 +20,7 @@
 @property (nonatomic, strong) PlanList *planList;
 @property (nonatomic, strong) NSMutableArray *planListRanged;
 @property (nonatomic, copy) NSURLSessionDataTask *(^getPlanListBlock)();
-
+@property (nonatomic, strong) NSString  *updateState;//行程更新的状态,null未更新，update已更新须请求后台,默认update
 @end
 
 @implementation RCScheduleViewController
@@ -28,10 +28,10 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-#pragma mark - 增加begin
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
-#pragma mark - 增加end
+//#pragma mark - 增加begin
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
+//#pragma mark - 增加end
     self.isLogin = [DataManager manager].user.isLogin;
     if (self.isLogin)
     {
@@ -67,8 +67,14 @@
     [self setNavigation];
     [self createSC];
     [self configureBlocks];
+    self.updateState = @"null";
     [[NSNotificationCenter defaultCenter]postNotificationName:@"getView" object:self.view];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getScheduleState:) name:@"scState" object:nil];
 
+}
+- (void)getScheduleState:(NSNotification *)notification
+{
+    self.updateState = notification.object;
 }
 -(void)configureBlocks{
     @weakify(self);
@@ -133,7 +139,7 @@
     NSDateFormatter  *dateformatter=[[NSDateFormatter alloc] init];
     
     [dateformatter setDateFormat:@"MM月dd日"];
-    
+
     NSString *locationString=[dateformatter stringFromDate:senddate];
     
     self.navigationItem.title = locationString;

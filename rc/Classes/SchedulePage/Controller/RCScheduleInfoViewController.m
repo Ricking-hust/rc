@@ -471,13 +471,6 @@
 #pragma mark - 返回
 - (void)back
 {
-//    if (self.planListRanged.count != 0)
-//    {
-//        dispatch_sync(dispatch_get_main_queue(), ^{
-//            [self.timeNodeSV setContentOffsetY:([self.timeNodeIndex intValue]) *114];
-//        });
-//
-//    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (CGSize)setLabelStyle:(UILabel *)label WithContent:(NSString *)content
