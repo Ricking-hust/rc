@@ -347,7 +347,7 @@
                 NSMutableArray *newscArray = [[NSMutableArray alloc]init];
                 newModel.planTime = strCurrentDate;
                 [newscArray addObject:newModel];
-                [self.planListRangedUpdate insertObject:newscArray atIndex:i-1];
+                [self.planListRangedUpdate insertObject:newscArray atIndex:i];
                 break;
             }
         }else if (currentDate < dataCmp)

@@ -164,6 +164,7 @@
                 self.timeNodeSV.contentSize = CGSizeMake(0, height);
             }
             latestIndex = [self indexOfNearlyToday:array];
+            self.timeNodeSV.nodeIndex = [[NSNumber alloc]initWithInt:latestIndex];
             self.timeNodeSV.upLine = [self.timeNodeSV viewWithTag:1+latestIndex];
             self.timeNodeSV.downLine = [self.timeNodeSV  viewWithTag:1000+latestIndex];
             self.timeNodeSV.point = [self.timeNodeSV  viewWithTag:100+latestIndex];

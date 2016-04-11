@@ -227,6 +227,7 @@
             self.HUD.label.text = @"删除成功！";
             [self.HUD hideAnimated:YES afterDelay:0.6];
             [self deleteSCNative];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"scState" object:@"update"];
         } failure:^(NSError *error) {
             self.HUD.mode = MBProgressHUDModeCustomView;
             self.HUD.label.text = @"操作失败";

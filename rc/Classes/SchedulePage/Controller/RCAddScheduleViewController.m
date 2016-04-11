@@ -16,6 +16,7 @@
 #import "RemindManager.h"
 @interface RCAddScheduleViewController ()
 @property (nonatomic, strong) PlanModel *model;
+@property (nonatomic, strong) PlanModel *originModel;//这是从行程界面传过来的model，在添加新行程后，用于找到其下标
 @property (nonatomic, strong) RCScrollView *timeNodeSVAdd;
 
 @end
@@ -31,7 +32,14 @@
 }
 
 #pragma mark - 懒加载
-
+- (PlanModel *)originModel
+{
+    if (!_originModel)
+    {
+        _originModel = [[PlanModel alloc]init];
+    }
+    return _originModel;
+}
 - (RCScrollView *)timeNodeSVAdd
 {
     if (!_timeNodeSVAdd)
@@ -57,8 +65,9 @@
 {
     [super viewDidLoad];
     [self initModel];
-    
     [self setNavigation];
+    NSArray *scArray = self.planListRangedAdd[[self.timeNodeSVAdd.nodeIndex intValue]];
+    self.originModel = scArray.firstObject;
     
 }
 - (void)setNavigation
@@ -98,18 +107,6 @@
     if (![self.downView.textView.text isEqualToString:@"请输入行程地点+内容(40字以内)"])
     {
         [self getscInfo];
-        if (self.planListRangedAdd.count != 0)
-        {
-            [self insertSC:self.model];
-        }else
-        {
-            NSArray *newsc = [[NSArray alloc]initWithObjects:self.model, nil];
-            [self.planListRangedAdd addObject:newsc];
-        }
-        for (UIView *view in self.timeNodeSVAdd.subviews)
-        {
-            [view removeFromSuperview];
-        }
         NSString *themeId = [self getThemeId:self.model.themeName];
         [[DataManager manager] addPlanWithOpType:@"1" planId:@"" userId:[userDefaults objectForKey:@"userId"] themeId:themeId planTime:self.model.planTime plAlarmOne:self.model.plAlarmOne plAlarmTwo:self.model.plAlarmTwo plAlarmThree:self.model.plAlarmThree planContent:self.model.planContent acPlace:self.model.acPlace success:^(NSString *replanId) {
             RemindManager *remindma = [[RemindManager alloc]init];
@@ -129,6 +126,21 @@
                 NSDate *dateP3 = [NSDate dateWithTimeInterval:-259200 sinceDate:date];
                 [remindma scheduleLocalNotificationWithDate:dateP3 Title:self.model.planContent notiID:replanId];
             }
+            if (self.planListRangedAdd.count != 0)
+            {
+                [self insertSC:self.model];
+            }else
+            {
+                NSArray *newsc = [[NSArray alloc]initWithObjects:self.model, nil];
+                [self.planListRangedAdd addObject:newsc];
+            }
+            for (UIView *view in self.timeNodeSVAdd.subviews)
+            {
+                [view removeFromSuperview];
+            }
+
+            [self resetTimeNodeIndex];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"scState" object:@"update"];
             [self.navigationController popViewControllerAnimated:YES];
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
@@ -140,7 +152,22 @@
         [alert addAction:ok];
         [self presentViewController:alert animated:YES completion:nil];
     }
+}
+#pragma mark - 重置timeNodeIndex
+- (void)resetTimeNodeIndex
+{
 
+    NSString *currentTime = [self.originModel.planTime substringWithRange:NSMakeRange(0, 10)];
+    for (int i = 0; i < self.planListRangedAdd.count; i++)
+    {
+        PlanModel *model = [self.planListRangedAdd[i] firstObject];
+        NSString *time = [model.planTime substringWithRange:NSMakeRange(0, 10)];
+        if ([currentTime isEqualToString:time])
+        {
+            self.timeNodeSVAdd.nodeIndex = [[NSNumber alloc]initWithInt:i];
+            break;
+        }
+    }
 }
 - (void)insertSC:(PlanModel *)newModel
 {
@@ -156,10 +183,10 @@
         NSMutableArray *array = self.planListRangedAdd[i];
         PlanModel *model = [[PlanModel alloc]init];
         model = array.firstObject;
-        
         NSString *year = [model.planTime substringWithRange:NSMakeRange(0, 4)];
         NSString *month = [model.planTime substringWithRange:NSMakeRange(5, 2)];
         NSString *day = [model.planTime substringWithRange:NSMakeRange(8, 2)];
+        
         int dataCmp = [[NSString stringWithFormat:@"%@%@%@",year, month, day] intValue];
         if (currentDate > dataCmp)
         {
@@ -175,7 +202,7 @@
                 NSMutableArray *newscArray = [[NSMutableArray alloc]init];
                 newModel.planTime = strCurrentDate;
                 [newscArray addObject:newModel];
-                [self.planListRangedAdd insertObject:newscArray atIndex:i-1];
+                [self.planListRangedAdd insertObject:newscArray atIndex:i];
                 break;
             }
         }else if (currentDate < dataCmp)
@@ -190,37 +217,6 @@
             [self.planListRangedAdd insertObject:newscArray atIndex:i];
             break;
         }
-#pragma mark - 修改，此时planListRanged是逆序 begin
-//        if (currentDate < dataCmp)
-//        {//比当前时间早
-//            if (i == 0)
-//            {
-//                NSMutableArray *newscArray = [[NSMutableArray alloc]init];
-//                newModel.planTime = strCurrentDate;
-//                [newscArray addObject:newModel];
-//                [self.planListRangedAdd insertObject:newscArray atIndex:i];
-//                break;
-//            }else
-//            {
-//                NSMutableArray *newscArray = [[NSMutableArray alloc]init];
-//                newModel.planTime = strCurrentDate;
-//                [newscArray addObject:newModel];
-//                [self.planListRangedAdd insertObject:newscArray atIndex:i];
-//                break;
-//            }
-//        }else if (currentDate > dataCmp)
-//        {//比当前时间晚
-//            //continue;
-//        }else
-//        {
-//            NSMutableArray *newscArray = [[NSMutableArray alloc]initWithArray:self.planListRangedAdd[i]];
-//            newModel.planTime = strCurrentDate;
-//            [newscArray addObject:newModel];
-//            [self.planListRangedAdd removeObjectAtIndex:i];
-//            [self.planListRangedAdd insertObject:newscArray atIndex:i];
-//            break;
-//        }
-#pragma mark - 修改，此时planListRanged是逆序 end
     }
     if (i == self.planListRangedAdd.count)
     {
