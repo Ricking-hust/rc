@@ -58,6 +58,7 @@
         make.left.equalTo(self.view.mas_left);
         make.bottom.equalTo(self.view.mas_bottom).offset(-49);
     }];
+    self.sc.timeNodeSV.decelerationRate = 0.6;//此属性用于修改scrollView滑动的速率
     self.sc.hidden = YES;
 }
 - (void)viewDidLoad
