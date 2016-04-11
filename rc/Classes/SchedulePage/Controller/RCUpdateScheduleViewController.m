@@ -29,6 +29,7 @@
 @property (nonatomic, assign, readonly) CGFloat textViewH;          //textView的高度
 @property (nonatomic, strong) NSString *localTime;
 @property (nonatomic, strong) PlanModel *model;
+@property (nonatomic, strong) PlanModel *originModel;
 @property (nonatomic, weak) id<RCSettingRemindTimeDelegate> settingRemindDelegate;
 @end
 @implementation RCUpdateScheduleViewController
@@ -62,6 +63,14 @@
 //    }
 //    return _timeNodeSVUpdate;
 //}
+- (PlanModel *)originModel
+{
+    if (!_originModel)
+    {
+        _originModel = [[PlanModel alloc]init];
+    }
+    return _originModel;
+}
 - (int)scIndexUpdate
 {
     if (!_scIndexUpdate)
@@ -228,53 +237,78 @@
 #pragma mark - 提交修改
 - (void)commintModify
 {
+    [self.downView.textView resignFirstResponder];
     if (![self.downView.textView.text isEqualToString:@"请输入行程地点+内容(40字以内)"])
     {
-        self.model.themeName = self.upView.themeNameLabel.text;
-        self.model.planContent = self.downView.textView.text;
-        self.model.planTime = self.downView.timeInfoLabel.text;
-        NSString *year = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(0, 4)];
-        NSString *month = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(5, 2)];
-        NSString *day = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(8, 2)];
-        NSString *time = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(12, 5)];
-        self.model.planTime = [NSString stringWithFormat:@"%@-%@-%@ %@",year,month,day,time];
-        [self sortByDay:self.model];
-        long int count = self.navigationController.viewControllers.count;
-        RCScheduleInfoViewController *sc = self.navigationController.viewControllers[count -2];
-        sc.isContentUpdate = YES;
-        NSString *themeId = [self getThemeId:self.model.themeName];
-        [[DataManager manager] addPlanWithOpType:@"2" planId:self.model.planId userId:[userDefaults objectForKey:@"userId"] themeId:themeId planTime:self.model.planTime plAlarmOne:self.model.plAlarmOne plAlarmTwo:self.model.plAlarmTwo plAlarmThree:self.model.plAlarmThree planContent:self.model.planContent acPlace:self.model.acPlace success:^(NSString *replanId) {
-            RemindManager *remindma = [[RemindManager alloc]init];
-            //先清除与本活动相关的所有本地通知
-            [remindma removeLocalNotificationWithNotificationId:self.model.planId];
-            //添加本地推送
-            NSDate *date = [remindma dateFromString:self.model.planTime];
-            if ([self.model.plAlarmOne isEqualToString:@"1"]) {
-                NSDate *dateP1 = [NSDate dateWithTimeInterval:-3600 sinceDate:date];
-                [remindma scheduleLocalNotificationWithDate:dateP1 Title:self.model.planContent notiID:self.model.planId];
-            }
-            if ([self.self.model.plAlarmTwo isEqualToString:@"1"]) {
-                NSDate *dateP2 = [NSDate dateWithTimeInterval:-86400 sinceDate:date];
-                [remindma scheduleLocalNotificationWithDate:dateP2 Title:self.model.planContent notiID:self.model.planId];
-            }
-            if ([self.self.model.plAlarmThree isEqualToString:@"1"]) {
-                NSDate *dateP3 = [NSDate dateWithTimeInterval:-259200 sinceDate:date];
-                [remindma scheduleLocalNotificationWithDate:dateP3 Title:self.model.planContent notiID:self.model.planId];
-            }
-            [self.navigationController popViewControllerAnimated:YES];
-        } failure:^(NSError *error) {
-            NSLog(@"Error:%@",error);
-        }];
+        BOOL result = [self isUpdateSchedule];
+        if (result == YES)
+        {
+            self.model.themeName = self.upView.themeNameLabel.text;
+            self.model.planContent = self.downView.textView.text;
+            self.model.planTime = self.downView.timeInfoLabel.text;
+            NSString *year = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(0, 4)];
+            NSString *month = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(5, 2)];
+            NSString *day = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(8, 2)];
+            NSString *time = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(12, 5)];
+            self.model.planTime = [NSString stringWithFormat:@"%@-%@-%@ %@",year,month,day,time];
+            [self sortByDay:self.model];
+            long int count = self.navigationController.viewControllers.count;
+            RCScheduleInfoViewController *sc = self.navigationController.viewControllers[count -2];
+            sc.isContentUpdate = YES;
+            NSString *themeId = [self getThemeId:self.model.themeName];
+            [[DataManager manager] addPlanWithOpType:@"2" planId:self.model.planId userId:[userDefaults objectForKey:@"userId"] themeId:themeId planTime:self.model.planTime plAlarmOne:self.model.plAlarmOne plAlarmTwo:self.model.plAlarmTwo plAlarmThree:self.model.plAlarmThree planContent:self.model.planContent acPlace:self.model.acPlace success:^(NSString *replanId) {
+                RemindManager *remindma = [[RemindManager alloc]init];
+                //先清除与本活动相关的所有本地通知
+                [remindma removeLocalNotificationWithNotificationId:self.model.planId];
+                //添加本地推送
+                NSDate *date = [remindma dateFromString:self.model.planTime];
+                if ([self.model.plAlarmOne isEqualToString:@"1"]) {
+                    NSDate *dateP1 = [NSDate dateWithTimeInterval:-3600 sinceDate:date];
+                    [remindma scheduleLocalNotificationWithDate:dateP1 Title:self.model.planContent notiID:self.model.planId];
+                }
+                if ([self.self.model.plAlarmTwo isEqualToString:@"1"]) {
+                    NSDate *dateP2 = [NSDate dateWithTimeInterval:-86400 sinceDate:date];
+                    [remindma scheduleLocalNotificationWithDate:dateP2 Title:self.model.planContent notiID:self.model.planId];
+                }
+                if ([self.self.model.plAlarmThree isEqualToString:@"1"]) {
+                    NSDate *dateP3 = [NSDate dateWithTimeInterval:-259200 sinceDate:date];
+                    [remindma scheduleLocalNotificationWithDate:dateP3 Title:self.model.planContent notiID:self.model.planId];
+                }
+                [self.navigationController popViewControllerAnimated:YES];
+            } failure:^(NSError *error) {
+                NSLog(@"Error:%@",error);
+            }];
+        }else
+        {
+            //[self.navigationController popViewControllerAnimated:YES];
+        }
+
     }else
     {
+        
         UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"请输入内容" preferredStyle:UIAlertControllerStyleAlert];
         
         UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
         
         [alert addAction:okAction];
         [self presentViewController:alert animated:YES completion:nil];
+
     }
     
+}
+#pragma mark - 判断行程信息是否更改
+- (BOOL) isUpdateSchedule
+{
+    if ([self.originModel.themeName isEqualToString:self.model.themeName] &&
+        [self.originModel.planContent isEqualToString:self.model.planContent] &&
+        [self.originModel.planTime isEqualToString:self.model.planTime] &&
+        [self.originModel.plAlarmOne isEqualToString:self.model.plAlarmOne]&&
+        [self.originModel.plAlarmTwo isEqualToString:self.model.plAlarmTwo] &&
+        [self.originModel.plAlarmThree isEqualToString:self.model.plAlarmThree])
+    {
+        return NO;
+    }
+    return YES;
 }
 -(NSString *)getThemeId:(NSString *)theme{
     NSString *themeId = [[NSString alloc]init];
@@ -362,37 +396,6 @@
             [self.planListRangedUpdate insertObject:newscArray atIndex:i];
             break;
         }
-#pragma mark - 修改，此时planListRanged是逆序 begin
-//        if (currentDate < dataCmp)
-//        {//比当前时间早
-//            if (i == 0)
-//            {
-//                NSMutableArray *newscArray = [[NSMutableArray alloc]init];
-//                newModel.planTime = strCurrentDate;
-//                [newscArray addObject:newModel];
-//                [self.planListRangedUpdate insertObject:newscArray atIndex:i];
-//                break;
-//            }else
-//            {
-//                NSMutableArray *newscArray = [[NSMutableArray alloc]init];
-//                newModel.planTime = strCurrentDate;
-//                [newscArray addObject:newModel];
-//                [self.planListRangedUpdate insertObject:newscArray atIndex:i];
-//                break;
-//            }
-//        }else if (currentDate > dataCmp)
-//        {//比当前时间晚
-//            //continue;
-//        }else
-//        {
-//            NSMutableArray *newscArray = [[NSMutableArray alloc]initWithArray:self.planListRangedUpdate[i]];
-//            newModel.planTime = strCurrentDate;
-//            [newscArray addObject:newModel];
-//            [self.planListRangedUpdate removeObjectAtIndex:i];
-//            [self.planListRangedUpdate insertObject:newscArray atIndex:i];
-//            break;
-//        }
-#pragma mark - 修改，此时planListRanged是逆序 end
     }
     if (i == self.self.planListRangedUpdate.count)
     {
@@ -429,8 +432,14 @@
     
     [self setSubViewsOfUpView];
     [self setSubViewsOfDownView];
-    
     [self initMoreTagView];
+    
+    self.originModel.themeName = self.model.themeName;
+    self.originModel.planContent = self.model.planContent;
+    self.originModel.planTime = self.model.planTime;
+    self.originModel.plAlarmOne = self.model.plAlarmOne;
+    self.originModel.plAlarmTwo = self.model.plAlarmTwo;
+    self.originModel.plAlarmThree = self.model.plAlarmThree;
 }
 #pragma mark - 初始化
 - (void)createSubView

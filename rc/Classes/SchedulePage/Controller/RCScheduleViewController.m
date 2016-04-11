@@ -87,7 +87,7 @@
     @weakify(self);
     self.getPlanListBlock = ^(){
         @strongify(self);
-        return [[DataManager manager] getPlanWithUserId:[userDefaults objectForKey:@"userId"] beginDate:@"2016-01-01" endDate:@"2017-01-01" success:^(PlanList *plList) {
+        return [[DataManager manager] getPlanWithUserId:[userDefaults objectForKey:@"userId"] beginDate:@"2000-01-01" endDate:@"2100-01-01" success:^(PlanList *plList) {
             @strongify(self);
             self.planList = plList;
         } failure:^(NSError *error) {
@@ -96,19 +96,22 @@
     };
 }
 -(void)setPlanList:(PlanList *)planList{
-    //[self.planListRanged removeAllObjects];
     _planList = planList;
-    [self rangePlanList:self.planList];
-    if (self.planListRanged.count != 0)
+    if (_planList.list.count !=0)
     {
+        [self rangePlanList:self.planList];
+        if (self.planListRanged.count != 0)
+        {
 #pragma mark - 修改数组倒序
-        //将数组倒序
-        NSMutableArray *arr  = self.planListRanged;
-        NSEnumerator *enumer = [arr reverseObjectEnumerator];
-        self.planListRanged = [[NSMutableArray alloc]initWithArray:[enumer allObjects]];
-        self.sc.planListRanged = self.planListRanged;
-        self.sc.currentPoint.hidden = NO;
+            //将数组倒序
+            NSMutableArray *arr  = self.planListRanged;
+            NSEnumerator *enumer = [arr reverseObjectEnumerator];
+            self.planListRanged = [[NSMutableArray alloc]initWithArray:[enumer allObjects]];
+            self.sc.planListRanged = self.planListRanged;
+            self.sc.currentPoint.hidden = NO;
+        }
     }
+
 }
 #pragma mark - 添加行程
 - (IBAction)addSC:(id)sender

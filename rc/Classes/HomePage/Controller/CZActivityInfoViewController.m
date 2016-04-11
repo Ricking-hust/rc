@@ -735,7 +735,7 @@
     }];
 }
 
-#pragma mark - Click Event
+#pragma mark - 活动收藏
 - (void)onClickCollection
 {
     self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -782,7 +782,7 @@
     }
     
 }
-
+#pragma mark - 添加行程
 - (void)onClickAdd
 {
     self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
@@ -801,6 +801,7 @@
                 self.HUD.mode = MBProgressHUDModeCustomView;
                 self.HUD.label.text = @"加入行程成功~(≧▽≦)/~";
                 [self.HUD hideAnimated:YES afterDelay:0.6];
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"scState" object:@"update"];
             }
         } failure:^(NSError *error) {
             self.HUD.mode = MBProgressHUDModeCustomView;

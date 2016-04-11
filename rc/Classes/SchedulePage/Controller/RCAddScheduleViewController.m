@@ -66,9 +66,12 @@
     [super viewDidLoad];
     [self initModel];
     [self setNavigation];
-    NSArray *scArray = self.planListRangedAdd[[self.timeNodeSVAdd.nodeIndex intValue]];
-    self.originModel = scArray.firstObject;
     
+    if (self.planListRangedAdd.count != 0)
+    {
+        NSArray *scArray = self.planListRangedAdd[[self.timeNodeSVAdd.nodeIndex intValue]];
+        self.originModel = scArray.firstObject;
+    }    
 }
 - (void)setNavigation
 {
@@ -140,7 +143,9 @@
             }
 
             [self resetTimeNodeIndex];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"nodeState" object:@"update"];
             [[NSNotificationCenter defaultCenter]postNotificationName:@"scState" object:@"update"];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"sendTimeNodeScrollView" object:self.timeNodeSVAdd.nodeIndex];
             [self.navigationController popViewControllerAnimated:YES];
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
@@ -153,7 +158,12 @@
         [self presentViewController:alert animated:YES completion:nil];
     }
 }
-#pragma mark - 重置timeNodeIndex
+#pragma mark - 添加新行程后，取得当前行程界面中选中的行程信息的新下标
+- (void)getNewNodeIndex
+{
+    
+}
+#pragma mark - 添加新行程后，取得当前行程界面中选中的行程信息的新下标
 - (void)resetTimeNodeIndex
 {
 

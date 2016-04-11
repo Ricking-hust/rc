@@ -13,6 +13,9 @@
 #import "RCTableView.h"
 #define NodeH 113
 //每个节点的高度为113，即滚动113到下一个节点
+@interface RCScheduleView()
+@property (nonatomic, strong) NSString *nodexState;
+@end
 @implementation RCScheduleView
 
 - (id)init
@@ -25,11 +28,17 @@
         self.scheduleTV = [[RCTableView alloc]init];
         self.planListRanged = [[NSMutableArray alloc]init];
         self.currentPoint = [[UIImageView alloc]init];
+        self.nodexState = @"null";
         //注册通知，监听行程数据的改变
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createTimeNode:) name:@"timeNode" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getNodeState:) name:@"nodeState" object:nil];
     }
     [self setContentView];
     return self;
+}
+- (void)getNodeState:(NSNotification *)notification
+{
+    self.nodexState = notification.object;
 }
 - (void)setPlanListRanged:(NSMutableArray *)planListRanged
 {
@@ -163,11 +172,19 @@
                 CGFloat height = kScreenHeight - 64 - 35 -49 + (20 + 80 + 13) * array.count;
                 self.timeNodeSV.contentSize = CGSizeMake(0, height);
             }
-            latestIndex = [self indexOfNearlyToday:array];
-            self.timeNodeSV.nodeIndex = [[NSNumber alloc]initWithInt:latestIndex];
-            self.timeNodeSV.upLine = [self.timeNodeSV viewWithTag:1+latestIndex];
-            self.timeNodeSV.downLine = [self.timeNodeSV  viewWithTag:1000+latestIndex];
-            self.timeNodeSV.point = [self.timeNodeSV  viewWithTag:100+latestIndex];
+            if ([self.nodexState isEqualToString:@"null"])
+            {
+                latestIndex = [self indexOfNearlyToday:array];
+                self.timeNodeSV.nodeIndex = [[NSNumber alloc]initWithInt:latestIndex];
+            }else
+            {
+                self.nodexState = @"null";
+            }
+
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:self.timeNodeSV.nodeIndex];
+            self.timeNodeSV.upLine = [self.timeNodeSV viewWithTag:1+[self.timeNodeSV.nodeIndex intValue]];
+            self.timeNodeSV.downLine = [self.timeNodeSV  viewWithTag:1000+[self.timeNodeSV.nodeIndex intValue]];
+            self.timeNodeSV.point = [self.timeNodeSV  viewWithTag:100+[self.timeNodeSV.nodeIndex intValue]];
             [self.timeNodeSV.upLine mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.height.mas_equalTo(10);
             }];
@@ -177,8 +194,8 @@
             [self.timeNodeSV.point mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(self.timeNodeSV.upLine.mas_bottom).offset(10);
             }];
-            self.scheduleTV.scArray = array[latestIndex];
-            [self.timeNodeSV setContentOffsetY:latestIndex *NodeH];
+            self.scheduleTV.scArray = array[[self.timeNodeSV.nodeIndex intValue]];
+            [self.timeNodeSV setContentOffsetY:[self.timeNodeSV.nodeIndex intValue] *NodeH];
             [self.scheduleTV reloadData];
             [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNodeSV" object:self.timeNodeSV];
         }else
