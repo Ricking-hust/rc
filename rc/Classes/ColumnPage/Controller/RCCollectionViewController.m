@@ -399,11 +399,14 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     NSMutableArray *acList = [self.activityListByInd objectForKey:collectionView.indModel.indName];
     ActivityModel *minModel = acList.lastObject;
     NSString *minId = minModel.acID;
-    NSLog(@"mindId:%@",minId);
-    if (self.refreshAcListWithIndBlock) {
-        self.refreshAcListWithIndBlock(collectionView.indModel,minId);
+    if (minId.length == 0) {
+        [collectionView.mj_footer endRefreshingWithNoMoreData];
+    } else {
+        if (self.refreshAcListWithIndBlock) {
+            self.refreshAcListWithIndBlock(collectionView.indModel,minId);
+        }
+        [collectionView.mj_footer endRefreshing];
     }
-    [collectionView.mj_footer endRefreshing];
 }
 - (RCCollectionView *)getCurrentCollectionView
 {
