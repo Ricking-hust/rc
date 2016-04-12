@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CZMyCollectionViewController : UITableViewController
-
+@interface CZMyCollectionViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+@property (nonatomic, strong) UITableView  *tableView;
 @end

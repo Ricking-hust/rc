@@ -30,6 +30,7 @@
 @property (nonatomic, strong) NSString *localTime;
 @property (nonatomic, strong) PlanModel *model;
 @property (nonatomic, strong) PlanModel *originModel;
+@property (nonatomic, strong) PlanModel *cancelModel;
 @property (nonatomic, weak) id<RCSettingRemindTimeDelegate> settingRemindDelegate;
 @end
 @implementation RCUpdateScheduleViewController
@@ -63,6 +64,14 @@
 //    }
 //    return _timeNodeSVUpdate;
 //}
+- (PlanModel *)cancelModel
+{
+    if (!_cancelModel)
+    {
+        _cancelModel = [[PlanModel alloc]init];
+    }
+    return _cancelModel;
+}
 - (PlanModel *)originModel
 {
     if (!_originModel)
@@ -251,7 +260,19 @@
             NSString *day = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(8, 2)];
             NSString *time = [self.downView.timeInfoLabel.text substringWithRange:NSMakeRange(12, 5)];
             self.model.planTime = [NSString stringWithFormat:@"%@-%@-%@ %@",year,month,day,time];
-            [self sortByDay:self.model];
+            BOOL isResort = [self isReSort];
+            if (isResort == YES)
+            {//如果修改了日期，则要重新排序
+                NSArray *scArray = self.planListRangedUpdate[[self.updateNodeIndex intValue]];
+                if (scArray.count >1)
+                {//时间节点的下标不变
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"nodeState" object:@"update"];
+                }else
+                {//重新定置下标，距离当天最近时间点下标
+                    [[NSNotificationCenter defaultCenter]postNotificationName:@"nodeState" object:@"null"];
+                }
+                [self sortByDay:self.model];
+            }
             long int count = self.navigationController.viewControllers.count;
             RCScheduleInfoViewController *sc = self.navigationController.viewControllers[count -2];
             sc.isContentUpdate = YES;
@@ -274,6 +295,8 @@
                     NSDate *dateP3 = [NSDate dateWithTimeInterval:-259200 sinceDate:date];
                     [remindma scheduleLocalNotificationWithDate:dateP3 Title:self.model.planContent notiID:self.model.planId];
                 }
+                //修改成功更新行程信息的状态
+                [[NSNotificationCenter defaultCenter]postNotificationName:@"scState" object:@"update"];
                 [self.navigationController popViewControllerAnimated:YES];
             } failure:^(NSError *error) {
                 NSLog(@"Error:%@",error);
@@ -295,6 +318,19 @@
 
     }
     
+}
+#pragma mark - 判断编辑后的行程信息是否需要重新排序
+- (BOOL) isReSort
+{
+    NSString *originTime = [self.originModel.planTime substringWithRange:NSMakeRange(0, 10)];
+    NSString *modelTime = [self.model.planTime substringWithRange:NSMakeRange(0, 10)];
+    if ([originTime isEqualToString:modelTime])
+    {
+        return NO;
+    }else
+    {
+        return YES;
+    }
 }
 #pragma mark - 判断行程信息是否更改
 - (BOOL) isUpdateSchedule
@@ -440,6 +476,20 @@
     self.originModel.plAlarmOne = self.model.plAlarmOne;
     self.originModel.plAlarmTwo = self.model.plAlarmTwo;
     self.originModel.plAlarmThree = self.model.plAlarmThree;
+    [self saveModel];
+}
+- (void)saveModel
+{
+    self.cancelModel.planId = self.model.planId;
+    self.cancelModel.planContent = self.model.planContent;
+    self.cancelModel.planTime = self.model.planTime;
+    self.cancelModel.plAlarmOne = self.model.plAlarmOne;
+    self.cancelModel.plAlarmTwo = self.model.plAlarmTwo;
+    self.cancelModel.plAlarmThree = self.model.plAlarmThree;
+    self.cancelModel.userId = self.model.userId;
+    self.cancelModel.acId = self.model.acId;
+    self.cancelModel.themeName = self.model.themeName;
+    self.cancelModel.acPlace = self.model.acPlace;
 }
 #pragma mark - 初始化
 - (void)createSubView
@@ -828,6 +878,7 @@
 }
 - (void)back
 {
+    self.model = self.cancelModel;
     [self.navigationController popViewControllerAnimated:YES];
 }
 #pragma mark - 上方upView的点击事件

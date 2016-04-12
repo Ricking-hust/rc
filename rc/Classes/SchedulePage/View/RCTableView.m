@@ -78,6 +78,7 @@
     {
         UITableViewCell *cell = [[UITableViewCell alloc]init];
         cell.backgroundColor = [UIColor clearColor];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
         return cell;
     }else
     {

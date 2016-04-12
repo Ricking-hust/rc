@@ -18,11 +18,48 @@
 @property (nonatomic,strong) NSMutableArray *didReviewAc;
 @property (nonatomic,strong) NSMutableArray *reviewAc;
 @property (nonatomic, copy) NSURLSessionDataTask *(^getUserActivityBlock)();
-
+@property (nonatomic, strong) UIView  *heartBrokenView;
 @end
 
 @implementation CZMyReleseViewController
-
+- (UIView *)heartBrokenView
+{
+    if (!_heartBrokenView)
+    {
+        _heartBrokenView = [[UIView alloc]init];
+        [self.view addSubview:_heartBrokenView];
+        UIImageView *imgeView = [[UIImageView alloc]init];
+        imgeView.image = [UIImage imageNamed:@"heartbrokenIcon"];
+        [_heartBrokenView addSubview:imgeView];
+        
+        [imgeView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(_heartBrokenView.mas_left);
+            make.top.equalTo(_heartBrokenView.mas_top);
+            make.size.mas_equalTo(imgeView.image.size);
+        }];
+        
+        UILabel *label = [[UILabel alloc]init];
+        label.text = @"您还没有发布活动哟。";
+        label.font = [UIFont systemFontOfSize:14];
+        label.textColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0];
+        [_heartBrokenView addSubview:label];
+        CGSize labelSize = [self sizeWithText:label.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:14];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(imgeView.mas_bottom).offset(10);
+            make.centerX.equalTo(imgeView.mas_centerX).offset(10);
+            make.width.mas_equalTo(labelSize.width+1);
+            make.height.mas_equalTo(labelSize.height+1);
+        }];
+        [_heartBrokenView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(self.view).offset(10);
+            make.centerY.equalTo(self.view);
+            make.height.mas_equalTo(imgeView.image.size.height+labelSize.height+1+10);
+            make.width.mas_equalTo(imgeView.image.size.width>labelSize.width?imgeView.image.size.width:labelSize.width+1);
+        }];
+        
+    }
+    return _heartBrokenView;
+}
 - (void)viewWillAppear:(BOOL)animated
 {
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
@@ -147,6 +184,7 @@
         self.lineDownOfWillCheckButton.hidden = NO;
         self.lineDownOfCheckButton.hidden = YES;
         [self.tableView reloadData];
+
     }else
     {
         self.reviewAc = self.didReviewAc;
@@ -155,8 +193,14 @@
         [self.tableView reloadData];
     }
     btn.selected = YES;
-    
     //to do here--------------
+    if (self.reviewAc.count == 0)
+    {
+        self.heartBrokenView.hidden = NO;
+    }else
+    {
+        self.heartBrokenView.hidden = YES;
+    }
     
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -281,13 +325,36 @@
 
 - (void) setAcList:(ActivityList *)acList{
     _acList = acList;
+    if (_acList.list.count != 0)
+    {
+        self.heartBrokenView.hidden = YES;
+    }else
+    {
+        self.heartBrokenView.hidden = NO;
+    }
     for (ActivityModel *model in acList.list) {
         if ([model.acReview isEqualToString:@"0"]) {
             [self.waitReviewAc addObject:model];
+            
         } else {
             [self.didReviewAc addObject:model];
         }
     }
     [self.tableView reloadData];
+}
+/**
+ *  计算文本的大小
+ *
+ *  @param text 待计算大小的字符串
+ *
+ *  @param fontSize 指定绘制字符串所用的字体大小
+ *
+ *  @return 字符串的大小
+ */
+- (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize
+{
+    //计算文本的大小
+    CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
+    return nameSize;
 }
 @end

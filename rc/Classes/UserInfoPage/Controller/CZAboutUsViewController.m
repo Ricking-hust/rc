@@ -95,11 +95,11 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     switch (indexPath.row) {
         case 0:{
-            NSLog(@"Please introduce our APP");
+            [self introduceApp];
         }
             break;
         case (1):{
-            NSLog(@"wechat");
+            [self didSelectWeChat];
         }
             break;
         case (2):{
@@ -120,11 +120,32 @@
             break;
     }
 }
+#pragma mark - 产品介绍
+- (void)introduceApp
+{
+    UIAlertController *chooseView = [UIAlertController alertControllerWithTitle:@"提示" message:@"我们正在来的路上哟。" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+    }];
+    [chooseView addAction:cancelAction];
+    
+    [self presentViewController:chooseView animated:YES completion:nil];
+}
+#pragma mark - 微信平台
+- (void)didSelectWeChat
+{
+    UIAlertController *chooseView = [UIAlertController alertControllerWithTitle:@"提示" message:@"我们将会很快推出哟，敬请期待。" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+    }];
+    [chooseView addAction:cancelAction];
+    
+    [self presentViewController:chooseView animated:YES completion:nil];
 
+}
 - (void)createHeaderView
 {
-
-    self.headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 130)];
+    self.headerView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 160)];
     self.appIcon    = [[UIImageView alloc]init];
     self.appVersion  = [[UILabel alloc]init];
     self.appVersion.font = [UIFont systemFontOfSize:15];
@@ -147,7 +168,7 @@
     CGSize appVersionSize = [self sizeWithText:self.appVersion.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:15];
     [self.appVersion mas_updateConstraints:^(MASConstraintMaker *make) {
         make.centerX.equalTo(self.appIcon);
-        make.top.equalTo(self.appIcon.mas_bottom).offset(5);
+        make.top.equalTo(self.appIcon.mas_bottom).offset(10);
         make.size.mas_equalTo(CGSizeMake(appVersionSize.width+1, appVersionSize.height+1));
     }];
     
