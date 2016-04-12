@@ -13,6 +13,9 @@
 #import "RCTableView.h"
 #define NodeH 113
 //每个节点的高度为113，即滚动113到下一个节点
+@interface RCScheduleView()
+@property (nonatomic, strong) NSString *nodexState;
+@end
 @implementation RCScheduleView
 
 - (id)init
@@ -25,11 +28,17 @@
         self.scheduleTV = [[RCTableView alloc]init];
         self.planListRanged = [[NSMutableArray alloc]init];
         self.currentPoint = [[UIImageView alloc]init];
+        self.nodexState = @"null";
         //注册通知，监听行程数据的改变
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(createTimeNode:) name:@"timeNode" object:nil];
+        [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getNodeState:) name:@"nodeState" object:nil];
     }
     [self setContentView];
     return self;
+}
+- (void)getNodeState:(NSNotification *)notification
+{
+    self.nodexState = notification.object;
 }
 - (void)setPlanListRanged:(NSMutableArray *)planListRanged
 {
@@ -38,8 +47,8 @@
         
         self.timeNodeSV.planListRanged = _planListRanged;
         self.scheduleTV.planListRanged = _planListRanged;
-        self.scheduleTV.scArray = _planListRanged.firstObject;
-        [self.scheduleTV reloadData];
+//        self.scheduleTV.scArray = _planListRanged.firstObject;
+//        [self.scheduleTV reloadData];
         //显示节点
         [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:planListRanged];
     }
@@ -48,20 +57,13 @@
 - (void)createTimeNode:(NSNotification *)notification
 {
     dispatch_async(dispatch_get_main_queue(), ^{
-         NSMutableArray *array = notification.object;
-//        //将数组倒序
-//        NSMutableArray *arr  = notification.object;
-//        NSEnumerator *enumer = [arr reverseObjectEnumerator];
-//        
-//        array = [[NSMutableArray alloc]initWithArray:[enumer allObjects]];
-        
-        
+        NSMutableArray *array = notification.object;
         for (UIView *view in self.timeNodeSV.subviews)
         {
             [view removeFromSuperview];
         }
         UIView *defaultLine = [self createDefaultUpLine];
-
+        int latestIndex = 0;//保存距离当天最后的行程下标
         if (array.count != 0)
         {
             UIColor *color = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
@@ -163,12 +165,6 @@
             gradientLayer.startPoint = CGPointMake(0, 0);
             gradientLayer.endPoint = CGPointMake(1, 1);
             
-//            [lastLine mas_updateConstraints:^(MASConstraintMaker *make) {
-//                make.top.equalTo(lastNode.mas_bottom);
-//                make.left.equalTo(lastNode.mas_left);
-//                make.width.equalTo(lastNode.mas_width);
-//                make.height.mas_equalTo(kScreenHeight - 64 - 35 -49 - (20 + 80 + 14));
-//            }];
 #pragma mark - 设置Y方向上的滚动距离
             if (array.count == 1) {
                 self.timeNodeSV.contentSize = CGSizeMake(0, 0);
@@ -176,30 +172,103 @@
                 CGFloat height = kScreenHeight - 64 - 35 -49 + (20 + 80 + 13) * array.count;
                 self.timeNodeSV.contentSize = CGSizeMake(0, height);
             }
+            if ([self.nodexState isEqualToString:@"null"])
+            {
+                latestIndex = [self indexOfNearlyToday:array];
+                self.timeNodeSV.nodeIndex = [[NSNumber alloc]initWithInt:latestIndex];
+            }else
+            {
+                self.nodexState = @"null";
+            }
 
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:self.timeNodeSV.nodeIndex];
+            self.timeNodeSV.upLine = [self.timeNodeSV viewWithTag:1+[self.timeNodeSV.nodeIndex intValue]];
+            self.timeNodeSV.downLine = [self.timeNodeSV  viewWithTag:1000+[self.timeNodeSV.nodeIndex intValue]];
+            self.timeNodeSV.point = [self.timeNodeSV  viewWithTag:100+[self.timeNodeSV.nodeIndex intValue]];
+            [self.timeNodeSV.upLine mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.height.mas_equalTo(10);
+            }];
+            [self.timeNodeSV.downLine mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.timeNodeSV.point.mas_bottom).offset(10);
+            }];
+            [self.timeNodeSV.point mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.top.equalTo(self.timeNodeSV.upLine.mas_bottom).offset(10);
+            }];
+            self.scheduleTV.scArray = array[[self.timeNodeSV.nodeIndex intValue]];
+            [self.timeNodeSV setContentOffsetY:[self.timeNodeSV.nodeIndex intValue] *NodeH];
+            [self.scheduleTV reloadData];
+            [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNodeSV" object:self.timeNodeSV];
         }else
         {
             defaultLine.hidden = YES;
             self.currentPoint.hidden = YES;
         }
-        self.timeNodeSV.upLine = [self.timeNodeSV viewWithTag:1];
-        self.timeNodeSV.downLine = [self.timeNodeSV  viewWithTag:1000];
-        self.timeNodeSV.point = [self.timeNodeSV  viewWithTag:100 ];
-
-        [self.timeNodeSV.upLine mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_equalTo(10);
-        }];
-        [self.timeNodeSV.downLine mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.timeNodeSV.point.mas_bottom).offset(10);
-        }];
-        [self.timeNodeSV.point mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.timeNodeSV.upLine.mas_bottom).offset(10);
-        }];
-        self.scheduleTV.scArray = array.firstObject;
-        [self.timeNodeSV setContentOffsetY:0];
-        [self.scheduleTV reloadData];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNodeSV" object:self.timeNodeSV];
+#pragma mark - 修改---》默认选中距离当天最近的行程 begin
+//        self.timeNodeSV.upLine = [self.timeNodeSV viewWithTag:1];
+//        self.timeNodeSV.downLine = [self.timeNodeSV  viewWithTag:1000];
+//        self.timeNodeSV.point = [self.timeNodeSV  viewWithTag:100 ];
+//        
+//        [self.timeNodeSV.upLine mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.height.mas_equalTo(10);
+//        }];
+//        [self.timeNodeSV.downLine mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.timeNodeSV.point.mas_bottom).offset(10);
+//        }];
+//        [self.timeNodeSV.point mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.timeNodeSV.upLine.mas_bottom).offset(10);
+//        }];
+//        self.scheduleTV.scArray = array.firstObject;
+//        [self.timeNodeSV setContentOffsetY:0];
+//        [self.scheduleTV reloadData];
+#pragma mark - 修改---》默认选中距离当天最近的行程 end
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNodeSV" object:self.timeNodeSV];
     });
+}
+#pragma mark - 返回距离当天最近的时间行程
+- (int)indexOfNearlyToday:(NSMutableArray *)array
+{
+
+    NSDate * senddate = [NSDate date];
+    NSDateFormatter  *dateformatter =[[NSDateFormatter alloc] init];
+    [dateformatter setDateFormat:@"yyyMMdd"];
+    NSString *currentTimeStr = [dateformatter stringFromDate:senddate];
+    int localTime = [currentTimeStr intValue];
+    
+    int index = 0;
+    NSString *year;
+    NSString *month;
+    NSString *day;
+    for (int i = 0;i < array.count; i++)
+    {
+        NSArray *scArray = array[i];
+        PlanModel *model = scArray.firstObject;
+        year = [model.planTime substringWithRange:NSMakeRange(0, 4)];
+        month = [model.planTime substringWithRange:NSMakeRange(5, 2)];
+        day = [model.planTime substringWithRange:NSMakeRange(8, 2)];
+        NSString *timeStr = [NSString stringWithFormat:@"%@%@%@",year, month, day];
+        int scTime = [timeStr intValue];
+        
+        if (localTime > scTime)
+        {
+            if (i != 0)
+            {
+                index = i -1;
+                break;
+            }else
+            {
+                index = 0;
+                break;
+            }
+        }else if (localTime < scTime)
+        {
+            index = i;
+        }else
+        {
+            index = i;
+            break;
+        }
+    }
+    return index;
 }
 #pragma mark - 判断指定的行程是否已经发生
 - (BOOL)isHappened:(PlanModel *)plmodel

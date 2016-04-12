@@ -251,10 +251,68 @@
         {
             [view removeFromSuperview];
         }
+//        self.timeNodeSV.nodeIndex = [[NSNumber alloc]initWithInt:[self indexOfNearlyToday:self.planListRanged]];
+//        [[NSNotificationCenter defaultCenter]postNotificationName:@"sendTimeNodeScrollView" object:self.timeNodeSV.nodeIndex];
+    }else
+    {
+        [[NSNotificationCenter defaultCenter]postNotificationName:@"nodeState" object:@"update"];
     }
-    self.timeNodeIndex = [[NSNumber alloc]initWithInt:0];
+//    self.timeNodeIndex = [[NSNumber alloc]initWithInt:0];
+    [[NSNotificationCenter defaultCenter]postNotificationName:@"scState" object:@"update"];
     [self.navigationController popViewControllerAnimated:YES];
 }
+#pragma mark - 重置timeNodeIndex
+- (void)resetTimeNodeIndex
+{
+    
+}
+#pragma mark - 返回距离当天最近的时间行程
+- (int)indexOfNearlyToday:(NSMutableArray *)array
+{
+    
+    NSDate * senddate = [NSDate date];
+    NSDateFormatter  *dateformatter =[[NSDateFormatter alloc] init];
+    [dateformatter setDateFormat:@"yyyMMdd"];
+    NSString *currentTimeStr = [dateformatter stringFromDate:senddate];
+    int localTime = [currentTimeStr intValue];
+    
+    int index = 0;
+    NSString *year;
+    NSString *month;
+    NSString *day;
+    for (int i = 0;i < array.count; i++)
+    {
+        NSArray *scArray = array[i];
+        PlanModel *model = scArray.firstObject;
+        year = [model.planTime substringWithRange:NSMakeRange(0, 4)];
+        month = [model.planTime substringWithRange:NSMakeRange(5, 2)];
+        day = [model.planTime substringWithRange:NSMakeRange(8, 2)];
+        NSString *timeStr = [NSString stringWithFormat:@"%@%@%@",year, month, day];
+        int scTime = [timeStr intValue];
+        
+        if (localTime > scTime)
+        {
+            if (i != 0)
+            {
+                index = i -1;
+                break;
+            }else
+            {
+                index = 0;
+                break;
+            }
+        }else if (localTime < scTime)
+        {
+            index = i;
+        }else
+        {
+            index = i;
+            break;
+        }
+    }
+    return index;
+}
+
 - (void)addSubViewToView
 {
     self.scThemeLabel.font = [UIFont systemFontOfSize:FONTSIZE];
@@ -471,13 +529,6 @@
 #pragma mark - 返回
 - (void)back
 {
-//    if (self.planListRanged.count != 0)
-//    {
-//        dispatch_sync(dispatch_get_main_queue(), ^{
-//            [self.timeNodeSV setContentOffsetY:([self.timeNodeIndex intValue]) *114];
-//        });
-//
-//    }
     [self.navigationController popViewControllerAnimated:YES];
 }
 - (CGSize)setLabelStyle:(UILabel *)label WithContent:(NSString *)content

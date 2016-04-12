@@ -27,7 +27,6 @@
         self.upLine = [[UIView alloc]init];
         self.downLine = [[UIView alloc]init];
         self.point = [[UIView alloc]init];
-
         [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getTimeNodeScrollView:) name:@"sendTimeNodeScrollView" object:nil];
 
     }
@@ -37,8 +36,8 @@
 - (void)getTimeNodeScrollView:(NSNotification *)notification
 {
     self.nodeIndex = notification.object;
-    self.currentOffsetY = 0;
-    [self setContentOffsetY:0];
+    self.currentOffsetY = [self.nodeIndex intValue]*NodeH;
+    [self setContentOffsetY:self.currentOffsetY];
 }
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
@@ -215,6 +214,7 @@
     self.currentOffsetY = ([self.nodeIndex intValue]) * NodeH;
     [[NSNotificationCenter defaultCenter]postNotificationName:@"refleshSC" object:self.nodeIndex];
 }
+#pragma mark - 恢复之前的节点状态
 - (void)restoreNodeState
 {
     [self.upLine mas_updateConstraints:^(MASConstraintMaker *make) {
@@ -229,6 +229,7 @@
     }];
 
 }
+#pragma mark - 设置当前节点状态
 - (void)setNodeState
 {
     self.upLine = [self viewWithTag:1+([self.nodeIndex intValue])];

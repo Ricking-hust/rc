@@ -20,7 +20,7 @@
 @property (nonatomic, strong) PlanList *planList;
 @property (nonatomic, strong) NSMutableArray *planListRanged;
 @property (nonatomic, copy) NSURLSessionDataTask *(^getPlanListBlock)();
-
+@property (nonatomic, strong) NSString  *updateState;//行程更新的状态,null未更新，update已更新须请求后台,默认update
 @end
 
 @implementation RCScheduleViewController
@@ -28,19 +28,26 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-#pragma mark - 增加begin
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
-    [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
-#pragma mark - 增加end
+//#pragma mark - 增加begin
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
+//    [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
+//#pragma mark - 增加end
     self.isLogin = [DataManager manager].user.isLogin;
     if (self.isLogin)
     {
-        self.getPlanListBlock();
-        self.sc.hidden = NO;
-        if (self.planListRanged.count == 0) {
-            self.sc.currentPoint.hidden  = YES;
-        }else{
-            self.sc.currentPoint.hidden = NO;
+        if ([self.updateState isEqualToString:@"update"])
+        {
+            self.getPlanListBlock();
+            self.sc.hidden = NO;
+            if (self.planListRanged.count == 0) {
+                self.sc.currentPoint.hidden  = YES;
+            }else{
+                self.sc.currentPoint.hidden = NO;
+            }
+            self.updateState = @"null";//重置更新状态
+        }else
+        {//行程信息未更新，不用再次请求网络
+            ;
         }
 
     }else
@@ -58,6 +65,7 @@
         make.left.equalTo(self.view.mas_left);
         make.bottom.equalTo(self.view.mas_bottom).offset(-49);
     }];
+    self.sc.timeNodeSV.decelerationRate = 0.6;//此属性用于修改scrollView滑动的速率
     self.sc.hidden = YES;
 }
 - (void)viewDidLoad
@@ -66,14 +74,20 @@
     [self setNavigation];
     [self createSC];
     [self configureBlocks];
+    self.updateState = @"update";
     [[NSNotificationCenter defaultCenter]postNotificationName:@"getView" object:self.view];
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(getScheduleState:) name:@"scState" object:nil];
 
+}
+- (void)getScheduleState:(NSNotification *)notification
+{
+    self.updateState = notification.object;
 }
 -(void)configureBlocks{
     @weakify(self);
     self.getPlanListBlock = ^(){
         @strongify(self);
-        return [[DataManager manager] getPlanWithUserId:[userDefaults objectForKey:@"userId"] beginDate:@"2016-01-01" endDate:@"2017-01-01" success:^(PlanList *plList) {
+        return [[DataManager manager] getPlanWithUserId:[userDefaults objectForKey:@"userId"] beginDate:@"2000-01-01" endDate:@"2100-01-01" success:^(PlanList *plList) {
             @strongify(self);
             self.planList = plList;
         } failure:^(NSError *error) {
@@ -83,13 +97,21 @@
 }
 -(void)setPlanList:(PlanList *)planList{
     _planList = planList;
-    
-    [self rangePlanList:self.planList];
-    if (self.planListRanged.count != 0)
+    if (_planList.list.count !=0)
     {
-        self.sc.planListRanged = self.planListRanged;
-        self.sc.currentPoint.hidden = NO;
+        [self rangePlanList:self.planList];
+        if (self.planListRanged.count != 0)
+        {
+#pragma mark - 修改数组倒序
+            //将数组倒序
+            NSMutableArray *arr  = self.planListRanged;
+            NSEnumerator *enumer = [arr reverseObjectEnumerator];
+            self.planListRanged = [[NSMutableArray alloc]initWithArray:[enumer allObjects]];
+            self.sc.planListRanged = self.planListRanged;
+            self.sc.currentPoint.hidden = NO;
+        }
     }
+
 }
 #pragma mark - 添加行程
 - (IBAction)addSC:(id)sender
@@ -128,11 +150,8 @@
 - (void)setNavigation
 {
     NSDate *senddate=[NSDate date];
-    
     NSDateFormatter  *dateformatter=[[NSDateFormatter alloc] init];
-    
     [dateformatter setDateFormat:@"MM月dd日"];
-    
     NSString *locationString=[dateformatter stringFromDate:senddate];
     
     self.navigationItem.title = locationString;
@@ -155,11 +174,7 @@
                 [self.planListRanged[i] addObject:planModel];
             }
         }
-#pragma mark - 修改数组倒序
-        //将数组倒序
-        NSMutableArray *arr  = self.planListRanged;
-        NSEnumerator *enumer = [arr reverseObjectEnumerator];
-        self.planListRanged = [[NSMutableArray alloc]initWithArray:[enumer allObjects]];
+
     } else {
         self.planListRanged = nil;
     }

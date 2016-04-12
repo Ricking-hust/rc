@@ -14,7 +14,6 @@
 @class CZTagWithLabelView;
 @class RCScrollView;
 @interface RCUpdateScheduleViewController : UIViewController<RCModifyScheduleDelegate, UITextViewDelegate,UIPickerViewDataSource,UIPickerViewDelegate>
-@property (nonatomic, weak) id<RCSettingRemindTimeDelegate> settingRemindDelegate;
 @property (strong, nonatomic) CZUpView *upView;     //上方View
 @property (strong, nonatomic) CZDownView *downView; //下方View
 
