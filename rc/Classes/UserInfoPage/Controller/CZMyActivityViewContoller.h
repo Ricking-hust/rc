@@ -8,6 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CZMyActivityViewContoller : UITableViewController
+@interface CZMyActivityViewContoller : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@property (nonatomic, strong) UITableView  *tableView;
 
 @end

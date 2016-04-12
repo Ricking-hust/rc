@@ -64,7 +64,7 @@
         }];
         
         UILabel *label = [[UILabel alloc]init];
-        label.text = @"您还没添加行程哟。";
+        label.text = @"您还没有添加行程哟。";
         label.font = [UIFont systemFontOfSize:14];
         label.textColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0];
         [_heartBrokenView addSubview:label];

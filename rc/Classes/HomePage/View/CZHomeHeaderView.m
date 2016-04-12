@@ -157,7 +157,7 @@
 //添加定时器
 - (void)addTimerObj
 {
-    NSTimer *timer = [NSTimer timerWithTimeInterval:2.0 target:self selector:@selector(nextImage) userInfo:nil repeats:YES];
+    NSTimer *timer = [NSTimer timerWithTimeInterval:3 target:self selector:@selector(nextImage) userInfo:nil repeats:YES];
     self.timer = timer;
     //消息循环
     NSRunLoop *runloop = [NSRunLoop currentRunLoop];

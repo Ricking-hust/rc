@@ -10,25 +10,82 @@
 #import "RCMyActivityCell.h"
 #import "CZActivityInfoViewController.h"
 #import "UINavigationBar+Awesome.h"
+#import "Masonry.h"
 @interface CZMyCollectionViewController()
 @property(nonatomic, strong) ActivityList *acList;
 @property (nonatomic, copy) NSURLSessionDataTask *(^getUserActivityBlock)();
+@property (nonatomic, strong) UIView  *heartBrokenView;
 @end
 @implementation CZMyCollectionViewController
+- (UITableView *)tableView
+{
+    if (!_tableView)
+    {
+        _tableView = [[UITableView alloc]init];
+        [self.view addSubview:_tableView];
+        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+        _tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
+        [_tableView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.view.mas_top).offset(64);
+            make.left.equalTo(self.view.mas_left);
+            make.width.mas_equalTo(kScreenWidth);
+            make.bottom.equalTo(self.view.mas_bottom);
+        }];
+        _tableView.delegate = self;
+        _tableView.dataSource = self;
+    }
+    return _tableView;
+}
 
+- (UIView *)heartBrokenView
+{
+    if (!_heartBrokenView)
+    {
+        _heartBrokenView = [[UIView alloc]init];
+        [self.view addSubview:_heartBrokenView];
+        UIImageView *imgeView = [[UIImageView alloc]init];
+        imgeView.image = [UIImage imageNamed:@"heartbrokenIcon"];
+        [_heartBrokenView addSubview:imgeView];
+        
+        [imgeView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(_heartBrokenView.mas_left);
+            make.top.equalTo(_heartBrokenView.mas_top);
+            make.size.mas_equalTo(imgeView.image.size);
+        }];
+        
+        UILabel *label = [[UILabel alloc]init];
+        label.text = @"您还没有收藏活动哟。";
+        label.font = [UIFont systemFontOfSize:14];
+        label.textColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0];
+        [_heartBrokenView addSubview:label];
+        CGSize labelSize = [self sizeWithText:label.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:14];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(imgeView.mas_bottom).offset(10);
+            make.centerX.equalTo(imgeView.mas_centerX).offset(10);
+            make.width.mas_equalTo(labelSize.width+1);
+            make.height.mas_equalTo(labelSize.height+1);
+        }];
+        [_heartBrokenView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(self.view).offset(10);
+            make.centerY.equalTo(self.view);
+            make.height.mas_equalTo(imgeView.image.size.height+labelSize.height+1+10);
+            make.width.mas_equalTo(imgeView.image.size.width>labelSize.width?imgeView.image.size.width:labelSize.width+1);
+        }];
+        
+    }
+    return _heartBrokenView;
+}
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
-    self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
+    self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     [self configureBlocks];
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self setNavigation];
     [self startget];
     
@@ -147,8 +204,29 @@
 
 - (void) setAcList:(ActivityList *)acList{
     _acList = acList;
-    
-    [self.tableView reloadData];
+    if (_acList.list.count != 0)
+    {
+        self.heartBrokenView.hidden = YES;
+        self.tableView.hidden = NO;
+        [self.tableView reloadData];
+    }else
+    {
+        self.heartBrokenView.hidden = NO;
+    }
 }
-
+/**
+ *  计算文本的大小
+ *
+ *  @param text 待计算大小的字符串
+ *
+ *  @param fontSize 指定绘制字符串所用的字体大小
+ *
+ *  @return 字符串的大小
+ */
+- (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize
+{
+    //计算文本的大小
+    CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
+    return nameSize;
+}
 @end
