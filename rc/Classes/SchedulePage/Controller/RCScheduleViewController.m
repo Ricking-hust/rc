@@ -21,17 +21,73 @@
 @property (nonatomic, strong) NSMutableArray *planListRanged;
 @property (nonatomic, copy) NSURLSessionDataTask *(^getPlanListBlock)();
 @property (nonatomic, strong) NSString  *updateState;//行程更新的状态,null未更新，update已更新须请求后台,默认update
+@property (nonatomic, strong) UIView  *timeLine;
+@property (nonatomic, strong) UIView  *heartBrokenView;
 @end
 
 @implementation RCScheduleViewController
 
+- (UIView *)timeLine
+{
+    if (!_timeLine)
+    {
+        _timeLine = [[UIView alloc]initWithFrame:CGRectMake(67, 64+35, 2, kScreenHeight - 64-25-49)];
+        [self.view addSubview:_timeLine];
+        CAGradientLayer *gradientLayer = [CAGradientLayer layer];
+        gradientLayer.frame = _timeLine.bounds;
+        [_timeLine.layer addSublayer:gradientLayer];
+        
+        //set gradient colors
+        gradientLayer.colors = @[(__bridge id)[UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0].CGColor, (__bridge id)[UIColor colorWithRed:226.0/255.0 green:226.0/255.0 blue:224.0/255.0 alpha:1.0].CGColor];
+        
+        //set gradient start and end points
+        gradientLayer.startPoint = CGPointMake(0, 0);
+        gradientLayer.endPoint = CGPointMake(1, 1);
+        
+    }
+    return _timeLine;
+}
+- (UIView *)heartBrokenView
+{
+    if (!_heartBrokenView)
+    {
+        _heartBrokenView = [[UIView alloc]init];
+        [self.view addSubview:_heartBrokenView];
+        UIImageView *imgeView = [[UIImageView alloc]init];
+        imgeView.image = [UIImage imageNamed:@"heartbrokenIcon"];
+        [_heartBrokenView addSubview:imgeView];
+        
+        [imgeView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(_heartBrokenView.mas_left);
+            make.top.equalTo(_heartBrokenView.mas_top);
+            make.size.mas_equalTo(imgeView.image.size);
+        }];
+        
+        UILabel *label = [[UILabel alloc]init];
+        label.text = @"您还没添加行程哟。";
+        label.font = [UIFont systemFontOfSize:14];
+        label.textColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0];
+        [_heartBrokenView addSubview:label];
+        CGSize labelSize = [self sizeWithText:label.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:14];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(imgeView.mas_bottom).offset(10);
+            make.centerX.equalTo(imgeView.mas_centerX).offset(10);
+            make.width.mas_equalTo(labelSize.width+1);
+            make.height.mas_equalTo(labelSize.height+1);
+        }];
+        [_heartBrokenView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(self.view).offset(20);
+            make.centerY.equalTo(self.view).offset(-20);
+            make.height.mas_equalTo(imgeView.image.size.height+labelSize.height+1+10);
+            make.width.mas_equalTo(imgeView.image.size.width>labelSize.width?imgeView.image.size.width:labelSize.width+1);
+        }];
+
+    }
+    return _heartBrokenView;
+}
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-//#pragma mark - 增加begin
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
-//    [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
-//#pragma mark - 增加end
     self.isLogin = [DataManager manager].user.isLogin;
     if (self.isLogin)
     {
@@ -110,6 +166,21 @@
             self.sc.planListRanged = self.planListRanged;
             self.sc.currentPoint.hidden = NO;
         }
+        self.timeLine.hidden = YES;
+        for (UIView *view in self.heartBrokenView.subviews)
+        {
+            view.hidden = YES;
+        }
+        self.heartBrokenView.hidden = YES;
+    }else
+    {
+        self.timeLine.hidden = NO;
+        self.heartBrokenView.hidden = NO;
+        for (UIView *view in self.heartBrokenView.subviews)
+        {
+            view.hidden = NO;
+        }
+
     }
 
 }
@@ -193,6 +264,22 @@
     //        }
     //    }
 }
+/**
+ *  计算文本的大小
+ *
+ *  @param text 待计算大小的字符串
+ *
+ *  @param fontSize 指定绘制字符串所用的字体大小
+ *
+ *  @return 字符串的大小
+ */
+- (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize
+{
+    //计算文本的大小
+    CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
+    return nameSize;
+}
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.

@@ -203,25 +203,6 @@
             defaultLine.hidden = YES;
             self.currentPoint.hidden = YES;
         }
-#pragma mark - 修改---》默认选中距离当天最近的行程 begin
-//        self.timeNodeSV.upLine = [self.timeNodeSV viewWithTag:1];
-//        self.timeNodeSV.downLine = [self.timeNodeSV  viewWithTag:1000];
-//        self.timeNodeSV.point = [self.timeNodeSV  viewWithTag:100 ];
-//        
-//        [self.timeNodeSV.upLine mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.height.mas_equalTo(10);
-//        }];
-//        [self.timeNodeSV.downLine mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.timeNodeSV.point.mas_bottom).offset(10);
-//        }];
-//        [self.timeNodeSV.point mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.timeNodeSV.upLine.mas_bottom).offset(10);
-//        }];
-//        self.scheduleTV.scArray = array.firstObject;
-//        [self.timeNodeSV setContentOffsetY:0];
-//        [self.scheduleTV reloadData];
-#pragma mark - 修改---》默认选中距离当天最近的行程 end
-//        [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNodeSV" object:self.timeNodeSV];
     });
 }
 #pragma mark - 返回距离当天最近的时间行程
