@@ -123,13 +123,18 @@
 #pragma mark - 产品介绍
 - (void)introduceApp
 {
-    NSLog(@"Please introduce our APP");
+    UIAlertController *chooseView = [UIAlertController alertControllerWithTitle:@"提示" message:@"我们正在来的路上哟。" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+        
+    }];
+    [chooseView addAction:cancelAction];
+    
+    [self presentViewController:chooseView animated:YES completion:nil];
 }
 #pragma mark - 微信平台
 - (void)didSelectWeChat
 {
     UIAlertController *chooseView = [UIAlertController alertControllerWithTitle:@"提示" message:@"我们将会很快推出哟，敬请期待。" preferredStyle:UIAlertControllerStyleAlert];
-    
     UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
         
     }];
