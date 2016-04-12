@@ -149,7 +149,13 @@
             self.updateState = @"null";//重置更新状态
         }else
         {//行程信息未更新，不用再次请求网络
-            ;
+            if (self.planListRanged.count != 0)
+            {
+                self.timeLine.hidden = YES;
+            }else
+            {
+                self.timeLine.hidden = NO;
+            }
         }
 
     }else
