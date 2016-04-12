@@ -85,6 +85,16 @@
     self.getActivityBlock();
     //设置导航栏
     [self setNavigation];
+//    UIImageView *imge = [[UIImageView alloc]init];
+//    [self.view addSubview:imge];
+//    NSURL *url = [NSURL URLWithString:@"http://img.myrichang.com/upload/2016-04-09_10:53:52_d41d8cd98f00b204e9800998ecf8427e.png"];
+//    UIImage *imagea = [UIImage imageWithData: [NSData dataWithContentsOfURL:url]];
+//    imge.image = imagea;
+//    [imge mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.centerX.equalTo(self.view);
+//        make.centerY.equalTo(self.view);
+//        make.size.mas_equalTo(imagea.size);
+//    }];
     
 }
 - (void)dealloc

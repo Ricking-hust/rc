@@ -155,7 +155,7 @@
             [view removeFromSuperview];
         }
         [[NSNotificationCenter defaultCenter] postNotificationName:@"timeNode" object:self.planListRanged];
-        [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
+//        [[NSNotificationCenter defaultCenter] postNotificationName:@"sendTimeNodeScrollView" object:[[NSNumber alloc]initWithInt:0]];
     }
 }
 - (void)didDisplayInfo
