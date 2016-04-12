@@ -78,17 +78,15 @@
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
-    [self configureBlocks];
     [self setNavigation];
+    [self configureBlocks];
     [self startget];
-    
 }
 - (void)setNavigation
 {
