@@ -62,7 +62,6 @@ typedef void (^HomeViewBlock)(id);
 }
 - (void)refleshDataByCity
 {
-    NSLog(@"cityID:%@",self.ctmodel.cityID);
     if ([self.ctmodel.cityID isEqualToString:@"1"])
     {
         [self.leftButton setTitle:@"北京" forState:UIControlStateNormal];
@@ -323,6 +322,8 @@ typedef void (^HomeViewBlock)(id);
         long int len = [ac.acTime length];
         cell.ac_time.text = [NSString stringWithFormat:@"时间: %@", [ac.acTime substringWithRange:NSMakeRange(0, len - 3)]];
         cell.ac_place.text = [NSString stringWithFormat:@"地点: %@", ac.acPlace];
+        [cell.ac_imageTag sd_setImageWithURL:[NSURL URLWithString:ac.userInfo.userPic] placeholderImage:[UIImage imageNamed:@"tagImage"]];
+        cell.ac_tags.font = [UIFont systemFontOfSize:14];
         cell.ac_tags.text = ac.userInfo.userName;
         
     }

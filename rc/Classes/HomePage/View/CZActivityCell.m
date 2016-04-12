@@ -71,8 +71,8 @@
         //5.创建ac_imageTag(UIImageView)
         UIImageView *tagImage = [[UIImageView alloc]init];
         self.ac_imageTag = tagImage;
-        UIImage *Image = [UIImage imageNamed:@"tagImage"];
-        self.ac_imageTag.image = Image;
+        self.ac_imageTag.layer.cornerRadius = 15;
+        self.ac_imageTag.layer.masksToBounds = YES;
         [self.contentView addSubview:self.ac_imageTag];
         
         //6.创建ac_tags(UILable)
@@ -137,15 +137,15 @@
         make.height.mas_equalTo(17);
     }];
     [self.ac_imageTag mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.ac_place.mas_bottom).offset(15);
+        make.top.equalTo(self.ac_place.mas_bottom).offset(10);
         make.left.equalTo(self.ac_time.mas_left);
-        make.size.mas_equalTo(self.ac_imageTag.image.size);
+        make.size.mas_equalTo(CGSizeMake(30, 30));
     }];
     [self.ac_tags mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.ac_imageTag.mas_top).offset(-3);
+        make.centerY.equalTo(self.ac_imageTag.mas_centerY);
         make.left.equalTo(self.ac_imageTag.mas_right).offset(7);
         make.width.mas_equalTo(maxfW);
-        make.height.mas_equalTo(15);
+        make.height.mas_equalTo(20);
     }];
 }
 

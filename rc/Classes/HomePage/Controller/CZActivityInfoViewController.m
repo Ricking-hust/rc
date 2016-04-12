@@ -469,6 +469,7 @@
 
     [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         [self.headerImageView setImageToBlur:self.headerImageView.image blurRadius:21 completionBlock:nil];
+        //[self.headerImageView changeImageBright:self.headerImageView.image Bright:0.3];
     }];
     [self.header addSubview:self.headerImageView];
 
@@ -542,7 +543,12 @@
     [self.acImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     self.acTittleLabel.text   = self.activitymodel.acTitle;
     self.acTagImageView.image = [UIImage imageNamed:@"tagImage_white"];
-    self.acTagLabel.text      = self.activitymodel.userInfo.userName;
+    NSMutableArray *tagAry = [[NSMutableArray alloc]init];
+    for (TagModel *model in self.activitymodel.tagsList.list) {
+        [tagAry addObject:model.tagName];
+    }
+    NSString *tagStr = [tagAry componentsJoinedByString:@","];
+    self.acTagLabel.text      = tagStr;
     
 }
 #pragma mark - 创建子控件

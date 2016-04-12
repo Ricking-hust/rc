@@ -37,4 +37,7 @@ extern CGFloat const kLBBlurredImageDefaultBlurRadius;
 - (void)setImageToBlur:(UIImage *)image
        completionBlock:(LBBlurredImageCompletionBlock)completion;
 
+
+-(void)changeImageBright:(UIImage *)image Bright:(float)bright;
+
 @end
