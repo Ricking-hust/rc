@@ -23,9 +23,48 @@
 @property (nonatomic, strong) NSString  *updateState;//行程更新的状态,null未更新，update已更新须请求后台,默认update
 @property (nonatomic, strong) UIView  *timeLine;
 @property (nonatomic, strong) UIView  *heartBrokenView;
+@property (nonatomic, strong) UIView  *notLoginView;
 @end
 
 @implementation RCScheduleViewController
+- (UIView *)notLoginView
+{
+    if (!_notLoginView)
+    {
+        _notLoginView = [[UIView alloc]init];
+        [self.view addSubview:_notLoginView];
+        
+        UIImageView *imgeView = [[UIImageView alloc]init];
+        imgeView.image = [UIImage imageNamed:@"heartbrokenIcon"];
+        [_notLoginView addSubview:imgeView];
+        
+        [imgeView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(_notLoginView.mas_left);
+            make.top.equalTo(_notLoginView.mas_top);
+            make.size.mas_equalTo(imgeView.image.size);
+        }];
+        UILabel *label = [[UILabel alloc]init];
+        label.text = @"您还没有登录哟。";
+        label.font = [UIFont systemFontOfSize:14];
+        label.textColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0];
+        [_notLoginView addSubview:label];
+        CGSize labelSize = [self sizeWithText:label.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:14];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(imgeView.mas_bottom).offset(10);
+            make.centerX.equalTo(imgeView.mas_centerX).offset(10);
+            make.width.mas_equalTo(labelSize.width+1);
+            make.height.mas_equalTo(labelSize.height+1);
+        }];
+        [_notLoginView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(self.view).offset(10);
+            make.centerY.equalTo(self.view);
+            make.height.mas_equalTo(imgeView.image.size.height+labelSize.height+1+10);
+            make.width.mas_equalTo(imgeView.image.size.width>labelSize.width?imgeView.image.size.width:labelSize.width+1);
+        }];
+        
+    }
+    return _notLoginView;
+}
 
 - (UIView *)timeLine
 {
@@ -85,12 +124,19 @@
     }
     return _heartBrokenView;
 }
+#pragma mark - viewWillAppear
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
     self.isLogin = [DataManager manager].user.isLogin;
     if (self.isLogin)
     {
+        for (UIView *view in self.view.subviews)
+        {
+            view.hidden = NO;
+        }
+        self.notLoginView.hidden = YES;
+        
         if ([self.updateState isEqualToString:@"update"])
         {
             self.getPlanListBlock();
@@ -108,7 +154,11 @@
 
     }else
     {
-        [self showLoginOrNotView];
+        for (UIView *view in self.view.subviews)
+        {
+            view.hidden = YES;
+        }
+        self.notLoginView.hidden = NO;
     }
 }
 - (void)createSC
@@ -187,11 +237,18 @@
 #pragma mark - 添加行程
 - (IBAction)addSC:(id)sender
 {
-    RCAddScheduleViewController *addsc = [[RCAddScheduleViewController alloc]init];
-    self.addscDelegate = addsc;
-    [self.addscDelegate passPlanListRanged:self.planListRanged];
-    [self.addscDelegate passTimeNodeScrollView:self.sc.timeNodeSV];
-    [self.navigationController pushViewController:addsc animated:YES];
+    if (self.isLogin)
+    {
+        RCAddScheduleViewController *addsc = [[RCAddScheduleViewController alloc]init];
+        self.addscDelegate = addsc;
+        [self.addscDelegate passPlanListRanged:self.planListRanged];
+        [self.addscDelegate passTimeNodeScrollView:self.sc.timeNodeSV];
+        [self.navigationController pushViewController:addsc animated:YES];
+    }else
+    {
+        [self showLoginOrNotView];
+    }
+
 }
 
 -(void)showLoginOrNotView{
