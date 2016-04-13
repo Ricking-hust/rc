@@ -187,16 +187,16 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     if (self.device == IPhone5)
     {
         acImageW = 142;
-        acImageH = 110;
+        acImageH = 142;
         
     }else if (self.device   == IPhone6)
     {
         acImageW = 165;
-        acImageH = 125;
+        acImageH = 165;
     }else
     {
         acImageW = 177;
-        acImageH = 135;
+        acImageH = 177;
     }
     CGSize maxSize = CGSizeMake(acImageW - 20, MAXFLOAT);
     CGSize acNameSize = [self sizeWithText:model.acTitle maxSize:maxSize fontSize:NAME_FONTSIZE];

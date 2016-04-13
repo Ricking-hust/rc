@@ -72,13 +72,13 @@
     self.acList = flashArray;
     //设置父容器的大小
     CGRect rect = [[UIScreen mainScreen]bounds];
-    [self setFrame:CGRectMake(0, 0, rect.size.width, SCROLLVIEW_HEIGHT + 70.0f/2 + 14.0f/2)];
+    [self setFrame:CGRectMake(0, 0, rect.size.width, (rect.size.width/2) + 70.0f/2 + 14.0f/2)];
     
     //configure scrollView constraint
     [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.and.top.equalTo(self);
         make.width.mas_equalTo(rect.size.width);
-        make.height.mas_equalTo(SCROLLVIEW_HEIGHT);
+        make.height.mas_equalTo(rect.size.width/2);
         
     }];
     
@@ -123,6 +123,7 @@
         [self.scrollView addSubview:imageView];
         FlashActivityModel *flashModel = flashArray[i];
         NSString *imageName = flashModel.Image;
+        NSLog(@"%@",imageName);
         [imageView sd_setImageWithURL:[NSURL URLWithString:imageName] placeholderImage:[UIImage imageNamed:@"img_3"]];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.scrollView.mas_left).with.offset(i * rect.size.width);
