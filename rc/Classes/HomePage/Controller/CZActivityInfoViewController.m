@@ -125,9 +125,16 @@
     self.webView = [[UIWebView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 1)];
     self.webView.delegate = self;
     self.webView.scrollView.scrollEnabled = NO;
+    self.webView.scalesPageToFit = NO;
     //预先加载url
     NSURL *baseURL = [NSURL fileURLWithPath:self.activitymodel.acHtml];
     [self.webView loadHTMLString:self.activitymodel.acHtml baseURL:baseURL];
+//    NSString* path = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"html"];
+//    NSURL* url = [NSURL fileURLWithPath:path];
+//    NSURLRequest* request = [NSURLRequest requestWithURL:url] ;
+//    [self.webView loadRequest:request];
+    
+
 }
 - (void)cellValue:(NSNotification *)notification
 {
@@ -218,7 +225,7 @@
     }else if(section == 1)
     {
         view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 60, 30)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 60, 30)];
         label.font = [UIFont systemFontOfSize:12];
         label.text = @"活动详情";
         label.textColor = textcolor;
@@ -226,7 +233,7 @@
     }else if(section == 2)
     {
         view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 60, 30)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 60, 30)];
         label.font = [UIFont systemFontOfSize:12];
         label.text = @"发布者";
         label.textColor = textcolor;
@@ -235,7 +242,7 @@
     }else if (section == 3)
     {
         view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 60, 30)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 60, 30)];
         label.font = [UIFont systemFontOfSize:12];
         label.text = @"主讲人";
         label.textColor = textcolor;
@@ -243,7 +250,7 @@
     }else
     {
         view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(10, 0, 60, 30)];
+        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 60, 30)];
         label.font = [UIFont systemFontOfSize:12];
         label.text = @"更多内容";
         label.textColor = textcolor;
@@ -330,7 +337,7 @@
             CGSize size = [self sizeWithText:self.activitymodel.acDesc maxSize:maxSize fontSize:FONTSIZE];
             [acIntroduce mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.top.equalTo(cell.mas_top).offset(10);
-                make.left.equalTo(cell.mas_left).offset(10);
+                make.left.equalTo(cell.mas_left).offset(15);
                 make.width.mas_equalTo((int)size.width+1);
                 make.height.mas_equalTo((int)size.height+1);
             }];
@@ -458,6 +465,8 @@
      "tagStyle.setAttribute(\'type\', \'text/css\');"
      "tagStyle.appendChild(document.createTextNode(\'p{padding-left:5px;font-size:14px;line-height:150%}\'));"
      "var tagHeadAdd = tagHead.appendChild(tagStyle);"];
+    
+
     [self.tableView reloadData];
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView

@@ -7,6 +7,11 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		560F36AA1CBE72DC0088AA19 /* test.html in Resources */ = {isa = PBXBuildFile; fileRef = 560F36A91CBE72DC0088AA19 /* test.html */; };
+		560F36B41CBE7E2B0088AA19 /* WebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 560F36AD1CBE7E2B0088AA19 /* WebViewJavascriptBridge.m */; };
+		560F36B51CBE7E2B0088AA19 /* WebViewJavascriptBridge_JS.m in Sources */ = {isa = PBXBuildFile; fileRef = 560F36AF1CBE7E2B0088AA19 /* WebViewJavascriptBridge_JS.m */; };
+		560F36B61CBE7E2B0088AA19 /* WebViewJavascriptBridgeBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 560F36B11CBE7E2B0088AA19 /* WebViewJavascriptBridgeBase.m */; };
+		560F36B71CBE7E2B0088AA19 /* WKWebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 560F36B31CBE7E2B0088AA19 /* WKWebViewJavascriptBridge.m */; };
 		56121F5D1CA14E2300183DB0 /* SystemConfiguration.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56121F5C1CA14E2300183DB0 /* SystemConfiguration.framework */; };
 		56121F5F1CA14E2C00183DB0 /* QuartzCore.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56121F5E1CA14E2C00183DB0 /* QuartzCore.framework */; };
 		56121F611CA14E3500183DB0 /* CoreTelephony.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56121F601CA14E3500183DB0 /* CoreTelephony.framework */; };
@@ -222,6 +227,15 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		560F36A91CBE72DC0088AA19 /* test.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = test.html; sourceTree = "<group>"; };
+		560F36AC1CBE7E2B0088AA19 /* WebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridge.h; sourceTree = "<group>"; };
+		560F36AD1CBE7E2B0088AA19 /* WebViewJavascriptBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridge.m; sourceTree = "<group>"; };
+		560F36AE1CBE7E2B0088AA19 /* WebViewJavascriptBridge_JS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridge_JS.h; sourceTree = "<group>"; };
+		560F36AF1CBE7E2B0088AA19 /* WebViewJavascriptBridge_JS.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridge_JS.m; sourceTree = "<group>"; };
+		560F36B01CBE7E2B0088AA19 /* WebViewJavascriptBridgeBase.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridgeBase.h; sourceTree = "<group>"; };
+		560F36B11CBE7E2B0088AA19 /* WebViewJavascriptBridgeBase.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridgeBase.m; sourceTree = "<group>"; };
+		560F36B21CBE7E2B0088AA19 /* WKWebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WKWebViewJavascriptBridge.h; sourceTree = "<group>"; };
+		560F36B31CBE7E2B0088AA19 /* WKWebViewJavascriptBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WKWebViewJavascriptBridge.m; sourceTree = "<group>"; };
 		56121F5C1CA14E2300183DB0 /* SystemConfiguration.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SystemConfiguration.framework; path = System/Library/Frameworks/SystemConfiguration.framework; sourceTree = SDKROOT; };
 		56121F5E1CA14E2C00183DB0 /* QuartzCore.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = QuartzCore.framework; path = System/Library/Frameworks/QuartzCore.framework; sourceTree = SDKROOT; };
 		56121F601CA14E3500183DB0 /* CoreTelephony.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreTelephony.framework; path = System/Library/Frameworks/CoreTelephony.framework; sourceTree = SDKROOT; };
@@ -654,6 +668,21 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		560F36AB1CBE7E2B0088AA19 /* WebViewJavascriptBridge */ = {
+			isa = PBXGroup;
+			children = (
+				560F36AC1CBE7E2B0088AA19 /* WebViewJavascriptBridge.h */,
+				560F36AD1CBE7E2B0088AA19 /* WebViewJavascriptBridge.m */,
+				560F36AE1CBE7E2B0088AA19 /* WebViewJavascriptBridge_JS.h */,
+				560F36AF1CBE7E2B0088AA19 /* WebViewJavascriptBridge_JS.m */,
+				560F36B01CBE7E2B0088AA19 /* WebViewJavascriptBridgeBase.h */,
+				560F36B11CBE7E2B0088AA19 /* WebViewJavascriptBridgeBase.m */,
+				560F36B21CBE7E2B0088AA19 /* WKWebViewJavascriptBridge.h */,
+				560F36B31CBE7E2B0088AA19 /* WKWebViewJavascriptBridge.m */,
+			);
+			path = WebViewJavascriptBridge;
+			sourceTree = "<group>";
+		};
 		56121F741CA14EF800183DB0 /* shareSDKDependLib */ = {
 			isa = PBXGroup;
 			children = (
@@ -696,6 +725,7 @@
 		561D01011C47D94C00E4E013 /* rc */ = {
 			isa = PBXGroup;
 			children = (
+				560F36A91CBE72DC0088AA19 /* test.html */,
 				56E603F51CA5368100EB0446 /* res */,
 				5683EC221C817EA1006430CB /* Main */,
 				561D01C81C47DA5600E4E013 /* Others */,
@@ -792,6 +822,7 @@
 		561D01811C47DA5600E4E013 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				560F36AB1CBE7E2B0088AA19 /* WebViewJavascriptBridge */,
 				56E69FBB1CB61B2100B4C71B /* ShareSDK */,
 				56F02C7D1CA2884B00E0BBB4 /* MJRefresh */,
 				56121F741CA14EF800183DB0 /* shareSDKDependLib */,
@@ -1578,6 +1609,7 @@
 				5683EC271C817F7B006430CB /* LaunchScreen.storyboard in Resources */,
 				56E603F91CA5369000EB0446 /* 50%loading.gif in Resources */,
 				56E9D39D1CA57665005FF799 /* tutor4.jpg in Resources */,
+				560F36AA1CBE72DC0088AA19 /* test.html in Resources */,
 				56E69FF21CB61B2200B4C71B /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				56E69FF81CB61B2300B4C71B /* ShareSDKFlatShareViewUI.bundle in Resources */,
 				56E69FF61CB61B2300B4C71B /* read_me.txt in Resources */,
@@ -1666,6 +1698,7 @@
 				561D02051C47DA5600E4E013 /* UIRefreshControl+AFNetworking.m in Sources */,
 				56B9CD361C807A7100914F00 /* UIImage+GIF.m in Sources */,
 				56814C161C58A64600CB60D6 /* CZRemindMeView.m in Sources */,
+				560F36B41CBE7E2B0088AA19 /* WebViewJavascriptBridge.m in Sources */,
 				561D020C1C47DA5600E4E013 /* MASViewAttribute.m in Sources */,
 				56E5236A1C75BAAA00794B0E /* CZSettingViewController.m in Sources */,
 				56E523671C75B1CE00794B0E /* CZFeedbackViewController.m in Sources */,
@@ -1719,6 +1752,7 @@
 				56A191E21C756A3100E03B41 /* CZMyInfoCell.m in Sources */,
 				56B9CD311C807A7100914F00 /* SDWebImageDownloader.m in Sources */,
 				561D02091C47DA5600E4E013 /* MASConstraint.m in Sources */,
+				560F36B51CBE7E2B0088AA19 /* WebViewJavascriptBridge_JS.m in Sources */,
 				561D02151C47DA5600E4E013 /* AppDelegate.m in Sources */,
 				C43EEB691CA68C2700B83670 /* FlashActivityModel.m in Sources */,
 				564596B61C732A84006D8493 /* LewPopupViewAnimationDrop.m in Sources */,
@@ -1727,6 +1761,7 @@
 				562FD2751CA674FA0014E5D8 /* RCBarButton.m in Sources */,
 				565CBFA91C6F0ED500635EA4 /* CZTagWithLabelView.m in Sources */,
 				56637D751C5611230000BF46 /* CZCityView.m in Sources */,
+				560F36B61CBE7E2B0088AA19 /* WebViewJavascriptBridgeBase.m in Sources */,
 				565EF6261C48EBA20067C032 /* ActivityModel.m in Sources */,
 				C46A93D01C85DA5E009626F6 /* ScrollViewFrameAccessor.m in Sources */,
 				561D01F91C47DA5600E4E013 /* AFURLRequestSerialization.m in Sources */,
@@ -1754,6 +1789,7 @@
 				56B9CD341C807A7100914F00 /* SDWebImagePrefetcher.m in Sources */,
 				C4C05EEB1C85C500005E7FEE /* LoginViewController.m in Sources */,
 				56637D721C560DA10000BF46 /* CZCityViewController.m in Sources */,
+				560F36B71CBE7E2B0088AA19 /* WKWebViewJavascriptBridge.m in Sources */,
 				56655EEF1C87189200F4BE9E /* CZDownView.m in Sources */,
 				56E8427B1C4BA74C00D1D198 /* CZTimeCell.m in Sources */,
 				56F02CAD1CA2884B00E0BBB4 /* MJRefreshFooter.m in Sources */,
