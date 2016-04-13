@@ -8,6 +8,7 @@
 
 #import "RegisteViewController.h"
 #import "MyTextField.h"
+#import "RCUtils.h"
 #import "MBProgressHUD.h"
 #import "NSString+MD5.h"
 #import "Masonry.h"
@@ -287,6 +288,7 @@ static CGFloat const kContainViewYNormal = 70.0;
                     }
                     UIAlertController *alterLgnFailControl = [UIAlertController alertControllerWithTitle:@"注册失败" message:reasonString preferredStyle:UIAlertControllerStyleAlert];
                     UIAlertAction *configureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                        [self.HUD hideAnimated:YES];
                         [self endRegiste];
                     }];
                     [alterLgnFailControl addAction:configureAction];

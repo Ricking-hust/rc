@@ -192,6 +192,7 @@
 		C465906C1CAE421900590ED9 /* ResetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C465906B1CAE421900590ED9 /* ResetPasswordViewController.m */; };
 		C46A93D01C85DA5E009626F6 /* ScrollViewFrameAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = C46A93CD1C85DA5E009626F6 /* ScrollViewFrameAccessor.m */; };
 		C46A93D11C85DA5E009626F6 /* ViewFrameAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = C46A93CF1C85DA5E009626F6 /* ViewFrameAccessor.m */; };
+		C47606F31CBE86BE00181854 /* RCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C47606F21CBE86BE00181854 /* RCUtils.m */; };
 		C4B300161CA44BCC004516B0 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = C4B300151CA44BCC004516B0 /* NSString+MD5.m */; };
 		C4BBA81A1C89B93300AD02EE /* RegisteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BBA8191C89B93300AD02EE /* RegisteViewController.m */; };
 		C4C05E6D1C842126005E7FEE /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C05E6B1C842126005E7FEE /* EXTScope.m */; };
@@ -579,6 +580,8 @@
 		C46A93CD1C85DA5E009626F6 /* ScrollViewFrameAccessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewFrameAccessor.m; sourceTree = "<group>"; };
 		C46A93CE1C85DA5E009626F6 /* ViewFrameAccessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFrameAccessor.h; sourceTree = "<group>"; };
 		C46A93CF1C85DA5E009626F6 /* ViewFrameAccessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewFrameAccessor.m; sourceTree = "<group>"; };
+		C47606F11CBE86BE00181854 /* RCUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUtils.h; sourceTree = "<group>"; };
+		C47606F21CBE86BE00181854 /* RCUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCUtils.m; sourceTree = "<group>"; };
 		C4B300141CA44BCC004516B0 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
 		C4B300151CA44BCC004516B0 /* NSString+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5.m"; sourceTree = "<group>"; };
 		C4BBA8181C89B93300AD02EE /* RegisteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisteViewController.h; sourceTree = "<group>"; };
@@ -1444,6 +1447,8 @@
 				C4B300151CA44BCC004516B0 /* NSString+MD5.m */,
 				C4C075251C89CF6C00C5E54D /* MyTextField.h */,
 				C4C075261C89CF6C00C5E54D /* MyTextField.m */,
+				C47606F11CBE86BE00181854 /* RCUtils.h */,
+				C47606F21CBE86BE00181854 /* RCUtils.m */,
 			);
 			name = LoginAndRegister;
 			sourceTree = "<group>";
@@ -1731,6 +1736,7 @@
 				C46A93D01C85DA5E009626F6 /* ScrollViewFrameAccessor.m in Sources */,
 				561D01F91C47DA5600E4E013 /* AFURLRequestSerialization.m in Sources */,
 				C46A93D11C85DA5E009626F6 /* ViewFrameAccessor.m in Sources */,
+				C47606F31CBE86BE00181854 /* RCUtils.m in Sources */,
 				56DF02321C49356100E80DFA /* CZActivityInfoViewController.m in Sources */,
 				56E2AAA81C59A964009371F7 /* CZRemindTimeButton.m in Sources */,
 				565EF66C1C48ED1E0067C032 /* CZTabbarController.m in Sources */,

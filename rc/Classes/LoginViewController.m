@@ -8,6 +8,7 @@
 
 #import "LoginViewController.h"
 #import "MyTextField.h"
+#import "RCUtils.h"
 #import "NSString+MD5.h"
 #import "Masonry.h"
 #import "RegisteViewController.h"
