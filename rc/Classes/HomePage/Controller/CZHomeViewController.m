@@ -56,10 +56,6 @@ typedef void (^HomeViewBlock)(id);
     [self configuerCity];
     [self refleshDataByCity];
 }
-
--(void)viewWillDisappear:(BOOL)animated{
-    [super viewWillDisappear:animated];
-}
 - (void)refleshDataByCity
 {
     if ([self.ctmodel.cityID isEqualToString:@"1"])

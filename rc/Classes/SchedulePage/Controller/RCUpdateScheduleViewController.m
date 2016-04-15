@@ -247,6 +247,7 @@
 - (void)commintModify
 {
     [self.downView.textView resignFirstResponder];
+    self.model.planContent = self.downView.textView.text;
     if (![self.downView.textView.text isEqualToString:@"请输入行程地点+内容(40字以内)"])
     {
         BOOL result = [self isUpdateSchedule];
@@ -303,6 +304,12 @@
             }];
         }else
         {
+            UIAlertController *alert = [UIAlertController alertControllerWithTitle:@"提示" message:@"亲，您还没有做任何修改哟。" preferredStyle:UIAlertControllerStyleAlert];
+            
+            UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleCancel handler:nil];
+            
+            [alert addAction:okAction];
+            [self presentViewController:alert animated:YES completion:nil];
             //[self.navigationController popViewControllerAnimated:YES];
         }
 

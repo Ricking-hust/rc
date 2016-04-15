@@ -33,13 +33,15 @@
         [_heartBrokenView addSubview:imgeView];
         
         [imgeView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_heartBrokenView.mas_left);
-            make.top.equalTo(_heartBrokenView.mas_top);
+//            make.left.equalTo(_heartBrokenView.mas_left);
+//            make.top.equalTo(_heartBrokenView.mas_top);
+            make.center.equalTo(_heartBrokenView);
             make.size.mas_equalTo(imgeView.image.size);
         }];
         
         UILabel *label = [[UILabel alloc]init];
-        label.text = @"您还没有发布活动哟。";
+        label.numberOfLines = 0;
+        label.text = @"请登陆myrichang.com发布您的活动。";
         label.font = [UIFont systemFontOfSize:14];
         label.textColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0];
         [_heartBrokenView addSubview:label];
@@ -51,7 +53,7 @@
             make.height.mas_equalTo(labelSize.height+1);
         }];
         [_heartBrokenView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(self.view).offset(10);
+            make.centerX.equalTo(self.view);
             make.centerY.equalTo(self.view);
             make.height.mas_equalTo(imgeView.image.size.height+labelSize.height+1+10);
             make.width.mas_equalTo(imgeView.image.size.width>labelSize.width?imgeView.image.size.width:labelSize.width+1);
