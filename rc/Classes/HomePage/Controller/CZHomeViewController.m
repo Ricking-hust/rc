@@ -322,7 +322,6 @@ typedef void (^HomeViewBlock)(id);
         cell.ac_time.text = [NSString stringWithFormat:@"时间: %@", [ac.acTime substringWithRange:NSMakeRange(0, len - 3)]];
         cell.ac_place.text = [NSString stringWithFormat:@"地点: %@", ac.acPlace];
         [cell.ac_imageTag sd_setImageWithURL:[NSURL URLWithString:ac.userInfo.userPic] placeholderImage:[UIImage imageNamed:@"tagImage"]];
-        cell.ac_tags.font = [UIFont systemFontOfSize:14];
         cell.ac_tags.text = ac.userInfo.userName;
         
     }

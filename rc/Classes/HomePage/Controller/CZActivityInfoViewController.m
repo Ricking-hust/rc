@@ -18,6 +18,7 @@
 #import "UIImageView+WebCache.h"
 #import "UINavigationBar+Awesome.h"
 #import "UIImageView+LBBlurredImage.h"
+#import "UIColor+YDAddition.h"
 #import "MBProgressHUD.h"
 #import "RCBarButton.h"
 #import "RCBarButtonView.h"
@@ -485,9 +486,11 @@
     self.tableView.tableHeaderView = self.header;
     self.headerImageView = [[UIImageView alloc]init];
     self.headerImageView.alpha = 0.7;
-
+    
+    __block UIColor *imageColor = [[UIColor alloc]init];
     [self.headerImageView sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
         [self.headerImageView setImageToBlur:self.headerImageView.image blurRadius:21 completionBlock:nil];
+        imageColor = [UIColor getImageColor:self.headerImageView.image];
         //[self.headerImageView changeImageBright:self.headerImageView.image Bright:0.3];
     }];
     [self.header addSubview:self.headerImageView];
@@ -511,6 +514,20 @@
     
     self.acTagImageView.image = [UIImage imageNamed:@"tagImage"];
     self.acTittleLabel.text = self.activitymodel.acTitle;
+    CGFloat red,green,blue,alpha,h,s,b,aHSL;
+    [imageColor getRed:& red green:& green blue:& blue alpha:& alpha];
+    [imageColor getHue:&h saturation:&s brightness:&b alpha:&aHSL];
+    //NSLog(@"R:%f,G:%f,B:%f,A:%f,H:%f,S:%f,BHSL:%f,AHSL:%f",red,green,blue,alpha,h,s,b,aHSL);
+    CGFloat h2 = h+0.5,b2 = b+0.5;
+    if (h2>1) {
+        h2 -=1;
+    }
+    if (b2>1) {
+        b2 -=1;
+    }
+    NSLog(@"H2:%f",h2);
+    UIColor *textColor = [UIColor colorWithHue:h2 saturation:s brightness:b2 alpha:aHSL];
+    self.acTittleLabel.textColor = textColor;
     //对tableView头进行布局
     [self setSubViewsConstraint];
     
@@ -555,7 +572,6 @@
 {
     self.acTittleLabel.font          = [UIFont systemFontOfSize:15];
     self.acTittleLabel.numberOfLines = 0;
-    self.acTittleLabel.textColor     = [UIColor whiteColor];
     self.acTagLabel.font             = [UIFont systemFontOfSize:12];
     self.acTagLabel.textColor        = self.acTittleLabel.textColor;
     

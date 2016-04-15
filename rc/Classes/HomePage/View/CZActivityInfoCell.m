@@ -134,7 +134,7 @@
         self.ac_placeLabel.text = model.acPlace;
         self.ac_sizeLabel.text  = model.acSize;
         self.ac_payLabel.text = model.acPay;
-        self.placeLabel.text = @"时间: ";
+        self.placeLabel.text = @"地点: ";
         self.sizeLabel.text = @"规模: ";
         self.payLabel.text = @"费用: ";
     }

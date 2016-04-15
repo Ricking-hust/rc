@@ -195,6 +195,7 @@
 		C457D6CC1CAE51ED00075D9B /* RCReleaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C457D6CB1CAE51ED00075D9B /* RCReleaseCell.m */; };
 		C459AD8E1C8D9633009922EE /* NSDictionary+NotNullKey.m in Sources */ = {isa = PBXBuildFile; fileRef = C459AD8D1C8D9633009922EE /* NSDictionary+NotNullKey.m */; };
 		C465906C1CAE421900590ED9 /* ResetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C465906B1CAE421900590ED9 /* ResetPasswordViewController.m */; };
+		C46635E91CBFCEA100582DD1 /* UIColor+YDAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = C46635E81CBFCEA100582DD1 /* UIColor+YDAddition.m */; };
 		C46A93D01C85DA5E009626F6 /* ScrollViewFrameAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = C46A93CD1C85DA5E009626F6 /* ScrollViewFrameAccessor.m */; };
 		C46A93D11C85DA5E009626F6 /* ViewFrameAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = C46A93CF1C85DA5E009626F6 /* ViewFrameAccessor.m */; };
 		C47606F31CBE86BE00181854 /* RCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C47606F21CBE86BE00181854 /* RCUtils.m */; };
@@ -589,6 +590,8 @@
 		C459AD8D1C8D9633009922EE /* NSDictionary+NotNullKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+NotNullKey.m"; sourceTree = "<group>"; };
 		C465906A1CAE421900590ED9 /* ResetPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetPasswordViewController.h; sourceTree = "<group>"; };
 		C465906B1CAE421900590ED9 /* ResetPasswordViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ResetPasswordViewController.m; sourceTree = "<group>"; };
+		C46635E71CBFCEA100582DD1 /* UIColor+YDAddition.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "UIColor+YDAddition.h"; sourceTree = "<group>"; };
+		C46635E81CBFCEA100582DD1 /* UIColor+YDAddition.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "UIColor+YDAddition.m"; sourceTree = "<group>"; };
 		C46A93CB1C85DA5E009626F6 /* FrameAccessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FrameAccessor.h; sourceTree = "<group>"; };
 		C46A93CC1C85DA5E009626F6 /* ScrollViewFrameAccessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ScrollViewFrameAccessor.h; sourceTree = "<group>"; };
 		C46A93CD1C85DA5E009626F6 /* ScrollViewFrameAccessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewFrameAccessor.m; sourceTree = "<group>"; };
@@ -825,6 +828,7 @@
 		561D01811C47DA5600E4E013 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				C46635DD1CBFC01200582DD1 /* YUAddition */,
 				560F36AB1CBE7E2B0088AA19 /* WebViewJavascriptBridge */,
 				56E69FBB1CB61B2100B4C71B /* ShareSDK */,
 				56F02C7D1CA2884B00E0BBB4 /* MJRefresh */,
@@ -1484,6 +1488,15 @@
 			name = LoginAndRegister;
 			sourceTree = "<group>";
 		};
+		C46635DD1CBFC01200582DD1 /* YUAddition */ = {
+			isa = PBXGroup;
+			children = (
+				C46635E71CBFCEA100582DD1 /* UIColor+YDAddition.h */,
+				C46635E81CBFCEA100582DD1 /* UIColor+YDAddition.m */,
+			);
+			name = YUAddition;
+			sourceTree = "<group>";
+		};
 		C46A93CA1C85DA5E009626F6 /* FrameAccessor */ = {
 			isa = PBXGroup;
 			children = (
@@ -1718,6 +1731,7 @@
 				56E8427E1C4BB8E500D1D198 /* CZActivityInfoCell.m in Sources */,
 				565EF6271C48EBA20067C032 /* BaseModel.m in Sources */,
 				56E9D3951CA56F8B005FF799 /* KSGuideManager.m in Sources */,
+				C46635E91CBFCEA100582DD1 /* UIColor+YDAddition.m in Sources */,
 				564596BA1C732A84006D8493 /* UIViewController+LewPopupViewController.m in Sources */,
 				561D01F81C47DA5600E4E013 /* AFSecurityPolicy.m in Sources */,
 				569079DE1CA8F8AA00DEBF6F /* RCBarButtonView.m in Sources */,

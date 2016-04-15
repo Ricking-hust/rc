@@ -159,6 +159,7 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     
     ActivityModel *model = activityList[indexPath.row];
     [cell.acImage sd_setImageWithURL:[NSURL URLWithString:model.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
+    [cell.acTagImgeView sd_setImageWithURL:[NSURL URLWithString:model.userInfo.userPic] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     cell.acName.text = model.acTitle;
     int len = (int)[model.acTime length];
     NSString *timeStr = [model.acTime substringWithRange:NSMakeRange(0, len - 3)];
@@ -270,9 +271,16 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
         } else {
             cityId = @"1";
         }
+        NSLog(@"%@",model.indId);
         return [[DataManager manager] checkIndustryWithCityId:cityId industryId:model.indId startId:@"0" success:^(ActivityList *acList) {
             @strongify(self);
             //按行业加载数据
+            NSLog(@"%@",model.indName);
+            if ([model.indId isEqualToString:@"-1"]) {
+                ActivityModel *acmodel = [[ActivityModel alloc]init];
+                acmodel = acList.list.firstObject;
+                NSLog(@"%@",acmodel.acPlace);
+            }
             [self loadData:acList.list ByIndustry:model];
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
@@ -340,6 +348,12 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 -(void)setIndList:(IndustryList *)indList
 {
     _indList = indList;
+    IndustryModel *allAc = [[IndustryModel alloc]init];
+    allAc.indId =@"-1";
+    allAc.indName = @"综合";
+    NSMutableArray *indAry =[[NSMutableArray alloc]initWithArray:indList.list];
+    [indAry insertObject:allAc atIndex:0];
+    _indList.list = [[NSArray alloc] initWithArray:indAry];
     //创建工具条按钮
     if (_indList)
     {
@@ -402,6 +416,7 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     if (minId.length == 0) {
         [collectionView.mj_footer endRefreshingWithNoMoreData];
     } else {
+        NSLog(@"%@",collectionView.indModel.indId);
         if (self.refreshAcListWithIndBlock) {
             self.refreshAcListWithIndBlock(collectionView.indModel,minId);
         }

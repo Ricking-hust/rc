@@ -48,6 +48,8 @@
 }
 - (void)setSubViewProperty
 {
+    self.acTagImgeView.layer.cornerRadius = 5;
+    self.acTagImgeView.layer.masksToBounds = YES;
     self.backgroundColor = [UIColor clearColor];
     self.acName.font = [UIFont systemFontOfSize:NAME_FONTSIZE];
     self.acTime.font = [UIFont systemFontOfSize:TIME_FONTSIZE];
@@ -70,8 +72,6 @@
     [self.bgView.layer setShadowColor:[UIColor blackColor].CGColor];//设置View的阴影颜色
     [self.bgView.layer setShadowOpacity:0.5f];//设置阴影的透明度
     [self.bgView.layer setShadowOffset:CGSizeMake(0.5, 0.5)];//设置View Shadow的偏移量
-    
-    self.acTagImgeView.image = [UIImage imageNamed:@"tagImage"];
     
 }
 - (void)setSubviewConstraint
@@ -129,7 +129,7 @@
     [self.acTagImgeView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.acPlace.mas_left);
         make.top.equalTo(self.acPlace.mas_bottom).offset(5);
-        make.size.mas_equalTo(self.acTagImgeView.image.size);
+        make.size.mas_equalTo(CGSizeMake(10, 10));
     }];
     //标签约束
     CGSize acTagSize = [self sizeWithText:@"发布者在哪呢" maxSize:maxSize fontSize:TAG_FONTSIZE];
