@@ -7,7 +7,6 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
-		560F36AA1CBE72DC0088AA19 /* test.html in Resources */ = {isa = PBXBuildFile; fileRef = 560F36A91CBE72DC0088AA19 /* test.html */; };
 		560F36B41CBE7E2B0088AA19 /* WebViewJavascriptBridge.m in Sources */ = {isa = PBXBuildFile; fileRef = 560F36AD1CBE7E2B0088AA19 /* WebViewJavascriptBridge.m */; };
 		560F36B51CBE7E2B0088AA19 /* WebViewJavascriptBridge_JS.m in Sources */ = {isa = PBXBuildFile; fileRef = 560F36AF1CBE7E2B0088AA19 /* WebViewJavascriptBridge_JS.m */; };
 		560F36B61CBE7E2B0088AA19 /* WebViewJavascriptBridgeBase.m in Sources */ = {isa = PBXBuildFile; fileRef = 560F36B11CBE7E2B0088AA19 /* WebViewJavascriptBridgeBase.m */; };
@@ -229,7 +228,6 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
-		560F36A91CBE72DC0088AA19 /* test.html */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.html; path = test.html; sourceTree = "<group>"; };
 		560F36AC1CBE7E2B0088AA19 /* WebViewJavascriptBridge.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridge.h; sourceTree = "<group>"; };
 		560F36AD1CBE7E2B0088AA19 /* WebViewJavascriptBridge.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = WebViewJavascriptBridge.m; sourceTree = "<group>"; };
 		560F36AE1CBE7E2B0088AA19 /* WebViewJavascriptBridge_JS.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = WebViewJavascriptBridge_JS.h; sourceTree = "<group>"; };
@@ -731,7 +729,6 @@
 		561D01011C47D94C00E4E013 /* rc */ = {
 			isa = PBXGroup;
 			children = (
-				560F36A91CBE72DC0088AA19 /* test.html */,
 				56E603F51CA5368100EB0446 /* res */,
 				5683EC221C817EA1006430CB /* Main */,
 				561D01C81C47DA5600E4E013 /* Others */,
@@ -1627,7 +1624,6 @@
 				5683EC271C817F7B006430CB /* LaunchScreen.storyboard in Resources */,
 				56E603F91CA5369000EB0446 /* 50%loading.gif in Resources */,
 				56E9D39D1CA57665005FF799 /* tutor4.jpg in Resources */,
-				560F36AA1CBE72DC0088AA19 /* test.html in Resources */,
 				56E69FF21CB61B2200B4C71B /* TencentOpenApi_IOS_Bundle.bundle in Resources */,
 				56E69FF81CB61B2300B4C71B /* ShareSDKFlatShareViewUI.bundle in Resources */,
 				56E69FF61CB61B2300B4C71B /* read_me.txt in Resources */,

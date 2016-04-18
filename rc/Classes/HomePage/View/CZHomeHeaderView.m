@@ -187,7 +187,14 @@
 {
     //当前页码
     NSInteger page = self.pageControl.currentPage;
-    
+    if (page == self.pageControl.numberOfPages - 1)
+    {
+        self.isEnd = YES;
+    }
+    if (page == 0)
+    {
+        self.isEnd = NO;
+    }
     if (self.isEnd == NO)
     {
         page++;

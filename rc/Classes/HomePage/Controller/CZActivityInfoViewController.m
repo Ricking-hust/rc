@@ -127,14 +127,14 @@
     self.webView.delegate = self;
     self.webView.scrollView.scrollEnabled = NO;
     self.webView.scalesPageToFit = NO;
-    //预先加载url
+    //加载url
+    NSString *css = @"<style type='text/css'>\
+                    img{width: 100%}\
+                    p{padding-left:5px;font-size:13px;padding-right:5px;line-height:150%}\
+                    </style>";
+    self.activitymodel.acHtml = [NSString stringWithFormat:@"%@%@",self.activitymodel.acHtml,css];
     NSURL *baseURL = [NSURL fileURLWithPath:self.activitymodel.acHtml];
     [self.webView loadHTMLString:self.activitymodel.acHtml baseURL:baseURL];
-//    NSString* path = [[NSBundle mainBundle] pathForResource:@"test" ofType:@"html"];
-//    NSURL* url = [NSURL fileURLWithPath:path];
-//    NSURLRequest* request = [NSURLRequest requestWithURL:url] ;
-//    [self.webView loadRequest:request];
-    
 
 }
 - (void)cellValue:(NSNotification *)notification
@@ -292,7 +292,7 @@
     switch (indexPath.section)
     {
         case 0:
-        {
+        {//时间
             CZTimeCell *cell = [CZTimeCell timeCellWithTableView:tableView];
             [cell.remindMeBtn addTarget:self action:@selector(onClickRemindMe:) forControlEvents:UIControlEventTouchUpInside];
             //对cell的控件进行赋值
@@ -304,7 +304,7 @@
         }
             break;
         case 1:
-        {
+        {//活动详情
             CZActivityInfoCell *cell = [CZActivityInfoCell activityCellWithTableView:tableView];
             //对cell的控件进行赋值
             [self setCellValue:cell AtIndexPath:indexPath];
@@ -314,7 +314,7 @@
         }
             break;
         case 2:
-        {
+        {//发布者
             RCReleaseCell *cell = [[RCReleaseCell alloc]init];
             [self setCellValue:cell AtIndexPath:indexPath];
             [cell setSubViewsConstraint];
@@ -323,7 +323,7 @@
         }
             break;
         case 3:
-        {
+        {//主讲人
             UITableViewCell *cell = [[UITableViewCell alloc]init];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             UILabel *acIntroduce = [[UILabel alloc]init];
@@ -334,11 +334,11 @@
             acIntroduce.numberOfLines = 0;
             //对cell的控件进行布局
             
-            CGSize maxSize = CGSizeMake(kScreenWidth - 20, MAXFLOAT);
+            CGSize maxSize = CGSizeMake(kScreenWidth - 30, MAXFLOAT);
             CGSize size = [self sizeWithText:self.activitymodel.acDesc maxSize:maxSize fontSize:FONTSIZE];
             [acIntroduce mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.top.equalTo(cell.mas_top).offset(10);
-                make.left.equalTo(cell.mas_left).offset(15);
+                make.centerX.equalTo(cell.mas_centerX);
+                make.centerY.equalTo(cell.mas_centerY);
                 make.width.mas_equalTo((int)size.width+1);
                 make.height.mas_equalTo((int)size.height+1);
             }];
@@ -346,7 +346,7 @@
         }
             break;
         default:
-        {
+        {//更多内容
             static NSString *identifier = @"cell";
             UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
             if (!cell)
@@ -459,15 +459,15 @@
     //获取到webview的高度
     CGFloat height = [[self.webView stringByEvaluatingJavaScriptFromString:@"document.body.offsetHeight"] floatValue];
     self.webView.frame = CGRectMake(self.webView.frame.origin.x,self.webView.frame.origin.y, kScreenWidth, height);
-    //给网页增加css样式
-    [webView stringByEvaluatingJavaScriptFromString:
-     @"var tagHead =document.documentElement.firstChild;"
-     "var tagStyle = document.createElement(\'style\');"
-     "tagStyle.setAttribute(\'type\', \'text/css\');"
-     "tagStyle.appendChild(document.createTextNode(\'p{padding-left:5px;font-size:14px;line-height:150%}\'));"
-     "var tagHeadAdd = tagHead.appendChild(tagStyle);"];
+//    //给网页增加css样式
+//    [webView stringByEvaluatingJavaScriptFromString:
+//     @"var tagHead = document.documentElement.firstChild;"
+//     "var tagStyle = document.createElement(\'style\');"
+//     "tagStyle.setAttribute(\'type\', \'text/css\');"
+//     "tagStyle.appendChild(document.createTextNode(\'p{padding-left:5px;font-size:14px;line-height:150%}\'));"
+//     "tagStyle.appendChild(document.createTextNode(\'img{width:100%}\'));"
+//     "var tagHeadAdd = tagHead.appendChild(tagStyle);"];
     
-
     [self.tableView reloadData];
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView
