@@ -554,6 +554,7 @@
     if (yOffset < HEADERH - 64)
     {
 //        self.barButtonView.label.text = @"活动介绍";
+        
         [UIView animateWithDuration:0.5 animations:^{
             [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
         }];

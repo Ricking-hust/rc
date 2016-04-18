@@ -14,6 +14,8 @@
     if (self = [super init])
     {
         self.toolButtonArray = [[NSMutableArray alloc]init];
+        self.toolScrollView = [[UIScrollView alloc]init];
+        self.device = IPhone5;
     }
     return self;
 }
@@ -26,11 +28,66 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     int index = scrollView.contentOffsetX / kScreenWidth;
-    
+
     if (self.toolButtonArray.count != 0)
     {
         UIButton *button = self.toolButtonArray[index];
         [self isToolButtonSelected:button];
+        //to do here -----------------------------------
+        CGFloat padding = kScreenWidth * 0.07;
+        if (self.device == IPhone5)
+        {
+            if ([button.titleLabel.text isEqualToString:@"人文"] && button.selected == YES)
+            {
+                [self.toolScrollView setContentOffsetX:padding + 30];
+                
+            }
+            if ([button.titleLabel.text isEqualToString:@"其他"] && button.selected == YES)
+            {
+                [self.toolScrollView setContentOffsetX:(padding + 30) *2];
+                
+            }
+            if ([button.titleLabel.text isEqualToString:@"综合"] && button.selected == YES)
+            {
+                [self.toolScrollView setContentOffsetX:0];
+            }
+            if ([button.titleLabel.text isEqualToString:@"互联网"] && button.selected == YES)
+            {
+                [self.toolScrollView setContentOffsetX:0];
+            }
+        }else if (self.device == IPhone6)
+        {
+            if ([button.titleLabel.text isEqualToString:@"人文"] && button.selected == YES)
+            {
+                [self.toolScrollView setContentOffsetX:27.5];
+                
+            }
+            if ([button.titleLabel.text isEqualToString:@"其他"] && button.selected == YES)
+            {
+                [self.toolScrollView setContentOffsetX:(padding + 30) + 27.5];
+                
+            }
+            if ([button.titleLabel.text isEqualToString:@"综合"] && button.selected == YES)
+            {
+                [self.toolScrollView setContentOffsetX:0];
+            }
+            if ([button.titleLabel.text isEqualToString:@"互联网"] && button.selected == YES)
+            {
+                [self.toolScrollView setContentOffsetX:0];
+            }
+        }else
+        {
+            if ([button.titleLabel.text isEqualToString:@"其他"] && button.selected == YES)
+            {
+                [self.toolScrollView setContentOffsetX:padding + 30];
+                
+            }
+            if ([button.titleLabel.text isEqualToString:@"综合"] && button.selected == YES)
+            {
+                [self.toolScrollView setContentOffsetX:0];
+            }
+        }
+
     }
 }
 - (void)isToolButtonSelected:(UIButton *)btn

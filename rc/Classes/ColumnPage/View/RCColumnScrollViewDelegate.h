@@ -10,4 +10,6 @@
 
 @interface RCColumnScrollViewDelegate : UIView<UIScrollViewDelegate>
 @property (nonatomic, strong) NSMutableArray *toolButtonArray;
+@property (nonatomic, strong) UIScrollView *toolScrollView;
+@property (nonatomic, assign) CurrentDevice device;
 @end

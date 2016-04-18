@@ -58,6 +58,8 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     if (!_scrollViewDelegate)
     {
         _scrollViewDelegate = [[RCColumnScrollViewDelegate alloc]init];
+        _scrollViewDelegate.device = [self currentDeviceSize];
+        [self.view addSubview:_scrollViewDelegate];
     }
     return _scrollViewDelegate;
 }
@@ -87,9 +89,6 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    
-    // Uncomment the following line to preserve selection between presentations
-    // self.clearsSelectionOnViewWillAppear = NO;
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshColumn) name:@"refreshColumn" object:nil];
     [self initScrollView];
@@ -110,7 +109,7 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     self.scrollView.delegate = self.scrollViewDelegate;
     self.scrollView.backgroundColor = [UIColor clearColor];
     [self.scrollView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.toolScrollView.mas_bottom).offset(10);
+        make.top.equalTo(self.toolScrollView.mas_bottom).offset(0);
         make.left.equalTo(self.view.mas_left);
         make.width.mas_equalTo(kScreenWidth);
         make.bottom.equalTo(self.view.mas_bottom).offset(-49);
@@ -355,10 +354,15 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     [indAry insertObject:allAc atIndex:0];
     _indList.list = [[NSArray alloc] initWithArray:indAry];
     //创建工具条按钮
-    if (_indList)
+    if (_indList.list != 0)
     {
+        self.toolScrollView.hidden = NO;
         [self showToolButtons];
         self.scrollView.contentSize = CGSizeMake(_indList.list.count * kScreenWidth, 0);
+        self.scrollViewDelegate.toolScrollView = self.toolScrollView;
+    }else
+    {//网络异常或者后台没有数据时
+        self.toolScrollView.hidden = YES;
     }
 }
 #pragma mark - 根据行业在indlist中的下标生成对应的collectionView
@@ -453,6 +457,7 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
         _toolScrollView.showsHorizontalScrollIndicator = NO;
         _toolScrollView.showsVerticalScrollIndicator = NO;
         [self.view addSubview:_toolScrollView ];
+        _toolScrollView.hidden = YES;
     }
     return _toolScrollView;
 }
@@ -584,7 +589,8 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     {
         return IPhone5;
         
-    }else if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 6"] )
+    }else if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 6"] ||
+              [[self getCurrentDeviceModel] isEqualToString:@"iPhone Simulator"])
     {
         return IPhone6;
     }else

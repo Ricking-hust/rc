@@ -11,6 +11,7 @@
 #import "CZActivityInfoViewController.h"
 #import "UINavigationBar+Awesome.h"
 #import "Masonry.h"
+#import "RCHomeRefreshHeader.h"
 @interface CZMyCollectionViewController()
 @property(nonatomic, strong) ActivityList *acList;
 @property (nonatomic, copy) NSURLSessionDataTask *(^getUserActivityBlock)();
@@ -48,7 +49,7 @@
         [_heartBrokenView addSubview:imgeView];
         
         [imgeView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(_heartBrokenView.mas_left);
+            make.centerX.equalTo(_heartBrokenView.mas_centerX);
             make.top.equalTo(_heartBrokenView.mas_top);
             make.size.mas_equalTo(imgeView.image.size);
         }];
@@ -66,7 +67,7 @@
             make.height.mas_equalTo(labelSize.height+1);
         }];
         [_heartBrokenView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(self.view).offset(10);
+            make.centerX.equalTo(self.view);
             make.centerY.equalTo(self.view);
             make.height.mas_equalTo(imgeView.image.size.height+labelSize.height+1+10);
             make.width.mas_equalTo(imgeView.image.size.width>labelSize.width?imgeView.image.size.width:labelSize.width+1);
@@ -79,14 +80,26 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
+    self.acList.list = [[NSArray alloc]init];
+    [self.tableView reloadData];
+    [self.tableView.mj_header beginRefreshing];
 }
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    [self.view addSubview:[[UIView alloc]initWithFrame:CGRectZero]];//用于消除导航栏对tableView的布局影响
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     [self setNavigation];
     [self configureBlocks];
     [self startget];
+    self.tableView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+}
+#pragma mark - 下拉刷新
+- (void)loadNewData
+{
+    [self configureBlocks];
+    [self startget];
+    [self.tableView.mj_header endRefreshing];
 }
 - (void)setNavigation
 {
@@ -105,31 +118,31 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.acList.list.count;
+    return 1;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
-    return 1;
+    return self.acList.list.count;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 10;
+    return 1;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 10)];
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 1)];
     view.backgroundColor = [UIColor clearColor];
     return view;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 1;
+    return 2;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 1)];
-    view.backgroundColor = [UIColor clearColor];
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 10)];
+    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     return view;
 }
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -157,13 +170,13 @@
 {
     CZActivityInfoViewController *ac = [[CZActivityInfoViewController alloc]init];
     
-    ac.activityModelPre = self.acList.list[indexPath.row];
+    ac.activityModelPre = self.acList.list[indexPath.section];
     [self.navigationController pushViewController:ac animated:YES];
 }
 //给单元格进行赋值
 - (void)setValueOfCell:(RCMyActivityCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-    ActivityModel *acmodel = self.acList.list[indexPath.row];
+    ActivityModel *acmodel = self.acList.list[indexPath.section];
     [cell.acImageView sd_setImageWithURL:[NSURL URLWithString:acmodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     cell.acName.text = acmodel.acTitle;
     cell.acTime.text = acmodel.acTime;

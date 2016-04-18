@@ -11,7 +11,6 @@
 #import "CZActivityInfoViewController.h"
 #import "Masonry.h"
 #import "RCHomeRefreshHeader.h"
-
 @interface CZMyReleseViewController()
 
 @property(nonatomic, strong) ActivityList *acList;
@@ -34,9 +33,8 @@
         [_heartBrokenView addSubview:imgeView];
         
         [imgeView mas_makeConstraints:^(MASConstraintMaker *make) {
-//            make.left.equalTo(_heartBrokenView.mas_left);
-//            make.top.equalTo(_heartBrokenView.mas_top);
-            make.center.equalTo(_heartBrokenView);
+            make.top.equalTo(_heartBrokenView.mas_top);
+            make.centerX.equalTo(_heartBrokenView);
             make.size.mas_equalTo(imgeView.image.size);
         }];
         
@@ -80,9 +78,10 @@
     self.reviewAc = self.waitReviewAc;
     self.tableView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
 }
+#pragma mark - 下拉刷新
 - (void)loadNewData
 {
-    
+    [self.tableView.mj_header endRefreshing];
 }
 //设置导航栏
 - (void)setNavigation
@@ -213,31 +212,31 @@
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
-    return self.reviewAc.count;;
+    return 1;
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
-    return 1;
+    return self.reviewAc.count;;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
-    return 10;
+    return 1;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 10)];
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 1)];
     view.backgroundColor = [UIColor clearColor];
     return view;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
 {
-    return 1;
+    return 2;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
 {
-    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 1)];
-    view.backgroundColor = [UIColor clearColor];
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 10)];
+    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     return view;
 }
 
@@ -267,7 +266,7 @@
 //给单元格进行赋值
 - (void)setValueOfCell:(RCMyActivityCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-    ActivityModel *acmodel = self.reviewAc[indexPath.row];
+    ActivityModel *acmodel = self.reviewAc[indexPath.section];
     [cell.acImageView sd_setImageWithURL:[NSURL URLWithString:acmodel.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     cell.acName.text = acmodel.acTitle;
     cell.acTime.text = acmodel.acTime;
@@ -285,7 +284,7 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     CZActivityInfoViewController *ac = [[CZActivityInfoViewController alloc]init];
     
-    ac.activityModelPre = self.reviewAc[indexPath.row];
+    ac.activityModelPre = self.reviewAc[indexPath.section];
     [self.navigationController pushViewController:ac animated:YES];
 }
 
