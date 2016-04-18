@@ -10,6 +10,7 @@
 #import "RCMyActivityCell.h"
 #import "CZActivityInfoViewController.h"
 #import "Masonry.h"
+#import "RCHomeRefreshHeader.h"
 
 @interface CZMyReleseViewController()
 
@@ -77,7 +78,11 @@
     [self createButtons];
     [self startget];
     self.reviewAc = self.waitReviewAc;
-    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+}
+- (void)loadNewData
+{
+    
 }
 //设置导航栏
 - (void)setNavigation
@@ -169,6 +174,7 @@
     self.tableView.delegate = self;
     
     self.tableView.backgroundColor = [UIColor clearColor];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.right.bottom.equalTo(self.view);
         make.top.equalTo(self.superOfButtons.mas_bottom);

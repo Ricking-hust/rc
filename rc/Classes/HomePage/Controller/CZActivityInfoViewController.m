@@ -553,14 +553,14 @@
 
     if (yOffset < HEADERH - 64)
     {
-        self.barButtonView.label.text = @"活动介绍";
+//        self.barButtonView.label.text = @"活动介绍";
         [UIView animateWithDuration:0.5 animations:^{
             [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
         }];
         
     }else
     {
-        self.barButtonView.label.text = self.activitymodel.acTitle;
+//        self.barButtonView.label.text = self.activitymodel.acTitle;
         [UIView animateWithDuration:0.5 animations:^{
             [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0]];
         }];
@@ -680,15 +680,19 @@
     titleLabel.font         = [UIFont systemFontOfSize:18];
     titleLabel.textColor    = [UIColor  whiteColor];
     titleLabel.textAlignment= NSTextAlignmentCenter;
-    titleLabel.text = @"";
+    titleLabel.text = @"活动介绍";
     self.navigationItem.titleView = titleLabel;
     
-    //设置导航栏的左侧按钮
-    self.barButtonView = [[RCBarButtonView alloc]initWithFrame:CGRectMake(0, 0, 250, 30)];
-    [self.barButtonView setSubView];
-    [self.barButtonView.button addTarget:self action:@selector(backToForwardViewController) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithCustomView:self.barButtonView];
-    [self.navigationItem setLeftBarButtonItem:leftButton];
+//    //设置导航栏的左侧按钮
+//    self.barButtonView = [[RCBarButtonView alloc]initWithFrame:CGRectMake(0, 0, 250, 30)];
+//    [self.barButtonView setSubView];
+//    [self.barButtonView.button addTarget:self action:@selector(backToForwardViewController) forControlEvents:UIControlEventTouchUpInside];
+//    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithCustomView:self.barButtonView];
+//    [self.navigationItem setLeftBarButtonItem:leftButton];
+    UIBarButtonItem *left = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon_white"] style:UIBarButtonItemStylePlain target:self action:@selector(backToForwardViewController)];
+    left.tintColor = [UIColor whiteColor];
+    [self.navigationItem setLeftBarButtonItem:left];
+    
 
 #pragma mark - 顶部右侧分享按键
     UIImage *image =[UIImage imageNamed:@"shareIcon"];

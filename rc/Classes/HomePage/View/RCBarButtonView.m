@@ -40,13 +40,13 @@
     [self.button setImage:image forState:UIControlStateNormal];
     [self.button setImage:image forState:UIControlStateHighlighted];
     [self.button mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.width.mas_equalTo(50);
+        make.width.mas_equalTo(100);
         make.height.mas_equalTo(image.size.height);
         make.centerY.equalTo(self.mas_centerY);
         make.left.equalTo(self.mas_left);
     }];
     [self.label mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.button.mas_right).offset(-30);
+        make.left.equalTo(self.button.mas_right).offset(-80);
         make.centerY.equalTo(self.mas_centerY);
         make.right.equalTo(self.mas_right);
         make.height.mas_equalTo(self.mas_height);
