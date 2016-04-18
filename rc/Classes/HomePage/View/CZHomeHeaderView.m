@@ -18,7 +18,7 @@
 
 @interface CZHomeHeaderView ()<UIScrollViewDelegate>
 @property (strong, nonatomic) NSTimer *timer;
-
+@property (assign, nonatomic) BOOL isEnd;
 @end
 
 @implementation CZHomeHeaderView
@@ -32,6 +32,7 @@
     CZHomeHeaderView *headerView = [CZHomeHeaderView new];
     headerView.backgroundColor = [UIColor whiteColor];
    
+    headerView.isEnd = NO;
     //创建scrollView
     UIScrollView *scrollView = [UIScrollView new];
     headerView.scrollView = scrollView;
@@ -187,13 +188,28 @@
     //当前页码
     NSInteger page = self.pageControl.currentPage;
     
-    if (page == self.pageControl.numberOfPages - 1)
-    {
-        page = 0;
-    }else
+    if (self.isEnd == NO)
     {
         page++;
+    }else
+    {
+        page--;
     }
+    if (page == self.pageControl.numberOfPages - 1)
+    {
+        self.isEnd = YES;
+    }
+    if (page == 0)
+    {
+        self.isEnd = NO;
+    }
+//    if (page == self.pageControl.numberOfPages - 1)
+//    {
+//        page--;
+//    }else
+//    {
+//        page++;
+//    }
     self.pageControl.currentPage = page;
     
     CGFloat offsetX = page * self.scrollView.frame.size.width;
