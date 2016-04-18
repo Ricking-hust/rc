@@ -312,8 +312,8 @@
         if (cell.tag == 0)
         {
             [self.myButton addObject:btn];
-            UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(buttonLongPress:)];
-            [btn addGestureRecognizer:longPress];
+//            UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(buttonLongPress:)];
+//            [btn addGestureRecognizer:longPress];
         }
         if ((i) % 4 == 0 && i != 0 )
         {
@@ -341,17 +341,18 @@
     RCTagCell *cell = (RCTagCell *)view.superview;
     if (cell.tag == 0)
     {
-        if (self.isShake == YES)
+
+        for (int i = 0; i<self.myTags.count; i++)
         {
-            for (int i = 0; i<self.myTags.count; i++) {
-                TagModel *model = self.myTags[i];
-                if ([model.tagName isEqualToString:button.titleLabel.text]) {
-                    [self.myTags removeObject:model];
-                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-                }
+            TagModel *model = self.myTags[i];
+            if ([model.tagName isEqualToString:button.titleLabel.text])
+            {
+                [self.myTags removeObject:model];
+                NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+                [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
             }
         }
+        
     }else
     {
         BOOL isAdd = NO;
@@ -372,9 +373,50 @@
                 }
             }
         }
-
+        
     }
 }
+
+//- (void)click:(UIButton *)button
+//{
+//    UIView *view = [button superview];
+//    RCTagCell *cell = (RCTagCell *)view.superview;
+//    if (cell.tag == 0)
+//    {
+//        if (self.isShake == YES)
+//        {
+//            for (int i = 0; i<self.myTags.count; i++) {
+//                TagModel *model = self.myTags[i];
+//                if ([model.tagName isEqualToString:button.titleLabel.text]) {
+//                    [self.myTags removeObject:model];
+//                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+//                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//                }
+//            }
+//        }
+//    }else
+//    {
+//        BOOL isAdd = NO;
+//        for (TagModel *model in self.myTags) {
+//            if ([model.tagName isEqualToString:button.titleLabel.text]) {
+//                isAdd = YES;
+//                break;
+//            }
+//        }
+//        if (isAdd == NO)
+//        {
+//            for (int i = 0; i<self.tags.count; i++) {
+//                TagModel *model = self.tags[i];
+//                if ([model.tagName isEqualToString:button.titleLabel.text]) {
+//                    [self.myTags addObject:model];
+//                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
+//                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
+//                }
+//            }
+//        }
+//
+//    }
+//}
 
 - (void)pause
 {
