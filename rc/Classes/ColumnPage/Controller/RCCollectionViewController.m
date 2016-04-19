@@ -585,12 +585,11 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 - (CurrentDevice)currentDeviceSize
 {
     if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 4"] ||
-        [[self getCurrentDeviceModel] isEqualToString:@"iPhone 5"])
+        [[self getCurrentDeviceModel] isEqualToString:@"iPhone 5"] )
     {
         return IPhone5;
         
-    }else if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 6"] ||
-              [[self getCurrentDeviceModel] isEqualToString:@"iPhone Simulator"])
+    }else if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 6"] )
     {
         return IPhone6;
     }else

@@ -129,9 +129,9 @@
     self.webView.scalesPageToFit = NO;
     //加载url
     NSString *css = @"<style type='text/css'>\
-                    img{width: 100%}\
-                    p{padding-left:5px;font-size:13px;padding-right:5px;line-height:150%}\
-                    </style>";
+                        img{width: 100%}\
+                        p{padding-left:5px;font-size:13px;padding-right:5px;line-height:150%}\
+                     </style>";
     self.activitymodel.acHtml = [NSString stringWithFormat:@"%@%@",self.activitymodel.acHtml,css];
     NSURL *baseURL = [NSURL fileURLWithPath:self.activitymodel.acHtml];
     [self.webView loadHTMLString:self.activitymodel.acHtml baseURL:baseURL];
