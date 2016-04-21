@@ -535,6 +535,14 @@
         self.acTittleLabel.textColor = textColor;
     }
     
+    //重新设置导航栏颜色
+    UILabel *newLab = (UILabel *)self.navigationItem.titleView;
+    UIBarButtonItem *leftView = self.navigationItem.leftBarButtonItem;
+    UIBarButtonItem *rightView = self.navigationItem.rightBarButtonItem;
+    leftView.tintColor = self.acTittleLabel.textColor;
+    rightView.tintColor = self.acTittleLabel.textColor;
+    newLab.textColor = self.acTittleLabel.textColor;
+    
     //对tableView头进行布局
     [self setSubViewsConstraint];
     
@@ -698,14 +706,14 @@
 //    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithCustomView:self.barButtonView];
 //    [self.navigationItem setLeftBarButtonItem:leftButton];
     UIBarButtonItem *left = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon_white"] style:UIBarButtonItemStylePlain target:self action:@selector(backToForwardViewController)];
-    left.tintColor = self.acTittleLabel.textColor;
+    left.tintColor = [UIColor whiteColor];
     [self.navigationItem setLeftBarButtonItem:left];
     
 
 #pragma mark - 顶部右侧分享按键
     UIImage *image =[UIImage imageNamed:@"shareIcon"];
     UIBarButtonItem *right = [[UIBarButtonItem alloc]initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(didShare:)];
-    right.tintColor = self.acTittleLabel.textColor;
+    right.tintColor = [UIColor whiteColor];
     [self.navigationItem setRightBarButtonItem:right];
 
 }
