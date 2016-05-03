@@ -327,17 +327,17 @@ typedef void (^HomeViewBlock)(id);
         if (isHappened == YES)
         {
             cell.ac_title.textColor = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
-            cell.ac_time.textColor = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
+            cell.ac_time.textColor  = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
             cell.ac_place.textColor = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
-            cell.ac_tags.textColor = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
-            cell.ac_imageTag.alpha = 0.6;
+            cell.ac_tags.textColor  = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
+            cell.ac_imageTag.alpha  = 0.6;
         }else
         {
             cell.ac_title.textColor = [UIColor blackColor];
             cell.ac_time.textColor  = [UIColor blackColor];
             cell.ac_place.textColor = [UIColor blackColor];
             cell.ac_tags.textColor  = [UIColor blackColor];
-            cell.ac_imageTag.alpha = 1.0;
+            cell.ac_imageTag.alpha  = 1.0;
         }
 
     }
