@@ -420,7 +420,6 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     if (minId.length == 0) {
         [collectionView.mj_footer endRefreshingWithNoMoreData];
     } else {
-        NSLog(@"%@",collectionView.indModel.indId);
         if (self.refreshAcListWithIndBlock) {
             self.refreshAcListWithIndBlock(collectionView.indModel,minId);
         }

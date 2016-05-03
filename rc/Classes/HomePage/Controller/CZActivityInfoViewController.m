@@ -478,6 +478,7 @@
 {
     NSLog(@"didFailLoadWithError===%@", error);
 }
+
 // 配置tableView header UI布局
 - (void)layoutHeaderImageView
 {
@@ -517,17 +518,31 @@
     CGFloat red,green,blue,alpha,h,s,b,aHSL;
     [imageColor getRed:& red green:& green blue:& blue alpha:& alpha];
     [imageColor getHue:&h saturation:&s brightness:&b alpha:&aHSL];
-    //NSLog(@"R:%f,G:%f,B:%f,A:%f,H:%f,S:%f,BHSL:%f,AHSL:%f",red,green,blue,alpha,h,s,b,aHSL);
-    CGFloat h2 = h+0.5,b2 = b+0.5;
-    if (h2>1) {
-        h2 -=1;
+//    NSLog(@"R:%f,G:%f,B:%f,A:%f,H:%f,S:%f,BHSL:%f,AHSL:%f",red,green,blue,alpha,h,s,b,aHSL);
+//    CGFloat h2 = h+0.5,b2 = b+0.5;
+//    if (h2>1) {
+//        h2 -=1;
+//    }
+//    if (b2>1) {
+//        b2 -=1;
+//    }
+//    NSLog(@"H2:%f",h2);
+    if (b<0.5) {
+        UIColor *textColor = [UIColor whiteColor];
+        self.acTittleLabel.textColor = textColor;
+    } else {
+        UIColor *textColor = [UIColor blackColor];
+        self.acTittleLabel.textColor = textColor;
     }
-    if (b2>1) {
-        b2 -=1;
-    }
-    NSLog(@"H2:%f",h2);
-    UIColor *textColor = [UIColor colorWithHue:h2 saturation:s brightness:b2 alpha:aHSL];
-    self.acTittleLabel.textColor = textColor;
+    
+    //重新设置导航栏颜色
+    UILabel *newLab = (UILabel *)self.navigationItem.titleView;
+    UIBarButtonItem *leftView = self.navigationItem.leftBarButtonItem;
+    UIBarButtonItem *rightView = self.navigationItem.rightBarButtonItem;
+    leftView.tintColor = self.acTittleLabel.textColor;
+    rightView.tintColor = self.acTittleLabel.textColor;
+    newLab.textColor = self.acTittleLabel.textColor;
+    
     //对tableView头进行布局
     [self setSubViewsConstraint];
     
@@ -679,7 +694,7 @@
     //设置导航标题栏
     UILabel *titleLabel     = [[UILabel alloc] initWithFrame:CGRectMake(0, 0, 200, 44)];
     titleLabel.font         = [UIFont systemFontOfSize:18];
-    titleLabel.textColor    = [UIColor  whiteColor];
+    titleLabel.textColor    = self.acTittleLabel.textColor;
     titleLabel.textAlignment= NSTextAlignmentCenter;
     titleLabel.text = @"活动介绍";
     self.navigationItem.titleView = titleLabel;
@@ -697,12 +712,9 @@
 
 #pragma mark - 顶部右侧分享按键
     UIImage *image =[UIImage imageNamed:@"shareIcon"];
-    UIButton *shareButton = [[UIButton alloc]initWithFrame:CGRectMake(0, 0, image.size.width, image.size.height)];
-    [shareButton setImage:image forState:UIControlStateNormal];
-    [shareButton addTarget:self action:@selector(didShare:) forControlEvents:UIControlEventTouchUpInside];
-    UIBarButtonItem *rightButton = [[UIBarButtonItem alloc]initWithCustomView:shareButton];
-    [self.navigationItem setRightBarButtonItem:rightButton];
-    [rightButton setTintColor:[UIColor whiteColor]];
+    UIBarButtonItem *right = [[UIBarButtonItem alloc]initWithImage:image style:UIBarButtonItemStylePlain target:self action:@selector(didShare:)];
+    right.tintColor = [UIColor whiteColor];
+    [self.navigationItem setRightBarButtonItem:right];
 
 }
 
@@ -719,8 +731,9 @@
     }
 }
 
-- (void)didShare:(id)sender
+- (void)didShare:(id)button
 {
+    UIView *sender = [[UIView alloc]init];
     //1、创建分享参数
     //构造分享内容
     id<ISSContent> publishContent = [ShareSDK content:self.activitymodel.acDesc

@@ -208,6 +208,11 @@
 		C4CAD1BD1C7B3943003FD0B0 /* TagModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CAD1B81C7B3943003FD0B0 /* TagModel.m */; };
 		C4CAD1BE1C7B3943003FD0B0 /* ThemeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CAD1BA1C7B3943003FD0B0 /* ThemeModel.m */; };
 		C4CAD1C11C7B3975003FD0B0 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CAD1C01C7B3975003FD0B0 /* UserModel.m */; };
+		C4D8DFC51CC65B89005DA9B3 /* RCSearchModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D8DFC41CC65B89005DA9B3 /* RCSearchModel.m */; };
+		C4D8DFEC1CC66968005DA9B3 /* TMCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D8DFE61CC66968005DA9B3 /* TMCache.m */; };
+		C4D8DFED1CC66968005DA9B3 /* TMDiskCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D8DFE91CC66968005DA9B3 /* TMDiskCache.m */; };
+		C4D8DFEE1CC66968005DA9B3 /* TMMemoryCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D8DFEB1CC66968005DA9B3 /* TMMemoryCache.m */; };
+		C4D8DFF11CC66A0B005DA9B3 /* TMCacheExtend.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D8DFF01CC66A0B005DA9B3 /* TMCacheExtend.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -619,6 +624,17 @@
 		C4CAD1BA1C7B3943003FD0B0 /* ThemeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeModel.m; sourceTree = "<group>"; };
 		C4CAD1BF1C7B3975003FD0B0 /* UserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
 		C4CAD1C01C7B3975003FD0B0 /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
+		C4D8DFC31CC65B89005DA9B3 /* RCSearchModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchModel.h; sourceTree = "<group>"; };
+		C4D8DFC41CC65B89005DA9B3 /* RCSearchModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchModel.m; sourceTree = "<group>"; };
+		C4D8DFE51CC66968005DA9B3 /* TMCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMCache.h; sourceTree = "<group>"; };
+		C4D8DFE61CC66968005DA9B3 /* TMCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMCache.m; sourceTree = "<group>"; };
+		C4D8DFE71CC66968005DA9B3 /* TMCacheBackgroundTaskManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMCacheBackgroundTaskManager.h; sourceTree = "<group>"; };
+		C4D8DFE81CC66968005DA9B3 /* TMDiskCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMDiskCache.h; sourceTree = "<group>"; };
+		C4D8DFE91CC66968005DA9B3 /* TMDiskCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMDiskCache.m; sourceTree = "<group>"; };
+		C4D8DFEA1CC66968005DA9B3 /* TMMemoryCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMMemoryCache.h; sourceTree = "<group>"; };
+		C4D8DFEB1CC66968005DA9B3 /* TMMemoryCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMMemoryCache.m; sourceTree = "<group>"; };
+		C4D8DFEF1CC66A0B005DA9B3 /* TMCacheExtend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMCacheExtend.h; sourceTree = "<group>"; };
+		C4D8DFF01CC66A0B005DA9B3 /* TMCacheExtend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMCacheExtend.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -825,6 +841,7 @@
 		561D01811C47DA5600E4E013 /* Framework */ = {
 			isa = PBXGroup;
 			children = (
+				C4D8DFE41CC66968005DA9B3 /* TMCache */,
 				C46635DD1CBFC01200582DD1 /* YUAddition */,
 				560F36AB1CBE7E2B0088AA19 /* WebViewJavascriptBridge */,
 				56E69FBB1CB61B2100B4C71B /* ShareSDK */,
@@ -1082,6 +1099,10 @@
 				C4CAD1BA1C7B3943003FD0B0 /* ThemeModel.m */,
 				C459AD8C1C8D9633009922EE /* NSDictionary+NotNullKey.h */,
 				C459AD8D1C8D9633009922EE /* NSDictionary+NotNullKey.m */,
+				C4D8DFC31CC65B89005DA9B3 /* RCSearchModel.h */,
+				C4D8DFC41CC65B89005DA9B3 /* RCSearchModel.m */,
+				C4D8DFEF1CC66A0B005DA9B3 /* TMCacheExtend.h */,
+				C4D8DFF01CC66A0B005DA9B3 /* TMCacheExtend.m */,
 			);
 			path = Models;
 			sourceTree = "<group>";
@@ -1516,6 +1537,20 @@
 			path = EXTScope;
 			sourceTree = "<group>";
 		};
+		C4D8DFE41CC66968005DA9B3 /* TMCache */ = {
+			isa = PBXGroup;
+			children = (
+				C4D8DFE51CC66968005DA9B3 /* TMCache.h */,
+				C4D8DFE61CC66968005DA9B3 /* TMCache.m */,
+				C4D8DFE71CC66968005DA9B3 /* TMCacheBackgroundTaskManager.h */,
+				C4D8DFE81CC66968005DA9B3 /* TMDiskCache.h */,
+				C4D8DFE91CC66968005DA9B3 /* TMDiskCache.m */,
+				C4D8DFEA1CC66968005DA9B3 /* TMMemoryCache.h */,
+				C4D8DFEB1CC66968005DA9B3 /* TMMemoryCache.m */,
+			);
+			path = TMCache;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1685,6 +1720,7 @@
 				561D02081C47DA5600E4E013 /* MASCompositeConstraint.m in Sources */,
 				C465906C1CAE421900590ED9 /* ResetPasswordViewController.m in Sources */,
 				561D02031C47DA5600E4E013 /* UIImageView+AFNetworking.m in Sources */,
+				C4D8DFEC1CC66968005DA9B3 /* TMCache.m in Sources */,
 				56D7FB2C1C579511003247AF /* UINavigationBar+Awesome.m in Sources */,
 				56F02CB41CA2884B00E0BBB4 /* MJRefreshBackStateFooter.m in Sources */,
 				56B9CD391C807A7100914F00 /* UIImageView+HighlightedWebCache.m in Sources */,
@@ -1701,11 +1737,13 @@
 				56F02CB61CA2884B00E0BBB4 /* MJRefreshNormalHeader.m in Sources */,
 				565EF5FE1C48EAA80067C032 /* CZHomeHeaderView.m in Sources */,
 				561D02061C47DA5600E4E013 /* UIWebView+AFNetworking.m in Sources */,
+				C4D8DFF11CC66A0B005DA9B3 /* TMCacheExtend.m in Sources */,
 				561D020F1C47DA5600E4E013 /* NSLayoutConstraint+MASDebugAdditions.m in Sources */,
 				565EF6231C48EBA20067C032 /* NSNumber+Message.m in Sources */,
 				56B9CD371C807A7100914F00 /* UIImage+MultiFormat.m in Sources */,
 				C409CFF41C9A7B0500D01F9D /* MBProgressHUD.m in Sources */,
 				566094591C9BB33800433AD8 /* RCScheduleView.m in Sources */,
+				C4D8DFED1CC66968005DA9B3 /* TMDiskCache.m in Sources */,
 				562CC4461C6C962100774C22 /* CZTimeSelectView.m in Sources */,
 				C4CAD1BC1C7B3943003FD0B0 /* PlanModel.m in Sources */,
 				561D02121C47DA5600E4E013 /* README.md in Sources */,
@@ -1729,6 +1767,7 @@
 				56E9D3951CA56F8B005FF799 /* KSGuideManager.m in Sources */,
 				C46635E91CBFCEA100582DD1 /* UIColor+YDAddition.m in Sources */,
 				564596BA1C732A84006D8493 /* UIViewController+LewPopupViewController.m in Sources */,
+				C4D8DFC51CC65B89005DA9B3 /* RCSearchModel.m in Sources */,
 				561D01F81C47DA5600E4E013 /* AFSecurityPolicy.m in Sources */,
 				569079DE1CA8F8AA00DEBF6F /* RCBarButtonView.m in Sources */,
 				C4CAD1BD1C7B3943003FD0B0 /* TagModel.m in Sources */,
@@ -1796,6 +1835,7 @@
 				56E523611C75AAD200794B0E /* CZMyCollectionViewController.m in Sources */,
 				56F02CAA1CA2884B00E0BBB4 /* MJRefreshAutoFooter.m in Sources */,
 				56B9CD421C807C4A00914F00 /* UIImageView+LBBlurredImage.m in Sources */,
+				C4D8DFEE1CC66968005DA9B3 /* TMMemoryCache.m in Sources */,
 				56F02CAB1CA2884B00E0BBB4 /* MJRefreshBackFooter.m in Sources */,
 				56E523581C75922700794B0E /* CZPersonInfoCell.m in Sources */,
 				566094561C9BAFEC00433AD8 /* RCScheduleViewController.m in Sources */,
@@ -1901,7 +1941,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				PRODUCT_NAME = "";
@@ -1941,7 +1981,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "";
 				PROVISIONING_PROFILE = "e6f2a85b-11fa-4a40-92a2-d158cc6bfc19";
@@ -1973,7 +2013,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/rc/rc-PrefixHeader.pch";
 				INFOPLIST_FILE = rc/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2012,7 +2052,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/rc/rc-PrefixHeader.pch";
 				INFOPLIST_FILE = rc/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
@@ -2107,7 +2147,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				PRODUCT_NAME = "";
 				PROVISIONING_PROFILE = "e6f2a85b-11fa-4a40-92a2-d158cc6bfc19";
@@ -2139,7 +2179,7 @@
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "$(SRCROOT)/rc/rc-PrefixHeader.pch";
 				INFOPLIST_FILE = rc/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",

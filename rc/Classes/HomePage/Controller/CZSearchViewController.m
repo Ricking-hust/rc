@@ -9,6 +9,7 @@
 #import "CZSearchViewController.h"
 #import "Masonry.h"
 #import "CZActivitycell.h"
+#import "RCSearchModel.h"
 #import "CZActivityInfoViewController.h"
 #include <sys/sysctl.h>
 #define buttonSize CGSizeMake(65, 30)
@@ -26,6 +27,8 @@
 @property (strong, nonatomic) UIScrollView *scrollView;
 @property (nonatomic,strong) NSMutableArray *popSearchAry;
 @property (nonatomic,strong) ActivityList *searchResult;
+@property (nonatomic,strong) UIScrollView *searchHistoryView;
+@property (nonatomic, assign) double historyHeight;
 @property (nonatomic, strong) UITableView *tableView;//显示搜索结果
 
 @property (nonatomic,copy) NSURLSessionDataTask *(^getPopSerchBlock)();
@@ -55,7 +58,6 @@
 
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
-    
     self.navigationController.navigationBarHidden = YES;
 }
 
@@ -67,6 +69,7 @@
     [self configureBlocks];
     self.getPopSerchBlock();
     [self addSearchBarConstraint];
+    [self initSearchHistoryView];
 
 }
 #pragma mark - Tableview 数据源
@@ -146,6 +149,26 @@
     
 }
 
+- (void)didClickedHistory:(UIGestureRecognizer *)sender {
+    
+    UILabel *label = (UILabel *)sender.view;
+    self.searchBar.text = label.text;
+    [RCSearchModel addSearchHistory:self.searchBar.text];
+    [self initSearchHistoryView];
+    [self.searchBar resignFirstResponder];
+}
+
+- (void)didCLickedCleanSearchHistory:(id)sender {
+    
+    [RCSearchModel cleanAllSearchHistory];
+    [self initSearchHistoryView];
+}
+
+-(void)deleteSearchHistoryWithI:(id)sender{
+    [RCSearchModel deleteSearchHistoryWithI:(int)[sender tag]];
+    [self initSearchHistoryView];
+}
+
 #pragma mark - search delegate
 
 - (void)searchBarSearchButtonClicked:(UISearchBar *)searchBar
@@ -164,6 +187,8 @@
         NSLog(@"Error:%@",error);
     }];
     self.scrollView.hidden = YES;
+    [RCSearchModel addSearchHistory:searchBar.text];
+    [self initSearchHistoryView];
     [searchBar resignFirstResponder];
 }
 // 当搜索内容变化时，执行该方法。很有用，可以实现时实搜索
@@ -254,6 +279,95 @@
     }
     return _hotSearchView;
 }
+
+-(void)initSearchHistoryView{
+    if (!_searchHistoryView) {
+        
+        _searchHistoryView =[[UIScrollView alloc]init];
+        _searchHistoryView.backgroundColor = [UIColor whiteColor];
+        [self.scrollView addSubview:_searchHistoryView];
+        self.searchBar.delegate=self;
+    }
+    
+    [[_searchHistoryView subviews] makeObjectsPerformSelector:@selector(removeFromSuperview)];
+    
+    {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(0, 0, kScreenWidth, 0.5)];
+        view.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0  blue:204.0/255.0  alpha:1.0];
+        [_searchHistoryView addSubview:view];
+    }
+    
+    NSArray *array = [RCSearchModel getSearchHistory];
+    NSLog(@"HistoryArray:%@",array);
+    CGFloat imageLeft = 12.0f;
+    CGFloat textLeft = 34.0f;
+    CGFloat height = 44.0f;
+    
+    _historyHeight=height*(array.count+1);
+    //set history list
+    [_searchHistoryView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.mas_equalTo(self.scrollView).offset(10);
+        make.left.mas_equalTo(self.scrollView.mas_left);
+        make.width.mas_equalTo(kScreenWidth);
+        make.height.mas_equalTo(_historyHeight);
+    }];
+    _searchHistoryView.contentSize = CGSizeMake(kScreenWidth, _historyHeight);
+    
+    for (int i = 0; i < array.count; i++) {
+        
+        UILabel *lblHistory = [[UILabel alloc] initWithFrame:CGRectMake(textLeft, i * height, kScreenWidth - textLeft, height)];
+        lblHistory.userInteractionEnabled = YES;
+        lblHistory.font = [UIFont systemFontOfSize:14];
+        lblHistory.textColor = [UIColor blackColor];
+        lblHistory.text = array[i];
+        
+        UIImageView *leftView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
+        leftView.left = 12;
+        leftView.centerY = lblHistory.centerY;
+        leftView.image = [UIImage imageNamed:@"timeIcon"];
+        
+        UIImageView *rightImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 14, 14)];
+        rightImageView.right = kScreenWidth - 12;
+        rightImageView.centerY = lblHistory.centerY;
+        rightImageView.image = [UIImage imageNamed:@"deleteIcon"];
+        
+        UIButton *deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+        [deleteBtn setFrame:CGRectMake(0, 0, 14, 14)];
+        deleteBtn.right = kScreenWidth - 12;
+        deleteBtn.centerY = lblHistory.centerY;
+        [deleteBtn setTag:i];
+        [deleteBtn addTarget:self action:@selector(deleteSearchHistoryWithI:) forControlEvents:UIControlEventTouchUpInside];
+        
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(imageLeft, (i + 1) * height, kScreenWidth-imageLeft, 0.5)];
+        view.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0  blue:204.0/255.0  alpha:1.0];
+        
+        UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didClickedHistory:)];
+        [lblHistory addGestureRecognizer:tapGestureRecognizer];
+        
+        [_searchHistoryView addSubview:lblHistory];
+        [_searchHistoryView addSubview:leftView];
+        [_searchHistoryView addSubview:rightImageView];
+        [_searchHistoryView addSubview:deleteBtn];
+        [_searchHistoryView addSubview:view];
+    }
+    
+    if(array.count) {
+        
+        UIButton *btnClean = [UIButton buttonWithType:UIButtonTypeCustom];
+        btnClean.titleLabel.font = [UIFont systemFontOfSize:14];
+        [btnClean setTitle:@"清除搜索历史" forState:UIControlStateNormal];
+        [btnClean setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        [btnClean setFrame:CGRectMake(0, array.count * height, kScreenWidth, height)];
+        [_searchHistoryView addSubview:btnClean];
+        [btnClean addTarget:self action:@selector(didCLickedCleanSearchHistory:) forControlEvents:UIControlEventTouchUpInside];
+        }
+    {
+        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(imageLeft, (array.count + 1) * height, kScreenWidth-imageLeft, 0.5)];
+        view.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0  blue:204.0/255.0  alpha:1.0];
+        [_searchHistoryView addSubview:view];
+    }
+}
+
 - (void)hideKeyboard
 {
     [self.searchBar resignFirstResponder];
@@ -300,7 +414,7 @@
     CGFloat hotSearchH = [self heigthForTagButtonsView];
     [self.hotSearchView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.scrollView.mas_left);
-        make.top.equalTo(self.scrollView.mas_top);
+        make.top.equalTo(self.scrollView.mas_top).offset(_historyHeight+20);
         make.size.mas_equalTo(CGSizeMake(rect.size.width, hotSearchH+44));
     }];
     UIView *imgAndLabelView = [[UIView alloc]init];
