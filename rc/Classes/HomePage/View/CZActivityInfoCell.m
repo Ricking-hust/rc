@@ -81,7 +81,7 @@
     if (self.model)
     {
         CGSize maxSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
-        
+
         CGSize labelSize = [self sizeWithText:self.placeLabel.text maxSize:maxSize fontSize:FONTSIZE];
         [self.placeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(15);
@@ -101,6 +101,7 @@
         }];
         
         //添加地点标签约束
+        
         CGSize placeSize = [self sizeWithText:self.ac_placeLabel.text maxSize:maxSize fontSize:FONTSIZE];
         [self.ac_placeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.placeLabel.mas_right);
@@ -108,6 +109,7 @@
             make.width.mas_equalTo((int)placeSize.width+1);
             make.height.mas_equalTo((int)placeSize.height+1);
         }];
+        
         //添加规模标签约束
         CGSize scaleSize = [self sizeWithText:self.ac_sizeLabel.text maxSize:maxSize fontSize:FONTSIZE];
         [self.ac_sizeLabel mas_updateConstraints:^(MASConstraintMaker *make) {

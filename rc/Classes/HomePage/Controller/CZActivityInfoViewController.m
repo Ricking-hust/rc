@@ -130,7 +130,8 @@
     //加载url
     NSString *css = @"<style type='text/css'>\
                         img{width: 100%}\
-                        p{padding-left:5px;font-size:13px;padding-right:5px;line-height:150%}\
+                        p{padding-left:5px;font-size:13px;padding-right:5px;line-height:150%;\
+                        text-align:justify;text-justify:inter-ideograph;}\
                      </style>";
     self.activitymodel.acHtml = [NSString stringWithFormat:@"%@%@",self.activitymodel.acHtml,css];
     NSURL *baseURL = [NSURL fileURLWithPath:self.activitymodel.acHtml];
@@ -330,18 +331,10 @@
             [cell addSubview:acIntroduce];
             //对cell的控件进行赋值
             [acIntroduce setText:self.activitymodel.acDesc];
-            acIntroduce.font = [UIFont systemFontOfSize:FONTSIZE];
-            acIntroduce.numberOfLines = 0;
+        
             //对cell的控件进行布局
-            
-            CGSize maxSize = CGSizeMake(kScreenWidth - 30, MAXFLOAT);
-            CGSize size = [self sizeWithText:self.activitymodel.acDesc maxSize:maxSize fontSize:FONTSIZE];
-            [acIntroduce mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.centerX.equalTo(cell.mas_centerX);
-                make.centerY.equalTo(cell.mas_centerY);
-                make.width.mas_equalTo((int)size.width+1);
-                make.height.mas_equalTo((int)size.height+1);
-            }];
+            [self setSpeakerCell:cell Constraint:acIntroduce];
+            //[self cell:cell Constraint:acIntroduce];
             return cell;
         }
             break;
@@ -361,7 +354,58 @@
             break;
     }
 }
-
+//非两端对齐
+- (void) cell:(UITableViewCell *)cell Constraint:(UILabel *)acIntroduce
+{
+    acIntroduce.numberOfLines = 0;
+    acIntroduce.font = [UIFont systemFontOfSize:FONTSIZE];
+    CGSize maxSize = CGSizeMake(kScreenWidth - 30, MAXFLOAT);
+    CGSize size = [self sizeWithText:self.activitymodel.acDesc maxSize:maxSize fontSize:FONTSIZE];
+    [acIntroduce mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(cell.mas_top).offset(PADDING);
+        make.left.equalTo(cell.mas_left).offset(15);
+        make.right.equalTo(cell.mas_right).offset(-15);
+        make.width.mas_equalTo((int)size.width + 1);
+        make.height.mas_equalTo((int)size.height + 1);
+    }];
+}
+//两端对齐
+- (void) setSpeakerCell:(UITableViewCell *)cell Constraint:(UILabel *)acIntroduce
+{
+    CGSize realSize = [self sizeWithText:self.activitymodel.acDesc maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:FONTSIZE];
+    acIntroduce.numberOfLines = 0;
+    CGSize maxSize = CGSizeMake(kScreenWidth - 30, MAXFLOAT);
+    CGSize size = [self sizeWithText:self.activitymodel.acDesc maxSize:maxSize fontSize:FONTSIZE];
+    if (realSize.width > kScreenWidth)
+    {//标签行数为大于1
+        
+        NSString *poetryString = self.activitymodel.acDesc;
+        NSMutableAttributedString *muAttrString = [[NSMutableAttributedString alloc] initWithString:poetryString];
+        NSMutableParagraphStyle *paragtaphStyle = [[NSMutableParagraphStyle alloc] init];
+        paragtaphStyle.alignment = NSTextAlignmentJustified;//两端对齐
+//        paragtaphStyle.paragraphSpacing = 11.0;//段落后面的间距待研究
+//        paragtaphStyle.paragraphSpacingBefore = 11.0;//段落之前的间距待研究
+//        paragtaphStyle.firstLineHeadIndent = 0.0;//首行头缩进待研究
+//        paragtaphStyle.headIndent = 0.0;//头部缩进待研究
+        NSDictionary *dic = @{
+                              NSForegroundColorAttributeName:[UIColor blackColor],
+                              NSFontAttributeName:[UIFont systemFontOfSize:FONTSIZE],
+                              NSParagraphStyleAttributeName:paragtaphStyle,
+                              NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleNone]
+                              };
+        [muAttrString setAttributes:dic range:NSMakeRange(0, muAttrString.length)];
+        NSAttributedString *attrString = [muAttrString copy];
+        acIntroduce.frame = CGRectMake(15, PADDING, kScreenWidth - 30, (int)size.height+1);
+        acIntroduce.attributedText = attrString;
+        
+    }else
+    {
+        acIntroduce.font = [UIFont systemFontOfSize:FONTSIZE];
+        acIntroduce.frame = CGRectMake(15, PADDING, kScreenWidth - 30, (int)size.height+1);
+        acIntroduce.text = self.activitymodel.acDesc;
+    }
+    
+}
 //cell的控件进行赋值
 - (void) setCellValue:(UITableViewCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {

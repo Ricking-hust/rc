@@ -380,7 +380,8 @@ typedef void (^HomeViewBlock)(id);
 //给单元格进行赋值
 - (void) setCellValue:(CZActivitycell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
-    if (!(self.acList.count == 0)) {
+    if (!(self.acList.count == 0))
+    {
         ActivityModel *ac = self.acList[indexPath.section];
         
         [cell.ac_poster sd_setImageWithURL:[NSURL URLWithString:ac.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
@@ -390,7 +391,50 @@ typedef void (^HomeViewBlock)(id);
         cell.ac_place.text = [NSString stringWithFormat:@"地点: %@", ac.acPlace];
         [cell.ac_imageTag sd_setImageWithURL:[NSURL URLWithString:ac.userInfo.userPic] placeholderImage:[UIImage imageNamed:@"tagImage"]];
         cell.ac_tags.text = ac.userInfo.userName;
-        
+        //判断当前活动是否过期
+        //判断此行程是否已发生
+        BOOL isHappened = [self isHappened:ac];
+        if (isHappened == YES)
+        {
+            cell.ac_title.textColor = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
+            cell.ac_time.textColor  = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
+            cell.ac_place.textColor = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
+            cell.ac_tags.textColor  = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
+            cell.ac_imageTag.alpha  = 0.6;
+        }else
+        {
+            cell.ac_title.textColor = [UIColor blackColor];
+            cell.ac_time.textColor  = [UIColor blackColor];
+            cell.ac_place.textColor = [UIColor blackColor];
+            cell.ac_tags.textColor  = [UIColor blackColor];
+            cell.ac_imageTag.alpha  = 1.0;
+        }
+
+    }
+    
+}
+#pragma mark - 判断指定的行程是否已经发生
+- (BOOL)isHappened:(ActivityModel *)model
+{
+    NSString *year = [model.acTime substringWithRange:NSMakeRange(0, 4)];
+    NSString *month = [model.acTime substringWithRange:NSMakeRange(5, 2)];
+    NSString *day = [model.acTime substringWithRange:NSMakeRange(8, 2)];
+    NSString *strDate = [NSString stringWithFormat:@"%@%@%@",year,month,day];
+    NSInteger intDate = [strDate integerValue];//指定行程的日期
+    
+    NSDate *date = [NSDate date];
+    NSDateFormatter *dateformat=[[NSDateFormatter alloc]init];
+    [dateformat setDateFormat:@"yyyyMMdd"];//设置格式
+    [dateformat setTimeZone:[[NSTimeZone alloc]initWithName:@"Asia/Beijing"]];//指定时区
+    NSString *currentStrDate = [dateformat stringFromDate:date];
+    NSInteger currentIntDate = [currentStrDate integerValue];//当前日期
+    
+    if (intDate > currentIntDate || intDate == currentIntDate)
+    {
+        return NO;
+    }else
+    {
+        return YES;
     }
     
 }

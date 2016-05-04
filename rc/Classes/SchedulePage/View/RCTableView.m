@@ -155,8 +155,6 @@
 #pragma mark - 判断指定的行程是否已经发生
 - (BOOL)isHappened:(PlanModel *)plmodel
 {
-    
-    
     NSString *year = [plmodel.planTime substringWithRange:NSMakeRange(0, 4)];
     NSString *month = [plmodel.planTime substringWithRange:NSMakeRange(5, 2)];
     NSString *day = [plmodel.planTime substringWithRange:NSMakeRange(8, 2)];
