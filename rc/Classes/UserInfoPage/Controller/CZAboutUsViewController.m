@@ -103,8 +103,8 @@
         }
             break;
         case (2):{
-            NSString *versionURL = @"http://fir.im/cbsg";
-            UIAlertController *versionAlert = [UIAlertController alertControllerWithTitle:@"最新版本号" message:@"0.91" preferredStyle:UIAlertControllerStyleAlert];
+            NSString *versionURL = @"";
+            UIAlertController *versionAlert = [UIAlertController alertControllerWithTitle:@"最新版本号" message:@"1.02" preferredStyle:UIAlertControllerStyleAlert];
             UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
                 
             }];

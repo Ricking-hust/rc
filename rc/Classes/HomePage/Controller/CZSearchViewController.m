@@ -35,6 +35,7 @@
 @end
 
 @implementation CZSearchViewController
+
 #pragma mark - get data
 
 -(void)configureBlocks{
@@ -56,6 +57,8 @@
     [self addHotSearchConstraint];
 }
 
+#pragma mark - View
+
 -(void)viewWillAppear:(BOOL)animated{
     [super viewWillAppear:animated];
     self.navigationController.navigationBarHidden = YES;
@@ -69,7 +72,7 @@
     [self configureBlocks];
     self.getPopSerchBlock();
     [self addSearchBarConstraint];
-    [self initSearchHistoryView];
+    [self initSearchHistoryViewWithAll:NO];
 
 }
 #pragma mark - Tableview 数据源
@@ -140,6 +143,7 @@
     self.searchBar.text = btn.titleLabel.text;
     [self searchBarSearchButtonClicked:self.searchBar];
 }
+
 #pragma mark - 取消
 - (void)onClick:(UIButton *)btn
 {
@@ -149,24 +153,34 @@
     
 }
 
+#pragma mark - 搜索记录事件处理
 - (void)didClickedHistory:(UIGestureRecognizer *)sender {
     
     UILabel *label = (UILabel *)sender.view;
     self.searchBar.text = label.text;
     [RCSearchModel addSearchHistory:self.searchBar.text];
-    [self initSearchHistoryView];
+    [self initSearchHistoryViewWithAll:NO];
     [self.searchBar resignFirstResponder];
+}
+
+-(void)didClickedAllHistory:(id)sender {
+    
 }
 
 - (void)didCLickedCleanSearchHistory:(id)sender {
     
     [RCSearchModel cleanAllSearchHistory];
-    [self initSearchHistoryView];
+    [self initSearchHistoryViewWithAll:NO];
+}
+
+-(void)showAllSearchHistory:(id)sender{
+    [self initSearchHistoryViewWithAll:YES];
+    [self addHotSearchConstraint];
 }
 
 -(void)deleteSearchHistoryWithI:(id)sender{
     [RCSearchModel deleteSearchHistoryWithI:(int)[sender tag]];
-    [self initSearchHistoryView];
+    [self initSearchHistoryViewWithAll:YES];
 }
 
 #pragma mark - search delegate
@@ -188,7 +202,7 @@
     }];
     self.scrollView.hidden = YES;
     [RCSearchModel addSearchHistory:searchBar.text];
-    [self initSearchHistoryView];
+    [self initSearchHistoryViewWithAll:NO];
     [searchBar resignFirstResponder];
 }
 // 当搜索内容变化时，执行该方法。很有用，可以实现时实搜索
@@ -199,6 +213,8 @@
     
 }
 
+
+#pragma mark - 懒加载
 - (UITableView *)tableView
 {
     if (!_tableView)
@@ -280,7 +296,9 @@
     return _hotSearchView;
 }
 
--(void)initSearchHistoryView{
+
+#pragma mark - 搜索历史界面初始化
+-(void)initSearchHistoryViewWithAll:(BOOL)all{
     if (!_searchHistoryView) {
         
         _searchHistoryView =[[UIScrollView alloc]init];
@@ -298,14 +316,18 @@
     }
     
     NSArray *array = [RCSearchModel getSearchHistory];
-    NSLog(@"HistoryArray:%@",array);
     CGFloat imageLeft = 12.0f;
     CGFloat textLeft = 34.0f;
     CGFloat height = 44.0f;
-    
-    _historyHeight=height*(array.count+1);
+    int historyCount;
+    if (all == NO) {
+        historyCount = 2;
+    } else {
+        historyCount = (int)array.count;
+    }
+    _historyHeight=height*(historyCount+1);
     //set history list
-    [_searchHistoryView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [_searchHistoryView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.mas_equalTo(self.scrollView).offset(10);
         make.left.mas_equalTo(self.scrollView.mas_left);
         make.width.mas_equalTo(kScreenWidth);
@@ -313,7 +335,7 @@
     }];
     _searchHistoryView.contentSize = CGSizeMake(kScreenWidth, _historyHeight);
     
-    for (int i = 0; i < array.count; i++) {
+    for (int i = 0; i < historyCount; i++) {
         
         UILabel *lblHistory = [[UILabel alloc] initWithFrame:CGRectMake(textLeft, i * height, kScreenWidth - textLeft, height)];
         lblHistory.userInteractionEnabled = YES;
@@ -351,8 +373,17 @@
         [_searchHistoryView addSubview:view];
     }
     
-    if(array.count) {
-        
+    if (all == NO) {
+        if(array.count) {
+            UIButton *btnShowAll = [UIButton buttonWithType:UIButtonTypeCustom];
+            btnShowAll.titleLabel.font = [UIFont systemFontOfSize:14];
+            [btnShowAll setTitle:@"所有搜索历史" forState:UIControlStateNormal];
+            [btnShowAll setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [btnShowAll setFrame:CGRectMake(0, 2 * height, kScreenWidth, height)];
+            [_searchHistoryView addSubview:btnShowAll];
+            [btnShowAll addTarget:self action:@selector(showAllSearchHistory:) forControlEvents:UIControlEventTouchUpInside];
+        }
+    } else {
         UIButton *btnClean = [UIButton buttonWithType:UIButtonTypeCustom];
         btnClean.titleLabel.font = [UIFont systemFontOfSize:14];
         [btnClean setTitle:@"清除搜索历史" forState:UIControlStateNormal];
@@ -360,7 +391,7 @@
         [btnClean setFrame:CGRectMake(0, array.count * height, kScreenWidth, height)];
         [_searchHistoryView addSubview:btnClean];
         [btnClean addTarget:self action:@selector(didCLickedCleanSearchHistory:) forControlEvents:UIControlEventTouchUpInside];
-        }
+    }
     {
         UIView *view = [[UIView alloc] initWithFrame:CGRectMake(imageLeft, (array.count + 1) * height, kScreenWidth-imageLeft, 0.5)];
         view.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0  blue:204.0/255.0  alpha:1.0];
@@ -396,7 +427,7 @@
     }];
     
 }
-#pragma mark - 点击空白处收起键盘
+//点击空白处收起键盘
 - (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
 {
     [self.searchBar resignFirstResponder];
@@ -405,21 +436,22 @@
 - (void) addHotSearchConstraint
 {
     CGRect rect = [[UIScreen mainScreen]bounds];
-    [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.scrollView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.top.equalTo(self.bgView.mas_bottom).offset(10);
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
     }];
+
     CGFloat hotSearchH = [self heigthForTagButtonsView];
-    [self.hotSearchView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.hotSearchView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.scrollView.mas_left);
         make.top.equalTo(self.scrollView.mas_top).offset(_historyHeight+20);
         make.size.mas_equalTo(CGSizeMake(rect.size.width, hotSearchH+44));
     }];
     UIView *imgAndLabelView = [[UIView alloc]init];
     [self.hotSearchView addSubview:imgAndLabelView];
-    [imgAndLabelView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [imgAndLabelView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.hotSearchView.mas_left);
         make.top.equalTo(self.hotSearchView.mas_top);
         make.right.equalTo(self.hotSearchView.mas_right);
