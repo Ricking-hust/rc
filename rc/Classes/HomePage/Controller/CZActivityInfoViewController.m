@@ -216,6 +216,145 @@
     }
     return 30;
 }
+////section头部视图
+//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
+//{
+//    UIView *view;
+//    UIColor *textcolor = [UIColor colorWithRed:131.0/255.0 green:131.0/255.0  blue:131.0/255.0  alpha:1.0];
+//    if (section == 0)
+//    {
+//        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 1)];
+//    }else if(section == 1)
+//    {
+//        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
+//        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 60, 30)];
+//        label.font = [UIFont systemFontOfSize:12];
+//        label.text = @"活动详情";
+//        label.textColor = textcolor;
+//        [view addSubview:label];
+//    }else if(section == 2)
+//    {
+//        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
+//        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 60, 30)];
+//        label.font = [UIFont systemFontOfSize:12];
+//        label.text = @"发布者";
+//        label.textColor = textcolor;
+//        [view addSubview:label];
+//      
+//    }else if (section == 3)
+//    {
+//        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
+//        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 60, 30)];
+//        label.font = [UIFont systemFontOfSize:12];
+//        label.text = @"主讲人";
+//        label.textColor = textcolor;
+//        [view addSubview:label];
+//    }else
+//    {
+//        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
+//        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 60, 30)];
+//        label.font = [UIFont systemFontOfSize:12];
+//        label.text = @"更多内容";
+//        label.textColor = textcolor;
+//        [view addSubview:label];
+//    }
+//    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
+//    return view;
+//    
+//}
+////section底部间距
+//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+//{
+//    return 1;
+//}
+////section底部视图
+//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+//{
+//    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 1)];
+//    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
+//    return view;
+//}
+//
+//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
+//{
+//    
+//    return 5;
+//}
+//
+//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
+//{
+//    
+//    return 1;
+//}
+//
+//
+//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    switch (indexPath.section)
+//    {
+//        case 0:
+//        {//时间
+//            CZTimeCell *cell = [CZTimeCell timeCellWithTableView:tableView];
+//            [cell.remindMeBtn addTarget:self action:@selector(onClickRemindMe:) forControlEvents:UIControlEventTouchUpInside];
+//            //对cell的控件进行赋值
+//            [self setCellValue:cell AtIndexPath:indexPath];
+//            //对cell的控件进行布局
+//            [cell setSubViewsConstraint];
+//            
+//            return cell;
+//        }
+//            break;
+//        case 1:
+//        {//活动详情
+//            CZActivityInfoCell *cell = [CZActivityInfoCell activityCellWithTableView:tableView];
+//            //对cell的控件进行赋值
+//            [self setCellValue:cell AtIndexPath:indexPath];
+//            //对cell的控件进行布局
+//            [cell setSubViewsConstraint];
+//            return cell;
+//        }
+//            break;
+//        case 2:
+//        {//发布者
+//            RCReleaseCell *cell = [[RCReleaseCell alloc]init];
+//            [self setCellValue:cell AtIndexPath:indexPath];
+//            [cell setSubViewsConstraint];
+//            
+//            return cell;
+//        }
+//            break;
+//        case 3:
+//        {//主讲人
+//            UITableViewCell *cell = [[UITableViewCell alloc]init];
+//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
+//            UILabel *acIntroduce = [[UILabel alloc]init];
+//            [cell addSubview:acIntroduce];
+//            //对cell的控件进行赋值
+//            [acIntroduce setText:self.activitymodel.acDesc];
+//        
+//            //对cell的控件进行布局
+//            [self setSpeakerCell:cell Constraint:acIntroduce];
+//            //[self cell:cell Constraint:acIntroduce];
+//            return cell;
+//        }
+//            break;
+//        default:
+//        {//更多内容
+//            static NSString *identifier = @"cell";
+//            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
+//            if (!cell)
+//            {
+//                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
+//                [cell.contentView addSubview:self.webView];
+//                /* 忽略点击效果 */
+//                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
+//            }
+//            return cell;
+//        }
+//            break;
+//    }
+//}
+
 //section头部视图
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
@@ -232,16 +371,7 @@
         label.text = @"活动详情";
         label.textColor = textcolor;
         [view addSubview:label];
-    }else if(section == 2)
-    {
-        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
-        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 60, 30)];
-        label.font = [UIFont systemFontOfSize:12];
-        label.text = @"发布者";
-        label.textColor = textcolor;
-        [view addSubview:label];
-      
-    }else if (section == 3)
+    }else if (section == 2)
     {
         view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 60, 30)];
@@ -278,7 +408,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
-    return 5;
+    return 4;
 }
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
@@ -315,15 +445,6 @@
         }
             break;
         case 2:
-        {//发布者
-            RCReleaseCell *cell = [[RCReleaseCell alloc]init];
-            [self setCellValue:cell AtIndexPath:indexPath];
-            [cell setSubViewsConstraint];
-            
-            return cell;
-        }
-            break;
-        case 3:
         {//主讲人
             UITableViewCell *cell = [[UITableViewCell alloc]init];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
@@ -331,7 +452,7 @@
             [cell addSubview:acIntroduce];
             //对cell的控件进行赋值
             [acIntroduce setText:self.activitymodel.acDesc];
-        
+            
             //对cell的控件进行布局
             [self setSpeakerCell:cell Constraint:acIntroduce];
             //[self cell:cell Constraint:acIntroduce];
@@ -354,6 +475,8 @@
             break;
     }
 }
+
+
 //非两端对齐
 - (void) cell:(UITableViewCell *)cell Constraint:(UILabel *)acIntroduce
 {

@@ -53,7 +53,7 @@ typedef void (^HomeViewBlock)(id);
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     
     //刷新数据
-    [self configuerCity];
+    [self configureCity];
     [self refleshDataByCity];
 }
 - (void)refleshDataByCity
@@ -80,6 +80,7 @@ typedef void (^HomeViewBlock)(id);
     [self configureBlocks];
     [self startget];
     [self createSubViews];
+    [self configureLocation];
     
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshRecomend) name:@"refresh" object:nil];
     self.tableView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
@@ -100,7 +101,7 @@ typedef void (^HomeViewBlock)(id);
     [[KSGuideManager shared] showGuideViewWithImages:paths];
 }
 
--(void)configuerCity{
+-(void)configureCity{
     if ([[userDefaults objectForKey:@"cityId"] isEqualToString:@""]) {
         self.ctmodel.cityID = @"1";
         [userDefaults setObject:@"1" forKey:@"cityId"];
@@ -108,6 +109,75 @@ typedef void (^HomeViewBlock)(id);
         self.ctmodel.cityID = [userDefaults objectForKey:@"cityId"];
     }
 
+}
+
+#pragma mark - 地理定位
+-(void)configureLocation{
+    //检测定位功能是否开启
+    if([CLLocationManager locationServicesEnabled]){
+        
+        if(!_locationManager){
+            
+            self.locationManager = [[CLLocationManager alloc] init];
+            
+            if([self.locationManager respondsToSelector:@selector(requestWhenInUseAuthorization)]){
+                [self.locationManager requestWhenInUseAuthorization];
+                [self.locationManager requestAlwaysAuthorization];
+            }
+            
+            //设置代理
+            [self.locationManager setDelegate:self];
+            //设置定位精度
+            [self.locationManager setDesiredAccuracy:kCLLocationAccuracyBest];
+            //设置距离筛选
+            [self.locationManager setDistanceFilter:100];
+            //开始定位
+            [self.locationManager startUpdatingLocation];
+            //设置开始识别方向
+            [self.locationManager startUpdatingHeading];
+            
+        }
+        
+    }else{
+        UIAlertController *alertView = [UIAlertController alertControllerWithTitle:@"提醒" message:@"定位功能未开启" preferredStyle:UIAlertControllerStyleAlert];
+        [self presentViewController:alertView animated:YES completion:nil];
+    }
+}
+
+//定位成功以后调用
+-(void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations{
+    
+    [self.locationManager stopUpdatingLocation];
+    CLLocation *location = locations.lastObject;
+    
+    [self reverseGeocoder:location];
+}
+
+//反地理编码
+- (void)reverseGeocoder:(CLLocation *)currentLocation {
+    
+    CLGeocoder* geocoder = [[CLGeocoder alloc] init];
+    [geocoder reverseGeocodeLocation:currentLocation completionHandler:^(NSArray *placemarks, NSError *error) {
+        
+        if(error || placemarks.count == 0){
+            NSLog(@"error = %@",error);
+        }else{
+            CLPlacemark* placemark = placemarks.firstObject;
+            UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"系统检测到您在%@，是否切换到该城市",[[placemark addressDictionary] objectForKey:@"City"]] preferredStyle:UIAlertControllerStyleAlert];
+            UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                
+            }];
+            
+            UIAlertAction *configureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                
+            }];
+            
+            [alertControl addAction:cancleAction];
+            [alertControl addAction:configureAction];
+            [self presentViewController:alertControl animated:YES completion:nil];
+        }  
+        
+    }];  
 }
 
 #pragma mark - 更新数据
@@ -319,8 +389,17 @@ typedef void (^HomeViewBlock)(id);
         long int len = [ac.acTime length];
         cell.ac_time.text = [NSString stringWithFormat:@"时间: %@", [ac.acTime substringWithRange:NSMakeRange(0, len - 3)]];
         cell.ac_place.text = [NSString stringWithFormat:@"地点: %@", ac.acPlace];
-        [cell.ac_imageTag sd_setImageWithURL:[NSURL URLWithString:ac.userInfo.userPic] placeholderImage:[UIImage imageNamed:@"tagImage"]];
-        cell.ac_tags.text = ac.userInfo.userName;
+        [cell.ac_imageTag setImage:[UIImage imageNamed:@"tagImage"]];
+        NSMutableArray *Artags = [[NSMutableArray alloc]init];
+        
+        for (TagModel *model in ac.tagsList.list) {
+            [Artags addObject:model.tagName];
+        }
+        
+        NSString *tags = [Artags componentsJoinedByString:@","];
+        cell.ac_tags.text = tags;
+        //[cell.ac_imageTag sd_setImageWithURL:[NSURL URLWithString:ac.userInfo.userPic] placeholderImage:[UIImage imageNamed:@"tagImage"]];
+        //cell.ac_tags.text = ac.userInfo.userName;
         //判断当前活动是否过期
         //判断此行程是否已发生
         BOOL isHappened = [self isHappened:ac];
@@ -368,6 +447,8 @@ typedef void (^HomeViewBlock)(id);
     }
     
 }
+
+
 #pragma mark - 创建首页子控件
 /**
  *  创建一个tableView和一个搜索框

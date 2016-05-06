@@ -157,16 +157,71 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     NSMutableArray *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
     
     ActivityModel *model = activityList[indexPath.row];
-    [cell.acImage sd_setImageWithURL:[NSURL URLWithString:model.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
-    [cell.acTagImgeView sd_setImageWithURL:[NSURL URLWithString:model.userInfo.userPic] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
     cell.acName.text = model.acTitle;
     int len = (int)[model.acTime length];
     NSString *timeStr = [model.acTime substringWithRange:NSMakeRange(0, len - 3)];
     cell.acTime.text = timeStr;
     cell.acPlace.text = model.acPlace;
     
-    cell.acRelease.text = model.userInfo.userName;
+    [cell.acImage sd_setImageWithURL:[NSURL URLWithString:model.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
+    //[cell.acTagImgeView sd_setImageWithURL:[NSURL URLWithString:model.userInfo.userPic] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
+    //cell.acRelease.text = model.userInfo.userName;
+    [cell.acTagImgeView setImage:[UIImage imageNamed:@"tagImage"]];
+    NSMutableArray *Artags = [[NSMutableArray alloc]init];
+    
+    for (TagModel *tagmodel in model.tagsList.list) {
+        [Artags addObject:tagmodel.tagName];
+    }
+    
+    NSString *tags = [Artags componentsJoinedByString:@","];
+    cell.acRelease.text = tags;
+    //判断当前活动是否过期
+    BOOL isHappened = [self isHappened:model];
+    if (isHappened == YES)
+    {
+        cell.acName.textColor = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
+        cell.acTime.textColor  = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
+        cell.acPlace.textColor = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
+        cell.acRelease.textColor  = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
+        cell.acImage.alpha  = 0.6;
+    }else
+    {
+        cell.acName.textColor = [UIColor blackColor];
+        cell.acTime.textColor  = [UIColor blackColor];
+        cell.acPlace.textColor = [UIColor blackColor];
+        cell.acRelease.textColor  = [UIColor blackColor];
+        cell.acImage.alpha  = 1.0;
+    }
+
+    
 }
+
+#pragma mark - 判断指定的行程是否已经发生
+- (BOOL)isHappened:(ActivityModel *)model
+{
+    NSString *year = [model.acTime substringWithRange:NSMakeRange(0, 4)];
+    NSString *month = [model.acTime substringWithRange:NSMakeRange(5, 2)];
+    NSString *day = [model.acTime substringWithRange:NSMakeRange(8, 2)];
+    NSString *strDate = [NSString stringWithFormat:@"%@%@%@",year,month,day];
+    NSInteger intDate = [strDate integerValue];//指定行程的日期
+    
+    NSDate *date = [NSDate date];
+    NSDateFormatter *dateformat=[[NSDateFormatter alloc]init];
+    [dateformat setDateFormat:@"yyyyMMdd"];//设置格式
+    [dateformat setTimeZone:[[NSTimeZone alloc]initWithName:@"Asia/Beijing"]];//指定时区
+    NSString *currentStrDate = [dateformat stringFromDate:date];
+    NSInteger currentIntDate = [currentStrDate integerValue];//当前日期
+    
+    if (intDate > currentIntDate || intDate == currentIntDate)
+    {
+        return NO;
+    }else
+    {
+        return YES;
+    }
+    
+}
+
 #pragma mark - UICollectionViewCell的点击事件
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
