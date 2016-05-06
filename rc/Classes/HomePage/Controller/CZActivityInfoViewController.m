@@ -638,7 +638,7 @@
 //     "tagStyle.appendChild(document.createTextNode(\'p{padding-left:5px;font-size:14px;line-height:150%}\'));"
 //     "tagStyle.appendChild(document.createTextNode(\'img{width:100%}\'));"
 //     "var tagHeadAdd = tagHead.appendChild(tagStyle);"];
-//    CGRect rect = webView.frame;
+
     [self.tableView reloadData];
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView
