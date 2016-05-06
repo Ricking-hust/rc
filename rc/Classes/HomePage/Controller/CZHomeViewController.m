@@ -389,8 +389,17 @@ typedef void (^HomeViewBlock)(id);
         long int len = [ac.acTime length];
         cell.ac_time.text = [NSString stringWithFormat:@"时间: %@", [ac.acTime substringWithRange:NSMakeRange(0, len - 3)]];
         cell.ac_place.text = [NSString stringWithFormat:@"地点: %@", ac.acPlace];
-        [cell.ac_imageTag sd_setImageWithURL:[NSURL URLWithString:ac.userInfo.userPic] placeholderImage:[UIImage imageNamed:@"tagImage"]];
-        cell.ac_tags.text = ac.userInfo.userName;
+        [cell.ac_imageTag setImage:[UIImage imageNamed:@"tagImage"]];
+        NSMutableArray *Artags = [[NSMutableArray alloc]init];
+        
+        for (TagModel *model in ac.tagsList.list) {
+            [Artags addObject:model.tagName];
+        }
+        
+        NSString *tags = [Artags componentsJoinedByString:@","];
+        cell.ac_tags.text = tags;
+        //[cell.ac_imageTag sd_setImageWithURL:[NSURL URLWithString:ac.userInfo.userPic] placeholderImage:[UIImage imageNamed:@"tagImage"]];
+        //cell.ac_tags.text = ac.userInfo.userName;
         //判断当前活动是否过期
         //判断此行程是否已发生
         BOOL isHappened = [self isHappened:ac];
