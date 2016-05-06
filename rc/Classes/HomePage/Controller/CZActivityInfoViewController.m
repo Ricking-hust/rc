@@ -86,16 +86,6 @@
     self.getActivityBlock();
     //设置导航栏
     [self setNavigation];
-//    UIImageView *imge = [[UIImageView alloc]init];
-//    [self.view addSubview:imge];
-//    NSURL *url = [NSURL URLWithString:@"http://img.myrichang.com/upload/2016-04-09_10:53:52_d41d8cd98f00b204e9800998ecf8427e.png"];
-//    UIImage *imagea = [UIImage imageWithData: [NSData dataWithContentsOfURL:url]];
-//    imge.image = imagea;
-//    [imge mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.centerX.equalTo(self.view);
-//        make.centerY.equalTo(self.view);
-//        make.size.mas_equalTo(imagea.size);
-//    }];
     
 }
 - (void)dealloc
@@ -588,6 +578,23 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
+//    if (indexPath.section == 0)
+//    {
+//        return 47;
+//        
+//    }else if(indexPath.section == 1)
+//    {
+//        return [self heightForAcInfoCell];
+//    }else if (indexPath.section == 2)
+//    {
+//        return 60;
+//    }else if (indexPath.section == 3)
+//    {
+//        return [self heightForSpeakerCell];
+//    }else
+//    {
+//        return self.webView.frame.size.height;
+//    }
     if (indexPath.section == 0)
     {
         return 47;
@@ -596,9 +603,6 @@
     {
         return [self heightForAcInfoCell];
     }else if (indexPath.section == 2)
-    {
-        return 60;
-    }else if (indexPath.section == 3)
     {
         return [self heightForSpeakerCell];
     }else
@@ -634,7 +638,7 @@
 //     "tagStyle.appendChild(document.createTextNode(\'p{padding-left:5px;font-size:14px;line-height:150%}\'));"
 //     "tagStyle.appendChild(document.createTextNode(\'img{width:100%}\'));"
 //     "var tagHeadAdd = tagHead.appendChild(tagStyle);"];
-    
+//    CGRect rect = webView.frame;
     [self.tableView reloadData];
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView
@@ -685,15 +689,6 @@
     CGFloat red,green,blue,alpha,h,s,b,aHSL;
     [imageColor getRed:& red green:& green blue:& blue alpha:& alpha];
     [imageColor getHue:&h saturation:&s brightness:&b alpha:&aHSL];
-//    NSLog(@"R:%f,G:%f,B:%f,A:%f,H:%f,S:%f,BHSL:%f,AHSL:%f",red,green,blue,alpha,h,s,b,aHSL);
-//    CGFloat h2 = h+0.5,b2 = b+0.5;
-//    if (h2>1) {
-//        h2 -=1;
-//    }
-//    if (b2>1) {
-//        b2 -=1;
-//    }
-//    NSLog(@"H2:%f",h2);
     if (b<0.5) {
         UIColor *textColor = [UIColor whiteColor];
         self.acTittleLabel.textColor = textColor;
