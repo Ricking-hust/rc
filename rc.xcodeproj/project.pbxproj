@@ -728,7 +728,6 @@
 		561D00F61C47D94C00E4E013 = {
 			isa = PBXGroup;
 			children = (
-				C4345F451CD8E4A500A7171A /* CoreLocation.framework */,
 				561D01011C47D94C00E4E013 /* rc */,
 				561D011B1C47D94C00E4E013 /* rcTests */,
 				561D01261C47D94C00E4E013 /* rcUITests */,
@@ -765,6 +764,7 @@
 		561D01021C47D94C00E4E013 /* Supporting Files */ = {
 			isa = PBXGroup;
 			children = (
+				C4345F451CD8E4A500A7171A /* CoreLocation.framework */,
 				561D01131C47D94C00E4E013 /* Info.plist */,
 				561D01031C47D94C00E4E013 /* main.m */,
 				C4C05EED1C85D1A8005E7FEE /* rc-PrefixHeader.pch */,

@@ -54,9 +54,9 @@ typedef void (^HomeViewBlock)(id);
     
     //刷新数据
     [self configureCity];
-    [self refleshDataByCity];
+    [self refleshCity];
 }
-- (void)refleshDataByCity
+- (void)refleshCity
 {
     if ([self.ctmodel.cityID isEqualToString:@"1"])
     {
@@ -71,7 +71,6 @@ typedef void (^HomeViewBlock)(id);
     {
         [self.leftButton setTitle:@"广州" forState:UIControlStateNormal];
     }
-    //刷新
 }
 - (void)viewDidLoad
 {
@@ -163,21 +162,64 @@ typedef void (^HomeViewBlock)(id);
             NSLog(@"error = %@",error);
         }else{
             CLPlacemark* placemark = placemarks.firstObject;
-            UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"系统检测到您在%@，是否切换到该城市",[[placemark addressDictionary] objectForKey:@"City"]] preferredStyle:UIAlertControllerStyleAlert];
-            UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+            //NSLog(@"LocationCity:%@",[[placemark addressDictionary] objectForKey:@"City"]);
+            if ([self didShowLocation:[[placemark addressDictionary] objectForKey:@"City"]]) {
+                UIAlertController *alertControl = [UIAlertController alertControllerWithTitle:@"提示" message:[NSString stringWithFormat:@"系统检测到您在%@，是否切换到该城市",[[placemark addressDictionary] objectForKey:@"City"]] preferredStyle:UIAlertControllerStyleAlert];
                 
-            }];
-            
-            UIAlertAction *configureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
+                    
+                }];
+
+                UIAlertAction *configureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+                    [self changeCityWithLocation:[[placemark addressDictionary] objectForKey:@"City"]];
+                }];
                 
-            }];
-            
-            [alertControl addAction:cancleAction];
-            [alertControl addAction:configureAction];
-            [self presentViewController:alertControl animated:YES completion:nil];
+                [alertControl addAction:cancleAction];
+                [alertControl addAction:configureAction];
+                [self presentViewController:alertControl animated:YES completion:nil];
+            }
         }  
         
     }];  
+}
+
+//城市切换
+-(void)changeCityWithLocation:(NSString *)location{
+    if ([location isEqualToString:@"北京市"]) {
+        [userDefaults setObject:@"1" forKey:@"cityId"];
+    }
+    if ([location isEqualToString:@"上海市"]) {
+        [userDefaults setObject:@"2" forKey:@"cityId"];
+    }
+    if ([location isEqualToString:@"武汉市"]) {
+        [userDefaults setObject:@"3" forKey:@"cityId"];
+    }
+    if ([location isEqualToString:@"广州市"]) {
+        [userDefaults setObject:@"4" forKey:@"cityId"];
+    }
+    //刷新数据
+    [self configureCity];
+    [self refleshCity];
+    [self refreshRecomend];
+}
+
+//判断当前地理位置信息是否符合
+-(BOOL)didShowLocation:(NSString *)location{
+    NSString *locationCity = @"0";
+    if ([location isEqualToString:@"北京市"]) {
+        locationCity = @"1";
+    } else if ([location isEqualToString:@"上海市"]) {
+        locationCity = @"2";
+    } else if ([location isEqualToString:@"武汉市"]) {
+        locationCity = @"3";
+    } else if ([location isEqualToString:@"广州市"]) {
+        locationCity = @"4";
+    }
+    if ([locationCity isEqualToString:[userDefaults objectForKey:@"cityId"]]) {
+        return NO;
+    } else {
+        return YES;
+    }
 }
 
 #pragma mark - 更新数据
