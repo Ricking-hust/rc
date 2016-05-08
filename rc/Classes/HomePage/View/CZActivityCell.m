@@ -71,8 +71,9 @@
         //5.创建ac_imageTag(UIImageView)
         UIImageView *tagImage = [[UIImageView alloc]init];
         self.ac_imageTag = tagImage;
-        self.ac_imageTag.layer.cornerRadius = 7.5;
-        self.ac_imageTag.layer.masksToBounds = YES;
+        //当此处为头像时圆角化
+//        self.ac_imageTag.layer.cornerRadius = 7.5;
+//        self.ac_imageTag.layer.masksToBounds = YES;
         [self.contentView addSubview:self.ac_imageTag];
         
         //6.创建ac_tags(UILable)
@@ -139,7 +140,7 @@
     [self.ac_imageTag mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.ac_place.mas_bottom).offset(10);
         make.left.equalTo(self.ac_time.mas_left);
-        make.size.mas_equalTo(CGSizeMake(15, 15));
+        make.size.mas_equalTo(CGSizeMake(7, 10));
     }];
     [self.ac_tags mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.ac_imageTag.mas_centerY);
