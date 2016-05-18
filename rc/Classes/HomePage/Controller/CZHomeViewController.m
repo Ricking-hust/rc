@@ -75,6 +75,8 @@ typedef void (^HomeViewBlock)(id);
 - (void)viewDidLoad
 {
     [super viewDidLoad];
+    UIView *temp = [[UIView alloc]init];
+    [self.view addSubview:temp];
     [self guide];
     [self configureBlocks];
     [self startget];
@@ -501,9 +503,10 @@ typedef void (^HomeViewBlock)(id);
  */
 - (void)createSubViews
 {
+    self.tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
-    self.tableView = [[UITableView alloc]initWithFrame:CGRectZero];
+
     self.searchView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 70/2)];
     self.searchView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];

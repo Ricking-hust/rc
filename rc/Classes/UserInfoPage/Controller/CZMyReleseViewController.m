@@ -191,6 +191,13 @@
         self.lineDownOfWillCheckButton.hidden = NO;
         self.lineDownOfCheckButton.hidden = YES;
         [self.tableView reloadData];
+        if (self.waitReviewAc.count == 0)
+        {
+            self.heartBrokenView.hidden = NO;
+        }else
+        {
+            self.heartBrokenView.hidden = YES;
+        }
 
     }else
     {
@@ -198,16 +205,23 @@
         self.lineDownOfCheckButton.hidden = NO;
         self.lineDownOfWillCheckButton.hidden = YES;
         [self.tableView reloadData];
+        if (self.didReviewAc.count == 0)
+        {
+            self.heartBrokenView.hidden = NO;
+        }else
+        {
+            self.heartBrokenView.hidden = YES;
+        }
     }
     btn.selected = YES;
-    //to do here--------------
-    if (self.reviewAc.count == 0)
-    {
-        self.heartBrokenView.hidden = NO;
-    }else
-    {
-        self.heartBrokenView.hidden = YES;
-    }
+//    //to do here--------------
+//    if (self.reviewAc.count == 0)
+//    {
+//        self.heartBrokenView.hidden = NO;
+//    }else
+//    {
+//        self.heartBrokenView.hidden = YES;
+//    }
     
 }
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
