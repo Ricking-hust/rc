@@ -163,14 +163,11 @@
     [self.searchBar resignFirstResponder];
 }
 
--(void)didClickedAllHistory:(id)sender {
-    
-}
-
 - (void)didCLickedCleanSearchHistory:(id)sender {
     
     [RCSearchModel cleanAllSearchHistory];
     [self initSearchHistoryViewWithAll:NO];
+    [self addHotSearchConstraint];
 }
 
 -(void)showAllSearchHistory:(id)sender{
@@ -181,6 +178,7 @@
 -(void)deleteSearchHistoryWithI:(id)sender{
     [RCSearchModel deleteSearchHistoryWithI:(int)[sender tag]];
     [self initSearchHistoryViewWithAll:YES];
+    [self addHotSearchConstraint];
 }
 
 #pragma mark - search delegate
@@ -321,7 +319,11 @@
     CGFloat height = 44.0f;
     int historyCount;
     if (all == NO) {
-        historyCount = 2;
+        if (array.count < 2) {
+            historyCount = (int)array.count;
+        } else {
+            historyCount = 2;
+        }
     } else {
         historyCount = (int)array.count;
     }
@@ -335,45 +337,48 @@
     }];
     _searchHistoryView.contentSize = CGSizeMake(kScreenWidth, _historyHeight);
     
-    for (int i = 0; i < historyCount; i++) {
-        
-        UILabel *lblHistory = [[UILabel alloc] initWithFrame:CGRectMake(textLeft, i * height, kScreenWidth - textLeft, height)];
-        lblHistory.userInteractionEnabled = YES;
-        lblHistory.font = [UIFont systemFontOfSize:14];
-        lblHistory.textColor = [UIColor blackColor];
-        lblHistory.text = array[i];
-        
-        UIImageView *leftView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
-        leftView.left = 12;
-        leftView.centerY = lblHistory.centerY;
-        leftView.image = [UIImage imageNamed:@"timeIcon"];
-        
-        UIImageView *rightImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 14, 14)];
-        rightImageView.right = kScreenWidth - 12;
-        rightImageView.centerY = lblHistory.centerY;
-        rightImageView.image = [UIImage imageNamed:@"deleteIcon"];
-        
-        UIButton *deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
-        [deleteBtn setFrame:CGRectMake(0, 0, 14, 14)];
-        deleteBtn.right = kScreenWidth - 12;
-        deleteBtn.centerY = lblHistory.centerY;
-        [deleteBtn setTag:i];
-        [deleteBtn addTarget:self action:@selector(deleteSearchHistoryWithI:) forControlEvents:UIControlEventTouchUpInside];
-        
-        UIView *view = [[UIView alloc] initWithFrame:CGRectMake(imageLeft, (i + 1) * height, kScreenWidth-imageLeft, 0.5)];
-        view.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0  blue:204.0/255.0  alpha:1.0];
-        
-        UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didClickedHistory:)];
-        [lblHistory addGestureRecognizer:tapGestureRecognizer];
-        
-        [_searchHistoryView addSubview:lblHistory];
-        [_searchHistoryView addSubview:leftView];
-        [_searchHistoryView addSubview:rightImageView];
-        [_searchHistoryView addSubview:deleteBtn];
-        [_searchHistoryView addSubview:view];
+    if (array.count) {
+        for (int i = 0; i < historyCount; i++) {
+            
+            UILabel *lblHistory = [[UILabel alloc] initWithFrame:CGRectMake(textLeft, i * height, kScreenWidth - textLeft, height)];
+            lblHistory.userInteractionEnabled = YES;
+            lblHistory.font = [UIFont systemFontOfSize:14];
+            lblHistory.textColor = [UIColor blackColor];
+            lblHistory.text = array[i];
+            
+            UIImageView *leftView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 15, 15)];
+            leftView.left = 12;
+            leftView.centerY = lblHistory.centerY;
+            leftView.image = [UIImage imageNamed:@"timeIcon"];
+            
+            UIImageView *rightImageView = [[UIImageView alloc] initWithFrame:CGRectMake(0, 0, 14, 14)];
+            rightImageView.right = kScreenWidth - 12;
+            rightImageView.centerY = lblHistory.centerY;
+            rightImageView.image = [UIImage imageNamed:@"deleteIcon"];
+            
+            UIButton *deleteBtn = [UIButton buttonWithType:UIButtonTypeCustom];
+            [deleteBtn setFrame:CGRectMake(0, 0, 14, 14)];
+            deleteBtn.right = kScreenWidth - 12;
+            deleteBtn.centerY = lblHistory.centerY;
+            [deleteBtn setTag:i];
+            [deleteBtn addTarget:self action:@selector(deleteSearchHistoryWithI:) forControlEvents:UIControlEventTouchUpInside];
+            
+            UIView *view = [[UIView alloc] initWithFrame:CGRectMake(imageLeft, (i + 1) * height, kScreenWidth-imageLeft, 0.5)];
+            view.backgroundColor = [UIColor colorWithRed:200.0/255.0 green:199.0/255.0  blue:204.0/255.0  alpha:1.0];
+            
+            UITapGestureRecognizer *tapGestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(didClickedHistory:)];
+            [lblHistory addGestureRecognizer:tapGestureRecognizer];
+            
+            [_searchHistoryView addSubview:lblHistory];
+            [_searchHistoryView addSubview:leftView];
+            [_searchHistoryView addSubview:rightImageView];
+            [_searchHistoryView addSubview:deleteBtn];
+            [_searchHistoryView addSubview:view];
+        }
+
     }
     
-    if (all == NO) {
+    if (all == NO&&array.count>2) {
         if(array.count) {
             UIButton *btnShowAll = [UIButton buttonWithType:UIButtonTypeCustom];
             btnShowAll.titleLabel.font = [UIFont systemFontOfSize:14];

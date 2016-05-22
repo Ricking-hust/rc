@@ -12,6 +12,7 @@
 
 @property(nonatomic,copy) NSString *cityID;
 @property(nonatomic,copy) NSString *cityName;
+@property (nonatomic,assign) BOOL isLocate;
 
 @end
 

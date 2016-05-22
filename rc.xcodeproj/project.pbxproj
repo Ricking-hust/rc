@@ -87,7 +87,6 @@
 		566094621C9BC8BA00433AD8 /* RCScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 566094611C9BC8BA00433AD8 /* RCScrollView.m */; };
 		566094651C9C1A9000433AD8 /* RCTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 566094641C9C1A9000433AD8 /* RCTableView.m */; };
 		566094681C9C296400433AD8 /* RCScheduleInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 566094671C9C296400433AD8 /* RCScheduleInfoViewController.m */; };
-		56637D721C560DA10000BF46 /* CZCityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56637D711C560DA10000BF46 /* CZCityViewController.m */; };
 		56637D751C5611230000BF46 /* CZCityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56637D741C5611230000BF46 /* CZCityView.m */; };
 		5663D0921CA38BC800526FEF /* RCHomeRefreshHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5663D0911CA38BC800526FEF /* RCHomeRefreshHeader.m */; };
 		56655EEF1C87189200F4BE9E /* CZDownView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56655EEE1C87189200F4BE9E /* CZDownView.m */; };
@@ -188,7 +187,9 @@
 		56F02CBC1CA2884B00E0BBB4 /* UIView+MJExtension.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F02CA91CA2884B00E0BBB4 /* UIView+MJExtension.m */; };
 		56F7BE111CA3CA45005D1475 /* RCNewsNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F7BE101CA3CA45005D1475 /* RCNewsNoteViewController.m */; };
 		C409CFF41C9A7B0500D01F9D /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C409CFF31C9A7B0500D01F9D /* MBProgressHUD.m */; };
+		C41F00571CE9BA54001DC72F /* RCCityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C41F00561CE9BA54001DC72F /* RCCityViewController.m */; };
 		C41FC3E81CB7CD4D009A5DCD /* RemindManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C41FC3E71CB7CD4D009A5DCD /* RemindManager.m */; };
+		C43302861CEB476400F0ABF1 /* CityCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C43302851CEB476400F0ABF1 /* CityCollectionViewCell.m */; };
 		C4345F461CD8E4A500A7171A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4345F451CD8E4A500A7171A /* CoreLocation.framework */; };
 		C43EEB691CA68C2700B83670 /* FlashActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C43EEB681CA68C2700B83670 /* FlashActivityModel.m */; };
 		C457D6C91CAE514B00075D9B /* RCColumnScrollViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C457D6C81CAE514B00075D9B /* RCColumnScrollViewDelegate.m */; };
@@ -389,8 +390,6 @@
 		566094661C9C296400433AD8 /* RCScheduleInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCScheduleInfoViewController.h; sourceTree = "<group>"; };
 		566094671C9C296400433AD8 /* RCScheduleInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCScheduleInfoViewController.m; sourceTree = "<group>"; };
 		566094691C9C2A9200433AD8 /* RCDisplayScheduleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDisplayScheduleDelegate.h; sourceTree = "<group>"; };
-		56637D701C560DA10000BF46 /* CZCityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCityViewController.h; sourceTree = "<group>"; };
-		56637D711C560DA10000BF46 /* CZCityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCityViewController.m; sourceTree = "<group>"; };
 		56637D731C5611230000BF46 /* CZCityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCityView.h; sourceTree = "<group>"; };
 		56637D741C5611230000BF46 /* CZCityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCityView.m; sourceTree = "<group>"; };
 		5663D0901CA38BC800526FEF /* RCHomeRefreshHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCHomeRefreshHeader.h; sourceTree = "<group>"; };
@@ -582,8 +581,12 @@
 		56F7BE101CA3CA45005D1475 /* RCNewsNoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNewsNoteViewController.m; sourceTree = "<group>"; };
 		C409CFF21C9A7B0500D01F9D /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = ../MBProgressHUD.h; sourceTree = "<group>"; };
 		C409CFF31C9A7B0500D01F9D /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = ../MBProgressHUD.m; sourceTree = "<group>"; };
+		C41F00551CE9BA54001DC72F /* RCCityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCityViewController.h; sourceTree = "<group>"; };
+		C41F00561CE9BA54001DC72F /* RCCityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCityViewController.m; sourceTree = "<group>"; };
 		C41FC3E61CB7CD4D009A5DCD /* RemindManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemindManager.h; sourceTree = "<group>"; };
 		C41FC3E71CB7CD4D009A5DCD /* RemindManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemindManager.m; sourceTree = "<group>"; };
+		C43302841CEB476400F0ABF1 /* CityCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityCollectionViewCell.h; sourceTree = "<group>"; };
+		C43302851CEB476400F0ABF1 /* CityCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityCollectionViewCell.m; sourceTree = "<group>"; };
 		C4345F451CD8E4A500A7171A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		C43EEB671CA68C2700B83670 /* FlashActivityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashActivityModel.h; sourceTree = "<group>"; };
 		C43EEB681CA68C2700B83670 /* FlashActivityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlashActivityModel.m; sourceTree = "<group>"; };
@@ -1000,12 +1003,12 @@
 				56DF02311C49356100E80DFA /* CZActivityInfoViewController.m */,
 				56423F491C4FB4710072CCC3 /* CZHomeViewController.h */,
 				56423F4A1C4FB4710072CCC3 /* CZHomeViewController.m */,
-				56637D701C560DA10000BF46 /* CZCityViewController.h */,
-				56637D711C560DA10000BF46 /* CZCityViewController.m */,
 				56E2AAAB1C59E229009371F7 /* CZSearchViewController.h */,
 				56E2AAAC1C59E229009371F7 /* CZSearchViewController.m */,
 				569773201C9AC5BD00D25338 /* RCSettingTagTableViewController.h */,
 				569773211C9AC5BD00D25338 /* RCSettingTagTableViewController.m */,
+				C41F00551CE9BA54001DC72F /* RCCityViewController.h */,
+				C41F00561CE9BA54001DC72F /* RCCityViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1037,6 +1040,8 @@
 				569773241C9ACA7500D25338 /* RCTagCell.m */,
 				5663D0901CA38BC800526FEF /* RCHomeRefreshHeader.h */,
 				5663D0911CA38BC800526FEF /* RCHomeRefreshHeader.m */,
+				C43302841CEB476400F0ABF1 /* CityCollectionViewCell.h */,
+				C43302851CEB476400F0ABF1 /* CityCollectionViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1802,6 +1807,7 @@
 				563FC6C51CAD444700B7DD25 /* CZButtonView.m in Sources */,
 				563FC6C01CACFBA400B7DD25 /* RCCollectionView.m in Sources */,
 				563FC6BA1CACE74F00B7DD25 /* RCCollectionViewController.m in Sources */,
+				C41F00571CE9BA54001DC72F /* RCCityViewController.m in Sources */,
 				566094651C9C1A9000433AD8 /* RCTableView.m in Sources */,
 				56B9CD321C807A7100914F00 /* SDWebImageDownloaderOperation.m in Sources */,
 				56B9CD2D1C807A7100914F00 /* NSData+ImageContentType.m in Sources */,
@@ -1828,6 +1834,7 @@
 				56DF02321C49356100E80DFA /* CZActivityInfoViewController.m in Sources */,
 				56E2AAA81C59A964009371F7 /* CZRemindTimeButton.m in Sources */,
 				565EF66C1C48ED1E0067C032 /* CZTabbarController.m in Sources */,
+				C43302861CEB476400F0ABF1 /* CityCollectionViewCell.m in Sources */,
 				561D01FB1C47DA5600E4E013 /* AFURLSessionManager.m in Sources */,
 				569E58DD1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.m in Sources */,
 				565CBFA61C6F098500635EA4 /* CZTagSelectView.m in Sources */,
@@ -1848,7 +1855,6 @@
 				56E3C0141C9C691200BDAE19 /* RCAddScheduleViewController.m in Sources */,
 				56B9CD341C807A7100914F00 /* SDWebImagePrefetcher.m in Sources */,
 				C4C05EEB1C85C500005E7FEE /* LoginViewController.m in Sources */,
-				56637D721C560DA10000BF46 /* CZCityViewController.m in Sources */,
 				560F36B71CBE7E2B0088AA19 /* WKWebViewJavascriptBridge.m in Sources */,
 				56655EEF1C87189200F4BE9E /* CZDownView.m in Sources */,
 				56E8427B1C4BA74C00D1D198 /* CZTimeCell.m in Sources */,
