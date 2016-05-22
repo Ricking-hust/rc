@@ -15,6 +15,6 @@
 @property (nonatomic, strong) UILabel *acPlace;
 @property (nonatomic, strong) UILabel *acTag;
 @property (nonatomic, strong) UIImageView *acTagImageView;
-@property (nonatomic, assign) CGFloat rowHeight;
+@property (nonatomic, strong) UIButton  *addSchedule;
 - (void)setSubViewConstraint;
 @end

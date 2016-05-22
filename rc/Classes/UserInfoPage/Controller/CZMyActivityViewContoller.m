@@ -189,7 +189,6 @@
 }
 
 #pragma mark - get data
-
 -(void)configureBlocks{
     @weakify(self)
     self.getUserActivityBlock = ^(){
