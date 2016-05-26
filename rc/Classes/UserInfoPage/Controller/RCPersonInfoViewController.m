@@ -21,6 +21,13 @@
 #import "LoginViewController.h"
 #import "CZPersonInfoViewController.h"
 #import "CZMyReleseViewController.h"
+#include "RCNetworkingRequestOperationManager.h"
+#import "RCMyCollectionViewController.h"
+#import "RCMyReleaseViewController.h"
+//==================测试聊天=====================
+#import "RCTalkTestViewController.h"
+
+
 @interface RCPersonInfoViewController()
 @property (nonatomic, strong) UILabel *tittleLable;
 @property (nonatomic, strong) IBOutlet UIView  *tittleView;
@@ -59,12 +66,13 @@
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
-    UIView *temp = [[UIView alloc]init];
-    self.tableView.backgroundColor = [UIColor clearColor];
+    UIView *temp = [[UIView alloc]initWithFrame:CGRectZero];
     [self.view addSubview:temp];
+    [self initTableView];
     [self setNavigation];
 
 }
+
 - (void)setNavigation
 {
     self.tittleLable = [[UILabel alloc]init];
@@ -170,8 +178,15 @@
         {
             person_cell.person_ID_lable.text = [userDefaults objectForKey:@"userName"];
             [person_cell.person_icon_imageView sd_setImageWithURL:[NSURL URLWithString:[userDefaults objectForKey:@"userPic"]] placeholderImage:[ UIImage imageNamed:@"20160102.png"]];
+            NSString *user_sign = [userDefaults objectForKey:@"userSign"];
+            if ([user_sign isEqualToString:@""] ||user_sign == nil)
+            {
+                person_cell.person_signature_lable.text = @"这个人很懒，什么都没有留下。";
+            }else
+            {
+                person_cell.person_signature_lable.text = [userDefaults objectForKey:@"userSign"];
+            }
             
-            person_cell.person_signature_lable.text = [userDefaults objectForKey:@"userSign"];
         }
         else
         {
@@ -239,18 +254,22 @@
             ;
         }else if (indexPath.row == 1)
         {
-            ;
+            RCTalkTestViewController *vc = [[RCTalkTestViewController alloc]init];
+            [self.navigationController pushViewController:vc animated:YES];
+            
         }else if (indexPath.row == 2)
         {//我的报名
             RCSignupViewController *signupVC = [[RCSignupViewController alloc]init];
             [self.navigationController pushViewController:signupVC animated:YES];
         }else if (indexPath.row == 3)
         {//我的发布
-            CZMyReleseViewController *releseVC = [[CZMyReleseViewController alloc]init];
-            [self.navigationController pushViewController:releseVC animated:YES];
+            //CZMyReleseViewController *releaseVC = [[CZMyReleseViewController alloc]init];
+            RCMyReleaseViewController *releaseVC = [[RCMyReleaseViewController alloc]init];
+            [self.navigationController pushViewController:releaseVC animated:YES];
         }else if (indexPath.row == 4)
         {//我的收藏
-            CZMyCollectionViewController *collectionVC = [[CZMyCollectionViewController alloc]init];
+           // CZMyCollectionViewController *collectionVC = [[CZMyCollectionViewController alloc]init];
+            RCMyCollectionViewController *collectionVC = [[RCMyCollectionViewController alloc]init];
             [self.navigationController pushViewController:collectionVC animated:YES];
         }else if (indexPath.row == 5)
         {//关于我们
@@ -269,26 +288,39 @@
     }
     
 }
-
-- (UITableView *)tableView
+- (void)initTableView
 {
-    if (!_tableView)
-    {
-        _tableView = [[UITableView alloc]init];
-        _tableView.backgroundColor = [UIColor clearColor];
-        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-        _tableView.dataSource = self;
-        _tableView.delegate = self;
-        [self.view addSubview:_tableView];
-        [_tableView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view.mas_top).offset(64);
-            make.right.left.equalTo(self.view);
-            make.bottom.equalTo(self.view).offset(-49);
-        }];
-        
-    }
-    return _tableView;
+    self.tableView = [[UITableView alloc]init];
+    self.tableView.backgroundColor = [UIColor clearColor];
+    self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    self.tableView.dataSource = self;
+    self.tableView.delegate = self;
+    [self.view addSubview:self.tableView];
+    [self.tableView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view.mas_top).offset(64);
+        make.right.left.equalTo(self.view);
+        make.bottom.equalTo(self.view).offset(-49);
+    }];
 }
+//- (UITableView *)tableView
+//{
+//    if (!_tableView)
+//    {
+//        _tableView = [[UITableView alloc]init];
+//        _tableView.backgroundColor = [UIColor clearColor];
+//        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+//        _tableView.dataSource = self;
+//        _tableView.delegate = self;
+//        [self.view addSubview:_tableView];
+//        [_tableView mas_updateConstraints:^(MASConstraintMaker *make) {
+//            make.top.equalTo(self.view.mas_top).offset(64);
+//            make.right.left.equalTo(self.view);
+//            make.bottom.equalTo(self.view).offset(-49);
+//        }];
+//        
+//    }
+//    return _tableView;
+//}
 /**
  *  计算字体的长和宽
  *

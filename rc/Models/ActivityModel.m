@@ -57,6 +57,7 @@
 @implementation ActivityList
 
 -(instancetype)initWithArray:(NSArray *)array{
+
     if (self = [super init]) {
         NSMutableArray *list = [[NSMutableArray alloc] init];
         for (NSDictionary *dict in array) {

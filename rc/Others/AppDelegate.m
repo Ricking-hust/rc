@@ -16,6 +16,9 @@
 #import "WeiboSDK.h"
 #import "RCScheduleViewController.h"
 #import "LoginViewController.h"
+//================融云SDK头文件=======================
+#import <RongIMKit/RongIMKit.h>
+
 @interface AppDelegate ()
 
 @end
@@ -76,7 +79,7 @@
 - (void)application:(UIApplication *)application didReceiveLocalNotification:(UILocalNotification*)notification
 {
     //实现本地通知的触发处理
-    NSLog(@"%@",notification.userInfo);
+    //NSLog(@"%@",notification.userInfo);
     //[self showAlertView:@"此处应跳转到行程界面"];
     
     RCScheduleViewController *scheduleViewController = [[RCScheduleViewController alloc]init];
@@ -100,6 +103,8 @@
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
+    
+    [[RCIM sharedRCIM] initWithAppKey:@"25wehl3uwn16w"];    
     
     [self initShareSDK];
     //设置消息通知
