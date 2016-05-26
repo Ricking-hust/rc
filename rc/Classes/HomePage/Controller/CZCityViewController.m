@@ -106,7 +106,7 @@
     }
     long int count = self.navigationController.viewControllers.count;
     CZHomeViewController *homePage = (CZHomeViewController *)self.navigationController.viewControllers[count - 2];
-    homePage.ctmodel = self.ctmodel;
+    homePage.locateCityId = self.ctmodel.cityID;
     [[NSNotificationCenter defaultCenter] postNotificationName:@"refresh" object:nil];
     [[NSNotificationCenter defaultCenter] postNotificationName:@"refreshColumn" object:nil];
     [self.navigationController popViewControllerAnimated:YES];
@@ -133,16 +133,16 @@
 {
     if (self = [super init])
     {
-        self.bgView = [[UIView alloc]init];
-        self.beijing = [[CZCityView alloc]initName:@"北京" WithImageString:@"Beijing_Icon"];
-        self.shanghai = [[CZCityView alloc]initName:@"上海" WithImageString:@"Shanghai_Icon"];
-        self.guangzhou = [[CZCityView alloc]initName:@"广州" WithImageString:@"Guangzhou_Icon"];;
-        self.wuhan = [[CZCityView alloc]initName:@"武汉" WithImageString:@"Wuhan_Icon"];;
-        self.device = [self currentDeviceSize];
-        [self.shanghai.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
-        [self.guangzhou.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
-        [self.wuhan.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
-        [self.beijing.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
+//        self.bgView = [[UIView alloc]init];
+//        self.beijing = [[CZCityView alloc]initName:@"北京" WithImageString:@"Beijing_Icon"];
+//        self.shanghai = [[CZCityView alloc]initName:@"上海" WithImageString:@"Shanghai_Icon"];
+//        self.guangzhou = [[CZCityView alloc]initName:@"广州" WithImageString:@"Guangzhou_Icon"];;
+//        self.wuhan = [[CZCityView alloc]initName:@"武汉" WithImageString:@"Wuhan_Icon"];;
+//        self.device = [self currentDeviceSize];
+//        [self.shanghai.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
+//        [self.guangzhou.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
+//        [self.wuhan.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
+//        [self.beijing.cityBtn addTarget:self action:@selector(onClickCity:) forControlEvents:UIControlEventTouchUpInside];
     }
     return self;
 }
@@ -161,7 +161,7 @@
     }];
     
     CGFloat padding = (kScreenWidth - 240)/4;
-    CGFloat beijingH = self.beijing.cityBtn.imageView.image.size.height + 18 + 11 +10;
+    CGFloat beijingH = self.beijing.cityView.image.size.height + 18 + 11 +10;
     [self.beijing mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.bgView.mas_left).offset(padding);
         make.top.equalTo(self.bgView.mas_top).offset(28);
@@ -170,7 +170,7 @@
     }];
     [self.beijing setConstraints];
     
-     CGFloat shanghaiH = self.beijing.cityBtn.imageView.image.size.height + 18 + 11 +10;
+     CGFloat shanghaiH = self.beijing.cityView.image.size.height + 18 + 11 +10;
     [self.shanghai mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.beijing.mas_right).offset(padding);
         make.top.equalTo(self.beijing.mas_top);
@@ -179,7 +179,7 @@
     }];
     [self.shanghai setConstraints];
     
-    CGFloat wuhanH = self.wuhan.cityBtn.imageView.image.size.height + 18 + 11 +10;
+    CGFloat wuhanH = self.wuhan.cityView.image.size.height + 18 + 11 +10;
     [self.wuhan mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.shanghai.mas_right).offset(padding);
         make.top.equalTo(self.beijing.mas_top);
@@ -188,7 +188,7 @@
     }];
     [self.wuhan setConstraints];
     
-    CGFloat guangzhouH = self.beijing.cityBtn.imageView.image.size.height + 18 + 11 +10;
+    CGFloat guangzhouH = self.beijing.cityView.image.size.height + 18 + 11 +10;
     [self.guangzhou mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.wuhan.mas_bottom).offset(35);
         make.left.equalTo(self.bgView.mas_left).offset(padding);

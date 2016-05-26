@@ -124,7 +124,6 @@
         [self.scrollView addSubview:imageView];
         FlashActivityModel *flashModel = flashArray[i];
         NSString *imageName = flashModel.Image;
-        NSLog(@"%@",imageName);
         [imageView sd_setImageWithURL:[NSURL URLWithString:imageName] placeholderImage:[UIImage imageNamed:@"img_3"]];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.scrollView.mas_left).with.offset(i * rect.size.width);

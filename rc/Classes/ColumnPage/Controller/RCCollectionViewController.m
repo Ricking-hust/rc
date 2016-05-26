@@ -325,15 +325,12 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
         } else {
             cityId = @"1";
         }
-        NSLog(@"%@",model.indId);
         return [[DataManager manager] checkIndustryWithCityId:cityId industryId:model.indId startId:@"0" success:^(ActivityList *acList) {
             @strongify(self);
             //按行业加载数据
-            NSLog(@"%@",model.indName);
             if ([model.indId isEqualToString:@"-1"]) {
                 ActivityModel *acmodel = [[ActivityModel alloc]init];
                 acmodel = acList.list.firstObject;
-                NSLog(@"%@",acmodel.acPlace);
             }
             [self loadData:acList.list ByIndustry:model];
         } failure:^(NSError *error) {

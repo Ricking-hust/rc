@@ -58,8 +58,6 @@
 		561D02151C47DA5600E4E013 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 561D01CA1C47DA5600E4E013 /* AppDelegate.m */; };
 		562CC4461C6C962100774C22 /* CZTimeSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CC4451C6C962100774C22 /* CZTimeSelectView.m */; };
 		562FD2751CA674FA0014E5D8 /* RCBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 562FD2741CA674FA0014E5D8 /* RCBarButton.m */; };
-		5634EEEC1CEBB2D1002B4283 /* RCPersonInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5634EEEB1CEBB2D1002B4283 /* RCPersonInfoViewController.m */; };
-		5634EEEF1CEBBE2A002B4283 /* RCPersonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5634EEEE1CEBBE2A002B4283 /* RCPersonCell.m */; };
 		563FC6BA1CACE74F00B7DD25 /* RCCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 563FC6B91CACE74F00B7DD25 /* RCCollectionViewController.m */; };
 		563FC6BD1CACF83E00B7DD25 /* RCCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 563FC6BC1CACF83E00B7DD25 /* RCCollectionCell.m */; };
 		563FC6C01CACFBA400B7DD25 /* RCCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 563FC6BF1CACFBA400B7DD25 /* RCCollectionView.m */; };
@@ -88,7 +86,6 @@
 		566094621C9BC8BA00433AD8 /* RCScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 566094611C9BC8BA00433AD8 /* RCScrollView.m */; };
 		566094651C9C1A9000433AD8 /* RCTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 566094641C9C1A9000433AD8 /* RCTableView.m */; };
 		566094681C9C296400433AD8 /* RCScheduleInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 566094671C9C296400433AD8 /* RCScheduleInfoViewController.m */; };
-		56637D721C560DA10000BF46 /* CZCityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56637D711C560DA10000BF46 /* CZCityViewController.m */; };
 		56637D751C5611230000BF46 /* CZCityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56637D741C5611230000BF46 /* CZCityView.m */; };
 		5663D0921CA38BC800526FEF /* RCHomeRefreshHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5663D0911CA38BC800526FEF /* RCHomeRefreshHeader.m */; };
 		56655EEF1C87189200F4BE9E /* CZDownView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56655EEE1C87189200F4BE9E /* CZDownView.m */; };
@@ -102,9 +99,7 @@
 		569E58DD1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 569E58DC1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.m */; };
 		56A191E21C756A3100E03B41 /* CZMyInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A191E11C756A3100E03B41 /* CZMyInfoCell.m */; };
 		56A3112E1C870B6300E82262 /* CZUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A3112D1C870B6300E82262 /* CZUpView.m */; };
-		56AD28441CEC48470080B9DE /* RCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56AD28431CEC48470080B9DE /* RCTableViewCell.m */; };
-		56AD28471CEC597D0080B9DE /* RCSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56AD28461CEC597D0080B9DE /* RCSignupViewController.m */; };
-		56AD284B1CEC90A40080B9DE /* RCNetworkingRCNetworkingRequestOperationManager.m in Sources */ = {isa = PBXBuildFile; fileRef = 56AD284A1CEC90A40080B9DE /* RCNetworkingRCNetworkingRequestOperationManager.m */; };
+
 		56B9CD2C1C807A7100914F00 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B9CD0C1C807A7100914F00 /* MKAnnotationView+WebCache.m */; };
 		56B9CD2D1C807A7100914F00 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B9CD0E1C807A7100914F00 /* NSData+ImageContentType.m */; };
 		56B9CD2E1C807A7100914F00 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B9CD101C807A7100914F00 /* SDImageCache.m */; };
@@ -162,8 +157,6 @@
 		56E69FF81CB61B2300B4C71B /* ShareSDKFlatShareViewUI.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 56E69FE41CB61B2100B4C71B /* ShareSDKFlatShareViewUI.bundle */; };
 		56E69FF91CB61B2300B4C71B /* ShareSDKFlatShareViewUI.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56E69FE51CB61B2100B4C71B /* ShareSDKFlatShareViewUI.framework */; };
 		56E69FFA1CB61B2300B4C71B /* ShareSDKShareActionSheet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 56E69FE61CB61B2100B4C71B /* ShareSDKShareActionSheet.framework */; };
-		56E6FB0A1CEC33D800B7B101 /* RCPersonNewsCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E6FB091CEC33D800B7B101 /* RCPersonNewsCell.m */; };
-		56E6FB0D1CEC3B7400B7B101 /* RCNumWithLabel.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E6FB0C1CEC3B7400B7B101 /* RCNumWithLabel.m */; };
 		56E8427B1C4BA74C00D1D198 /* CZTimeCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8427A1C4BA74C00D1D198 /* CZTimeCell.m */; };
 		56E8427E1C4BB8E500D1D198 /* CZActivityInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E8427D1C4BB8E500D1D198 /* CZActivityInfoCell.m */; };
 		56E85DD81CF5CFB300754E1B /* libsqlite3.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 56121F721CA14EAA00183DB0 /* libsqlite3.tbd */; };
@@ -228,7 +221,9 @@
 		56F54DB91CF08EF900BE264D /* RCMyActivityCell_02.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F54DB81CF08EF900BE264D /* RCMyActivityCell_02.m */; };
 		56F7BE111CA3CA45005D1475 /* RCNewsNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F7BE101CA3CA45005D1475 /* RCNewsNoteViewController.m */; };
 		C409CFF41C9A7B0500D01F9D /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C409CFF31C9A7B0500D01F9D /* MBProgressHUD.m */; };
+		C41F00571CE9BA54001DC72F /* RCCityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C41F00561CE9BA54001DC72F /* RCCityViewController.m */; };
 		C41FC3E81CB7CD4D009A5DCD /* RemindManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C41FC3E71CB7CD4D009A5DCD /* RemindManager.m */; };
+
 		C43EEB691CA68C2700B83670 /* FlashActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C43EEB681CA68C2700B83670 /* FlashActivityModel.m */; };
 		C457D6C91CAE514B00075D9B /* RCColumnScrollViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C457D6C81CAE514B00075D9B /* RCColumnScrollViewDelegate.m */; };
 		C457D6CC1CAE51ED00075D9B /* RCReleaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C457D6CB1CAE51ED00075D9B /* RCReleaseCell.m */; };
@@ -371,10 +366,6 @@
 		562CC4451C6C962100774C22 /* CZTimeSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTimeSelectView.m; sourceTree = "<group>"; };
 		562FD2731CA674FA0014E5D8 /* RCBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCBarButton.h; sourceTree = "<group>"; };
 		562FD2741CA674FA0014E5D8 /* RCBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCBarButton.m; sourceTree = "<group>"; };
-		5634EEEA1CEBB2D1002B4283 /* RCPersonInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPersonInfoViewController.h; sourceTree = "<group>"; };
-		5634EEEB1CEBB2D1002B4283 /* RCPersonInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPersonInfoViewController.m; sourceTree = "<group>"; };
-		5634EEED1CEBBE2A002B4283 /* RCPersonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPersonCell.h; sourceTree = "<group>"; };
-		5634EEEE1CEBBE2A002B4283 /* RCPersonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPersonCell.m; sourceTree = "<group>"; };
 		563FC6B81CACE74F00B7DD25 /* RCCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCollectionViewController.h; sourceTree = "<group>"; };
 		563FC6B91CACE74F00B7DD25 /* RCCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCollectionViewController.m; sourceTree = "<group>"; };
 		563FC6BB1CACF83E00B7DD25 /* RCCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCollectionCell.h; sourceTree = "<group>"; };
@@ -432,8 +423,6 @@
 		566094661C9C296400433AD8 /* RCScheduleInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCScheduleInfoViewController.h; sourceTree = "<group>"; };
 		566094671C9C296400433AD8 /* RCScheduleInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCScheduleInfoViewController.m; sourceTree = "<group>"; };
 		566094691C9C2A9200433AD8 /* RCDisplayScheduleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDisplayScheduleDelegate.h; sourceTree = "<group>"; };
-		56637D701C560DA10000BF46 /* CZCityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCityViewController.h; sourceTree = "<group>"; };
-		56637D711C560DA10000BF46 /* CZCityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCityViewController.m; sourceTree = "<group>"; };
 		56637D731C5611230000BF46 /* CZCityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCityView.h; sourceTree = "<group>"; };
 		56637D741C5611230000BF46 /* CZCityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCityView.m; sourceTree = "<group>"; };
 		5663D0901CA38BC800526FEF /* RCHomeRefreshHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCHomeRefreshHeader.h; sourceTree = "<group>"; };
@@ -459,12 +448,7 @@
 		56A3112C1C870B6300E82262 /* CZUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZUpView.h; sourceTree = "<group>"; };
 		56A3112D1C870B6300E82262 /* CZUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZUpView.m; sourceTree = "<group>"; };
 		56A7CE0A1CA1212E0000331D /* RCSettingRemindTimeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSettingRemindTimeDelegate.h; sourceTree = "<group>"; };
-		56AD28421CEC48470080B9DE /* RCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTableViewCell.h; sourceTree = "<group>"; };
-		56AD28431CEC48470080B9DE /* RCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTableViewCell.m; sourceTree = "<group>"; };
-		56AD28451CEC597D0080B9DE /* RCSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSignupViewController.h; sourceTree = "<group>"; };
-		56AD28461CEC597D0080B9DE /* RCSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSignupViewController.m; sourceTree = "<group>"; };
-		56AD28491CEC90A40080B9DE /* RCNetworkingRequestOperationManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNetworkingRequestOperationManager.h; sourceTree = "<group>"; };
-		56AD284A1CEC90A40080B9DE /* RCNetworkingRCNetworkingRequestOperationManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNetworkingRCNetworkingRequestOperationManager.m; sourceTree = "<group>"; };
+
 		56B9CD0B1C807A7100914F00 /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
 		56B9CD0C1C807A7100914F00 /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
 		56B9CD0D1C807A7100914F00 /* NSData+ImageContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ImageContentType.h"; sourceTree = "<group>"; };
@@ -579,10 +563,6 @@
 		56E69FE41CB61B2100B4C71B /* ShareSDKFlatShareViewUI.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareSDKFlatShareViewUI.bundle; sourceTree = "<group>"; };
 		56E69FE51CB61B2100B4C71B /* ShareSDKFlatShareViewUI.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKFlatShareViewUI.framework; sourceTree = "<group>"; };
 		56E69FE61CB61B2100B4C71B /* ShareSDKShareActionSheet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKShareActionSheet.framework; sourceTree = "<group>"; };
-		56E6FB081CEC33D800B7B101 /* RCPersonNewsCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPersonNewsCell.h; sourceTree = "<group>"; };
-		56E6FB091CEC33D800B7B101 /* RCPersonNewsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPersonNewsCell.m; sourceTree = "<group>"; };
-		56E6FB0B1CEC3B7400B7B101 /* RCNumWithLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNumWithLabel.h; sourceTree = "<group>"; };
-		56E6FB0C1CEC3B7400B7B101 /* RCNumWithLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNumWithLabel.m; sourceTree = "<group>"; };
 		56E842791C4BA74C00D1D198 /* CZTimeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTimeCell.h; sourceTree = "<group>"; };
 		56E8427A1C4BA74C00D1D198 /* CZTimeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTimeCell.m; sourceTree = "<group>"; };
 		56E8427C1C4BB8E500D1D198 /* CZActivityInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZActivityInfoCell.h; sourceTree = "<group>"; };
@@ -673,8 +653,12 @@
 		56F7BE101CA3CA45005D1475 /* RCNewsNoteViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNewsNoteViewController.m; sourceTree = "<group>"; };
 		C409CFF21C9A7B0500D01F9D /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = ../MBProgressHUD.h; sourceTree = "<group>"; };
 		C409CFF31C9A7B0500D01F9D /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = ../MBProgressHUD.m; sourceTree = "<group>"; };
+		C41F00551CE9BA54001DC72F /* RCCityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCityViewController.h; sourceTree = "<group>"; };
+		C41F00561CE9BA54001DC72F /* RCCityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCityViewController.m; sourceTree = "<group>"; };
 		C41FC3E61CB7CD4D009A5DCD /* RemindManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemindManager.h; sourceTree = "<group>"; };
 		C41FC3E71CB7CD4D009A5DCD /* RemindManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemindManager.m; sourceTree = "<group>"; };
+		C43302841CEB476400F0ABF1 /* CityCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityCollectionViewCell.h; sourceTree = "<group>"; };
+		C43302851CEB476400F0ABF1 /* CityCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityCollectionViewCell.m; sourceTree = "<group>"; };
 		C4345F451CD8E4A500A7171A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		C43EEB671CA68C2700B83670 /* FlashActivityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashActivityModel.h; sourceTree = "<group>"; };
 		C43EEB681CA68C2700B83670 /* FlashActivityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlashActivityModel.m; sourceTree = "<group>"; };
@@ -950,8 +934,7 @@
 				56E85E161CF5D5A000754E1B /* TalkTest */,
 				565EF6291C48EC410067C032 /* Controller */,
 				565EF63A1C48EC410067C032 /* View */,
-				56AD28481CEC900E0080B9DE /* NetworkRequest */,
-				56F54DB31CF07F9C00BE264D /* Model */,
+
 			);
 			path = UserInfoPage;
 			sourceTree = "<group>";
@@ -1116,12 +1099,12 @@
 				56DF02311C49356100E80DFA /* CZActivityInfoViewController.m */,
 				56423F491C4FB4710072CCC3 /* CZHomeViewController.h */,
 				56423F4A1C4FB4710072CCC3 /* CZHomeViewController.m */,
-				56637D701C560DA10000BF46 /* CZCityViewController.h */,
-				56637D711C560DA10000BF46 /* CZCityViewController.m */,
 				56E2AAAB1C59E229009371F7 /* CZSearchViewController.h */,
 				56E2AAAC1C59E229009371F7 /* CZSearchViewController.m */,
 				569773201C9AC5BD00D25338 /* RCSettingTagTableViewController.h */,
 				569773211C9AC5BD00D25338 /* RCSettingTagTableViewController.m */,
+				C41F00551CE9BA54001DC72F /* RCCityViewController.h */,
+				C41F00561CE9BA54001DC72F /* RCCityViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1153,6 +1136,8 @@
 				569773241C9ACA7500D25338 /* RCTagCell.m */,
 				5663D0901CA38BC800526FEF /* RCHomeRefreshHeader.h */,
 				5663D0911CA38BC800526FEF /* RCHomeRefreshHeader.m */,
+				C43302841CEB476400F0ABF1 /* CityCollectionViewCell.h */,
+				C43302851CEB476400F0ABF1 /* CityCollectionViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1230,14 +1215,7 @@
 		565EF6291C48EC410067C032 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				5634EEEA1CEBB2D1002B4283 /* RCPersonInfoViewController.h */,
-				5634EEEB1CEBB2D1002B4283 /* RCPersonInfoViewController.m */,
-				56AD28451CEC597D0080B9DE /* RCSignupViewController.h */,
-				56AD28461CEC597D0080B9DE /* RCSignupViewController.m */,
-				56F54DB01CF07BE300BE264D /* RCMyCollectionViewController.h */,
-				56F54DB11CF07BE300BE264D /* RCMyCollectionViewController.m */,
-				56E61F7C1CF2F9AF00B6EEF1 /* RCMyReleaseViewController.h */,
-				56E61F7D1CF2F9AF00B6EEF1 /* RCMyReleaseViewController.m */,
+
 				565EF6321C48EC410067C032 /* CZMyInfoViewController.h */,
 				565EF6331C48EC410067C032 /* CZMyInfoViewController.m */,
 				56E523531C75909A00794B0E /* CZPersonInfoViewController.h */,
@@ -1263,22 +1241,13 @@
 		565EF63A1C48EC410067C032 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				5634EEED1CEBBE2A002B4283 /* RCPersonCell.h */,
-				5634EEEE1CEBBE2A002B4283 /* RCPersonCell.m */,
-				56E6FB081CEC33D800B7B101 /* RCPersonNewsCell.h */,
-				56E6FB091CEC33D800B7B101 /* RCPersonNewsCell.m */,
-				56AD28421CEC48470080B9DE /* RCTableViewCell.h */,
-				56AD28431CEC48470080B9DE /* RCTableViewCell.m */,
 				56A191E01C756A3100E03B41 /* CZMyInfoCell.h */,
 				56A191E11C756A3100E03B41 /* CZMyInfoCell.m */,
 				56E523561C75922700794B0E /* CZPersonInfoCell.h */,
 				56E523571C75922700794B0E /* CZPersonInfoCell.m */,
 				5654C3361C97D4800018DA93 /* RCMyActivityCell.h */,
 				5654C3371C97D4800018DA93 /* RCMyActivityCell.m */,
-				56E6FB0B1CEC3B7400B7B101 /* RCNumWithLabel.h */,
-				56E6FB0C1CEC3B7400B7B101 /* RCNumWithLabel.m */,
-				56F54DB71CF08EF900BE264D /* RCMyActivityCell_02.h */,
-				56F54DB81CF08EF900BE264D /* RCMyActivityCell_02.m */,
+
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1292,15 +1261,7 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
-		56AD28481CEC900E0080B9DE /* NetworkRequest */ = {
-			isa = PBXGroup;
-			children = (
-				56AD28491CEC90A40080B9DE /* RCNetworkingRequestOperationManager.h */,
-				56AD284A1CEC90A40080B9DE /* RCNetworkingRCNetworkingRequestOperationManager.m */,
-			);
-			path = NetworkRequest;
-			sourceTree = "<group>";
-		};
+
 		56B83C101C608CD6005FF427 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1929,7 +1890,6 @@
 			files = (
 				56F02CBA1CA2884B00E0BBB4 /* UIScrollView+MJExtension.m in Sources */,
 				56E5235B1C759C1F00794B0E /* CZMyActivityViewContoller.m in Sources */,
-				5634EEEC1CEBB2D1002B4283 /* RCPersonInfoViewController.m in Sources */,
 				561D01FF1C47DA5600E4E013 /* AFImageDownloader.m in Sources */,
 				56B9CD331C807A7100914F00 /* SDWebImageManager.m in Sources */,
 				C4CAD1BB1C7B3943003FD0B0 /* IndustryModel.m in Sources */,
@@ -1974,7 +1934,7 @@
 				565EF6231C48EBA20067C032 /* NSNumber+Message.m in Sources */,
 				56B9CD371C807A7100914F00 /* UIImage+MultiFormat.m in Sources */,
 				C409CFF41C9A7B0500D01F9D /* MBProgressHUD.m in Sources */,
-				56AD284B1CEC90A40080B9DE /* RCNetworkingRCNetworkingRequestOperationManager.m in Sources */,
+
 				566094591C9BB33800433AD8 /* RCScheduleView.m in Sources */,
 				C4D8DFED1CC66968005DA9B3 /* TMDiskCache.m in Sources */,
 				562CC4461C6C962100774C22 /* CZTimeSelectView.m in Sources */,
@@ -1984,14 +1944,11 @@
 				56B9CD361C807A7100914F00 /* UIImage+GIF.m in Sources */,
 				56814C161C58A64600CB60D6 /* CZRemindMeView.m in Sources */,
 				560F36B41CBE7E2B0088AA19 /* WebViewJavascriptBridge.m in Sources */,
-				56E6FB0A1CEC33D800B7B101 /* RCPersonNewsCell.m in Sources */,
 				561D020C1C47DA5600E4E013 /* MASViewAttribute.m in Sources */,
 				56E5236A1C75BAAA00794B0E /* CZSettingViewController.m in Sources */,
 				56E523671C75B1CE00794B0E /* CZFeedbackViewController.m in Sources */,
 				56E470071C5735900056BE17 /* CZCityButton.m in Sources */,
-				56AD28471CEC597D0080B9DE /* RCSignupViewController.m in Sources */,
 				564596B91C732A84006D8493 /* LewPopupViewAnimationSpring.m in Sources */,
-				56E6FB0D1CEC3B7400B7B101 /* RCNumWithLabel.m in Sources */,
 				56F02CB51CA2884B00E0BBB4 /* MJRefreshGifHeader.m in Sources */,
 				5663D0921CA38BC800526FEF /* RCHomeRefreshHeader.m in Sources */,
 				56DF01F01C4915CD00E80DFA /* CZNavigationViewController.m in Sources */,
@@ -2034,6 +1991,7 @@
 				563FC6C51CAD444700B7DD25 /* CZButtonView.m in Sources */,
 				563FC6C01CACFBA400B7DD25 /* RCCollectionView.m in Sources */,
 				563FC6BA1CACE74F00B7DD25 /* RCCollectionViewController.m in Sources */,
+				C41F00571CE9BA54001DC72F /* RCCityViewController.m in Sources */,
 				566094651C9C1A9000433AD8 /* RCTableView.m in Sources */,
 				56B9CD321C807A7100914F00 /* SDWebImageDownloaderOperation.m in Sources */,
 				56B9CD2D1C807A7100914F00 /* NSData+ImageContentType.m in Sources */,
@@ -2062,6 +2020,7 @@
 				56DF02321C49356100E80DFA /* CZActivityInfoViewController.m in Sources */,
 				56E2AAA81C59A964009371F7 /* CZRemindTimeButton.m in Sources */,
 				565EF66C1C48ED1E0067C032 /* CZTabbarController.m in Sources */,
+				C43302861CEB476400F0ABF1 /* CityCollectionViewCell.m in Sources */,
 				561D01FB1C47DA5600E4E013 /* AFURLSessionManager.m in Sources */,
 				569E58DD1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.m in Sources */,
 				565CBFA61C6F098500635EA4 /* CZTagSelectView.m in Sources */,
@@ -2073,7 +2032,6 @@
 				C4C075271C89CF6C00C5E54D /* MyTextField.m in Sources */,
 				56E523611C75AAD200794B0E /* CZMyCollectionViewController.m in Sources */,
 				56F02CAA1CA2884B00E0BBB4 /* MJRefreshAutoFooter.m in Sources */,
-				5634EEEF1CEBBE2A002B4283 /* RCPersonCell.m in Sources */,
 				56B9CD421C807C4A00914F00 /* UIImageView+LBBlurredImage.m in Sources */,
 				C4D8DFEE1CC66968005DA9B3 /* TMMemoryCache.m in Sources */,
 				56F02CAB1CA2884B00E0BBB4 /* MJRefreshBackFooter.m in Sources */,
@@ -2084,8 +2042,6 @@
 				56E3C0141C9C691200BDAE19 /* RCAddScheduleViewController.m in Sources */,
 				56B9CD341C807A7100914F00 /* SDWebImagePrefetcher.m in Sources */,
 				C4C05EEB1C85C500005E7FEE /* LoginViewController.m in Sources */,
-				56AD28441CEC48470080B9DE /* RCTableViewCell.m in Sources */,
-				56637D721C560DA10000BF46 /* CZCityViewController.m in Sources */,
 				560F36B71CBE7E2B0088AA19 /* WKWebViewJavascriptBridge.m in Sources */,
 				56655EEF1C87189200F4BE9E /* CZDownView.m in Sources */,
 				56E8427B1C4BA74C00D1D198 /* CZTimeCell.m in Sources */,
