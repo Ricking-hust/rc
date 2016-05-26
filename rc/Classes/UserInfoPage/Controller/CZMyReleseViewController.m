@@ -185,7 +185,6 @@
     self.willCheckButton.selected = NO;
     self.checkedButton.selected = NO;
 
-
     if ([btn.titleLabel.text isEqualToString:@"待审核"])
     {
         self.reviewAc = self.waitReviewAc;

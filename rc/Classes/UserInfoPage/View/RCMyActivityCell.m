@@ -9,45 +9,7 @@
 #import "RCMyActivityCell.h"
 #import "Masonry.h"
 @implementation RCMyActivityCell
-/**
- *  类方法 创建可重用的自定义的cell对象
- *
- *  @param tableView cell的所属的tableView
- *
- *  @return 返回实例对象
- */
-+ (instancetype)cellWithTableView:(UITableView*)tableView
-{
-    
-    static NSString *reuseId = @"myCollectionCell";
-    RCMyActivityCell * cell = (RCMyActivityCell*)[tableView dequeueReusableCellWithIdentifier:reuseId];
-    if (!cell)
-    {
-        cell = [[self alloc] initWithStyle:UITableViewCellStyleDefault reuseIdentifier:reuseId];
-    }
-    
-    tableView.separatorStyle = UITableViewCellSeparatorStyleNone;//去掉Cell之间的分割线
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;    //清除cell的点击状态
-    return cell;
-}
 
-- (instancetype)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier
-{
-    if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier])
-    {
-        self.acImageView = [[UIImageView alloc]init];
-        self.acName = [[UILabel alloc]init];
-        self.acTime = [[UILabel alloc]init];
-        self.acPlace = [[UILabel alloc]init];
-        self.acTag = [[UILabel alloc]init];
-        self.acTagImageView = [[UIImageView alloc]init];
-        self.addSchedule = [[UIButton alloc]init];
-
-    }
-    [self setSubView];
-    return self;
-
-}
 - (id)init
 {
     if (self = [super init])
@@ -78,11 +40,7 @@
     self.acPlace.numberOfLines = 0;
     self.acTag.numberOfLines = 0;
     self.acTagImageView.image = [UIImage imageNamed:@"tagImage"];
-    UIColor *color = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
-    self.addSchedule.backgroundColor = color;
-    self.addSchedule.layer.cornerRadius = 3.0f;
-    [self.addSchedule setTintColor:[UIColor whiteColor]];
-    self.addSchedule.titleLabel.font = [UIFont systemFontOfSize:14];
+    self.addSchedule.layer.cornerRadius = 3;
     [self.contentView addSubview:self.acImageView];
     [self.contentView addSubview:self.acName];
     [self.contentView addSubview:self.acTime];
@@ -139,8 +97,8 @@
     [self.addSchedule mas_updateConstraints:^(MASConstraintMaker *make) {
         make.width.mas_equalTo(63);
         make.height.mas_equalTo(21);
-        make.right.equalTo(self.contentView.mas_right).offset(-16);
-        make.bottom.equalTo(self.acTag.mas_bottom);
+        make.right.equalTo(self.contentView.mas_right).offset(16);
+        make.bottom.equalTo(self.acTime.mas_bottom);
     }];
 }
 /**

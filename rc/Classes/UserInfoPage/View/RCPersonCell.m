@@ -49,7 +49,7 @@
     CGSize signature_size = [self sizeWithText:self.person_signature_lable.text maxSize:CGSizeMake(kScreenWidth - 40, 15) fontSize:12];
     [self.person_signature_lable mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.person_ID_lable.mas_bottom).offset(8);
-        make.centerX.equalTo(self.person_ID_lable.mas_centerX);
+        make.centerX.equalTo(self.person_icon_imageView.mas_centerX);
         make.height.mas_equalTo((int)signature_size.height + 1);
         make.width.mas_equalTo((int)signature_size.width + 1);
     }];

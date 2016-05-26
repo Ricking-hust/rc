@@ -25,7 +25,8 @@
 #import "RCReleaseCell.h"
 //ShareSDK-------------------------------------------
 #import <ShareSDK/ShareSDK.h>
-
+//#import <ShareSDK/ShareSDK.h>
+//#import <ShareSDKUI/ShareSDK+SSUI.h>
 
 #define FONTSIZE 14
 #define PADDING  10 //活动详情cell 中子控件之间的垂直间距
