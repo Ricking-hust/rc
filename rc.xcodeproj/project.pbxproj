@@ -100,13 +100,7 @@
 		569E58DD1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 569E58DC1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.m */; };
 		56A191E21C756A3100E03B41 /* CZMyInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A191E11C756A3100E03B41 /* CZMyInfoCell.m */; };
 		56A3112E1C870B6300E82262 /* CZUpView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56A3112D1C870B6300E82262 /* CZUpView.m */; };
-<<<<<<< HEAD
 
-=======
-		56AD28441CEC48470080B9DE /* RCTableViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56AD28431CEC48470080B9DE /* RCTableViewCell.m */; };
-		56AD28471CEC597D0080B9DE /* RCSignupViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56AD28461CEC597D0080B9DE /* RCSignupViewController.m */; };
-		56AD284B1CEC90A40080B9DE /* RCNetworking.m in Sources */ = {isa = PBXBuildFile; fileRef = 56AD284A1CEC90A40080B9DE /* RCNetworking.m */; };
->>>>>>> parent of 2e89bed... 修改我的
 		56B9CD2C1C807A7100914F00 /* MKAnnotationView+WebCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B9CD0C1C807A7100914F00 /* MKAnnotationView+WebCache.m */; };
 		56B9CD2D1C807A7100914F00 /* NSData+ImageContentType.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B9CD0E1C807A7100914F00 /* NSData+ImageContentType.m */; };
 		56B9CD2E1C807A7100914F00 /* SDImageCache.m in Sources */ = {isa = PBXBuildFile; fileRef = 56B9CD101C807A7100914F00 /* SDImageCache.m */; };
@@ -196,11 +190,7 @@
 		C409CFF41C9A7B0500D01F9D /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C409CFF31C9A7B0500D01F9D /* MBProgressHUD.m */; };
 		C41F00571CE9BA54001DC72F /* RCCityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C41F00561CE9BA54001DC72F /* RCCityViewController.m */; };
 		C41FC3E81CB7CD4D009A5DCD /* RemindManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C41FC3E71CB7CD4D009A5DCD /* RemindManager.m */; };
-<<<<<<< HEAD
 
-=======
-		C4345F461CD8E4A500A7171A /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = C4345F451CD8E4A500A7171A /* CoreLocation.framework */; };
->>>>>>> parent of 2e89bed... 修改我的
 		C43EEB691CA68C2700B83670 /* FlashActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C43EEB681CA68C2700B83670 /* FlashActivityModel.m */; };
 		C457D6C91CAE514B00075D9B /* RCColumnScrollViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C457D6C81CAE514B00075D9B /* RCColumnScrollViewDelegate.m */; };
 		C457D6CC1CAE51ED00075D9B /* RCReleaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C457D6CB1CAE51ED00075D9B /* RCReleaseCell.m */; };
@@ -425,16 +415,7 @@
 		56A3112C1C870B6300E82262 /* CZUpView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZUpView.h; sourceTree = "<group>"; };
 		56A3112D1C870B6300E82262 /* CZUpView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZUpView.m; sourceTree = "<group>"; };
 		56A7CE0A1CA1212E0000331D /* RCSettingRemindTimeDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSettingRemindTimeDelegate.h; sourceTree = "<group>"; };
-<<<<<<< HEAD
 
-=======
-		56AD28421CEC48470080B9DE /* RCTableViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTableViewCell.h; sourceTree = "<group>"; };
-		56AD28431CEC48470080B9DE /* RCTableViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTableViewCell.m; sourceTree = "<group>"; };
-		56AD28451CEC597D0080B9DE /* RCSignupViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSignupViewController.h; sourceTree = "<group>"; };
-		56AD28461CEC597D0080B9DE /* RCSignupViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSignupViewController.m; sourceTree = "<group>"; };
-		56AD28491CEC90A40080B9DE /* RCNetworking.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNetworking.h; sourceTree = "<group>"; };
-		56AD284A1CEC90A40080B9DE /* RCNetworking.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNetworking.m; sourceTree = "<group>"; };
->>>>>>> parent of 2e89bed... 修改我的
 		56B9CD0B1C807A7100914F00 /* MKAnnotationView+WebCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "MKAnnotationView+WebCache.h"; sourceTree = "<group>"; };
 		56B9CD0C1C807A7100914F00 /* MKAnnotationView+WebCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "MKAnnotationView+WebCache.m"; sourceTree = "<group>"; };
 		56B9CD0D1C807A7100914F00 /* NSData+ImageContentType.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSData+ImageContentType.h"; sourceTree = "<group>"; };
@@ -861,11 +842,7 @@
 			children = (
 				565EF6291C48EC410067C032 /* Controller */,
 				565EF63A1C48EC410067C032 /* View */,
-<<<<<<< HEAD
 
-=======
-				56AD28481CEC900E0080B9DE /* NetworkRequest */,
->>>>>>> parent of 2e89bed... 修改我的
 			);
 			path = UserInfoPage;
 			sourceTree = "<group>";
@@ -1144,14 +1121,7 @@
 		565EF6291C48EC410067C032 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-<<<<<<< HEAD
 
-=======
-				5634EEEA1CEBB2D1002B4283 /* RCPersonInfoViewController.h */,
-				5634EEEB1CEBB2D1002B4283 /* RCPersonInfoViewController.m */,
-				56AD28451CEC597D0080B9DE /* RCSignupViewController.h */,
-				56AD28461CEC597D0080B9DE /* RCSignupViewController.m */,
->>>>>>> parent of 2e89bed... 修改我的
 				565EF6321C48EC410067C032 /* CZMyInfoViewController.h */,
 				565EF6331C48EC410067C032 /* CZMyInfoViewController.m */,
 				56E523531C75909A00794B0E /* CZPersonInfoViewController.h */,
@@ -1183,12 +1153,7 @@
 				56E523571C75922700794B0E /* CZPersonInfoCell.m */,
 				5654C3361C97D4800018DA93 /* RCMyActivityCell.h */,
 				5654C3371C97D4800018DA93 /* RCMyActivityCell.m */,
-<<<<<<< HEAD
 
-=======
-				56E6FB0B1CEC3B7400B7B101 /* RCNumWithLabel.h */,
-				56E6FB0C1CEC3B7400B7B101 /* RCNumWithLabel.m */,
->>>>>>> parent of 2e89bed... 修改我的
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1202,19 +1167,7 @@
 			path = Main;
 			sourceTree = "<group>";
 		};
-<<<<<<< HEAD
 
-=======
-		56AD28481CEC900E0080B9DE /* NetworkRequest */ = {
-			isa = PBXGroup;
-			children = (
-				56AD28491CEC90A40080B9DE /* RCNetworking.h */,
-				56AD284A1CEC90A40080B9DE /* RCNetworking.m */,
-			);
-			path = NetworkRequest;
-			sourceTree = "<group>";
-		};
->>>>>>> parent of 2e89bed... 修改我的
 		56B83C101C608CD6005FF427 /* View */ = {
 			isa = PBXGroup;
 			children = (
@@ -1803,11 +1756,7 @@
 				565EF6231C48EBA20067C032 /* NSNumber+Message.m in Sources */,
 				56B9CD371C807A7100914F00 /* UIImage+MultiFormat.m in Sources */,
 				C409CFF41C9A7B0500D01F9D /* MBProgressHUD.m in Sources */,
-<<<<<<< HEAD
 
-=======
-				56AD284B1CEC90A40080B9DE /* RCNetworking.m in Sources */,
->>>>>>> parent of 2e89bed... 修改我的
 				566094591C9BB33800433AD8 /* RCScheduleView.m in Sources */,
 				C4D8DFED1CC66968005DA9B3 /* TMDiskCache.m in Sources */,
 				562CC4461C6C962100774C22 /* CZTimeSelectView.m in Sources */,
