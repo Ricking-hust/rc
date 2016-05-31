@@ -88,7 +88,6 @@
 		566094621C9BC8BA00433AD8 /* RCScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = 566094611C9BC8BA00433AD8 /* RCScrollView.m */; };
 		566094651C9C1A9000433AD8 /* RCTableView.m in Sources */ = {isa = PBXBuildFile; fileRef = 566094641C9C1A9000433AD8 /* RCTableView.m */; };
 		566094681C9C296400433AD8 /* RCScheduleInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 566094671C9C296400433AD8 /* RCScheduleInfoViewController.m */; };
-		56637D721C560DA10000BF46 /* CZCityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56637D711C560DA10000BF46 /* CZCityViewController.m */; };
 		56637D751C5611230000BF46 /* CZCityView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56637D741C5611230000BF46 /* CZCityView.m */; };
 		5663D0921CA38BC800526FEF /* RCHomeRefreshHeader.m in Sources */ = {isa = PBXBuildFile; fileRef = 5663D0911CA38BC800526FEF /* RCHomeRefreshHeader.m */; };
 		56655EEF1C87189200F4BE9E /* CZDownView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56655EEE1C87189200F4BE9E /* CZDownView.m */; };
@@ -247,6 +246,8 @@
 		C4CAD1BD1C7B3943003FD0B0 /* TagModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CAD1B81C7B3943003FD0B0 /* TagModel.m */; };
 		C4CAD1BE1C7B3943003FD0B0 /* ThemeModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CAD1BA1C7B3943003FD0B0 /* ThemeModel.m */; };
 		C4CAD1C11C7B3975003FD0B0 /* UserModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CAD1C01C7B3975003FD0B0 /* UserModel.m */; };
+		C4CF96101CFD764E00786982 /* RCCityViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CF960F1CFD764E00786982 /* RCCityViewController.m */; };
+		C4CF96131CFD769200786982 /* CityCollectionViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4CF96121CFD769200786982 /* CityCollectionViewCell.m */; };
 		C4D8DFC51CC65B89005DA9B3 /* RCSearchModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D8DFC41CC65B89005DA9B3 /* RCSearchModel.m */; };
 		C4D8DFEC1CC66968005DA9B3 /* TMCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D8DFE61CC66968005DA9B3 /* TMCache.m */; };
 		C4D8DFED1CC66968005DA9B3 /* TMDiskCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D8DFE91CC66968005DA9B3 /* TMDiskCache.m */; };
@@ -431,8 +432,6 @@
 		566094661C9C296400433AD8 /* RCScheduleInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCScheduleInfoViewController.h; sourceTree = "<group>"; };
 		566094671C9C296400433AD8 /* RCScheduleInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCScheduleInfoViewController.m; sourceTree = "<group>"; };
 		566094691C9C2A9200433AD8 /* RCDisplayScheduleDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDisplayScheduleDelegate.h; sourceTree = "<group>"; };
-		56637D701C560DA10000BF46 /* CZCityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCityViewController.h; sourceTree = "<group>"; };
-		56637D711C560DA10000BF46 /* CZCityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCityViewController.m; sourceTree = "<group>"; };
 		56637D731C5611230000BF46 /* CZCityView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCityView.h; sourceTree = "<group>"; };
 		56637D741C5611230000BF46 /* CZCityView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCityView.m; sourceTree = "<group>"; };
 		5663D0901CA38BC800526FEF /* RCHomeRefreshHeader.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCHomeRefreshHeader.h; sourceTree = "<group>"; };
@@ -714,6 +713,10 @@
 		C4CAD1BA1C7B3943003FD0B0 /* ThemeModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ThemeModel.m; sourceTree = "<group>"; };
 		C4CAD1BF1C7B3975003FD0B0 /* UserModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = UserModel.h; sourceTree = "<group>"; };
 		C4CAD1C01C7B3975003FD0B0 /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
+		C4CF960E1CFD764E00786982 /* RCCityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCityViewController.h; sourceTree = "<group>"; };
+		C4CF960F1CFD764E00786982 /* RCCityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCityViewController.m; sourceTree = "<group>"; };
+		C4CF96111CFD769200786982 /* CityCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityCollectionViewCell.h; sourceTree = "<group>"; };
+		C4CF96121CFD769200786982 /* CityCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityCollectionViewCell.m; sourceTree = "<group>"; };
 		C4D8DFC31CC65B89005DA9B3 /* RCSearchModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchModel.h; sourceTree = "<group>"; };
 		C4D8DFC41CC65B89005DA9B3 /* RCSearchModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchModel.m; sourceTree = "<group>"; };
 		C4D8DFE51CC66968005DA9B3 /* TMCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMCache.h; sourceTree = "<group>"; };
@@ -1113,12 +1116,12 @@
 				56DF02311C49356100E80DFA /* CZActivityInfoViewController.m */,
 				56423F491C4FB4710072CCC3 /* CZHomeViewController.h */,
 				56423F4A1C4FB4710072CCC3 /* CZHomeViewController.m */,
-				56637D701C560DA10000BF46 /* CZCityViewController.h */,
-				56637D711C560DA10000BF46 /* CZCityViewController.m */,
 				56E2AAAB1C59E229009371F7 /* CZSearchViewController.h */,
 				56E2AAAC1C59E229009371F7 /* CZSearchViewController.m */,
 				569773201C9AC5BD00D25338 /* RCSettingTagTableViewController.h */,
 				569773211C9AC5BD00D25338 /* RCSettingTagTableViewController.m */,
+				C4CF960E1CFD764E00786982 /* RCCityViewController.h */,
+				C4CF960F1CFD764E00786982 /* RCCityViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1150,6 +1153,8 @@
 				569773241C9ACA7500D25338 /* RCTagCell.m */,
 				5663D0901CA38BC800526FEF /* RCHomeRefreshHeader.h */,
 				5663D0911CA38BC800526FEF /* RCHomeRefreshHeader.m */,
+				C4CF96111CFD769200786982 /* CityCollectionViewCell.h */,
+				C4CF96121CFD769200786982 /* CityCollectionViewCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2001,6 +2006,7 @@
 				561D01F81C47DA5600E4E013 /* AFSecurityPolicy.m in Sources */,
 				569079DE1CA8F8AA00DEBF6F /* RCBarButtonView.m in Sources */,
 				C4CAD1BD1C7B3943003FD0B0 /* TagModel.m in Sources */,
+				C4CF96131CFD769200786982 /* CityCollectionViewCell.m in Sources */,
 				569773251C9ACA7500D25338 /* RCTagCell.m in Sources */,
 				561D02041C47DA5600E4E013 /* UIProgressView+AFNetworking.m in Sources */,
 				56E5235E1C75A05100794B0E /* CZMyReleseViewController.m in Sources */,
@@ -2013,6 +2019,7 @@
 				56B9CD411C807C4A00914F00 /* UIImage+ImageEffects.m in Sources */,
 				56A3112E1C870B6300E82262 /* CZUpView.m in Sources */,
 				561D02001C47DA5600E4E013 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				C4CF96101CFD764E00786982 /* RCCityViewController.m in Sources */,
 				C4B300161CA44BCC004516B0 /* NSString+MD5.m in Sources */,
 				56B9CD2C1C807A7100914F00 /* MKAnnotationView+WebCache.m in Sources */,
 				561D020B1C47DA5600E4E013 /* MASLayoutConstraint.m in Sources */,
@@ -2079,7 +2086,6 @@
 				56B9CD341C807A7100914F00 /* SDWebImagePrefetcher.m in Sources */,
 				C4C05EEB1C85C500005E7FEE /* LoginViewController.m in Sources */,
 				56AD28441CEC48470080B9DE /* RCTableViewCell.m in Sources */,
-				56637D721C560DA10000BF46 /* CZCityViewController.m in Sources */,
 				560F36B71CBE7E2B0088AA19 /* WKWebViewJavascriptBridge.m in Sources */,
 				56655EEF1C87189200F4BE9E /* CZDownView.m in Sources */,
 				56E8427B1C4BA74C00D1D198 /* CZTimeCell.m in Sources */,

@@ -10,7 +10,7 @@
 #import "CZHomeHeaderView.h"
 #import "Masonry.h"
 #import "CZCityButton.h"
-#import "CZCityViewController.h"
+#import "RCCityViewController.h"
 #import "CZActivityInfoViewController.h"
 #import "RCSettingTagTableViewController.h"
 #import "LoginViewController.h"
@@ -31,7 +31,6 @@
 typedef void (^HomeViewBlock)(id);
 @property (nonatomic,strong) ActivityList *acListRecived;
 @property (nonatomic,strong) NSMutableArray *acList;
-@property (nonatomic,strong) NSMutableArray *cityNameList;
 @property (nonatomic,strong) NSString *minAcId;
 @property (nonatomic,strong) ActivityModel *activitymodel;
 @property (nonatomic,strong) FlashList *flashList;
@@ -58,18 +57,10 @@ typedef void (^HomeViewBlock)(id);
 }
 - (void)refleshCity
 {
-    if ([self.ctmodel.cityID isEqualToString:@"1"])
-    {
-        [self.leftButton setTitle:@"北京" forState:UIControlStateNormal];
-    }else if ([self.ctmodel.cityID isEqualToString:@"2"])
-    {
-        [self.leftButton setTitle:@"上海" forState:UIControlStateNormal];
-    }else if ([self.ctmodel.cityID isEqualToString:@"3"])
-    {
-        [self.leftButton setTitle:@"武汉" forState:UIControlStateNormal];
-    }else
-    {
-        [self.leftButton setTitle:@"广州" forState:UIControlStateNormal];
+    for (CityModel *model in self.ctList.list) {
+        if ([model.cityID isEqualToString:self.locateCityId]) {
+            [self.leftButton setTitle:model.cityName forState:UIControlStateNormal];
+        }
     }
 }
 - (void)viewDidLoad
@@ -104,12 +95,11 @@ typedef void (^HomeViewBlock)(id);
 
 -(void)configureCity{
     if ([[userDefaults objectForKey:@"cityId"] isEqualToString:@""]) {
-        self.ctmodel.cityID = @"1";
+        self.locateCityId = @"1";
         [userDefaults setObject:@"1" forKey:@"cityId"];
     } else {
-        self.ctmodel.cityID = [userDefaults objectForKey:@"cityId"];
+        self.locateCityId = [userDefaults objectForKey:@"cityId"];
     }
-
 }
 
 #pragma mark - 地理定位
@@ -171,7 +161,7 @@ typedef void (^HomeViewBlock)(id);
                 UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
                     
                 }];
-
+                
                 UIAlertAction *configureAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
                     [self changeCityWithLocation:[[placemark addressDictionary] objectForKey:@"City"]];
                 }];
@@ -180,24 +170,19 @@ typedef void (^HomeViewBlock)(id);
                 [alertControl addAction:configureAction];
                 [self presentViewController:alertControl animated:YES completion:nil];
             }
-        }  
+        }
         
-    }];  
+    }];
 }
 
 //城市切换
 -(void)changeCityWithLocation:(NSString *)location{
-    if ([location isEqualToString:@"北京市"]) {
-        [userDefaults setObject:@"1" forKey:@"cityId"];
-    }
-    if ([location isEqualToString:@"上海市"]) {
-        [userDefaults setObject:@"2" forKey:@"cityId"];
-    }
-    if ([location isEqualToString:@"武汉市"]) {
-        [userDefaults setObject:@"3" forKey:@"cityId"];
-    }
-    if ([location isEqualToString:@"广州市"]) {
-        [userDefaults setObject:@"4" forKey:@"cityId"];
+    for (CityModel *model in self.ctList.list) {
+        NSString *cityName = [NSString stringWithFormat:@"%@市",model.cityName];
+        NSLog(@"%@",cityName);
+        if ([location isEqualToString:cityName]) {
+            [userDefaults setObject:model.cityID forKey:@"cityId"];
+        }
     }
     //刷新数据
     [self configureCity];
@@ -207,17 +192,15 @@ typedef void (^HomeViewBlock)(id);
 
 //判断当前地理位置信息是否符合
 -(BOOL)didShowLocation:(NSString *)location{
-    NSString *locationCity = @"0";
-    if ([location isEqualToString:@"北京市"]) {
-        locationCity = @"1";
-    } else if ([location isEqualToString:@"上海市"]) {
-        locationCity = @"2";
-    } else if ([location isEqualToString:@"武汉市"]) {
-        locationCity = @"3";
-    } else if ([location isEqualToString:@"广州市"]) {
-        locationCity = @"4";
+    NSString *locationCityID = @"0";
+    for (CityModel *model in self.ctList.list) {
+        NSString *cityName = [NSString stringWithFormat:@"%@市",model.cityName];
+        NSLog(@"%@",cityName);
+        if ([location isEqualToString:cityName]) {
+            locationCityID = model.cityID;
+        }
     }
-    if ([locationCity isEqualToString:[userDefaults objectForKey:@"cityId"]]) {
+    if ([locationCityID isEqualToString:[userDefaults objectForKey:@"cityId"]]) {
         return NO;
     } else {
         return YES;
@@ -271,21 +254,21 @@ typedef void (^HomeViewBlock)(id);
         return [[DataManager manager] getActivityRecommendWithCityId:cityId startId:minAcId num:@"10" userId:userId success:^(ActivityList *acList) {
             @strongify(self);
             self.acListRecived = acList;
-            NSLog(@"%@",self.acListRecived);
         } failure:^(NSError *error) {
             NSLog(@"error:%@",error);
         }];
     };
     
-//    self.getCityListBlock = ^{
-//        @strongify(self);
-//        return [[DataManager manager] getCityListSuccess:^(CityList *ctList) {
-//            @strongify(self);
-//            self.cityList = ctList;
-//        } failure:^(NSError *error) {
-//            NSLog(@"Error:%@",error);
-//        }];
-//    };
+    self.getCityListBlock = ^{
+        @strongify(self);
+        return [[DataManager manager] getCityListSuccess:^(CityList *ctList) {
+            @strongify(self);
+            self.ctList = ctList;
+            [self refleshCity];
+        } failure:^(NSError *error) {
+            NSLog(@"Error:%@",error);
+        }];
+    };
 }
 
 - (void)startget{
@@ -296,6 +279,10 @@ typedef void (^HomeViewBlock)(id);
     
     if (self.getFlash) {
         self.getFlash();
+    }
+    
+    if (self.getCityListBlock) {
+        self.getCityListBlock();
     }
 }
 
@@ -345,11 +332,18 @@ typedef void (^HomeViewBlock)(id);
     return _acList;
 }
 
--(CityModel *)ctmodel{
-    if (!_ctmodel) {
-        _ctmodel = [[CityModel alloc]init];
+-(NSString *)locateCity{
+    if (!_locateCityId) {
+        _locateCityId = [[NSString alloc]init];
     }
-    return _ctmodel;
+    return _locateCityId;
+}
+
+-(CityList *)ctList{
+    if (!_ctList) {
+        _ctList = [[CityList alloc]init];
+    }
+    return _ctList;
 }
 
 #pragma mark - Tableview 数据源
@@ -465,7 +459,7 @@ typedef void (^HomeViewBlock)(id);
             cell.ac_imageTag.alpha  = 1.0;
             cell.ac_poster.alpha    = 1.0;
         }
-
+        
     }
     
 }
@@ -506,7 +500,7 @@ typedef void (^HomeViewBlock)(id);
     self.tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
-
+    
     self.searchView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 70/2)];
     self.searchView.backgroundColor = [UIColor whiteColor];
     [self.view addSubview:self.tableView];
@@ -545,7 +539,7 @@ typedef void (^HomeViewBlock)(id);
         make.right.equalTo(self.searchView.mas_right).offset(-15);
         make.height.mas_equalTo(28);
     }];
-
+    
     [label mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(view);
         make.centerX.equalTo(view).with.offset(15);
@@ -573,10 +567,11 @@ typedef void (^HomeViewBlock)(id);
 #pragma mark - 城市选择
 - (IBAction)didSelectCity:(UIButton *)sender··
 {
-    CZCityViewController *cityViewController = [[CZCityViewController alloc]init];
-    cityViewController.ctmodel = self.ctmodel;
+    RCCityViewController *cityViewController = [[RCCityViewController alloc]init];
+    cityViewController.locateCityId = self.locateCity;
+    cityViewController.ctList = self.ctList;
     [self.navigationController pushViewController:cityViewController animated:YES];
-
+    
 }
 - (IBAction)toTagSelectViewController:(id)sender
 {

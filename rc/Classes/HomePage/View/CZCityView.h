@@ -10,10 +10,10 @@
 
 @interface CZCityView : UIView
 
-@property (strong, nonatomic)  UIButton *cityBtn;
+@property (strong, nonatomic)  UIImageView *cityView;
 @property (strong, nonatomic)  UIImageView *locationImage;
 @property (strong, nonatomic)  UILabel *cityNameLabel;
-- (id)initName:(NSString *)cityName WithImageString:(NSString *)imageString;
+- (id)initName:(NSString *)cityName WithImageString:(NSString *)imageString isLocate:(BOOL)isLocate;
 //根据设备设置约束
 - (void)setConstraints;
 @end
