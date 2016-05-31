@@ -1,0 +1,51 @@
+//
+//  rc-PrefixHeader.pch
+//  rc
+//
+//  Created by 余笃 on 16/3/1.
+//  Copyright © 2016年 AlanZhang. All rights reserved.
+//
+#ifdef __OBJC__
+
+#ifndef rc_PrefixHeader_pch
+#define rc_PrefixHeader_pch
+
+#import <UIKit/UIKit.h>
+#import <Foundation/Foundation.h>
+#import "AFNetworking.h"
+#import "SDWebImageManager.h"
+#import "UIImageView+WebCache.h"
+#import "EXTScope.h"
+#import "FrameAccessor.h"
+#import "DataManager.h"
+#endif
+typedef NS_ENUM(NSInteger, NetWorkingRequestType)
+{
+    POST = 0,
+    GET  = 1
+};
+typedef NS_ENUM(NSInteger, CurrentDevice)
+{
+    IPhone5     = 0,    //4寸    568 X 320
+    IPhone6     = 1,    //4.7寸  667 X 375
+    Iphone6Plus = 2     //5.5寸  736 X 414
+};
+typedef NS_ENUM(NSInteger, City)
+{
+    Beijing     = 0,
+    Shanghai    = 1,
+    Guangzhou   = 2,
+    Wuhan       = 3
+};
+
+
+#define RGB(c,a)    [UIColor colorWithRed:((c>>16)&0xFF)/256.0  green:((c>>8)&0xFF)/256.0   blue:((c)&0xFF)/256.0   alpha:a]
+
+#define kScreenHeight ([UIScreen mainScreen].bounds.size.height)
+#define kScreenWidth ([UIScreen mainScreen].bounds.size.width)
+#define userDefaults [NSUserDefaults standardUserDefaults]
+
+// Include any system framework and library headers here that should be included in all compilation units.
+// You will also need to set the Prefix Header build setting of one or more of your targets to reference this file.
+
+#endif /* rc_PrefixHeader_pch */
