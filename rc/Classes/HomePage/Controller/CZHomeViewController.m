@@ -6,10 +6,12 @@
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
 
+#import "AppDelegate.h"
 #import "CZHomeViewController.h"
 #import "CZHomeHeaderView.h"
 #import "Masonry.h"
 #import "CZCityButton.h"
+#import "RCDirectView.h"
 #import "RCCityViewController.h"
 #import "CZActivityInfoViewController.h"
 #import "RCSettingTagTableViewController.h"
@@ -316,8 +318,12 @@ typedef void (^HomeViewBlock)(id);
     
     //设置tableHeaderView
     CZHomeHeaderView *headerView = [CZHomeHeaderView headerView];
+    RCDirectView *directView= headerView.directView;
+    [directView.hotBtn addTarget:self action:@selector(turnToHotPage) forControlEvents:UIControlEventTouchUpInside];
+    [directView.univerBtn addTarget:self action:@selector(turnToUniverPage) forControlEvents:UIControlEventTouchUpInside];
+    [directView.besidesBtn addTarget:self action:@selector(turnToBesidesPage) forControlEvents:UIControlEventTouchUpInside];
+    [directView.careChoiceBtn addTarget:self action:@selector(turnToCarePage) forControlEvents:UIControlEventTouchUpInside];
     headerView.superView = self.view;
-    
     [headerView setView:flashList.list];
     self.tableView.tableHeaderView = headerView;
 }
@@ -584,6 +590,7 @@ typedef void (^HomeViewBlock)(id);
         [self.navigationController pushViewController:loginViewController animated:YES];
     }
 }
+
 #pragma mark - 首页搜索框点击事件
 - (void) onClickSearch:(UIView *)view
 {
@@ -593,6 +600,26 @@ typedef void (^HomeViewBlock)(id);
 
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refresh" object:nil];
+}
+
+-(void)turnToHotPage{
+    AppDelegate *thisAppDelegate = [[UIApplication sharedApplication] delegate];
+    [(UITabBarController *)thisAppDelegate.window.rootViewController setSelectedIndex:1];
+}
+
+-(void)turnToUniverPage{
+    AppDelegate *thisAppDelegate = [[UIApplication sharedApplication] delegate];
+    [(UITabBarController *)thisAppDelegate.window.rootViewController setSelectedIndex:1];
+}
+
+-(void)turnToBesidesPage{
+    AppDelegate *thisAppDelegate = [[UIApplication sharedApplication] delegate];
+    [(UITabBarController *)thisAppDelegate.window.rootViewController setSelectedIndex:1];
+}
+
+-(void)turnToCarePage{
+    AppDelegate *thisAppDelegate = [[UIApplication sharedApplication] delegate];
+    [(UITabBarController *)thisAppDelegate.window.rootViewController setSelectedIndex:1];
 }
 
 @end

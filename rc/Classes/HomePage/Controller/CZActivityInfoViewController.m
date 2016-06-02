@@ -642,7 +642,7 @@
 }
 - (void)webViewDidStartLoad:(UIWebView *)webView
 {
-    NSLog(@"webViewDidStartLoad");
+    
 }
 - (void)webView:(UIWebView *)webView didFailLoadWithError:(nullable NSError *)error
 {

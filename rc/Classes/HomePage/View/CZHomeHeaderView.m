@@ -79,7 +79,7 @@
     self.acList = flashArray;
     //设置父容器的大小
     CGRect rect = [[UIScreen mainScreen]bounds];
-    [self setFrame:CGRectMake(0, 0, rect.size.width, (rect.size.width*0.427)+90)];
+    [self setFrame:CGRectMake(0, 0, rect.size.width, (rect.size.width*0.427)+99)];
     
     //configure scrollView constraint
     [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {

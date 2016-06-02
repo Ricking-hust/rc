@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "RCDirectView.h"
 #import "FlashActivityModel.h"
 
 @interface CZHomeHeaderView : UIView
@@ -14,7 +15,7 @@
 @property(nonatomic, weak)UIScrollView *scrollView;
 @property(nonatomic, weak)UIPageControl *pageControl;
 @property(nonatomic, weak)UILabel *label;
-@property (nonatomic,weak) UIView *directView;
+@property (nonatomic,weak) RCDirectView *directView;
 @property(nonatomic, weak)UIView *superView;
 @property (nonatomic,strong) NSArray *acList;
 /**

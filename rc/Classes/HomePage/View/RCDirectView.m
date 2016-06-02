@@ -9,8 +9,6 @@
 #import "RCDirectView.h"
 #import "Masonry.h"
 
-static const int buttonSize = 41;
-
 @implementation RCDirectView
 
 -(id)initWithFrame:(CGRect)frame{
@@ -36,6 +34,25 @@ static const int buttonSize = 41;
 }
 
 -(void)setSubView{
+    int edgeSize;
+    int besidesSize;
+    int buttonSize ;
+    if (kScreenWidth < 350)
+    {
+        edgeSize = 29;
+        besidesSize = 37.12f;
+        buttonSize = 37.653f;
+    }else if (kScreenWidth > 400)
+    {
+        edgeSize = 37.536f;
+        besidesSize = 48;
+        buttonSize = 48.714f;
+    }else
+    {
+        edgeSize = 34;
+        besidesSize = 43.5f;
+        buttonSize = 44.125f;
+    }
     
     UIImage *hotImage = [UIImage imageNamed:@"remen_icon"];
     [self.hotBtn setImage:hotImage forState:UIControlStateNormal];
@@ -56,17 +73,19 @@ static const int buttonSize = 41;
     [self.besidesBtn setImage:besidesImage forState:UIControlStateHighlighted];
     self.besidesLable.font = [UIFont systemFontOfSize:12];
     self.besidesLable.text = @"附近";
-    self.besidesLable.textColor = [UIColor blackColor];;
+    self.besidesLable.textColor = [UIColor blackColor];
     
     UIImage *careChoiceImage = [UIImage imageNamed:@"jingxuan_icon"];
     [self.careChoiceBtn setImage:careChoiceImage forState:UIControlStateNormal];
     [self.careChoiceBtn setImage:careChoiceImage forState:UIControlStateHighlighted];
     self.careChoiceLable.font = [UIFont systemFontOfSize:12];
-    self.careChoiceLable.text = @"热门";
-    self.careChoiceLable.textColor = [UIColor blackColor];;
+    self.careChoiceLable.text = @"精选";
+    self.careChoiceLable.textColor = [UIColor blackColor];
+    
+    
     
     [self.hotBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.mas_left).offset(kScreenWidth/8);
+        make.left.equalTo(self.mas_left).offset(edgeSize);
         make.top.equalTo(self.mas_top).offset(15);
         make.size.mas_equalTo(CGSizeMake(buttonSize, buttonSize));
     }];
@@ -76,7 +95,7 @@ static const int buttonSize = 41;
     }];
     
     [self.univerBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.mas_left).offset(kScreenWidth*3/8);
+        make.left.equalTo(self.hotBtn.mas_right).offset(besidesSize);
         make.top.equalTo(self.mas_top).offset(15);
         make.size.mas_equalTo(CGSizeMake(buttonSize, buttonSize));
     }];
@@ -86,7 +105,7 @@ static const int buttonSize = 41;
     }];
     
     [self.besidesBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.mas_left).offset(kScreenWidth*5/8);
+        make.right.equalTo(self.careChoiceBtn.mas_left).offset(-besidesSize);
         make.top.equalTo(self.mas_top).offset(15);
         make.size.mas_equalTo(CGSizeMake(buttonSize, buttonSize));
     }];
@@ -96,7 +115,7 @@ static const int buttonSize = 41;
     }];
     
     [self.careChoiceBtn mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.centerX.equalTo(self.mas_left).offset(kScreenWidth*7/8);
+        make.right.equalTo(self.mas_right).offset(-edgeSize);
         make.top.equalTo(self.mas_top).offset(15);
         make.size.mas_equalTo(CGSizeMake(buttonSize, buttonSize));
     }];
@@ -104,6 +123,8 @@ static const int buttonSize = 41;
         make.centerX.equalTo(self.careChoiceBtn.mas_centerX);
         make.top.equalTo(self.hotBtn.mas_bottom).offset(7);
     }];
+    
 }
+
 
 @end
