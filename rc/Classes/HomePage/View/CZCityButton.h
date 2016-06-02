@@ -10,5 +10,4 @@
 
 @interface CZCityButton : UIButton
 
-@property (nonatomic, strong) UIColor *themeColor;
 @end

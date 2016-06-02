@@ -48,9 +48,7 @@ typedef void (^HomeViewBlock)(id);
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
-    [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
-    self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
-    
+    [self setNavigation];
     //刷新数据
     [self configureCity];
     [self refleshCity];
@@ -100,6 +98,15 @@ typedef void (^HomeViewBlock)(id);
     } else {
         self.locateCityId = [userDefaults objectForKey:@"cityId"];
     }
+}
+
+#pragma mark - 设置导航栏
+
+-(void)setNavigation{
+    [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
+    self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
+    
+    self.navigationItem.titleView = self.searchView;
 }
 
 #pragma mark - 地理定位
@@ -551,15 +558,9 @@ typedef void (^HomeViewBlock)(id);
         make.size.mas_equalTo(CGSizeMake(15, 15));
     }];
     
-    [self.searchView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view.mas_top).with.offset(64);
         make.left.equalTo(self.view.mas_left);
-        make.right.equalTo(self.view.mas_right);
-        make.height.mas_equalTo(38);
-    }];
-    [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_top).with.offset(35);
-        make.left.equalTo(self.searchView.mas_left);
         make.right.equalTo(self.view.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
     }];

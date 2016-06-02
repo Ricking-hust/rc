@@ -235,6 +235,7 @@
 		C46635E91CBFCEA100582DD1 /* UIColor+YDAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = C46635E81CBFCEA100582DD1 /* UIColor+YDAddition.m */; };
 		C46A93D01C85DA5E009626F6 /* ScrollViewFrameAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = C46A93CD1C85DA5E009626F6 /* ScrollViewFrameAccessor.m */; };
 		C46A93D11C85DA5E009626F6 /* ViewFrameAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = C46A93CF1C85DA5E009626F6 /* ViewFrameAccessor.m */; };
+		C472ABC01CFDCF1E006725B9 /* RCDirectView.m in Sources */ = {isa = PBXBuildFile; fileRef = C472ABBF1CFDCF1E006725B9 /* RCDirectView.m */; };
 		C47606F31CBE86BE00181854 /* RCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C47606F21CBE86BE00181854 /* RCUtils.m */; };
 		C4B300161CA44BCC004516B0 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = C4B300151CA44BCC004516B0 /* NSString+MD5.m */; };
 		C4BBA81A1C89B93300AD02EE /* RegisteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BBA8191C89B93300AD02EE /* RegisteViewController.m */; };
@@ -689,6 +690,8 @@
 		C46A93CD1C85DA5E009626F6 /* ScrollViewFrameAccessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ScrollViewFrameAccessor.m; sourceTree = "<group>"; };
 		C46A93CE1C85DA5E009626F6 /* ViewFrameAccessor.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ViewFrameAccessor.h; sourceTree = "<group>"; };
 		C46A93CF1C85DA5E009626F6 /* ViewFrameAccessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewFrameAccessor.m; sourceTree = "<group>"; };
+		C472ABBE1CFDCF1E006725B9 /* RCDirectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDirectView.h; sourceTree = "<group>"; };
+		C472ABBF1CFDCF1E006725B9 /* RCDirectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDirectView.m; sourceTree = "<group>"; };
 		C47606F11CBE86BE00181854 /* RCUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUtils.h; sourceTree = "<group>"; };
 		C47606F21CBE86BE00181854 /* RCUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCUtils.m; sourceTree = "<group>"; };
 		C4B300141CA44BCC004516B0 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
@@ -1155,6 +1158,8 @@
 				5663D0911CA38BC800526FEF /* RCHomeRefreshHeader.m */,
 				C4CF96111CFD769200786982 /* CityCollectionViewCell.h */,
 				C4CF96121CFD769200786982 /* CityCollectionViewCell.m */,
+				C472ABBE1CFDCF1E006725B9 /* RCDirectView.h */,
+				C472ABBF1CFDCF1E006725B9 /* RCDirectView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1944,6 +1949,7 @@
 				C459AD8E1C8D9633009922EE /* NSDictionary+NotNullKey.m in Sources */,
 				561D020D1C47DA5600E4E013 /* MASViewConstraint.m in Sources */,
 				561D01FA1C47DA5600E4E013 /* AFURLResponseSerialization.m in Sources */,
+				C472ABC01CFDCF1E006725B9 /* RCDirectView.m in Sources */,
 				56B9CD381C807A7100914F00 /* UIImage+WebP.m in Sources */,
 				56F02CB31CA2884B00E0BBB4 /* MJRefreshBackNormalFooter.m in Sources */,
 				56B9CD2E1C807A7100914F00 /* SDImageCache.m in Sources */,

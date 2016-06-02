@@ -17,8 +17,7 @@
     if (self = [super initWithCoder:aDecoder]) {
         //设置图片的显示样式
         self.imageView.contentMode = UIViewContentModeCenter;
-        self.themeColor = [UIColor colorWithRed:255.0/255.0 green:129.0/255.0 blue:3.0/255.0 alpha:1.0];
-        [self setTitleColor:_themeColor forState:UIControlStateNormal];
+        [self setTitleColor:themeColor forState:UIControlStateNormal];
     }
 
     return self;

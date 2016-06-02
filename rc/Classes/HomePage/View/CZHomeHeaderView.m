@@ -10,8 +10,9 @@
 #import "Masonry.h"
 #import "CZActivityInfoViewController.h"
 #import "FlashActivityModel.h"
+#import "RCDirectView.h"
 
-#define SCROLLVIEW_HEIGHT 150   //scrollView的宽度
+#define d 150   //scrollView的宽度
 #define PAGECONTROL_WIDTH 70   //pageControl的宽度
 #define PAGECONTROL_HEIGHT  37  //pageControl的高度
 #define FONTSIZE    15          //label字体大小
@@ -30,7 +31,7 @@
 {
     
     CZHomeHeaderView *headerView = [CZHomeHeaderView new];
-    headerView.backgroundColor = [UIColor whiteColor];
+    headerView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
    
     headerView.isEnd = NO;
     //创建scrollView
@@ -49,12 +50,17 @@
     headerView.label = label;
     [headerView addSubview:label];
     
+    //创建directView
+    RCDirectView *directView = [[RCDirectView alloc]init];
+    [directView setSubView];
+    headerView.directView = directView;
+    headerView.directView.backgroundColor = [UIColor whiteColor];
+    [headerView addSubview:directView];
+    
     //创建
     UIView *view = [UIView new];
     view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-    headerView.segmentation = view;
     [headerView addSubview:view];
-    
     
     headerView.superView = view;
     
@@ -73,45 +79,46 @@
     self.acList = flashArray;
     //设置父容器的大小
     CGRect rect = [[UIScreen mainScreen]bounds];
-    [self setFrame:CGRectMake(0, 0, rect.size.width, (rect.size.width/2) + 70.0f/2 + 14.0f/2)];
+    [self setFrame:CGRectMake(0, 0, rect.size.width, (rect.size.width*0.427)+90)];
     
     //configure scrollView constraint
     [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.and.top.equalTo(self);
         make.width.mas_equalTo(rect.size.width);
-        make.height.mas_equalTo(rect.size.width/2);
+        make.height.mas_equalTo(rect.size.width*0.427);
         
     }];
     
     //configure pagecontrol constraints
     [self.pageControl mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.scrollView.mas_right).with.offset(-40.0f/2);
-        make.bottom.equalTo(self.label.mas_top).with.offset(-10.0f);
+        make.right.equalTo(self.scrollView.mas_right);
+        make.bottom.equalTo(self.scrollView.mas_bottom);
 
         make.size.mas_equalTo(CGSizeMake(PAGECONTROL_WIDTH, PAGECONTROL_HEIGHT));
     }];
     self.pageControl.currentPageIndicatorTintColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/2550 alpha:1.0];
     
-    //configure label constraints
-    NSString *text = @"为你推荐";
-    CGSize maxSize = CGSizeMake(MAXFLOAT, MAXFLOAT);
-    //计算文本的大小
-    CGSize textSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:FONTSIZE]} context:nil].size;
-    self.label.text = text;
-    self.label.textColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
-    [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self).with.offset(10);
-        make.top.equalTo(self.scrollView.mas_bottom).with.offset(10);
-        make.size.mas_equalTo(textSize);
-        
+    [self.directView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(self.pageControl.mas_right);
+        make.top.equalTo(self.pageControl.mas_bottom).offset(9);
+        make.width.mas_equalTo(rect.size.width);
+        make.height.mas_equalTo(90);
     }];
     
-    //configure segmentation分割线
-    [self.segmentation mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self);
-        make.top.equalTo(self.label.mas_bottom).with.offset(10.0f);
-        make.size.mas_equalTo(CGSizeMake(rect.size.width, 14.0/2));
-    }];
+//    //configure label constraints
+//    NSString *text = @"为你推荐";
+//    CGSize maxSize = CGSizeMake(MAXFLOAT, MAXFLOAT);
+//    //计算文本的大小
+//    CGSize textSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:FONTSIZE]} context:nil].size;
+//    self.label.text = text;
+//    self.label.textColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
+//    [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
+//        make.left.equalTo(self).with.offset(10);
+//        make.top.equalTo(self.scrollView.mas_bottom).with.offset(10);
+//        make.size.mas_equalTo(textSize);
+//        
+//    }];
+    
     int count = (int)flashArray.count;
     
 #pragma mark - 设置从服务器接收的图片
@@ -124,7 +131,7 @@
         [self.scrollView addSubview:imageView];
         FlashActivityModel *flashModel = flashArray[i];
         NSString *imageName = flashModel.Image;
-        NSLog(@"%@",imageName);
+        //NSLog(@"%@",imageName);
         [imageView sd_setImageWithURL:[NSURL URLWithString:imageName] placeholderImage:[UIImage imageNamed:@"img_3"]];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.scrollView.mas_left).with.offset(i * rect.size.width);
