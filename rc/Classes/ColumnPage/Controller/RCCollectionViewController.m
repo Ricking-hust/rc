@@ -19,15 +19,17 @@
 #import "RCCollectionViewLayout.h"
 #import "RCCollectionCell.h"
 #import "RCColumnScrollViewDelegate.h"
+#import "BWaterflowLayout.h"
 //MJReflesh--------------------------------
 #import "MJRefresh.h"
 #import "RCHomeRefreshHeader.h"
-#define NAME_FONTSIZE 14
-#define TIME_FONTSIZE 12
+#define NAME_FONTSIZE  14
+#define TIME_FONTSIZE  12
 #define PLACE_FONTSIZE 12
-#define TAG_FONTSIZE  11
+#define TAG_FONTSIZE   11
 
-@interface RCCollectionViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, CustomCollectionViewLayoutDelegate>
+@interface RCCollectionViewController ()<UICollectionViewDataSource,UICollectionViewDelegate,UICollectionViewDelegateFlowLayout, UIScrollViewDelegate, CustomCollectionViewLayoutDelegate,BWaterflowLayoutDelegate>
+
 @property (nonatomic, assign) CurrentDevice device;
 @property (nonatomic, strong) UIScrollView *toolScrollView;
 @property (nonatomic, strong) NSMutableArray *toolButtonArray;
@@ -45,40 +47,6 @@
 @implementation RCCollectionViewController
 
 static NSString * const reuseIdentifier = @"RCColumnCell";
-- (CurrentDevice)device
-{
-    if (!_device)
-    {
-        _device = [self currentDeviceSize];
-    }
-    return _device;
-}
-- (RCColumnScrollViewDelegate *)scrollViewDelegate
-{
-    if (!_scrollViewDelegate)
-    {
-        _scrollViewDelegate = [[RCColumnScrollViewDelegate alloc]init];
-        _scrollViewDelegate.device = [self currentDeviceSize];
-        [self.view addSubview:_scrollViewDelegate];
-    }
-    return _scrollViewDelegate;
-}
-- (NSMutableDictionary *)activityListByInd
-{
-    if (!_activityListByInd)
-    {
-        _activityListByInd = [[NSMutableDictionary alloc]init];
-    }
-    return _activityListByInd;
-}
-- (NSMutableDictionary *)collectionViewByInd
-{
-    if (!_collectionViewByInd)
-    {
-        _collectionViewByInd = [[NSMutableDictionary alloc]init];
-    }
-    return _collectionViewByInd;
-}
 
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -90,7 +58,7 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 {
     [super viewDidLoad];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(refreshColumn) name:@"refreshColumn" object:nil];
+
     [self initScrollView];
     [self configureBlocks];
     self.getIndListBlock();
@@ -121,7 +89,7 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     // Dispose of any resources that can be recreated.
 }
 
-#pragma mark <UICollectionViewDataSource>
+#pragma mark - <UICollectionViewDataSource>
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
     return 1;
@@ -137,16 +105,15 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 {
 
     RCCollectionCell *cell = (RCCollectionCell *)[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-    
-    if (!cell)
-    {
 
-        // Well, nothingreally. Never again
-        cell = [[RCCollectionCell alloc]initWithFrame:CGRectZero];
-    }
-    [self collectionView:collectionView setCellValue:cell AtIndexPath:indexPath];
+    //[self collectionView:collectionView setCellValue:cell AtIndexPath:indexPath];
+    RCCollectionView *cv = (RCCollectionView *)collectionView;
+    NSMutableArray *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
+    ActivityModel *model = activityList[indexPath.row];
+    cell.model = model;
+
     [cell setSubviewConstraint];
-
+    
     return cell;
 
 }
@@ -237,8 +204,8 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 #pragma mark - 返回指定数据的大小
 - (CGSize)sizeByActivityModel:(ActivityModel *)model ForSepcifiedCell:(NSIndexPath *)indexPath
 {
-    CGFloat acImageW; //图片的最大宽度,活动名的最大宽度
-    CGFloat acImageH; //图片的最大高度
+    CGFloat acImageW ; //图片的最大宽度,活动名的最大宽度
+    CGFloat acImageH ; //图片的最大高度
     if (self.device == IPhone5)
     {
         acImageW = 142;
@@ -250,6 +217,7 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
         acImageH = 165;
     }else
     {
+  
         acImageW = 177;
         acImageH = 177;
     }
@@ -258,8 +226,9 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     CGSize acTimeSize = [self sizeWithText:model.acTime maxSize:maxSize fontSize:TIME_FONTSIZE];
     CGSize acPlaceSize = [self sizeWithText:model.acPlace maxSize:maxSize fontSize:PLACE_FONTSIZE];
     CGSize acTagSize = [self sizeWithText:model.userInfo.userName maxSize:maxSize fontSize:TAG_FONTSIZE];
-    CGFloat heigth = acImageH + 10 + (int)acNameSize.height + 10 + (int)acTimeSize.height + (int)acPlaceSize.height + 10 + (int)acTagSize.height+5;
-    return CGSizeMake(acImageH, heigth);
+    CGFloat heigth = acImageH + 10 + (int)acNameSize.height + 10 + (int)acTimeSize.height + (int)acPlaceSize.height + 10 + (int)acTagSize.height+   5;
+
+    return CGSizeMake(acImageW, heigth);
 }
 #pragma mark - 返回每个cell的高度
 - (CGFloat)collectionView:(RCCollectionView *)collectionView waterFlowLayout:(RCCollectionViewLayout *)waterFlowLayout heightForWidth:(CGFloat)width atIndexPath:(NSIndexPath *)indexPath
@@ -269,36 +238,7 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     NSMutableArray *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
     return [self sizeByActivityModel:activityList[indexPath.row] ForSepcifiedCell:indexPath].height;
 }
-#pragma mark <UICollectionViewDelegate>
 
-/*
- // Uncomment this method to specify if the specified item should be highlighted during tracking
- - (BOOL)collectionView:(UICollectionView *)collectionView shouldHighlightItemAtIndexPath:(NSIndexPath *)indexPath {
-	return YES;
- }
- */
-
-/*
- // Uncomment this method to specify if the specified item should be selected
- - (BOOL)collectionView:(UICollectionView *)collectionView shouldSelectItemAtIndexPath:(NSIndexPath *)indexPath {
- return YES;
- }
- */
-
-/*
- // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
- - (BOOL)collectionView:(UICollectionView *)collectionView shouldShowMenuForItemAtIndexPath:(NSIndexPath *)indexPath {
-	return NO;
- }
- 
- - (BOOL)collectionView:(UICollectionView *)collectionView canPerformAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	return NO;
- }
- 
- - (void)collectionView:(UICollectionView *)collectionView performAction:(SEL)action forItemAtIndexPath:(NSIndexPath *)indexPath withSender:(id)sender {
-	
- }
- */
 
 #pragma mark - get data
 - (void)configureBlocks{
@@ -420,8 +360,13 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 #pragma mark - 根据行业在indlist中的下标生成对应的collectionView
 - (RCCollectionView *)createCollectionView:(int)index WithIndModel:(IndustryModel *)indModel
 {
-    RCCollectionViewLayout *layout= [[RCCollectionViewLayout alloc]init];
-    layout.layoutDelegate = self;
+//    RCCollectionViewLayout *layout= [[RCCollectionViewLayout alloc]init];
+//    layout.layoutDelegate = self;
+
+#pragma mark - 修改布局
+    //创建布局
+    BWaterflowLayout * layout = [[BWaterflowLayout alloc]init];
+    layout.delegate = self;
     
     RCCollectionView * collectionView = [[RCCollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
     collectionView.indModel = indModel;
@@ -440,6 +385,38 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     // Register cell classes
     [collectionView registerClass:[RCCollectionCell class] forCellWithReuseIdentifier:reuseIdentifier];
     return collectionView;
+}
+
+#pragma mark - <BWaterflowLayoutDelegate>
+
+-(CGFloat)collectionView:(RCCollectionView *)collectionView waterflowLayout:(BWaterflowLayout *)waterflowLayout heightForItemAtIndexPath:(NSIndexPath *)indexPath itemWidth:(CGFloat)itemWidth
+{
+    //取出数据
+    RCCollectionView *cv = (RCCollectionView *)collectionView;
+    NSMutableArray *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
+    CGSize size = [self sizeByActivityModel:activityList[indexPath.row] ForSepcifiedCell:indexPath];
+
+    return size.height;
+}
+//瀑布流列数
+- (CGFloat)columnCountInWaterflowLayout:(BWaterflowLayout *)waterflowLayout
+{
+    return 2;
+}
+- (CGFloat)columnMarginInWaterflowLayout:(BWaterflowLayout *)waterflowLayout
+{
+    return 10;
+    
+}
+- (CGFloat)rowMarginInWaterflowLayout:(BWaterflowLayout *)waterflowLayout
+{
+    return 10;
+    
+}
+- (UIEdgeInsets)edgeInsetsInWaterflowLayout:(BWaterflowLayout *)waterflowLayout
+{
+
+    return UIEdgeInsetsMake(10, 10, 10, 10);
 }
 #pragma mark - 下拉对应的collectionView刷新数据
 - (void)loadNewData
@@ -497,7 +474,7 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     _acListRecived = acListRecived;
     
 }
-#pragma mark - 懒加载，创建toolScrollView
+
 - (UIScrollView *)toolScrollView
 {
     if (!_toolScrollView) {
@@ -513,7 +490,6 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     return _toolScrollView;
 }
 
-#pragma mark - 懒加载，创建toolbuttonarray
 - (NSMutableArray *)toolButtonArray
 {
     if (!_toolButtonArray)
@@ -595,6 +571,41 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     UIView *line = [view viewWithTag:12];
     line.hidden = NO;
 }
+- (CurrentDevice)device
+{
+    if (!_device)
+    {
+        _device = [self currentDeviceSize];
+    }
+    return _device;
+}
+- (RCColumnScrollViewDelegate *)scrollViewDelegate
+{
+    if (!_scrollViewDelegate)
+    {
+        _scrollViewDelegate = [[RCColumnScrollViewDelegate alloc]init];
+        _scrollViewDelegate.device = [self currentDeviceSize];
+        [self.view addSubview:_scrollViewDelegate];
+    }
+    return _scrollViewDelegate;
+}
+- (NSMutableDictionary *)activityListByInd
+{
+    if (!_activityListByInd)
+    {
+        _activityListByInd = [[NSMutableDictionary alloc]init];
+    }
+    return _activityListByInd;
+}
+- (NSMutableDictionary *)collectionViewByInd
+{
+    if (!_collectionViewByInd)
+    {
+        _collectionViewByInd = [[NSMutableDictionary alloc]init];
+    }
+    return _collectionViewByInd;
+}
+
 //获得设备型号
 - (NSString *)getCurrentDeviceModel
 {
@@ -663,10 +674,6 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     //计算文本的大小
     CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
     return nameSize;
-}
-
--(void)dealloc{
-    [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refreshColumn" object:nil];
 }
 
 @end

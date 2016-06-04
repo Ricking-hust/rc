@@ -27,6 +27,7 @@
 //==================测试聊天=====================
 #import "RCTalkTestViewController.h"
 
+#import "ViewController.h"
 
 @interface RCPersonInfoViewController()
 @property (nonatomic, strong) UILabel *tittleLable;
@@ -251,7 +252,8 @@
     {
         if (indexPath.row == 0)
         {
-            ;
+            ViewController *vc = [[ViewController alloc]init];
+            [self.navigationController pushViewController:vc animated:YES];
         }else if (indexPath.row == 1)
         {
             RCTalkTestViewController *vc = [[RCTalkTestViewController alloc]init];

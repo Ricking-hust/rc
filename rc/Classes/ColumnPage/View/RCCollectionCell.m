@@ -26,6 +26,7 @@
         self.acRelease = [[UILabel alloc]init];
         self.acTagImgeView = [[UIImageView alloc]init];
         self.bgView = [[UIView alloc]init];
+        self.model = [[ActivityModel alloc]init];
     }
     [self setSubViewProperty];
     return self;
@@ -42,10 +43,78 @@
         self.acRelease = [[UILabel alloc]init];
         self.acTagImgeView = [[UIImageView alloc]init];
         self.bgView = [[UIView alloc]init];
+        self.model = [[ActivityModel alloc]init];
     }
     [self setSubViewProperty];
     return self;
 }
+- (void)setModel:(ActivityModel *)model
+{
+    _model = model;
+    self.acName.text = model.acTitle;
+    int len = (int)[model.acTime length];
+    NSString *timeStr = [model.acTime substringWithRange:NSMakeRange(0, len - 3)];
+    self.acTime.text = timeStr;
+    self.acPlace.text = model.acPlace;
+    
+    [self.acImage sd_setImageWithURL:[NSURL URLWithString:model.acPoster] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
+    //[cell.acTagImgeView sd_setImageWithURL:[NSURL URLWithString:model.userInfo.userPic] placeholderImage:[UIImage imageNamed:@"20160102.png"]];
+    //cell.acRelease.text = model.userInfo.userName;
+    [self.acTagImgeView setImage:[UIImage imageNamed:@"tagImage"]];
+    NSMutableArray *Artags = [[NSMutableArray alloc]init];
+    
+    for (TagModel *tagmodel in model.tagsList.list) {
+        [Artags addObject:tagmodel.tagName];
+    }
+    
+    NSString *tags = [Artags componentsJoinedByString:@","];
+    self.acRelease.text = tags;
+    //判断当前活动是否过期
+    BOOL isHappened = [self isHappened:model];
+    if (isHappened == YES)
+    {
+        self.acName.textColor = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
+        self.acTime.textColor  = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
+        self.acPlace.textColor = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
+        self.acRelease.textColor  = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
+        self.acImage.alpha  = 0.6;
+    }else
+    {
+        self.acName.textColor = [UIColor blackColor];
+        self.acTime.textColor  = [UIColor blackColor];
+        self.acPlace.textColor = [UIColor blackColor];
+        self.acRelease.textColor  = [UIColor blackColor];
+        self.acImage.alpha  = 1.0;
+    }
+
+    
+}
+#pragma mark - 判断指定的行程是否已经发生
+- (BOOL)isHappened:(ActivityModel *)model
+{
+    NSString *year = [model.acTime substringWithRange:NSMakeRange(0, 4)];
+    NSString *month = [model.acTime substringWithRange:NSMakeRange(5, 2)];
+    NSString *day = [model.acTime substringWithRange:NSMakeRange(8, 2)];
+    NSString *strDate = [NSString stringWithFormat:@"%@%@%@",year,month,day];
+    NSInteger intDate = [strDate integerValue];//指定行程的日期
+    
+    NSDate *date = [NSDate date];
+    NSDateFormatter *dateformat=[[NSDateFormatter alloc]init];
+    [dateformat setDateFormat:@"yyyyMMdd"];//设置格式
+    [dateformat setTimeZone:[[NSTimeZone alloc]initWithName:@"Asia/Beijing"]];//指定时区
+    NSString *currentStrDate = [dateformat stringFromDate:date];
+    NSInteger currentIntDate = [currentStrDate integerValue];//当前日期
+    
+    if (intDate > currentIntDate || intDate == currentIntDate)
+    {
+        return NO;
+    }else
+    {
+        return YES;
+    }
+    
+}
+
 - (void)setSubViewProperty
 {
 //    self.acTagImgeView.layer.cornerRadius = 5;
@@ -76,8 +145,8 @@
 }
 - (void)setSubviewConstraint
 {
-    CGFloat acImageW; //图片的最大宽度,活动名的最大宽度
-    CGFloat acImageH; //图片的最大高度
+    CGFloat acImageW ; //图片的最大宽度,活动名的最大宽度
+    CGFloat acImageH ; //图片的最大高度
     if (self.device == IPhone5)
     {
         acImageW = 142;
@@ -90,6 +159,7 @@
 
     }else
     {
+        
         acImageW = 177;
         acImageH = 177;
     }
@@ -99,10 +169,14 @@
         make.right.equalTo(self.bgView.mas_right);
         make.height.mas_equalTo(acImageH);
     }];
-    
-    //活动名约束
     CGSize maxSize = CGSizeMake(acImageW - 20, MAXFLOAT);
-    CGSize acNameSize = [self sizeWithText:self.acName.text maxSize:maxSize fontSize:NAME_FONTSIZE];
+    CGSize acNameSize = [self sizeWithText:self.model.acTitle maxSize:maxSize fontSize:NAME_FONTSIZE];
+    CGSize acTimeSize = [self sizeWithText:self.model.acTime maxSize:maxSize fontSize:TIME_FONTSIZE];
+    CGSize acPlaceSize = [self sizeWithText:self.model.acPlace maxSize:maxSize fontSize:PLACE_FONTSIZE];
+    CGSize acTagSize = [self sizeWithText:self.model.userInfo.userName maxSize:maxSize fontSize:TAG_FONTSIZE];
+    //活动名约束
+    //CGSize maxSize = CGSizeMake(acImageW - 20, MAXFLOAT);
+    //CGSize acNameSize = [self sizeWithText:self.acName.text maxSize:maxSize fontSize:NAME_FONTSIZE];
     [self.acName mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.acImage.mas_bottom).offset(10);
         make.left.equalTo(self.acImage.mas_left).offset(10);
@@ -110,7 +184,7 @@
         make.height.mas_equalTo(acNameSize.height+1);
     }];
     //活动时间约束
-    CGSize acTimeSize = [self sizeWithText:self.acTime.text maxSize:maxSize fontSize:TIME_FONTSIZE];
+    //CGSize acTimeSize = [self sizeWithText:self.acTime.text maxSize:maxSize fontSize:TIME_FONTSIZE];
     [self.acTime mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.acName.mas_bottom).offset(10);
         make.left.equalTo(self.acName.mas_left);
@@ -118,7 +192,7 @@
         make.height.mas_equalTo(acTimeSize.height+1);
     }];
     //地点约束
-    CGSize acPlaceSize = [self sizeWithText:self.acPlace.text maxSize:maxSize fontSize:PLACE_FONTSIZE];
+    //CGSize acPlaceSize = [self sizeWithText:self.acPlace.text maxSize:maxSize fontSize:PLACE_FONTSIZE];
     [self.acPlace mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.acTime.mas_bottom);
         make.left.equalTo(self.acTime.mas_left);
@@ -132,20 +206,21 @@
         make.size.mas_equalTo(CGSizeMake(7, 10));
     }];
     //标签约束
-    CGSize acTagSize = [self sizeWithText:@"发布者在哪呢" maxSize:maxSize fontSize:TAG_FONTSIZE];
+    //CGSize acTagSize = [self sizeWithText:self.acRelease.text maxSize:maxSize fontSize:TAG_FONTSIZE];
     [self.acRelease mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.acTagImgeView.mas_right).offset(4);
         make.top.equalTo(self.acTagImgeView.mas_top).offset(-2);
-        make.width.mas_equalTo(acTagSize.width+1);
+        make.width.mas_equalTo(maxSize.width - 10);
         make.height.mas_equalTo(acTagSize.height+1);
     }];
-    CGFloat heigth = acImageH + 10 + (int)acNameSize.height + 10 + (int)acTimeSize.height + (int)acPlaceSize.height + 10 + (int)acTagSize.height+5;
+    
+    self.height = acImageH + 10 + (int)acNameSize.height + 10 + (int)acTimeSize.height + (int)acPlaceSize.height + 10 + (int)acTagSize.height+5;
     [self.bgView mas_updateConstraints:^(MASConstraintMaker *make) {
-//        make.edges.mas_equalTo(UIEdgeInsetsMake(3, 3, 3, 3));
+        
         make.top.equalTo(self.contentView.mas_top);
         make.centerX.equalTo(self.contentView.mas_centerX);
         make.width.mas_equalTo(acImageW);
-        make.height.mas_equalTo(heigth);
+        make.height.mas_equalTo(self.height);
     }];
     
 }

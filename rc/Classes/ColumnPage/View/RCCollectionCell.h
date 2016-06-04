@@ -17,5 +17,7 @@
 @property (nonatomic, strong) UILabel *acRelease;
 @property (nonatomic, strong) UIImageView *acTagImgeView;
 @property (nonatomic, strong) UIView *bgView;
+@property (nonatomic, strong) ActivityModel *model;
+@property (nonatomic, assign) CGFloat height;
 - (void)setSubviewConstraint;
 @end
