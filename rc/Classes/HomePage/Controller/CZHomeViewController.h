@@ -10,9 +10,11 @@
 #import <CoreLocation/CoreLocation.h>
 #import <CoreLocation/CLLocationManagerDelegate.h>
 
-@interface CZHomeViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,CLLocationManagerDelegate>
+@interface CZHomeViewController : UIViewController <UITableViewDelegate, UITableViewDataSource,UIScrollViewDelegate,CLLocationManagerDelegate>
 @property (nonatomic,strong) NSString *locateCityId;
 @property (nonatomic,strong) CityList *ctList;
+@property (nonatomic,strong) UIScrollView *homeScrollView;
+@property (nonatomic,strong) UILabel *navLabel;
 @property (strong, nonatomic) UIView *searchView;
 @property (strong, nonatomic) UITableView *tableView;
 @property (nonatomic,strong) CLLocationManager *locationManager;
