@@ -109,7 +109,79 @@
     [self initShareSDK];
     //设置消息通知
     //[self settingNotification];
+    
+    //远程推送
+    if ([application respondsToSelector:@selector(isRegisteredForRemoteNotifications)])
+    {
+        // iOS 8 Notifications
+        [application registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:(UIUserNotificationTypeSound | UIUserNotificationTypeAlert | UIUserNotificationTypeBadge) categories:nil]];
+        
+        [application registerForRemoteNotifications];
+    }
+    else
+    {
+        // iOS < 8 Notifications
+        [application registerForRemoteNotificationTypes:
+         (UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeSound)];
+    }
+//    if ([[UIDevice currentDevice].systemVersion floatValue] < 8.0)
+//    {//系统版本 <8.0
+//        UIRemoteNotificationType type = UIRemoteNotificationTypeAlert | UIRemoteNotificationTypeBadge |UIRemoteNotificationTypeSound;
+//        [[UIApplication sharedApplication]  registerForRemoteNotificationTypes:type];
+//    }else
+//    {//系统版本 >8.0
+//        UIUserNotificationType type = UIUserNotificationTypeAlert | UIUserNotificationTypeBadge |UIUserNotificationTypeSound;
+//        UIUserNotificationSettings *setting = [UIUserNotificationSettings settingsForTypes:type categories:nil];
+//        [[UIApplication sharedApplication] registerUserNotificationSettings:setting];
+//    }
+    
+    
     return YES;
+}
+/**
+ *  获取苹果服务器返回的deviceToken
+ */
+- (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
+{
+    NSString *string = [[[[deviceToken description] stringByReplacingOccurrencesOfString:@"<" withString:@""] stringByReplacingOccurrencesOfString:@">" withString:@""] stringByReplacingOccurrencesOfString:@" " withString:@""];
+    NSLog(@"deviceTokenString--------------》 : %@",string);
+    NSLog(@"deviceToken ------->: %@",deviceToken);
+    
+}
+// 注册失败回调方法，处理失败情况
+- (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
+    NSLog(@"远程推送注册失败：%@",error);
+    
+}
+/**
+ *  ios8之前，接收到推送消息的代理方法
+ */
+- (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
+{
+    NSLog(@"%@",userInfo);
+}
+/**
+ *  ios8之后，接收消息的代理方法
+ *  接收到推送消息后，需要判断当前程序所处的状态， 并根据公司业务做出不同处理
+ *  在处理完成后，需要调用completionHandler block 回调
+ *
+ */
+- (void)application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo fetchCompletionHandler:(void (^)(UIBackgroundFetchResult))completionHandler
+{
+    if (application.applicationState == UIApplicationStateInactive)
+    {
+        NSLog(@"inactive");
+        completionHandler(UIBackgroundFetchResultNewData);
+    }else if (application.applicationState == UIApplicationStateBackground)
+    {
+        NSLog(@"background");
+        completionHandler(UIBackgroundFetchResultNewData);
+    }else if (application.applicationState == UIApplicationStateActive)
+    {
+        NSLog(@"active");
+        completionHandler(UIBackgroundFetchResultNewData);
+    }
+    NSLog(@"%@",userInfo);
 }
 - (void)settingNotification
 {
