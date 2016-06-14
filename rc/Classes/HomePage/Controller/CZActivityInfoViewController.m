@@ -23,9 +23,11 @@
 #import "RCBarButton.h"
 #import "RCBarButtonView.h"
 #import "RCReleaseCell.h"
-//ShareSDK-------------------------------------------
+//----------------ShareSDK2.0-----------------
+//#import <ShareSDK/ShareSDK.h>
+//----------------ShareSDK3.3-----------------
 #import <ShareSDK/ShareSDK.h>
-
+#import <ShareSDKUI/ShareSDK+SSUI.h>
 
 #define FONTSIZE 14
 #define PADDING  10 //活动详情cell 中子控件之间的垂直间距
@@ -902,39 +904,87 @@
 
 - (void)didShare:(id)button
 {
-    UIView *sender = [[UIView alloc]init];
+    //sharSDK3.3
     //1、创建分享参数
-    //构造分享内容
-    id<ISSContent> publishContent = [ShareSDK content:self.activitymodel.acDesc
-                                       defaultContent:@"日常"
-                                                image:[ShareSDK imageWithUrl:self.activitymodel.acPoster]
-                                                title:self.activitymodel.acTitle
-                                                  url:[NSString stringWithFormat:@"http://myrichang.com/activity.php?id=%@",self.activitymodel.acID]
-                                          description:self.activitymodel.acTitle
-                                            mediaType:SSPublishContentMediaTypeNews];
-    //创建弹出菜单容器
-    id<ISSContainer> container = [ShareSDK container];
-    [container setIPadContainerWithView:sender arrowDirect:UIPopoverArrowDirectionUp];
-    
-    //弹出分享菜单
-    [ShareSDK showShareActionSheet:container
-                         shareList:nil
-                           content:publishContent
-                     statusBarTips:YES
-                       authOptions:nil
-                      shareOptions:nil
-                            result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
-                                
-                                if (state == SSResponseStateSuccess)
-                                {
-                                    NSLog(@"分享成功");
-                                }
-                                else if (state == SSResponseStateFail)
-                                {
-                                    NSLog(@"分享失败,错误码:%ld,错误描述:%@", [error errorCode], [error errorDescription]);
-                                }
-                            }];
-    
+    NSArray* imageArray = @[self.activitymodel.acPoster];
+    //（注意：图片必须要在Xcode左边目录里面，名称必须要传正确，如果要分享网络图片，可以这样传iamge参数 images:@[@"http://mob.com/Assets/images/logo.png?v=20150320"]）
+    if (imageArray) {
+        
+        NSMutableDictionary *shareParams = [NSMutableDictionary dictionary];
+        [shareParams SSDKSetupShareParamsByText:@"日常"
+                                         images:imageArray
+                                            url:[NSURL URLWithString:[NSString stringWithFormat:@"http://myrichang.com/activity.php?id=%@",self.activitymodel.acID]]
+                                          title:self.activitymodel.acTitle
+                                           type:SSDKContentTypeAuto];
+        //2、分享（可以弹出我们的分享菜单和编辑界面）
+        [ShareSDK showShareActionSheet:nil //要显示菜单的视图, iPad版中此参数作为弹出菜单的参照视图，只有传这个才可以弹出我们的分享菜单，可以传分享的按钮对象或者自己创建小的view 对象，iPhone可以传nil不会影响
+                                 items:nil
+                           shareParams:shareParams
+                   onShareStateChanged:^(SSDKResponseState state, SSDKPlatformType platformType, NSDictionary *userData, SSDKContentEntity *contentEntity, NSError *error, BOOL end) {
+                       
+                       switch (state) {
+                           case SSDKResponseStateSuccess:
+                           {
+                               UIAlertController *chooseView = [UIAlertController alertControllerWithTitle:@"分享成功" message:@"" preferredStyle:UIAlertControllerStyleAlert];
+                               UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                                   
+                               }];
+                               [chooseView addAction:cancelAction];
+                               
+                               [self presentViewController:chooseView animated:YES completion:nil];
+                               break;
+                           }
+                           case SSDKResponseStateFail:
+                           {
+                               UIAlertController *chooseView = [UIAlertController alertControllerWithTitle:@"分享失败" message:[NSString stringWithFormat:@"%@",error] preferredStyle:UIAlertControllerStyleAlert];
+                               UIAlertAction *cancelAction = [UIAlertAction actionWithTitle:@"确定" style:UIAlertActionStyleDefault handler:^(UIAlertAction *action) {
+                                   
+                               }];
+                               [chooseView addAction:cancelAction];
+                               
+                               [self presentViewController:chooseView animated:YES completion:nil];
+
+                               break;
+                           }
+                           default:
+                               break;
+                       }
+                   }
+         ];}
+    //sharSDK2.0
+//    UIView *sender = [[UIView alloc]init];
+//    //1、创建分享参数
+//    //构造分享内容
+//    id<ISSContent> publishContent = [ShareSDK content:self.activitymodel.acDesc
+//                                       defaultContent:@"日常"
+//                                                image:[ShareSDK imageWithUrl:self.activitymodel.acPoster]
+//                                                title:self.activitymodel.acTitle
+//                                                  url:[NSString stringWithFormat:@"http://myrichang.com/activity.php?id=%@",self.activitymodel.acID]
+//                                          description:self.activitymodel.acTitle
+//                                            mediaType:SSPublishContentMediaTypeNews];
+//    //创建弹出菜单容器
+//    id<ISSContainer> container = [ShareSDK container];
+//    [container setIPadContainerWithView:sender arrowDirect:UIPopoverArrowDirectionUp];
+//    
+//    //弹出分享菜单
+//    [ShareSDK showShareActionSheet:container
+//                         shareList:nil
+//                           content:publishContent
+//                     statusBarTips:YES
+//                       authOptions:nil
+//                      shareOptions:nil
+//                            result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
+//                                
+//                                if (state == SSResponseStateSuccess)
+//                                {
+//                                    NSLog(@"分享成功");
+//                                }
+//                                else if (state == SSResponseStateFail)
+//                                {
+//                                    NSLog(@"分享失败,错误码:%ld,错误描述:%@", [error errorCode], [error errorDescription]);
+//                                }
+//                            }];
+//    
 }
 - (void)setSubViewsConstraint
 {
