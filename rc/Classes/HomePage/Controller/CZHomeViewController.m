@@ -13,12 +13,14 @@
 #import "CZCityButton.h"
 #import "RCDirectView.h"
 #import "RCCityViewController.h"
+#import "RCPubRecommendView.h"
 #import "CZActivityInfoViewController.h"
 #import "RCSettingTagTableViewController.h"
 #import "LoginViewController.h"
 #import "CZSearchViewController.h"
 #import "CZActivitycell.h"
 #import "ActivityModel.h"
+#import "PublisherModel.h"
 #import "DataManager.h"
 #import "UIImageView+WebCache.h"
 #import "UINavigationBar+Awesome.h"
@@ -29,18 +31,26 @@
 //引导员
 #import "KSGuideManager.h"
 
+//存放头部导航栏按钮的父页面宽度
+#define TOP_VIEW_HEIGHT 46
+//界面上方导航线条的宽度
+#define NAVIGATION_LINE_HEIGHT 4
+
 @interface CZHomeViewController ()
 typedef void (^HomeViewBlock)(id);
 @property (nonatomic,strong) ActivityList *acListRecived;
 @property (nonatomic,strong) NSMutableArray *acList;
 @property (nonatomic,strong) NSString *minAcId;
 @property (nonatomic,strong) ActivityModel *activitymodel;
+@property (nonatomic,strong) PublisherList *publisherList;
 @property (nonatomic,strong) FlashList *flashList;
 @property (nonatomic,copy) HomeViewBlock refreshBlock;
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListBlock)(NSString *minAcId);
 @property (nonatomic,copy) NSURLSessionDataTask *(^getFlash)();
 @property (nonatomic,copy) NSURLSessionDataTask *(^getCityListBlock)();
 @property (weak, nonatomic) IBOutlet CZCityButton *leftButton;
+@property (nonatomic,strong) UIButton *acRecButton;
+@property (nonatomic,strong) UIButton *pubRecButton;
 
 @end
 
@@ -188,7 +198,7 @@ typedef void (^HomeViewBlock)(id);
 -(void)changeCityWithLocation:(NSString *)location{
     for (CityModel *model in self.ctList.list) {
         NSString *cityName = [NSString stringWithFormat:@"%@市",model.cityName];
-        NSLog(@"%@",cityName);
+        //NSLog(@"%@",cityName);
         if ([location isEqualToString:cityName]) {
             [userDefaults setObject:model.cityID forKey:@"cityId"];
         }
@@ -338,6 +348,8 @@ typedef void (^HomeViewBlock)(id);
     [self.tableView reloadData];
 }
 
+#pragma mark - 懒加载
+
 -(NSMutableArray *)acList{
     if (!_acList) {
         _acList = [[NSMutableArray alloc]init];
@@ -357,6 +369,21 @@ typedef void (^HomeViewBlock)(id);
         _ctList = [[CityList alloc]init];
     }
     return _ctList;
+}
+
+-(UIScrollView *)homeScrollView{
+    if (!_homeScrollView) {
+        _homeScrollView = [[UIScrollView alloc]init];
+    }
+    return _homeScrollView;
+}
+
+-(UILabel *)navLabel{
+    if (!_navLabel) {
+        _navLabel = [[UILabel alloc]init];
+    }
+    
+    return _navLabel;
 }
 
 #pragma mark - Tableview 数据源
@@ -502,25 +529,36 @@ typedef void (^HomeViewBlock)(id);
     
 }
 
-
 #pragma mark - 创建首页子控件
-/**
- *  创建一个tableView和一个搜索框
- *
- */
 - (void)createSubViews
 {
+    CGFloat homeScrollViewH = 64 + TOP_VIEW_HEIGHT;
+    self.homeScrollView = [[UIScrollView alloc]initWithFrame:CGRectMake(0, homeScrollViewH, kScreenWidth, kScreenHeight-homeScrollViewH)];
+    self.homeScrollView.showsHorizontalScrollIndicator = NO;
+    self.homeScrollView.pagingEnabled = YES;
+    CGSize size = _homeScrollView.frame.size;
+    size.width *= 2;
+    self.homeScrollView.contentSize = size;
+    self.homeScrollView.backgroundColor = [UIColor whiteColor];
+    self.homeScrollView.delegate = self;
+    [self.view addSubview:self.homeScrollView];
+    [self addMessageCategoryButton];
+    
     self.tableView = [[UITableView alloc]initWithFrame:CGRectZero];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
+    self.tableView.delegate = self;
+    self.tableView.dataSource = self;
+    
+    RCPubRecommendView *pubRecommendView = [[RCPubRecommendView alloc]init];
+    
     
     self.searchView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 70/2)];
     self.searchView.backgroundColor = [UIColor whiteColor];
-    [self.view addSubview:self.tableView];
-    [self.view addSubview:self.searchView];
     
-    self.tableView.delegate = self;
-    self.tableView.dataSource = self;
+    [self.homeScrollView addSubview:self.tableView];
+    [self.homeScrollView addSubview:pubRecommendView];
+    [self.homeScrollView addSubview:self.searchView];
     
     //创建搜索框
     UIView *view = [[UIView alloc]init];
@@ -565,12 +603,100 @@ typedef void (^HomeViewBlock)(id);
     }];
     
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.view.mas_top).with.offset(64);
-        make.left.equalTo(self.view.mas_left);
-        make.right.equalTo(self.view.mas_right);
-        make.bottom.equalTo(self.view.mas_bottom);
+        make.top.equalTo(self.homeScrollView.mas_top);
+        make.left.equalTo(self.homeScrollView.mas_left);
+        make.size.mas_equalTo(CGSizeMake(kScreenWidth, kScreenHeight-homeScrollViewH));
+    }];
+    
+    [pubRecommendView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.homeScrollView.mas_top);
+        make.left.equalTo(self.tableView.mas_right);
+        make.size.mas_equalTo(CGSizeMake(kScreenWidth, kScreenHeight-homeScrollViewH));
     }];
 }
+
+- (void)addMessageCategoryButton {
+    UIView *topView = [[UIView alloc] initWithFrame:CGRectMake(0, 64, kScreenWidth, TOP_VIEW_HEIGHT)];
+    topView.backgroundColor = [UIColor whiteColor];
+    
+    self.acRecButton = [[UIButton alloc] init];
+    _acRecButton.backgroundColor = [UIColor whiteColor];
+    [_acRecButton setTitle:@"活动推荐" forState:UIControlStateNormal];
+    _acRecButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    [_acRecButton setTitleColor:[UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [_acRecButton setTitleColor:themeColor forState:UIControlStateSelected];
+    _acRecButton.selected = YES;
+    _acRecButton.tag = (NSInteger) (0);
+    [_acRecButton addTarget:self action:@selector(switchMessageDetailView:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.pubRecButton = [[UIButton alloc] init];
+    _pubRecButton.backgroundColor = [UIColor whiteColor];
+    [_pubRecButton setTitle:@"发布者推荐" forState:UIControlStateNormal];
+    _pubRecButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    [_pubRecButton setTitleColor:[UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [_pubRecButton setTitleColor:themeColor forState:UIControlStateSelected];
+    _pubRecButton.tag = (NSInteger) (1);
+    [_pubRecButton addTarget:self action:@selector(switchMessageDetailView:) forControlEvents:UIControlEventTouchUpInside];
+    
+    self.navLabel = [[UILabel alloc]init];
+    self.navLabel.backgroundColor = themeColor;
+    
+    [topView addSubview:self.acRecButton];
+    [topView addSubview:self.pubRecButton];
+    [topView addSubview:self.navLabel];
+    
+    [self.acRecButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(topView.mas_left);
+        make.top.equalTo(topView.mas_top);
+        make.size.mas_equalTo(CGSizeMake(kScreenWidth/2, TOP_VIEW_HEIGHT-NAVIGATION_LINE_HEIGHT));
+    }];
+    
+    [self.pubRecButton mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.equalTo(topView.mas_right);
+        make.top.equalTo(topView.mas_top);
+        make.size.mas_equalTo(CGSizeMake(kScreenWidth/2, TOP_VIEW_HEIGHT-NAVIGATION_LINE_HEIGHT));
+    }];
+    
+    [self.navLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.centerX.equalTo(self.acRecButton.mas_centerX);
+        make.top.equalTo(self.acRecButton.mas_bottom);
+        make.size.mas_equalTo(CGSizeMake(100, NAVIGATION_LINE_HEIGHT));
+    }];
+    
+    [self.view addSubview:topView];
+}
+
+//点击事件
+- (void)switchMessageDetailView:(UIButton *)btn{
+    if (btn.tag == 0) {
+        _acRecButton.selected = YES;
+        _pubRecButton.selected = NO;
+    } else {
+        _acRecButton.selected = NO;
+        _pubRecButton.selected = YES;
+    }
+    [self.homeScrollView setContentOffset:CGPointMake(btn.tag * self.view.frame.size.width, 0) animated:YES];
+}
+
+//滚动事件
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView {
+    CGPoint offset = scrollView.contentOffset;
+    CGFloat x = offset.x / 2;
+    if (x > 0 && x < scrollView.frame.size.width) {
+        //CGRect frame = self.navLabel.frame;
+        //frame.origin.x = x;
+        //self.navLabel.frame = frame;
+        self.navLabel.centerX = x+kScreenWidth/4;
+        if (x < scrollView.frame.size.width/2) {
+            _acRecButton.selected = YES;
+            _pubRecButton.selected = NO;
+        } else {
+            _acRecButton.selected = NO;
+            _pubRecButton.selected = YES;
+        }
+    }
+}
+
 #pragma mark - 城市选择
 - (IBAction)didSelectCity:(UIButton *)sender··
 {

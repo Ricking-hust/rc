@@ -221,6 +221,7 @@
 		95DA803C1D10393300FA0C3F /* ShareSDKConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95DA802F1D10393300FA0C3F /* ShareSDKConnector.framework */; };
 		C409CFF41C9A7B0500D01F9D /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C409CFF31C9A7B0500D01F9D /* MBProgressHUD.m */; };
 		C41FC3E81CB7CD4D009A5DCD /* RemindManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C41FC3E71CB7CD4D009A5DCD /* RemindManager.m */; };
+		C430C1C91D0EF55B008763BD /* RCPubRecommendView.m in Sources */ = {isa = PBXBuildFile; fileRef = C430C1C81D0EF55B008763BD /* RCPubRecommendView.m */; };
 		C43EEB691CA68C2700B83670 /* FlashActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C43EEB681CA68C2700B83670 /* FlashActivityModel.m */; };
 		C457D6C91CAE514B00075D9B /* RCColumnScrollViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C457D6C81CAE514B00075D9B /* RCColumnScrollViewDelegate.m */; };
 		C457D6CC1CAE51ED00075D9B /* RCReleaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C457D6CB1CAE51ED00075D9B /* RCReleaseCell.m */; };
@@ -248,6 +249,8 @@
 		C4D8DFED1CC66968005DA9B3 /* TMDiskCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D8DFE91CC66968005DA9B3 /* TMDiskCache.m */; };
 		C4D8DFEE1CC66968005DA9B3 /* TMMemoryCache.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D8DFEB1CC66968005DA9B3 /* TMMemoryCache.m */; };
 		C4D8DFF11CC66A0B005DA9B3 /* TMCacheExtend.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D8DFF01CC66A0B005DA9B3 /* TMCacheExtend.m */; };
+		C4F7E4B71D0FF10500485746 /* PublisherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4B61D0FF10500485746 /* PublisherModel.m */; };
+		C4F7E4BA1D10041B00485746 /* RCPubRecViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4B91D10041B00485746 /* RCPubRecViewCell.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -433,8 +436,8 @@
 		5663D0911CA38BC800526FEF /* RCHomeRefreshHeader.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCHomeRefreshHeader.m; sourceTree = "<group>"; };
 		56655EED1C87189200F4BE9E /* CZDownView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZDownView.h; sourceTree = "<group>"; };
 		56655EEE1C87189200F4BE9E /* CZDownView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZDownView.m; sourceTree = "<group>"; };
-		5674AF971C70B99100184A31 /* CZActivityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZActivityCell.h; sourceTree = "<group>"; };
-		5674AF981C70B99100184A31 /* CZActivityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZActivityCell.m; sourceTree = "<group>"; };
+		5674AF971C70B99100184A31 /* CZActivityCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZActivityCell.h; path = View/CZActivityCell.h; sourceTree = "<group>"; };
+		5674AF981C70B99100184A31 /* CZActivityCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CZActivityCell.m; path = View/CZActivityCell.m; sourceTree = "<group>"; };
 		56814C141C58A64600CB60D6 /* CZRemindMeView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZRemindMeView.h; sourceTree = "<group>"; };
 		56814C151C58A64600CB60D6 /* CZRemindMeView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZRemindMeView.m; sourceTree = "<group>"; };
 		5683EC251C817F7B006430CB /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -443,8 +446,8 @@
 		569079DD1CA8F8AA00DEBF6F /* RCBarButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCBarButtonView.m; sourceTree = "<group>"; };
 		569773201C9AC5BD00D25338 /* RCSettingTagTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSettingTagTableViewController.h; sourceTree = "<group>"; };
 		569773211C9AC5BD00D25338 /* RCSettingTagTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSettingTagTableViewController.m; sourceTree = "<group>"; };
-		569773231C9ACA7500D25338 /* RCTagCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTagCell.h; sourceTree = "<group>"; };
-		569773241C9ACA7500D25338 /* RCTagCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTagCell.m; sourceTree = "<group>"; };
+		569773231C9ACA7500D25338 /* RCTagCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCTagCell.h; path = View/RCTagCell.h; sourceTree = "<group>"; };
+		569773241C9ACA7500D25338 /* RCTagCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCTagCell.m; path = View/RCTagCell.m; sourceTree = "<group>"; };
 		569E58DB1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZMoreRemindTimeViewController.h; sourceTree = "<group>"; };
 		569E58DC1C6EC1B10060DCA6 /* CZMoreRemindTimeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZMoreRemindTimeViewController.m; sourceTree = "<group>"; };
 		56A191E01C756A3100E03B41 /* CZMyInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZMyInfoCell.h; sourceTree = "<group>"; };
@@ -541,10 +544,10 @@
 		56E6FB091CEC33D800B7B101 /* RCPersonNewsCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPersonNewsCell.m; sourceTree = "<group>"; };
 		56E6FB0B1CEC3B7400B7B101 /* RCNumWithLabel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNumWithLabel.h; sourceTree = "<group>"; };
 		56E6FB0C1CEC3B7400B7B101 /* RCNumWithLabel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNumWithLabel.m; sourceTree = "<group>"; };
-		56E842791C4BA74C00D1D198 /* CZTimeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTimeCell.h; sourceTree = "<group>"; };
-		56E8427A1C4BA74C00D1D198 /* CZTimeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTimeCell.m; sourceTree = "<group>"; };
-		56E8427C1C4BB8E500D1D198 /* CZActivityInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZActivityInfoCell.h; sourceTree = "<group>"; };
-		56E8427D1C4BB8E500D1D198 /* CZActivityInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZActivityInfoCell.m; sourceTree = "<group>"; };
+		56E842791C4BA74C00D1D198 /* CZTimeCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZTimeCell.h; path = View/CZTimeCell.h; sourceTree = "<group>"; };
+		56E8427A1C4BA74C00D1D198 /* CZTimeCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CZTimeCell.m; path = View/CZTimeCell.m; sourceTree = "<group>"; };
+		56E8427C1C4BB8E500D1D198 /* CZActivityInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CZActivityInfoCell.h; path = View/CZActivityInfoCell.h; sourceTree = "<group>"; };
+		56E8427D1C4BB8E500D1D198 /* CZActivityInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CZActivityInfoCell.m; path = View/CZActivityInfoCell.m; sourceTree = "<group>"; };
 		56E85DD61CF5CF2A00754E1B /* AssetsLibrary.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AssetsLibrary.framework; path = System/Library/Frameworks/AssetsLibrary.framework; sourceTree = SDKROOT; };
 		56E85DDE1CF5D39200754E1B /* Emoji.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = Emoji.plist; sourceTree = "<group>"; };
 		56E85DE01CF5D39200754E1B /* en */ = {isa = PBXFileReference; lastKnownFileType = text.plist.strings; name = en; path = en.lproj/RongCloudKit.strings; sourceTree = "<group>"; };
@@ -660,6 +663,8 @@
 		C409CFF31C9A7B0500D01F9D /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = ../MBProgressHUD.m; sourceTree = "<group>"; };
 		C41FC3E61CB7CD4D009A5DCD /* RemindManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemindManager.h; sourceTree = "<group>"; };
 		C41FC3E71CB7CD4D009A5DCD /* RemindManager.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RemindManager.m; sourceTree = "<group>"; };
+		C430C1C71D0EF55B008763BD /* RCPubRecommendView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPubRecommendView.h; sourceTree = "<group>"; };
+		C430C1C81D0EF55B008763BD /* RCPubRecommendView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPubRecommendView.m; sourceTree = "<group>"; };
 		C4345F451CD8E4A500A7171A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		C43EEB671CA68C2700B83670 /* FlashActivityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashActivityModel.h; sourceTree = "<group>"; };
 		C43EEB681CA68C2700B83670 /* FlashActivityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlashActivityModel.m; sourceTree = "<group>"; };
@@ -706,8 +711,8 @@
 		C4CAD1C01C7B3975003FD0B0 /* UserModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserModel.m; sourceTree = "<group>"; };
 		C4CF960E1CFD764E00786982 /* RCCityViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCityViewController.h; sourceTree = "<group>"; };
 		C4CF960F1CFD764E00786982 /* RCCityViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCityViewController.m; sourceTree = "<group>"; };
-		C4CF96111CFD769200786982 /* CityCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CityCollectionViewCell.h; sourceTree = "<group>"; };
-		C4CF96121CFD769200786982 /* CityCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CityCollectionViewCell.m; sourceTree = "<group>"; };
+		C4CF96111CFD769200786982 /* CityCollectionViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = CityCollectionViewCell.h; path = View/CityCollectionViewCell.h; sourceTree = "<group>"; };
+		C4CF96121CFD769200786982 /* CityCollectionViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = CityCollectionViewCell.m; path = View/CityCollectionViewCell.m; sourceTree = "<group>"; };
 		C4D8DFC31CC65B89005DA9B3 /* RCSearchModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCSearchModel.h; sourceTree = "<group>"; };
 		C4D8DFC41CC65B89005DA9B3 /* RCSearchModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSearchModel.m; sourceTree = "<group>"; };
 		C4D8DFE51CC66968005DA9B3 /* TMCache.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMCache.h; sourceTree = "<group>"; };
@@ -719,6 +724,10 @@
 		C4D8DFEB1CC66968005DA9B3 /* TMMemoryCache.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMMemoryCache.m; sourceTree = "<group>"; };
 		C4D8DFEF1CC66A0B005DA9B3 /* TMCacheExtend.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = TMCacheExtend.h; sourceTree = "<group>"; };
 		C4D8DFF01CC66A0B005DA9B3 /* TMCacheExtend.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = TMCacheExtend.m; sourceTree = "<group>"; };
+		C4F7E4B51D0FF10500485746 /* PublisherModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublisherModel.h; sourceTree = "<group>"; };
+		C4F7E4B61D0FF10500485746 /* PublisherModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublisherModel.m; sourceTree = "<group>"; };
+		C4F7E4B81D10041B00485746 /* RCPubRecViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCPubRecViewCell.h; path = View/RCPubRecViewCell.h; sourceTree = "<group>"; };
+		C4F7E4B91D10041B00485746 /* RCPubRecViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCPubRecViewCell.m; path = View/RCPubRecViewCell.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1120,10 +1129,8 @@
 				562FD2741CA674FA0014E5D8 /* RCBarButton.m */,
 				565EF5FB1C48EAA80067C032 /* CZHomeHeaderView.h */,
 				565EF5FC1C48EAA80067C032 /* CZHomeHeaderView.m */,
-				56E842791C4BA74C00D1D198 /* CZTimeCell.h */,
-				56E8427A1C4BA74C00D1D198 /* CZTimeCell.m */,
-				56E8427C1C4BB8E500D1D198 /* CZActivityInfoCell.h */,
-				56E8427D1C4BB8E500D1D198 /* CZActivityInfoCell.m */,
+				C430C1C71D0EF55B008763BD /* RCPubRecommendView.h */,
+				C430C1C81D0EF55B008763BD /* RCPubRecommendView.m */,
 				56637D731C5611230000BF46 /* CZCityView.h */,
 				56637D741C5611230000BF46 /* CZCityView.m */,
 				56E470051C5735900056BE17 /* CZCityButton.h */,
@@ -1132,16 +1139,11 @@
 				56814C151C58A64600CB60D6 /* CZRemindMeView.m */,
 				56E2AAA61C59A964009371F7 /* CZRemindTimeButton.h */,
 				56E2AAA71C59A964009371F7 /* CZRemindTimeButton.m */,
-				5674AF971C70B99100184A31 /* CZActivityCell.h */,
-				5674AF981C70B99100184A31 /* CZActivityCell.m */,
-				569773231C9ACA7500D25338 /* RCTagCell.h */,
-				569773241C9ACA7500D25338 /* RCTagCell.m */,
 				5663D0901CA38BC800526FEF /* RCHomeRefreshHeader.h */,
 				5663D0911CA38BC800526FEF /* RCHomeRefreshHeader.m */,
-				C4CF96111CFD769200786982 /* CityCollectionViewCell.h */,
-				C4CF96121CFD769200786982 /* CityCollectionViewCell.m */,
 				C472ABBE1CFDCF1E006725B9 /* RCDirectView.h */,
 				C472ABBF1CFDCF1E006725B9 /* RCDirectView.m */,
+				C4F7E4BC1D10466800485746 /* Cell */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1194,6 +1196,8 @@
 				565EF61D1C48EBA20067C032 /* ActivityModel.m */,
 				C43EEB671CA68C2700B83670 /* FlashActivityModel.h */,
 				C43EEB681CA68C2700B83670 /* FlashActivityModel.m */,
+				C4F7E4B51D0FF10500485746 /* PublisherModel.h */,
+				C4F7E4B61D0FF10500485746 /* PublisherModel.m */,
 				C4CAD1BF1C7B3975003FD0B0 /* UserModel.h */,
 				C4CAD1C01C7B3975003FD0B0 /* UserModel.m */,
 				565EF6201C48EBA20067C032 /* CityModel.h */,
@@ -1755,6 +1759,26 @@
 			path = TMCache;
 			sourceTree = "<group>";
 		};
+		C4F7E4BC1D10466800485746 /* Cell */ = {
+			isa = PBXGroup;
+			children = (
+				C4F7E4B81D10041B00485746 /* RCPubRecViewCell.h */,
+				C4F7E4B91D10041B00485746 /* RCPubRecViewCell.m */,
+				C4CF96111CFD769200786982 /* CityCollectionViewCell.h */,
+				C4CF96121CFD769200786982 /* CityCollectionViewCell.m */,
+				56E842791C4BA74C00D1D198 /* CZTimeCell.h */,
+				56E8427A1C4BA74C00D1D198 /* CZTimeCell.m */,
+				56E8427C1C4BB8E500D1D198 /* CZActivityInfoCell.h */,
+				56E8427D1C4BB8E500D1D198 /* CZActivityInfoCell.m */,
+				5674AF971C70B99100184A31 /* CZActivityCell.h */,
+				5674AF981C70B99100184A31 /* CZActivityCell.m */,
+				569773231C9ACA7500D25338 /* RCTagCell.h */,
+				569773241C9ACA7500D25338 /* RCTagCell.m */,
+			);
+			name = Cell;
+			path = ..;
+			sourceTree = "<group>";
+		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -1923,6 +1947,7 @@
 				56E3C0101C9C5A9A00BDAE19 /* RCUpdateScheduleViewController.m in Sources */,
 				95BECB161D02A386009BA89B /* BWaterflowLayout.m in Sources */,
 				C4CAD1C11C7B3975003FD0B0 /* UserModel.m in Sources */,
+				C4F7E4B71D0FF10500485746 /* PublisherModel.m in Sources */,
 				56B9CD2F1C807A7100914F00 /* SDWebImageCompat.m in Sources */,
 				C41FC3E81CB7CD4D009A5DCD /* RemindManager.m in Sources */,
 				56F02CBC1CA2884B00E0BBB4 /* UIView+MJExtension.m in Sources */,
@@ -1976,6 +2001,7 @@
 				56E5236A1C75BAAA00794B0E /* CZSettingViewController.m in Sources */,
 				56E523671C75B1CE00794B0E /* CZFeedbackViewController.m in Sources */,
 				56E470071C5735900056BE17 /* CZCityButton.m in Sources */,
+				C430C1C91D0EF55B008763BD /* RCPubRecommendView.m in Sources */,
 				56AD28471CEC597D0080B9DE /* RCSignupViewController.m in Sources */,
 				564596B91C732A84006D8493 /* LewPopupViewAnimationSpring.m in Sources */,
 				56E6FB0D1CEC3B7400B7B101 /* RCNumWithLabel.m in Sources */,
@@ -2060,6 +2086,7 @@
 				56FFF25C1CF72A6300B2C85D /* RCTalkTestViewController.m in Sources */,
 				C4BBA81A1C89B93300AD02EE /* RegisteViewController.m in Sources */,
 				C4C075271C89CF6C00C5E54D /* MyTextField.m in Sources */,
+				C4F7E4BA1D10041B00485746 /* RCPubRecViewCell.m in Sources */,
 				56E523611C75AAD200794B0E /* CZMyCollectionViewController.m in Sources */,
 				56F02CAA1CA2884B00E0BBB4 /* MJRefreshAutoFooter.m in Sources */,
 				5634EEEF1CEBBE2A002B4283 /* RCPersonCell.m in Sources */,
