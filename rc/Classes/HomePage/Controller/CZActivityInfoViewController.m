@@ -42,8 +42,8 @@
 @property (nonatomic, strong) UILabel *acTittleLabel;
 @property (nonatomic, strong) UILabel *acTagLabel;
 
-@property (nonatomic, strong) UIButton *collectionBtn;
-@property (nonatomic, strong) UIButton *addToSchedule;
+@property (nonatomic, strong) UIButton *addSchedule;
+@property (nonatomic, strong) UIButton *signUp;
 @property (nonatomic, strong) RCBarButtonView *barButtonView;
 
 @property (nonatomic, strong) MBProgressHUD    *HUD;
@@ -54,6 +54,7 @@
 @property (nonatomic, assign) CGFloat acHtmlHeight;
 @property (nonatomic, copy) NSURLSessionDataTask* (^getActivityBlock)();
 @property (nonatomic, strong) UIWebView *webView;
+@property (nonatomic, strong) UIBarButtonItem *collectionItem;
 
 /**
  *  面板
@@ -74,15 +75,23 @@
     }
     return _acHtmlHeight;
 }
-
+- (UIBarButtonItem *)collectionItem
+{
+    if (!_collectionItem)
+    {
+        UIImage *collectionImage =[UIImage imageNamed:@"collectionNormal"];
+        _collectionItem = [[UIBarButtonItem alloc]initWithImage:collectionImage style:UIBarButtonItemStylePlain target:self action:@selector(onClickCollection)];
+    }
+    return _collectionItem;
+}
 #pragma mark - view
 
 - (void)viewDidLoad {
     [super viewDidLoad];
     [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(didShowActivityInfo) name:@"getActivityInfo" object:nil];
     [self createSubViews];
-    self.collectionBtn.hidden = YES;
-    self.addToSchedule.hidden = YES;
+    self.addSchedule.hidden = YES;
+    self.signUp.hidden = YES;
     [self configureBlocks];
     self.getActivityBlock();
     //设置导航栏
@@ -98,15 +107,15 @@
 - (void)didShowActivityInfo
 {
     self.view.backgroundColor = [UIColor whiteColor];
-    self.collectionBtn.hidden = NO;
-    self.addToSchedule.hidden = NO;
+    self.addSchedule.hidden = NO;
+    self.signUp.hidden = NO;
     //设置tableView头
     [self layoutHeaderImageView];
     
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.isCollect = self.activitymodel.acCollect;
-    [self setCollectionBtnStyle];
+    [self setaddScheduleStyle];
     //对tableView头进行赋值
     [self setTableViewHeader];
     [self.tableView reloadData];
@@ -207,144 +216,6 @@
     }
     return 30;
 }
-////section头部视图
-//- (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
-//{
-//    UIView *view;
-//    UIColor *textcolor = [UIColor colorWithRed:131.0/255.0 green:131.0/255.0  blue:131.0/255.0  alpha:1.0];
-//    if (section == 0)
-//    {
-//        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 1)];
-//    }else if(section == 1)
-//    {
-//        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
-//        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 60, 30)];
-//        label.font = [UIFont systemFontOfSize:12];
-//        label.text = @"活动详情";
-//        label.textColor = textcolor;
-//        [view addSubview:label];
-//    }else if(section == 2)
-//    {
-//        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
-//        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 60, 30)];
-//        label.font = [UIFont systemFontOfSize:12];
-//        label.text = @"发布者";
-//        label.textColor = textcolor;
-//        [view addSubview:label];
-//      
-//    }else if (section == 3)
-//    {
-//        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
-//        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 60, 30)];
-//        label.font = [UIFont systemFontOfSize:12];
-//        label.text = @"主讲人";
-//        label.textColor = textcolor;
-//        [view addSubview:label];
-//    }else
-//    {
-//        view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
-//        UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 60, 30)];
-//        label.font = [UIFont systemFontOfSize:12];
-//        label.text = @"更多内容";
-//        label.textColor = textcolor;
-//        [view addSubview:label];
-//    }
-//    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-//    return view;
-//    
-//}
-////section底部间距
-//- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
-//{
-//    return 1;
-//}
-////section底部视图
-//- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
-//{
-//    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 1)];
-//    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-//    return view;
-//}
-//
-//- (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
-//{
-//    
-//    return 5;
-//}
-//
-//- (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
-//{
-//    
-//    return 1;
-//}
-//
-//
-//- (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
-//{
-//    switch (indexPath.section)
-//    {
-//        case 0:
-//        {//时间
-//            CZTimeCell *cell = [CZTimeCell timeCellWithTableView:tableView];
-//            [cell.remindMeBtn addTarget:self action:@selector(onClickRemindMe:) forControlEvents:UIControlEventTouchUpInside];
-//            //对cell的控件进行赋值
-//            [self setCellValue:cell AtIndexPath:indexPath];
-//            //对cell的控件进行布局
-//            [cell setSubViewsConstraint];
-//            
-//            return cell;
-//        }
-//            break;
-//        case 1:
-//        {//活动详情
-//            CZActivityInfoCell *cell = [CZActivityInfoCell activityCellWithTableView:tableView];
-//            //对cell的控件进行赋值
-//            [self setCellValue:cell AtIndexPath:indexPath];
-//            //对cell的控件进行布局
-//            [cell setSubViewsConstraint];
-//            return cell;
-//        }
-//            break;
-//        case 2:
-//        {//发布者
-//            RCReleaseCell *cell = [[RCReleaseCell alloc]init];
-//            [self setCellValue:cell AtIndexPath:indexPath];
-//            [cell setSubViewsConstraint];
-//            
-//            return cell;
-//        }
-//            break;
-//        case 3:
-//        {//主讲人
-//            UITableViewCell *cell = [[UITableViewCell alloc]init];
-//            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-//            UILabel *acIntroduce = [[UILabel alloc]init];
-//            [cell addSubview:acIntroduce];
-//            //对cell的控件进行赋值
-//            [acIntroduce setText:self.activitymodel.acDesc];
-//        
-//            //对cell的控件进行布局
-//            [self setSpeakerCell:cell Constraint:acIntroduce];
-//            //[self cell:cell Constraint:acIntroduce];
-//            return cell;
-//        }
-//            break;
-//        default:
-//        {//更多内容
-//            static NSString *identifier = @"cell";
-//            UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:identifier];
-//            if (!cell)
-//            {
-//                cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
-//                [cell.contentView addSubview:self.webView];
-//                /* 忽略点击效果 */
-//                [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
-//            }
-//            return cell;
-//        }
-//            break;
-//    }
-//}
 
 //section头部视图
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
@@ -579,23 +450,7 @@
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-//    if (indexPath.section == 0)
-//    {
-//        return 47;
-//        
-//    }else if(indexPath.section == 1)
-//    {
-//        return [self heightForAcInfoCell];
-//    }else if (indexPath.section == 2)
-//    {
-//        return 60;
-//    }else if (indexPath.section == 3)
-//    {
-//        return [self heightForSpeakerCell];
-//    }else
-//    {
-//        return self.webView.frame.size.height;
-//    }
+
     if (indexPath.section == 0)
     {
         return 47;
@@ -705,7 +560,7 @@
     leftView.tintColor = self.acTittleLabel.textColor;
     rightView.tintColor = self.acTittleLabel.textColor;
     newLab.textColor = self.acTittleLabel.textColor;
-    
+    self.collectionItem.tintColor = self.acTittleLabel.textColor;
     //对tableView头进行布局
     [self setSubViewsConstraint];
     
@@ -780,20 +635,22 @@
     
     self.bottomView = [[UIView alloc]init];
     self.bottomView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
-    self.collectionBtn =[UIButton buttonWithType:UIButtonTypeCustom];
-    self.addToSchedule = [UIButton buttonWithType:UIButtonTypeCustom];
+    
+    self.addSchedule =[UIButton buttonWithType:UIButtonTypeCustom];
+    self.signUp = [UIButton buttonWithType:UIButtonTypeCustom];
+    
     self.tableView = [[UITableView alloc]initWithFrame:CGRectZero style:UITableViewStyleGrouped];
     self.tableView.backgroundColor =[UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     [self.view addSubview:self.bottomView];
     [self.view addSubview:self.tableView];
-    [self.bottomView addSubview:self.collectionBtn];
-    [self.bottomView addSubview:self.addToSchedule];
+    [self.bottomView addSubview:self.addSchedule];
+    [self.bottomView addSubview:self.signUp];
     
-    [self.collectionBtn addTarget:self action:@selector(onClickCollection) forControlEvents:UIControlEventTouchUpInside];
-    [self.addToSchedule addTarget:self action:@selector(onClickAdd) forControlEvents:UIControlEventTouchUpInside];
+    [self.addSchedule addTarget:self action:@selector(onClickAdd) forControlEvents:UIControlEventTouchUpInside];
+    [self.signUp addTarget:self action:@selector(onClickSignUp) forControlEvents:UIControlEventTouchUpInside];
     
-    [self.addToSchedule setTitle:@"我要报名" forState:UIControlStateNormal];
-    [self.addToSchedule setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:130.0/255.0  blue:5.0/255.0  alpha:1.0]];
+    [self.signUp setTitle:@"我要报名" forState:UIControlStateNormal];
+    [self.signUp setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:130.0/255.0  blue:5.0/255.0  alpha:1.0]];
 
     //add tableView constraints
     [self.tableView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -810,8 +667,8 @@
         make.size.mas_equalTo(CGSizeMake(kScreenWidth, 50));
     }];
     
-    //add collectionBtn constraints
-    [self.collectionBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+    //add addSchedule constraints
+    [self.addSchedule mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.view.mas_left);
         make.bottom.equalTo(self.view.mas_bottom);
         make.width.mas_equalTo(kScreenWidth / 2);
@@ -819,9 +676,9 @@
         //make.size.mas_equalTo(CGSizeMake(kScreenWidth / 2, 50));
     }];
     
-    //add addToSchedule constriants
-    [self.addToSchedule mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.left.equalTo(self.collectionBtn.mas_right);
+    //add signUp constriants
+    [self.signUp mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.addSchedule.mas_right);
         make.bottom.equalTo(self.view.mas_bottom);
         make.right.equalTo(self.view.mas_right);
         make.height.mas_equalTo(50);
@@ -829,23 +686,23 @@
     
 }
 
--(void)setCollectionBtnStyle
+-(void)setaddScheduleStyle
 {
     
     if ([self.isCollect isEqualToString:@"0"]) {
-        //[self.collectionBtn setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateNormal];
-        [self.collectionBtn setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateHighlighted];
-        [self.collectionBtn setTitle:@"加入行程" forState:UIControlStateNormal];
-        [self.collectionBtn setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+        //[self.addSchedule setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateNormal];
+        //[self.addSchedule setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateHighlighted];
+        [self.addSchedule setTitle:@"加入行程" forState:UIControlStateNormal];
+        [self.addSchedule setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     } else {
-        //[self.collectionBtn setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateNormal];
-        [self.collectionBtn setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateHighlighted];
-        [self.collectionBtn setTitle:@"已加入行程" forState:UIControlStateNormal];
+        //[self.addSchedule setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateNormal];
+        //[self.addSchedule setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateHighlighted];
+        [self.addSchedule setTitle:@"已加入行程" forState:UIControlStateNormal];
 
     }
-    [self.collectionBtn setTitleColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.8] forState:UIControlStateNormal];
-    self.collectionBtn.contentEdgeInsets = UIEdgeInsetsMake(0,10, 0, 0);
-    self.collectionBtn.imageView.contentMode = UIViewContentModeScaleAspectFit;
+    [self.addSchedule setTitleColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.8] forState:UIControlStateNormal];
+    //self.addSchedule.contentEdgeInsets = UIEdgeInsetsMake(0,10, 0, 0);
+    //self.addSchedule.imageView.contentMode = UIViewContentModeScaleAspectFit;
 }
 
 
@@ -878,14 +735,12 @@
     UIImage *shareImage =[UIImage imageNamed:@"shareIcon"];
     UIBarButtonItem *shareItem = [[UIBarButtonItem alloc]initWithImage:shareImage style:UIBarButtonItemStylePlain target:self action:@selector(didShare:)];
     shareItem.tintColor = [UIColor whiteColor];
-
-    //[self.navigationItem setRightBarButtonItem:shareItem];
     
-    UIImage *collectionImage =[UIImage imageNamed:@"collectionNormal"];
-    UIBarButtonItem *collectionItem = [[UIBarButtonItem alloc]initWithImage:collectionImage style:UIBarButtonItemStylePlain target:self action:@selector(onClickCollection)];
-    collectionItem.tintColor = [UIColor whiteColor];
+//    UIImage *collectionImage =[UIImage imageNamed:@"collectionNormal"];
+//    UIBarButtonItem *collectionItem = [[UIBarButtonItem alloc]initWithImage:collectionImage style:UIBarButtonItemStylePlain target:self action:@selector(onClickCollection)];
+//    collectionItem.tintColor = self.acTittleLabel.textColor;
 
-    [self.navigationItem setRightBarButtonItems:@[shareItem, collectionItem]];
+    [self.navigationItem setRightBarButtonItems:@[shareItem, self.collectionItem]];
 
 }
 
@@ -901,7 +756,7 @@
         [self.panelView removeFromSuperview];
     }
 }
-
+#pragma mark - 分享
 - (void)didShare:(id)button
 {
     //sharSDK3.3
@@ -986,6 +841,7 @@
 //                            }];
 //    
 }
+//对tableView头进行布局
 - (void)setSubViewsConstraint
 {
     [self.acImageView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -1025,9 +881,9 @@
         if ([self.isCollect isEqualToString:@"0"]) {
             [[DataManager manager] setActivityCollectWithUserID:[userDefaults objectForKey:@"userId"] acId:self.activityModelPre.acID opType:@"1" success:^(NSString *msg) {
                 self.isCollect = @"1";
-                //[self.collectionBtn setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateNormal];
-                //[self.collectionBtn setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateHighlighted];
-                [self.collectionBtn setTitle:@"已加入行程" forState:UIControlStateNormal];
+                //[self.addSchedule setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateNormal];
+                //[self.addSchedule setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateHighlighted];
+                //[self.addSchedule setTitle:@"已加入行程" forState:UIControlStateNormal];
                 self.HUD.mode = MBProgressHUDModeCustomView;
                 self.HUD.label.text = @"加入成功";
                 [self.HUD hideAnimated:YES afterDelay:0.6];
@@ -1040,9 +896,9 @@
         } else {
             [[DataManager manager] setActivityCollectWithUserID:[userDefaults objectForKey:@"userId"] acId:self.activityModelPre.acID opType:@"2" success:^(NSString *msg) {
                 self.isCollect = @"0";
-                //[self.collectionBtn setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateNormal];
-                //[self.collectionBtn setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateHighlighted];
-                [self.collectionBtn setTitle:@"加入行程" forState:UIControlStateNormal];
+                //[self.addSchedule setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateNormal];
+                //[self.addSchedule setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateHighlighted];
+                //[self.addSchedule setTitle:@"加入行程" forState:UIControlStateNormal];
                 self.HUD.mode = MBProgressHUDModeCustomView;
                 self.HUD.label.text = @"取消成功";
                 [self.HUD hideAnimated:YES afterDelay:0.6];
@@ -1058,6 +914,11 @@
         self.HUD.label.text = @"请登录";
         [self.HUD hideAnimated:YES afterDelay:0.6];
     }
+    
+}
+#pragma mark - 我要报名 2.0新增接口
+- (void)onClickSignUp
+{
     
 }
 #pragma mark - 添加行程
@@ -1077,8 +938,9 @@
             } else {
                 self.planId = planId;
                 self.HUD.mode = MBProgressHUDModeCustomView;
-                self.HUD.label.text = @"报名成功~(≧▽≦)/~";
-                [self.addToSchedule setTitle:@"已经报名" forState:UIControlStateNormal];
+                self.HUD.label.text = @"加入成功~(≧▽≦)/~";
+                //[self.signUp setTitle:@"已经报名" forState:UIControlStateNormal];
+                
                 [self.HUD hideAnimated:YES afterDelay:0.6];
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"scState" object:@"update"];
             }
@@ -1260,6 +1122,7 @@
     [self onClickRemind];
     [self lew_dismissPopupView];
 }
+#pragma mark - 废弃
 -(void)displayInfo
 {
     NSOperationQueue *queue = [[NSOperationQueue alloc] init];
@@ -1286,7 +1149,7 @@
         self.tableView.delegate = self;
         self.tableView.dataSource = self;
         self.isCollect = self.activitymodel.acCollect;
-        [self setCollectionBtnStyle];
+        [self setaddScheduleStyle];
         //对tableView头进行赋值
         [self setTableViewHeader];
         [self.tableView reloadData];

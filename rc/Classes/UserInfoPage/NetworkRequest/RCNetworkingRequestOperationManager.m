@@ -98,9 +98,6 @@
 {
     if (!error)
     {
-        //        //解析数据
-        //        id dict = [NSJSONSerialization JSONObjectWithData:self.data options:kNilOptions error:nil];
-        //        NSLog(@"%@",dict);
         self.completeBlock(self.data);
     }else
     {

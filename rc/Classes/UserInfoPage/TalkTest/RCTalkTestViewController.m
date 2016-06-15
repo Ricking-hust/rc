@@ -42,7 +42,7 @@
 }
 - (void)click:(id)button
 {
-    [[RCIM sharedRCIM]connectWithToken:@"cz72QbPiNJkDNukiWv7iRqQ7HNppyUlZZb+Bu0BEgHrCripXhQ1uh9fl2b9osuXygIv91DzL6pPukxXeOHu0sg==" success:^(NSString *userId) {
+    [[RCIM sharedRCIM]connectWithToken:@"QzdjvL+0MjokfTBmlS6gIKQ7HNppyUlZZb+Bu0BEgHpfVXPCwbRMwaraBm7kwdzalfZPt9fFjJzZbo2Jn2BLhw==" success:^(NSString *userId) {
         
         NSLog(@"%@",userId);
         dispatch_async(dispatch_get_main_queue(), ^{

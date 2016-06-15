@@ -71,6 +71,13 @@ typedef NS_ENUM(NSInteger, RefleshType)
         parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",@"3",@"op_type",@"1",@"ac_catalog",start_id, @"start_id", nil];
     }else if ([self.currentButton.titleLabel.text isEqualToString:@"待审核"])
     {
+        if (self.acList.count == 0 || self.acList == nil)
+        {
+            self.heartBrokenView.hidden = NO;
+        }else
+        {
+            self.heartBrokenView.hidden = YES;
+        }
         parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",@"3",@"op_type",@"2",@"ac_catalog",start_id, @"start_id", nil];
     }else
     {
@@ -107,11 +114,11 @@ typedef NS_ENUM(NSInteger, RefleshType)
     if (_releasedAc == nil || [_releasedAc count] == 0)
     {
         self.heartBrokenView.hidden = NO;
-        self.tableView.hidden = YES;
+        //self.tableView.hidden = YES;
     }else
     {
         self.heartBrokenView.hidden = YES;
-        self.tableView.hidden = NO;
+        //self.tableView.hidden = NO;
         self.acList = [[NSMutableArray alloc]initWithArray:_releasedAc];
         [self.tableView reloadData];
     }
@@ -122,11 +129,11 @@ typedef NS_ENUM(NSInteger, RefleshType)
     if (_checkingAc == nil || [_checkingAc count] == 0)
     {
         self.heartBrokenView.hidden = NO;
-        self.tableView.hidden = YES;
+        //self.tableView.hidden = YES;
     }else
     {
         self.heartBrokenView.hidden = YES;
-        self.tableView.hidden = NO;
+        //self.tableView.hidden = NO;
         self.acList = [[NSMutableArray alloc]initWithArray:_checkingAc];
         [self.tableView reloadData];
     }
@@ -137,18 +144,18 @@ typedef NS_ENUM(NSInteger, RefleshType)
     if (_notPassAC == nil || [_notPassAC count] == 0)
     {
         self.heartBrokenView.hidden = NO;
-        self.tableView.hidden = YES;
+        //self.tableView.hidden = YES;
     }else
     {
         self.heartBrokenView.hidden = YES;
-        self.tableView.hidden = NO;
+        //self.tableView.hidden = NO;
         self.acList = [[NSMutableArray alloc]initWithArray:_notPassAC];
         [self.tableView reloadData];
     }
 }
 - (void)sendURLRequest:(NSDictionary *)parameters refleshState:(RefleshType)refleshType
 {
-    NSString *urlStr = @"http://app.myrichang.com/home/Person/getUserActivity";
+    NSString *urlStr = @"http://appv2.myrichang.com/home/Person/getUserActivity";
     NetWorkingRequestType type = GET;
     if (refleshType == RCRefleshNone)
     {
@@ -175,9 +182,20 @@ typedef NS_ENUM(NSInteger, RefleshType)
             NSMutableArray *temp = [self initacListWithDict:dict];
             if ([self.currentButton.titleLabel.text isEqualToString:@"已发布"])
             {//刷新已发布
-                if (temp == nil)
+                if (temp == nil || temp.count == 0)
                 {
+                    if (self.releasedAc.count == 0 || self.releasedAc == nil)
+                    {
+                        [self.acList removeAllObjects];
+                        [self.tableView reloadData];
+                        self.heartBrokenView.hidden = NO;
+                    }else
+                    {
+                        self.heartBrokenView.hidden = YES;
+                    }
+
                     [self.tableView.mj_footer endRefreshing];
+                    self.heartBrokenView.hidden = YES;
                 }else
                 {
                     for (UserActivity *ac in temp)
@@ -187,12 +205,15 @@ typedef NS_ENUM(NSInteger, RefleshType)
                     self.acList = [[NSMutableArray alloc]initWithArray:self.releasedAc ];
                     [self.tableView reloadData];
                     [self.tableView.mj_footer endRefreshing];
+                    self.heartBrokenView.hidden = YES;
                 }
 
             }else if ([self.currentButton.titleLabel.text isEqualToString:@"待审核"])
             {//刷新待审核
-                if (temp == nil)
+                if (temp == nil || temp.count == 0)
                 {
+                    [self getCheckingActivity];
+
                     [self.tableView.mj_footer endRefreshing];
                 }else
                 {
@@ -203,11 +224,22 @@ typedef NS_ENUM(NSInteger, RefleshType)
                     self.acList = [[NSMutableArray alloc]initWithArray:self.checkingAc ];
                     [self.tableView reloadData];
                     [self.tableView.mj_footer endRefreshing];
+                    self.heartBrokenView.hidden = YES;
                 }
             }else
             {//刷新未通过
-                if (temp == nil)
+                if (temp == nil || temp.count == 0)
                 {
+                    if (self.notPassAC.count == 0 || self.notPassAC == nil)
+                    {
+                        [self.acList removeAllObjects];
+                        [self.tableView reloadData];
+                        self.heartBrokenView.hidden = NO;
+                    }else
+                    {
+                        self.heartBrokenView.hidden = YES;
+                    }
+
                     [self.tableView.mj_footer endRefreshing];
                 }else
                 {
@@ -235,12 +267,39 @@ typedef NS_ENUM(NSInteger, RefleshType)
             {//刷新已发布
 
                 self.releasedAc = [self initacListWithDict:dict];
+                if (self.releasedAc.count == 0 || self.releasedAc == nil)
+                {
+                    [self.acList removeAllObjects];
+                    [self.tableView reloadData];
+                    self.heartBrokenView.hidden = NO;
+                }else
+                {
+                    self.heartBrokenView.hidden = YES;
+                }
             }else if ([self.currentButton.titleLabel.text isEqualToString:@"待审核"])
             {//刷新待审核
                 self.checkingAc = [self initacListWithDict:dict];
+                if (self.checkingAc.count == 0 || self.checkingAc == nil)
+                {
+                    [self.acList removeAllObjects];
+                    [self.tableView reloadData];
+                    self.heartBrokenView.hidden = NO;
+                }else
+                {
+                    self.heartBrokenView.hidden = YES;
+                }
             }else
             {//刷新未通过
                 self.notPassAC = [self initacListWithDict:dict];
+                if (self.notPassAC.count == 0 || self.notPassAC == nil)
+                {
+                    [self.acList removeAllObjects];
+                    [self.tableView reloadData];
+                    self.heartBrokenView.hidden = NO;
+                }else
+                {
+                    self.heartBrokenView.hidden = YES;
+                }
             }
             [self.tableView.mj_header endRefreshing];
         } errorBlock:^(NSError *error) {
@@ -521,6 +580,9 @@ typedef NS_ENUM(NSInteger, RefleshType)
     btn.selected = YES;
     self.currentButton = btn;
     //to do here--------------------------------
+    //清空acList刷新tableView
+    [self.acList removeAllObjects];
+    [self.tableView reloadData];
     for (UIButton *button in buttons)
     {
         if (button.selected == YES)
