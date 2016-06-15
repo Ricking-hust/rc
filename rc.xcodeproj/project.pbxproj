@@ -258,6 +258,7 @@
 		C4D8DFF11CC66A0B005DA9B3 /* TMCacheExtend.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D8DFF01CC66A0B005DA9B3 /* TMCacheExtend.m */; };
 		C4F7E4B71D0FF10500485746 /* PublisherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4B61D0FF10500485746 /* PublisherModel.m */; };
 		C4F7E4BA1D10041B00485746 /* RCPubRecViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4B91D10041B00485746 /* RCPubRecViewCell.m */; };
+		C4F7E4BF1D113A8800485746 /* RcFollowedButon.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4BE1D113A8800485746 /* RcFollowedButon.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -743,6 +744,8 @@
 		C4F7E4B61D0FF10500485746 /* PublisherModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublisherModel.m; sourceTree = "<group>"; };
 		C4F7E4B81D10041B00485746 /* RCPubRecViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCPubRecViewCell.h; path = View/RCPubRecViewCell.h; sourceTree = "<group>"; };
 		C4F7E4B91D10041B00485746 /* RCPubRecViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCPubRecViewCell.m; path = View/RCPubRecViewCell.m; sourceTree = "<group>"; };
+		C4F7E4BD1D113A8800485746 /* RcFollowedButon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RcFollowedButon.h; sourceTree = "<group>"; };
+		C4F7E4BE1D113A8800485746 /* RcFollowedButon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RcFollowedButon.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1164,6 +1167,8 @@
 				5663D0911CA38BC800526FEF /* RCHomeRefreshHeader.m */,
 				C472ABBE1CFDCF1E006725B9 /* RCDirectView.h */,
 				C472ABBF1CFDCF1E006725B9 /* RCDirectView.m */,
+				C4F7E4BD1D113A8800485746 /* RcFollowedButon.h */,
+				C4F7E4BE1D113A8800485746 /* RcFollowedButon.m */,
 				C4F7E4BC1D10466800485746 /* Cell */,
 			);
 			path = View;
@@ -2125,6 +2130,7 @@
 				56E523581C75922700794B0E /* CZPersonInfoCell.m in Sources */,
 				566094561C9BAFEC00433AD8 /* RCScheduleViewController.m in Sources */,
 				563FC6BD1CACF83E00B7DD25 /* RCCollectionCell.m in Sources */,
+				C4F7E4BF1D113A8800485746 /* RcFollowedButon.m in Sources */,
 				561D01FD1C47DA5600E4E013 /* README.md in Sources */,
 				56E3C0141C9C691200BDAE19 /* RCAddScheduleViewController.m in Sources */,
 				56B9CD341C807A7100914F00 /* SDWebImagePrefetcher.m in Sources */,

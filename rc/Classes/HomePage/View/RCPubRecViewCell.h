@@ -9,13 +9,14 @@
 #define kCellIdentifier_PubRecommendCell @"PubRecommendCell"
 
 #import <UIKit/UIKit.h>
+#import "PublisherModel.h"
+#import "RcFollowedButon.h"
 
-@class PublisherModel;
 @interface RCPubRecViewCell : UITableViewCell
 
 @property (nonatomic,strong) PublisherModel *pubModel;
-@property (nonatomic,strong) UIImageView *publisherPic;
+@property (nonatomic,strong) UIButton *publisherBtn;
 @property (nonatomic,strong) UILabel *pubNameLabel,*pubSignLabel;
-@property (nonatomic,strong) UIButton *followBtn;
+@property (nonatomic,strong) RcFollowedButon *followBtn;
 
 @end

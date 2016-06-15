@@ -23,7 +23,6 @@
 //设置标题的位置
 -(CGRect)titleRectForContentRect:(CGRect)contentRect
 {
-    NSLog(@"%f",contentRect.size.width);
     UIImage *image = [UIImage imageNamed:@"backIcon_white"];
     CGFloat titleW = contentRect.size.width - image.size.width;
     CGFloat titleH = contentRect.size.height;
