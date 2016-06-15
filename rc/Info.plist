@@ -60,7 +60,11 @@
 		<string>mqqOpensdkSSoLogin</string>
 		<string>mqzone</string>
 		<string>sinaweibo</string>
+		<string>weibosdk</string>
 		<string>alipayauth</string>
+		<string>weibosdk2.5</string>
+		<string>sinaweibosso,</string>
+		<string>sinaweibohdsso,</string>
 		<string>alipay</string>
 		<string>safepay</string>
 		<string>mqq</string>
