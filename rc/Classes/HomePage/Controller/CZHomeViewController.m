@@ -371,21 +371,6 @@ typedef void (^HomeViewBlock)(id);
     return _ctList;
 }
 
--(UIScrollView *)homeScrollView{
-    if (!_homeScrollView) {
-        _homeScrollView = [[UIScrollView alloc]init];
-    }
-    return _homeScrollView;
-}
-
--(UILabel *)navLabel{
-    if (!_navLabel) {
-        _navLabel = [[UILabel alloc]init];
-    }
-    
-    return _navLabel;
-}
-
 #pragma mark - Tableview 数据源
 
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
