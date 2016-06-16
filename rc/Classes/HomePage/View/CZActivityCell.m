@@ -86,7 +86,7 @@
 }
 
 //设置子控件的Constraint
-- (void)setSubViewsConstraintWithIsFirst:(NSIndexPath *)index
+- (void)setSubViewsConstraint
 {
     //最大宽度
     CGFloat maxfW = kScreenWidth - 120 - 35;
@@ -107,104 +107,48 @@
     //标签的下边距
     CGFloat tagBottomPadding = 12;
     
-    if (index.section == 0) {
-        //cell高度
-        self.cellHeight = tittleTopPadding + nameSize.height + timeSize.height + placeSize.height + tagSize.height + timePaddingToName + tagPaddingToPlace + 15+20;
-        
-        UILabel *recommendLabel = [[UILabel alloc]init];
-        [recommendLabel setText:@"为你推荐"];
-        [recommendLabel setFont:[UIFont systemFontOfSize:13]];
-        [recommendLabel setTextColor:themeColor];
-        [self.contentView addSubview:recommendLabel];
-        
-        [recommendLabel mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).offset(10);
-            make.top.equalTo(self.contentView.mas_top).offset(7);
-            make.width.mas_equalTo(64);
-            make.height.mas_equalTo(16);
-        }];
-        
-        [self.ac_poster mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).offset(10);
-            make.centerY.equalTo(self.contentView.mas_centerY).offset(10);
-            //make.bottom.equalTo(self.contentView.mas_bottom).offset(-10);
-            make.width.mas_equalTo(120);
-            make.height.mas_equalTo(120);
-        }];
-        self.ac_time.numberOfLines = 0;
-        [self.ac_title mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.contentView.mas_top).offset(33);
-            make.left.equalTo(self.ac_poster.mas_right).offset(15);
-            make.width.mas_equalTo(maxfW);
-            make.height.mas_equalTo(35);
-        }];
-        [self.ac_time mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.ac_title.mas_bottom).offset(10);
-            make.left.equalTo(self.ac_title.mas_left);
-            make.width.mas_equalTo(maxfW);
-            make.height.mas_equalTo(17);
-        }];
-        [self.ac_place mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.ac_time.mas_bottom).offset(2);
-            make.left.equalTo(self.ac_time.mas_left);
-            make.width.mas_equalTo(maxfW);
-            make.height.mas_equalTo(17);
-        }];
-        [self.ac_type mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.ac_place.mas_bottom).offset(10);
-            make.left.equalTo(self.ac_time.mas_left);
-            make.width.mas_equalTo(60);
-            make.height.mas_equalTo(11);
-        }];
-        [self.ac_praise mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.ac_type.mas_centerY);
-            make.left.equalTo(self.contentView.mas_left).offset(243);
-            make.width.mas_equalTo(60);
-            make.height.mas_equalTo(11);
-        }];
-    } else {
-        //cell高度
-        self.cellHeight = tittleTopPadding + nameSize.height + timeSize.height + placeSize.height + tagSize.height + timePaddingToName + tagPaddingToPlace + 15;;
-        [self.ac_poster mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).offset(10);
-            make.centerY.equalTo(self.contentView.mas_centerY);
-            //make.bottom.equalTo(self.contentView.mas_bottom).offset(-10);
-            make.width.mas_equalTo(120);
-            make.height.mas_equalTo(120);
-        }];
-        self.ac_time.numberOfLines = 0;
-        [self.ac_title mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.contentView.mas_top).offset(13);
-            make.left.equalTo(self.ac_poster.mas_right).offset(15);
-            make.width.mas_equalTo(maxfW);
-            make.height.mas_equalTo(35);
-        }];
-        [self.ac_time mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.ac_title.mas_bottom).offset(10);
-            make.left.equalTo(self.ac_title.mas_left);
-            make.width.mas_equalTo(maxfW);
-            make.height.mas_equalTo(17);
-        }];
-        [self.ac_place mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.ac_time.mas_bottom).offset(2);
-            make.left.equalTo(self.ac_time.mas_left);
-            make.width.mas_equalTo(maxfW);
-            make.height.mas_equalTo(17);
-        }];
-        [self.ac_type mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.ac_place.mas_bottom).offset(10);
-            make.left.equalTo(self.ac_time.mas_left);
-            make.width.mas_equalTo(60);
-            make.height.mas_equalTo(11);
-        }];
-        [self.ac_praise mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.ac_type.mas_centerY);
-            make.left.equalTo(self.contentView.mas_left).offset(243);
-            make.width.mas_equalTo(60);
-            make.height.mas_equalTo(11);
-        }];
+    //cell高度
+    self.cellHeight = tittleTopPadding + nameSize.height + timeSize.height + placeSize.height + tagSize.height + timePaddingToName + tagPaddingToPlace + 15;
+    
+    [self.ac_poster mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.contentView.mas_left).offset(10);
+        make.centerY.equalTo(self.contentView.mas_centerY);
+        //make.bottom.equalTo(self.contentView.mas_bottom).offset(-10);
+        make.width.mas_equalTo(120);
+        make.height.mas_equalTo(120);
+    }];
+    self.ac_time.numberOfLines = 0;
+    [self.ac_title mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.contentView.mas_top).offset(13);
+        make.left.equalTo(self.ac_poster.mas_right).offset(15);
+        make.width.mas_equalTo(maxfW);
+        make.height.mas_equalTo(35);
+    }];
+    [self.ac_time mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.ac_title.mas_bottom).offset(10);
+        make.left.equalTo(self.ac_title.mas_left);
+        make.width.mas_equalTo(maxfW);
+        make.height.mas_equalTo(17);
+    }];
+    [self.ac_place mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.ac_time.mas_bottom).offset(2);
+        make.left.equalTo(self.ac_time.mas_left);
+        make.width.mas_equalTo(maxfW);
+        make.height.mas_equalTo(17);
+    }];
+    [self.ac_type mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.ac_place.mas_bottom).offset(10);
+        make.left.equalTo(self.ac_time.mas_left);
+        make.width.mas_equalTo(60);
+        make.height.mas_equalTo(11);
+    }];
+    [self.ac_praise mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.ac_type.mas_centerY);
+        make.left.equalTo(self.contentView.mas_left).offset(243);
+        make.width.mas_equalTo(60);
+        make.height.mas_equalTo(11);
+    }];
     }
-}
 
 /**
  *  计算文本的大小

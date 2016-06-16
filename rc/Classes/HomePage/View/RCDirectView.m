@@ -21,6 +21,7 @@
         self.univerLable = [[UILabel alloc]init];
         self.besidesLable = [[UILabel alloc]init];
         self.careChoiceLable = [[UILabel alloc]init];
+        self.recommendLabel = [[UILabel alloc]init];
         [self addSubview:self.hotBtn];
         [self addSubview:self.univerBtn];
         [self addSubview:self.besidesBtn];
@@ -29,6 +30,7 @@
         [self addSubview:self.univerLable];
         [self addSubview:self.besidesLable];
         [self addSubview:self.careChoiceLable];
+        [self addSubview:self.recommendLabel];
     }
     return self;
 }
@@ -82,7 +84,13 @@
     self.careChoiceLable.text = @"精选";
     self.careChoiceLable.textColor = [UIColor blackColor];
     
+    [self.recommendLabel setText:@"为你推荐"];
+    [self.recommendLabel setFont:[UIFont systemFontOfSize:13]];
+    [self.recommendLabel setTextColor:themeColor];
     
+    UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 5)];
+    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];;
+    [self addSubview:view];
     
     [self.hotBtn mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(edgeSize);
@@ -124,6 +132,19 @@
         make.top.equalTo(self.hotBtn.mas_bottom).offset(7);
     }];
     
+    [self.recommendLabel mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left).offset(10);
+        make.top.equalTo(self.hotLable.mas_bottom).offset(15);
+        make.width.mas_equalTo(64);
+        make.height.mas_equalTo(16);
+    }];
+    
+    [view mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left);
+        make.right.equalTo(self.mas_right);
+        make.top.equalTo(self.hotLable.mas_bottom).offset(5);
+        make.bottom.equalTo(self.recommendLabel.mas_top).offset(-5);
+    }];
 }
 
 

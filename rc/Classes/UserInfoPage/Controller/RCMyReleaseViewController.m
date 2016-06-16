@@ -373,7 +373,7 @@ typedef NS_ENUM(NSInteger, RefleshType)
     [self setCellValue:cell AtIndexPath:indexPath];
     
     //对cell内的控件进行布局
-    [cell setSubViewsConstraintWithIsFirst:indexPath];
+    [cell setSubViewsConstraint];
     
     //2 返回cell
     return cell;

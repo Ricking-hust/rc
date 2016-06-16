@@ -18,6 +18,7 @@
 @property (nonatomic,strong) UILabel *univerLable;
 @property (nonatomic,strong) UILabel *besidesLable;
 @property (nonatomic,strong) UILabel *careChoiceLable;
+@property (nonatomic,strong) UILabel *recommendLabel;
 
 - (void)setSubView;
 

@@ -79,7 +79,7 @@
     self.acList = flashArray;
     //设置父容器的大小
     CGRect rect = [[UIScreen mainScreen]bounds];
-    [self setFrame:CGRectMake(0, 0, rect.size.width, (rect.size.width*0.427)+99)];
+    [self setFrame:CGRectMake(0, 0, rect.size.width, (rect.size.width*0.427)+119)];
     
     //configure scrollView constraint
     [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -99,25 +99,11 @@
     self.pageControl.currentPageIndicatorTintColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/2550 alpha:1.0];
     
     [self.directView mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.pageControl.mas_right);
+        make.right.equalTo(self.scrollView.mas_right);
         make.top.equalTo(self.pageControl.mas_bottom).offset(9);
         make.width.mas_equalTo(rect.size.width);
-        make.height.mas_equalTo(90);
+        make.height.mas_equalTo(110);
     }];
-    
-//    //configure label constraints
-//    NSString *text = @"为你推荐";
-//    CGSize maxSize = CGSizeMake(MAXFLOAT, MAXFLOAT);
-//    //计算文本的大小
-//    CGSize textSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:FONTSIZE]} context:nil].size;
-//    self.label.text = text;
-//    self.label.textColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
-//    [self.label mas_makeConstraints:^(MASConstraintMaker *make) {
-//        make.left.equalTo(self).with.offset(10);
-//        make.top.equalTo(self.scrollView.mas_bottom).with.offset(10);
-//        make.size.mas_equalTo(textSize);
-//        
-//    }];
     
     int count = (int)flashArray.count;
     

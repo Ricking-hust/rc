@@ -49,6 +49,6 @@
 /**
  *  对单元格内的控件进行布局
  */
-- (void)setSubViewsConstraintWithIsFirst:(NSIndexPath *)index;
+- (void)setSubViewsConstraint;
 
 @end
