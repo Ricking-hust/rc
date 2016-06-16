@@ -14,6 +14,7 @@
 
 @interface RCTableView ()
 @property (nonatomic, strong) NSNumber *nodeIndex;
+@property (nonatomic, strong) UIViewController *vc;
 @end
 @implementation RCTableView
 - (id)init
@@ -58,6 +59,7 @@
 - (void)getSuperView:(NSNotification *)notification
 {
     self.view = notification.object;
+    self.vc = [self viewController];
 }
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
@@ -91,6 +93,8 @@
             [self addCellConstraint:cell];
             //设置点击事件
             [self didClickCell:cell];
+            cell.tag = indexPath.row - 1;
+            //cell.backgroundColor = [UIColor blackColor];
             return cell;
         }
         return nil;
@@ -115,15 +119,32 @@
         return cell.height;
     }
 }
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+//    CZScheduleInfoCell *cell = [tableView cellForRowAtIndexPath:indexPath];
+// 
+//    RCScheduleInfoViewController *sc = [[RCScheduleInfoViewController alloc]init];
+//    self.showdDelegate = sc;
+//    [self.showdDelegate show:self.scArray[cell.tag]];
+//    [self.showdDelegate passScIndex:(int)cell.tag];
+//    [self.showdDelegate passScArray:self.scArray];
+//    [self.showdDelegate passTableView:self];
+//    [self.showdDelegate passTimeNodeScrollView:self.timeNodeSV];
+//    [self.showdDelegate passNodeIndex:self.nodeIndex];
+//    [self.showdDelegate passPlanListRanged:self.planListRanged];
+//    [[self viewController].navigationController pushViewController:sc animated:YES];
+}
 - (void)didClickCell:(CZScheduleInfoCell *)cell
 {
     UITapGestureRecognizer *gesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didClickSC:)];
+    gesture.delegate = self;
     [cell.bgView addGestureRecognizer:gesture];
     
 }
 #pragma mark - 行程信息的点击事件
 - (void)didClickSC:(UITapGestureRecognizer *)clickGesture
 {
+
     RCScheduleInfoViewController *sc = [[RCScheduleInfoViewController alloc]init];
     self.showdDelegate = sc;
     [self.showdDelegate show:self.scArray[clickGesture.view.tag]];
@@ -134,6 +155,15 @@
     [self.showdDelegate passNodeIndex:self.nodeIndex];
     [self.showdDelegate passPlanListRanged:self.planListRanged];
     [[self viewController].navigationController pushViewController:sc animated:YES];
+}
+#pragma mark - UIGestureRecognizerDelegate
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    // 若为UITableViewCellContentView（即点击了tableViewCell），则不截获Touch事件
+    if ([NSStringFromClass([touch.view class]) isEqualToString:@"UITableViewCellContentView"]) {
+        return NO;
+    }
+    return  YES;
 }
 - (UIViewController *)viewController {
     /// Finds the view's view controller.

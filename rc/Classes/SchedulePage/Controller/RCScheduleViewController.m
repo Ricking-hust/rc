@@ -131,10 +131,11 @@
     self.isLogin = [DataManager manager].user.isLogin;
     if (self.isLogin)
     {
-        for (UIView *view in self.view.subviews)
-        {
-            view.hidden = NO;
-        }
+#pragma mark - 不注释行程的点击事件有时会失效
+//        for (UIView *view in self.view.subviews)
+//        {
+//            view.hidden = NO;
+//        }
         self.notLoginView.hidden = YES;
         
         if ([self.updateState isEqualToString:@"update"])
