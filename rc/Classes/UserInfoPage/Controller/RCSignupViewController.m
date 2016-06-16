@@ -33,7 +33,7 @@
 #pragma mark - 下拉刷新
 - (void)loadNewData
 {
-    [self.acList removeAllObjects];
+    //[self.acList removeAllObjects];
     [self sendURLRequest];
     [self.tableView.mj_header endRefreshing];
 }

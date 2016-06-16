@@ -91,7 +91,7 @@
     
     //configure pagecontrol constraints
     [self.pageControl mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.right.equalTo(self.scrollView.mas_right);
+        make.right.equalTo(self.scrollView.mas_right).offset(-25);
         make.bottom.equalTo(self.scrollView.mas_bottom);
 
         make.size.mas_equalTo(CGSizeMake(PAGECONTROL_WIDTH, PAGECONTROL_HEIGHT));

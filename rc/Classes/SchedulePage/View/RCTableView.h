@@ -9,7 +9,7 @@
 #import <UIKit/UIKit.h>
 #import "RCDisplayScheduleDelegate.h"
 @class RCScrollView;
-@interface RCTableView : UITableView<UITableViewDelegate, UITableViewDataSource>
+@interface RCTableView : UITableView<UITableViewDelegate, UITableViewDataSource,UIGestureRecognizerDelegate>
 @property (nonatomic, strong) NSMutableArray *planListRanged;
 @property (nonatomic, strong) NSMutableArray *scArray;
 @property (nonatomic, strong) UIView *view;

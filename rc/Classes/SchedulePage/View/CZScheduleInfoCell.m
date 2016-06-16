@@ -20,6 +20,7 @@
         self.timeLabel = [[UILabel alloc]init];
         self.contentLabel = [[UILabel alloc]init];
         self.bgView = [[UIView alloc]init];
+        self.contentLabel.tag = 100;
         self.height = 44;
 
         [self addSubViewToContentView];

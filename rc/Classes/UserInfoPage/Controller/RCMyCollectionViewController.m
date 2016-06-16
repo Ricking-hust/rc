@@ -44,9 +44,24 @@
 #pragma mark - 下拉刷新
 - (void)loadNewData
 {
-    [self.acList removeAllObjects];
-    [self sendURLRequest];
-    [self.tableView.mj_header endRefreshing];
+    //[self.acList removeAllObjects];
+    NSString *urlStr = @"http://appv2.myrichang.com/home/Person/getUserActivity";
+    NetWorkingRequestType type = GET;
+    NSString *usr_id = [userDefaults objectForKey:@"userId"];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",@"2",@"op_type",nil];
+    [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
+        id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        NSMutableArray *temp = [self initacListWithDict:dict];
+        if (temp != nil)
+        {
+            self.acList = [[NSMutableArray alloc]initWithArray:temp];
+        }
+        [self.tableView reloadData];
+        [self.tableView.mj_header endRefreshing];
+    } errorBlock:^(NSError *error) {
+        NSLog(@"请求失败:%@",error);
+    }];
+
 }
 -(void)getMoreData
 {
