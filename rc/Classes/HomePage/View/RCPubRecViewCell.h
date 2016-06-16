@@ -16,7 +16,10 @@
 
 @property (nonatomic,strong) PublisherModel *pubModel;
 @property (nonatomic,strong) UIButton *publisherBtn;
-@property (nonatomic,strong) UILabel *pubNameLabel,*pubSignLabel;
+@property (nonatomic,strong) UILabel *pubNameLabel;
+@property (nonatomic,strong) UITextView *pubSign;
 @property (nonatomic,strong) RcFollowedButon *followBtn;
+
+-(void)setSubViewValue;
 
 @end

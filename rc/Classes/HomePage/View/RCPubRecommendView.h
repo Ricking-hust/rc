@@ -13,4 +13,6 @@
 
 @property (nonatomic,strong) PublisherList *pubList;
 
+-(void)setpubList;
+
 @end

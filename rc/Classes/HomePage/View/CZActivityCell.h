@@ -15,8 +15,8 @@
 @property (nonatomic, weak) UILabel *ac_title;
 @property (nonatomic, weak) UILabel *ac_time;
 @property (nonatomic, weak) UILabel *ac_place;
-@property (nonatomic, weak) UIImageView *ac_imageTag;
-@property (nonatomic, weak) UILabel *ac_tags;
+@property (nonatomic, weak) UIButton *ac_type;
+@property (nonatomic, weak) UIButton *ac_praise;
 
 //目前不实现浏览量
 //@property (nonatomic, weak) UIImageView *ac_viewImage_num;
@@ -49,6 +49,6 @@
 /**
  *  对单元格内的控件进行布局
  */
-- (void)setSubViewsConstraint;
+- (void)setSubViewsConstraintWithIsFirst:(NSIndexPath *)index;
 
 @end

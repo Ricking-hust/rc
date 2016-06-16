@@ -337,7 +337,7 @@ typedef NS_ENUM(NSInteger, RefleshType)
     [self setCellValue:cell AtIndexPath:indexPath];
     
     //对cell内的控件进行布局
-    [cell setSubViewsConstraint];
+    [cell setSubViewsConstraintWithIsFirst:indexPath];
     
     //2 返回cell
     return cell;
@@ -357,18 +357,12 @@ typedef NS_ENUM(NSInteger, RefleshType)
     NSString *time = [user_ac.ac_time substringWithRange:NSMakeRange(0, [user_ac.ac_time length] - 3)];
     cell.ac_time.text = [NSString stringWithFormat:@"时间：%@",time];
     cell.ac_place.text = [NSString stringWithFormat:@"地点：%@",user_ac.ac_place];
-    [cell.ac_imageTag setImage:[UIImage imageNamed:@"tagImage"]];
-    NSArray *tagArray = [[NSArray alloc]initWithArray:user_ac.ac_tags];
-    NSMutableArray *temp = [[NSMutableArray alloc]init];
-    for (NSDictionary *dict in tagArray)
-    {
-        NSString *tag_name = [dict valueForKey:@"tag_name"];
-        [temp addObject:tag_name];
-    }
-    
-    NSString *tagString = [temp componentsJoinedByString:@","];
-    cell.ac_tags.text = tagString;
-    
+    [cell.ac_type setImage:[UIImage imageNamed:@"biaoqian_icon"] forState:UIControlStateNormal];
+    [cell.ac_type setImageEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+    [cell.ac_type setTitle:@"免费活动" forState:UIControlStateNormal];
+    [cell.ac_praise setImage:[UIImage imageNamed:@"eye_ icon"] forState:UIControlStateNormal];
+    [cell.ac_praise setImageEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+    [cell.ac_praise setTitle:@"10000+" forState:UIControlStateNormal];
 }
 
 //设置导航栏

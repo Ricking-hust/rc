@@ -15,8 +15,8 @@
     if (self = [super initWithDictionary:dict]) {
         self.pubId = [dict objectForSafeKey:@"publisher_id"];
         self.pubName = [dict objectForSafeKey:@"publisher_name"];
-        self.pubPic = [dict objectForSafeKey:@"publisher_sign"];
-        self.pubSign = [dict objectForSafeKey:@"publisher_pic"];
+        self.pubPic = [dict objectForSafeKey:@"publisher_pic"];
+        self.pubSign = [dict objectForSafeKey:@"publisher_sign"];
         self.followed = [dict objectForSafeKey:@"follewed"];
     }
     

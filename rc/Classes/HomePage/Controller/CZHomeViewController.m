@@ -34,7 +34,7 @@
 //存放头部导航栏按钮的父页面宽度
 #define TOP_VIEW_HEIGHT 46
 //界面上方导航线条的宽度
-#define NAVIGATION_LINE_HEIGHT 4
+#define NAVIGATION_LINE_HEIGHT 1
 
 @interface CZHomeViewController ()
 typedef void (^HomeViewBlock)(id);
@@ -42,13 +42,13 @@ typedef void (^HomeViewBlock)(id);
 @property (nonatomic,strong) NSMutableArray *acList;
 @property (nonatomic,strong) NSString *minAcId;
 @property (nonatomic,strong) ActivityModel *activitymodel;
-@property (nonatomic,strong) PublisherList *publisherList;
 @property (nonatomic,strong) FlashList *flashList;
 @property (nonatomic,copy) HomeViewBlock refreshBlock;
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListBlock)(NSString *minAcId);
 @property (nonatomic,copy) NSURLSessionDataTask *(^getFlash)();
 @property (nonatomic,copy) NSURLSessionDataTask *(^getCityListBlock)();
 @property (weak, nonatomic) IBOutlet CZCityButton *leftButton;
+@property (strong, nonatomic) RCPubRecommendView *pubRecommendView;
 @property (nonatomic,strong) UIButton *acRecButton;
 @property (nonatomic,strong) UIButton *pubRecButton;
 
@@ -348,6 +348,7 @@ typedef void (^HomeViewBlock)(id);
     [self.tableView reloadData];
 }
 
+
 #pragma mark - 懒加载
 
 -(NSMutableArray *)acList{
@@ -395,7 +396,7 @@ typedef void (^HomeViewBlock)(id);
     [self setCellValue:cell AtIndexPath:indexPath];
     
     //对cell内的控件进行布局
-    [cell setSubViewsConstraint];
+    [cell setSubViewsConstraintWithIsFirst:indexPath];
     
     //2 返回cell
     return cell;
@@ -403,7 +404,11 @@ typedef void (^HomeViewBlock)(id);
 
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    return 140;
+    if (indexPath.section == 0) {
+        return 160;
+    } else {
+        return 140;
+    }
 }
 
 //section头部间距
@@ -453,17 +458,13 @@ typedef void (^HomeViewBlock)(id);
         long int len = [ac.acTime length];
         cell.ac_time.text = [NSString stringWithFormat:@"时间: %@", [ac.acTime substringWithRange:NSMakeRange(0, len - 3)]];
         cell.ac_place.text = [NSString stringWithFormat:@"地点: %@", ac.acPlace];
-        [cell.ac_imageTag setImage:[UIImage imageNamed:@"tagImage"]];
-        NSMutableArray *Artags = [[NSMutableArray alloc]init];
+        [cell.ac_type setImage:[UIImage imageNamed:@"biaoqian_icon"] forState:UIControlStateNormal];
+        [cell.ac_type setImageEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+        [cell.ac_type setTitle:@"免费活动" forState:UIControlStateNormal];
+        [cell.ac_praise setImage:[UIImage imageNamed:@"eye_ icon"] forState:UIControlStateNormal];
+        [cell.ac_praise setImageEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+        [cell.ac_praise setTitle:@"1000" forState:UIControlStateNormal];
         
-        for (TagModel *model in ac.tagsList.list) {
-            [Artags addObject:model.tagName];
-        }
-        
-        NSString *tags = [Artags componentsJoinedByString:@","];
-        cell.ac_tags.text = tags;
-        //[cell.ac_imageTag sd_setImageWithURL:[NSURL URLWithString:ac.userInfo.userPic] placeholderImage:[UIImage imageNamed:@"tagImage"]];
-        //cell.ac_tags.text = ac.userInfo.userName;
         //判断当前活动是否过期
         //判断此行程是否已发生
         BOOL isHappened = [self isHappened:ac];
@@ -472,16 +473,16 @@ typedef void (^HomeViewBlock)(id);
             cell.ac_title.textColor = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
             cell.ac_time.textColor  = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
             cell.ac_place.textColor = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
-            cell.ac_tags.textColor  = [UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0];
-            cell.ac_imageTag.alpha  = 0.6;
+            [cell.ac_type setTitleColor:[UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0] forState:UIControlStateNormal  ];
+            [cell.ac_praise setTitleColor:[UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0] forState:UIControlStateNormal];
             cell.ac_poster.alpha    = 0.6;
         }else
         {
             cell.ac_title.textColor = [UIColor blackColor];
             cell.ac_time.textColor  = [UIColor blackColor];
             cell.ac_place.textColor = [UIColor blackColor];
-            cell.ac_tags.textColor  = [UIColor blackColor];
-            cell.ac_imageTag.alpha  = 1.0;
+            [cell.ac_type setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
+            [cell.ac_praise setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
             cell.ac_poster.alpha    = 1.0;
         }
         
@@ -535,15 +536,14 @@ typedef void (^HomeViewBlock)(id);
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     
-    RCPubRecommendView *pubRecommendView = [[RCPubRecommendView alloc]init];
-    
+    self.pubRecommendView = [[RCPubRecommendView alloc]init];
+    [self.pubRecommendView setpubList];
     
     self.searchView = [[UIView alloc]initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 70/2)];
     self.searchView.backgroundColor = [UIColor whiteColor];
     
     [self.homeScrollView addSubview:self.tableView];
-    [self.homeScrollView addSubview:pubRecommendView];
-    [self.homeScrollView addSubview:self.searchView];
+    [self.homeScrollView addSubview:self.pubRecommendView];
     
     //创建搜索框
     UIView *view = [[UIView alloc]init];
@@ -552,7 +552,6 @@ typedef void (^HomeViewBlock)(id);
     [view.layer setCornerRadius:13];
     UITapGestureRecognizer *tapGesture = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(onClickSearch:)];
     [view addGestureRecognizer:tapGesture];
-    
     
     [self.searchView addSubview:view];
     
@@ -593,7 +592,7 @@ typedef void (^HomeViewBlock)(id);
         make.size.mas_equalTo(CGSizeMake(kScreenWidth, kScreenHeight-homeScrollViewH));
     }];
     
-    [pubRecommendView mas_makeConstraints:^(MASConstraintMaker *make) {
+    [self.pubRecommendView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.homeScrollView.mas_top);
         make.left.equalTo(self.tableView.mas_right);
         make.size.mas_equalTo(CGSizeMake(kScreenWidth, kScreenHeight-homeScrollViewH));
@@ -607,7 +606,7 @@ typedef void (^HomeViewBlock)(id);
     self.acRecButton = [[UIButton alloc] init];
     _acRecButton.backgroundColor = [UIColor whiteColor];
     [_acRecButton setTitle:@"活动推荐" forState:UIControlStateNormal];
-    _acRecButton.titleLabel.font = [UIFont systemFontOfSize:14];
+    _acRecButton.titleLabel.font = [UIFont systemFontOfSize:15];
     [_acRecButton setTitleColor:[UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0] forState:UIControlStateNormal];
     [_acRecButton setTitleColor:themeColor forState:UIControlStateSelected];
     _acRecButton.selected = YES;

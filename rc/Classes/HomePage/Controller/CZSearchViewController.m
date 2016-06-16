@@ -99,7 +99,7 @@
     [self setCellValue:cell AtIndexPath:indexPath];
     
     //对cell内的控件进行布局
-    [cell setSubViewsConstraint];
+    [cell setSubViewsConstraintWithIsFirst:indexPath];
     
     //2 返回cell
     return cell;
@@ -128,15 +128,12 @@
     cell.ac_title.text = ac.acTitle;
     cell.ac_time.text = ac.acTime;
     cell.ac_place.text = ac.acPlace;
-    NSMutableArray *Artags = [[NSMutableArray alloc]init];
-    
-    for (TagModel *model in ac.tagsList.list) {
-        [Artags addObject:model.tagName];
-    }
-    
-    NSString *tags = [Artags componentsJoinedByString:@","];
-    cell.ac_tags.text = tags;
-    
+    [cell.ac_type setImage:[UIImage imageNamed:@"biaoqian_icon"] forState:UIControlStateNormal];
+    [cell.ac_type setImageEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+    [cell.ac_type setTitle:@"免费活动" forState:UIControlStateNormal];
+    [cell.ac_praise setImage:[UIImage imageNamed:@"eye_ icon"] forState:UIControlStateNormal];
+    [cell.ac_praise setImageEdgeInsets:UIEdgeInsetsMake(0, -10, 0, 0)];
+    [cell.ac_praise setTitle:@"10000+" forState:UIControlStateNormal];
 }
 - (void)onClickTagBtn:(UIButton *)btn
 {
