@@ -27,10 +27,12 @@
     NSURLSessionConfiguration *configuration = [NSURLSessionConfiguration defaultSessionConfiguration];
     NSURLSession *session = [NSURLSession sessionWithConfiguration:configuration delegate:self delegateQueue:[NSOperationQueue mainQueue]];
     NSURLSessionDataTask *dataTask = [session dataTaskWithRequest:request];
-    [dataTask resume];
+    [self resume:dataTask];
+    //[dataTask resume];
     return self;
     
 }
+
 +(id)uploadTask:(NSString *)requestUrl requestType:(NetWorkingRequestType)type parameters:(NSDictionary *)dict completeBlock:(completeBlock_t)completeBlock errorBlock:(errorBlock_t)errorBlock
 {
     return [[self alloc]initWithUploadTask:requestUrl requestType:type parameters:dict completeBlock:completeBlock errorBlock:errorBlock];
@@ -50,9 +52,15 @@
     NSURLSessionUploadTask *uploadTask = [session uploadTaskWithRequest:request fromData:nil completionHandler:^(NSData * _Nullable data, NSURLResponse * _Nullable response, NSError * _Nullable error) {
         NSLog(@"suessce");
     }];
-    [uploadTask resume];
+    [self resume:uploadTask];
+    //[uploadTask resume];
     return self;
     
+}
+//启动网络连接
+- (void)resume:(NSURLSessionDataTask *)task
+{
+    [task resume];
 }
 - (NSMutableURLRequest *)requestBySerializingRequest:(NSString *)requestUrl requestType:(NetWorkingRequestType)type Parameters:(NSDictionary *)parameters
 {

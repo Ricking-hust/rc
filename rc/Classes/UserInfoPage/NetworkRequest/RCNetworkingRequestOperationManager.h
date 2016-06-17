@@ -15,6 +15,7 @@ typedef void(^errorBlock_t) (NSError *error);
 @property (nonatomic, copy) completeBlock_t completeBlock;
 @property (nonatomic, copy) errorBlock_t  errorBlock;
 + (id)request:(NSString *)requestUrl requestType:(NetWorkingRequestType)type parameters:(NSDictionary *)dict completeBlock:(completeBlock_t)completeBlock errorBlock:(errorBlock_t)errorBlock;
+- (void)resume:(NSURLSessionDataTask *)task;
 - (id)initWithRequest:(NSString *)requestUrl requestType:(NetWorkingRequestType)type parameters:(NSDictionary *)dict completeBlock:(completeBlock_t)completeBlock errorBlock:(errorBlock_t)errorBlock;
 +(id)uploadTask:(NSString *)requestUrl requestType:(NetWorkingRequestType)type parameters:(NSDictionary *)dict completeBlock:(completeBlock_t)completeBlock errorBlock:(errorBlock_t)errorBlock;
 - (id)initWithUploadTask:(NSString *)requestUrl requestType:(NetWorkingRequestType)type parameters:(NSDictionary *)dict completeBlock:(completeBlock_t)completeBlock errorBlock:(errorBlock_t)errorBlock;

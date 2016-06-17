@@ -16,6 +16,7 @@
 #import "UINavigationBar+Awesome.h"
 #import "MJRefresh.h"
 #import "Masonry.h"
+#import "MBProgressHUD.h"
 @interface RCMyCollectionViewController ()
 @property (nonatomic, strong) NSMutableArray *acList;
 @property (nonatomic, strong) UIView  *heartBrokenView;
@@ -33,7 +34,7 @@
     [self sendURLRequest];
     self.tableView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
     self.tableView.mj_footer= [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
-    
+
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -210,6 +211,7 @@
 {
     RCMyActivityCell *cell = [RCMyActivityCell cellWithTableView:tableView];
     [self setValueOfCell:cell AtIndexPath:indexPath];
+    cell.addSchedule.tag = indexPath.section;
     return cell;
     
 }
@@ -280,8 +282,41 @@
 #pragma mark - 加入行程
 - (void)addToSchedule:(UIButton *)button
 {
-    NSLog(@"还没做");
+    NSString *urlStr = @"http://appv2.myrichang.com/Home/Activity/joinTrip";
+    NetWorkingRequestType type = GET;
+    NSString *usr_id = [userDefaults objectForKey:@"userId"];
+    UserActivity *user_ac = self.acList[(int)button.tag];
+    NSString *ac_id = user_ac.ac_id;
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",@"1",@"op_type",ac_id,@"ac_id",nil];
+    [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
+        id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        NSString *msg = [dict valueForKey:@"msg"];
+        if ([msg isEqualToString:@"加入行程成功！"])
+        {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            
+            // Set the annular determinate mode to show task progress.
+            hud.mode = MBProgressHUDModeText;
+            hud.label.text = @"加入行程成功。";
+            [hud hideAnimated:YES afterDelay:0.6];
+            
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"scState" object:@"update"];
+        }else if ([msg isEqualToString:@"此活动已经加入行程！"])
+        {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            
+            hud.mode = MBProgressHUDModeText;
+            hud.label.text = @"此活动已经加入行程！";
+            [hud hideAnimated:YES afterDelay:0.6];
+            
+        }
+        NSLog(@"%@",msg);
+    } errorBlock:^(NSError *error) {
+        NSLog(@"请求失败:%@",error);
+    }];
+    
 }
+
 #pragma mark - 设置标题栏
 
 - (void)setNavigation

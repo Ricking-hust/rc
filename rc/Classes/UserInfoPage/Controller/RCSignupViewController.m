@@ -15,9 +15,11 @@
 #import "RCMyActivityCell.h"
 #import "MJRefresh.h"
 #import "Masonry.h"
+#import "MBProgressHUD.h"
 @interface RCSignupViewController ()<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UIView  *heartBrokenView;
 @property (nonatomic, strong) NSMutableArray *acList;
+@property (nonatomic, strong) MBProgressHUD    *HUD;
 @end
 @implementation RCSignupViewController
 
@@ -37,6 +39,7 @@
     [self sendURLRequest];
     [self.tableView.mj_header endRefreshing];
 }
+#pragma mark - 上拉刷新
 -(void)getMoreData
 {
     NSMutableArray __block *moreActivity = [[NSMutableArray alloc]initWithArray:self.acList];
@@ -80,7 +83,7 @@
 }
 - (void)sendURLRequest
 {
-    NSString *urlStr = @"http://app.myrichang.com/home/Person/getUserActivity";
+    NSString *urlStr = @"http://appv2.myrichang.com/home/Person/getUserActivity";
     NetWorkingRequestType type = GET;
     NSString *usr_id = [userDefaults objectForKey:@"userId"];
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",@"2",@"op_type",nil];
@@ -158,6 +161,7 @@
     return usr_ac;
 }
 
+#pragma mark - tableViewDelegate
 - (CGFloat)tableView:(UITableView *)tableView heightForHeaderInSection:(NSInteger)section
 {
     return 1;
@@ -194,6 +198,7 @@
 {
     RCMyActivityCell *cell = [RCMyActivityCell cellWithTableView:tableView];
     [self setValueOfCell:cell AtIndexPath:indexPath];
+    cell.addSchedule.tag = indexPath.section;
     return cell;
 }
 - (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
@@ -263,8 +268,42 @@
 #pragma mark - 加入行程
 - (void)addToSchedule:(UIButton *)button
 {
-    NSLog(@"还没做");
+    NSString *urlStr = @"http://appv2.myrichang.com/Home/Activity/joinTrip";
+    NetWorkingRequestType type = GET;
+    NSString *usr_id = [userDefaults objectForKey:@"userId"];
+    UserActivity *user_ac = self.acList[(int)button.tag];
+    NSString *ac_id = user_ac.ac_id;
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",@"1",@"op_type",ac_id,@"ac_id",nil];
+    [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
+        id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        NSString *msg = [dict valueForKey:@"msg"];
+        if ([msg isEqualToString:@"加入行程成功！"])
+        {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            
+            // Set the annular determinate mode to show task progress.
+            hud.mode = MBProgressHUDModeText;
+            //hud.label.text = NSLocalizedString(@"Message here!", @"HUD message title");
+            hud.label.text = @"加入行程成功。";
+            [hud hideAnimated:YES afterDelay:0.6];
+
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"scState" object:@"update"];
+        }else if ([msg isEqualToString:@"此活动已经加入行程！"])
+        {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            
+            hud.mode = MBProgressHUDModeText;
+            hud.label.text = @"此活动已经加入行程！";
+            [hud hideAnimated:YES afterDelay:0.6];
+
+        }
+        NSLog(@"%@",msg);
+    } errorBlock:^(NSError *error) {
+        NSLog(@"请求失败:%@",error);
+    }];
+
 }
+#pragma mark - 设置导航栏
 - (void)setNavigation
 {
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];

@@ -688,16 +688,15 @@
 
 -(void)setaddScheduleStyle
 {
-    
-    if ([self.isCollect isEqualToString:@"0"]) {
+    if ([self.activitymodel.plan isEqualToString:@"1"]) {
         //[self.addSchedule setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateNormal];
         //[self.addSchedule setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateHighlighted];
-        [self.addSchedule setTitle:@"加入行程" forState:UIControlStateNormal];
+        [self.addSchedule setTitle:@"已加入行程" forState:UIControlStateNormal];
         [self.addSchedule setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
     } else {
         //[self.addSchedule setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateNormal];
         //[self.addSchedule setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateHighlighted];
-        [self.addSchedule setTitle:@"已加入行程" forState:UIControlStateNormal];
+        [self.addSchedule setTitle:@"加入行程" forState:UIControlStateNormal];
 
     }
     [self.addSchedule setTitleColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.8] forState:UIControlStateNormal];
@@ -705,7 +704,7 @@
     //self.addSchedule.imageView.contentMode = UIViewContentModeScaleAspectFit;
 }
 
-
+//设置导航栏
 - (void)setNavigation
 {
     self.navigationController.navigationBarHidden = NO;
@@ -719,7 +718,7 @@
     titleLabel.text = @"活动介绍";
     self.navigationItem.titleView = titleLabel;
     
-//    //设置导航栏的左侧按钮
+    //设置导航栏的左侧按钮
 //    self.barButtonView = [[RCBarButtonView alloc]initWithFrame:CGRectMake(0, 0, 250, 30)];
 //    [self.barButtonView setSubView];
 //    [self.barButtonView.button addTarget:self action:@selector(backToForwardViewController) forControlEvents:UIControlEventTouchUpInside];
@@ -729,16 +728,10 @@
     left.tintColor = [UIColor whiteColor];
     [self.navigationItem setLeftBarButtonItem:left];
 
-    
-
-#pragma mark - 顶部右侧分享按键
+    //设置导航栏的右侧按钮
     UIImage *shareImage =[UIImage imageNamed:@"shareIcon"];
     UIBarButtonItem *shareItem = [[UIBarButtonItem alloc]initWithImage:shareImage style:UIBarButtonItemStylePlain target:self action:@selector(didShare:)];
     shareItem.tintColor = [UIColor whiteColor];
-    
-//    UIImage *collectionImage =[UIImage imageNamed:@"collectionNormal"];
-//    UIBarButtonItem *collectionItem = [[UIBarButtonItem alloc]initWithImage:collectionImage style:UIBarButtonItemStylePlain target:self action:@selector(onClickCollection)];
-//    collectionItem.tintColor = self.acTittleLabel.textColor;
 
     [self.navigationItem setRightBarButtonItems:@[shareItem, self.collectionItem]];
 
@@ -877,7 +870,8 @@
     [self.view addSubview:self.HUD];
     [self.HUD showAnimated:YES];
     
-    if ([DataManager manager].user.isLogin) {
+    if ([DataManager manager].user.isLogin)
+    {
         if ([self.isCollect isEqualToString:@"0"]) {
             [[DataManager manager] setActivityCollectWithUserID:[userDefaults objectForKey:@"userId"] acId:self.activityModelPre.acID opType:@"1" success:^(NSString *msg) {
                 self.isCollect = @"1";
@@ -885,7 +879,7 @@
                 //[self.addSchedule setImage:[UIImage imageNamed:@"collectionNormal"] forState:UIControlStateHighlighted];
                 //[self.addSchedule setTitle:@"已加入行程" forState:UIControlStateNormal];
                 self.HUD.mode = MBProgressHUDModeCustomView;
-                self.HUD.label.text = @"加入成功";
+                self.HUD.label.text = @"收藏成功";
                 [self.HUD hideAnimated:YES afterDelay:0.6];
             } failure:^(NSError *error) {
                 self.HUD.mode = MBProgressHUDModeCustomView;
@@ -900,7 +894,7 @@
                 //[self.addSchedule setImage:[UIImage imageNamed:@"collectionSelected"] forState:UIControlStateHighlighted];
                 //[self.addSchedule setTitle:@"加入行程" forState:UIControlStateNormal];
                 self.HUD.mode = MBProgressHUDModeCustomView;
-                self.HUD.label.text = @"取消成功";
+                self.HUD.label.text = @"取消收藏成功";
                 [self.HUD hideAnimated:YES afterDelay:0.6];
             } failure:^(NSError *error) {
                 self.HUD.mode = MBProgressHUDModeCustomView;
@@ -909,7 +903,8 @@
                 NSLog(@"Error:%@",error);
             }];
         }
-    } else {
+    } else
+    {
         self.HUD.mode = MBProgressHUDModeCustomView;
         self.HUD.label.text = @"请登录";
         [self.HUD hideAnimated:YES afterDelay:0.6];
@@ -939,8 +934,8 @@
                 self.planId = planId;
                 self.HUD.mode = MBProgressHUDModeCustomView;
                 self.HUD.label.text = @"加入成功~(≧▽≦)/~";
-                //[self.signUp setTitle:@"已经报名" forState:UIControlStateNormal];
-                
+
+                [self.addSchedule setTitle:@"已加入行程" forState:UIControlStateNormal];
                 [self.HUD hideAnimated:YES afterDelay:0.6];
                 [[NSNotificationCenter defaultCenter]postNotificationName:@"scState" object:@"update"];
             }
