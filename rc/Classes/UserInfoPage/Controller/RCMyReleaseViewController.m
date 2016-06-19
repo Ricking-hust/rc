@@ -14,6 +14,7 @@
 #import "ActivityModel.h"
 #import "CZActivityCell.h"
 #import "Masonry.h"
+
 typedef NS_ENUM(NSInteger, RefleshType)
 {
     RCRefleshNone = 0,  //不刷新
@@ -27,6 +28,7 @@ typedef NS_ENUM(NSInteger, RefleshType)
 @property (nonatomic, strong) NSMutableArray *acList;
 @property (nonatomic, strong) UIView  *heartBrokenView;
 @property (nonatomic, strong) UIButton  *currentButton;
+
 @end
 @implementation RCMyReleaseViewController
 
