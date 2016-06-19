@@ -16,6 +16,8 @@
 @property (nonatomic, strong)UILabel *ac_sizeLabel;
 @property (nonatomic, strong)UILabel *payLabel;
 @property (nonatomic, strong)UILabel *ac_payLabel;
+@property (nonatomic,strong) UILabel *speakerLabel;
+@property (nonatomic,strong) UILabel *ac_speakerLabel;
 
 /**
  *  类方法 创建可重用的自定义的cell对象

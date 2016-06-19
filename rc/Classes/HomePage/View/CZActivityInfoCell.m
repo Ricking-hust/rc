@@ -35,23 +35,29 @@
     
     if (self = [super initWithStyle:style reuseIdentifier:reuseIdentifier]) {
         //创建子控件
-        UILabel *pLabel = [[UILabel alloc]init];
-        self.placeLabel = pLabel;
+        UILabel *place = [[UILabel alloc]init];
+        self.placeLabel = place;
         self.placeLabel.numberOfLines = 0;
         self.placeLabel.font = [UIFont systemFontOfSize:FONTSIZE];
         [self.contentView addSubview:self.placeLabel];
         
-        UILabel *sLabel = [[UILabel alloc]init];
-        self.sizeLabel = sLabel;
+        UILabel *size = [[UILabel alloc]init];
+        self.sizeLabel = size;
         self.sizeLabel.numberOfLines = 0;
         self.sizeLabel.font = [UIFont systemFontOfSize:FONTSIZE];
         [self.contentView addSubview:self.sizeLabel];
         
-        UILabel *label = [[UILabel alloc]init];
-        self.payLabel = label;
+        UILabel *pay = [[UILabel alloc]init];
+        self.payLabel = pay;
         self.payLabel.numberOfLines = 0;
         self.payLabel.font = [UIFont systemFontOfSize:FONTSIZE];
         [self.contentView addSubview:self.payLabel];
+        
+        UILabel *speaker = [[UILabel alloc]init];
+        self.speakerLabel = speaker;
+        self.speakerLabel.numberOfLines = 0;
+        self.speakerLabel.font = [UIFont systemFontOfSize:FONTSIZE];
+        [self.contentView addSubview:self.speakerLabel];
         
         UILabel *placeLabel = [[UILabel alloc]init];
         self.ac_placeLabel = placeLabel;
@@ -70,7 +76,12 @@
         self.ac_payLabel.numberOfLines = 0;
         self.ac_payLabel.font = [UIFont systemFontOfSize:FONTSIZE];
         [self.contentView addSubview:self.ac_payLabel];
-
+        
+        UILabel *speakerLabel = [[UILabel alloc]init];
+        self.ac_speakerLabel = speakerLabel;
+        self.ac_speakerLabel.numberOfLines = 0;
+        self.ac_speakerLabel.font = [UIFont systemFontOfSize:FONTSIZE];
+        [self.contentView addSubview:self.ac_speakerLabel];
     }
     return self;
     
@@ -83,6 +94,7 @@
         CGSize maxSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
 
         CGSize labelSize = [self sizeWithText:self.placeLabel.text maxSize:maxSize fontSize:FONTSIZE];
+        CGSize speakerlabelSize = [self sizeWithText:self.speakerLabel.text maxSize:maxSize fontSize:FONTSIZE];
         [self.placeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.contentView.mas_left).offset(15);
             make.top.equalTo(self.contentView.mas_top).with.offset(PADDING);
@@ -94,8 +106,13 @@
             make.left.equalTo(self.placeLabel.mas_left);
             make.size.mas_equalTo(CGSizeMake((int)labelSize.width+1, (int)labelSize.height+1));
         }];
-        [self.payLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+        [self.speakerLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.top.equalTo(self.ac_sizeLabel.mas_bottom).with.offset(PADDING);
+            make.left.equalTo(self.placeLabel.mas_left);
+            make.size.mas_equalTo(CGSizeMake((int)speakerlabelSize.width+1, (int)labelSize.height+1));
+        }];
+        [self.payLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.ac_speakerLabel.mas_bottom).with.offset(PADDING);
             make.left.equalTo(self.placeLabel.mas_left);
             make.size.mas_equalTo(CGSizeMake((int)labelSize.width+1, (int)labelSize.height+1));
         }];
@@ -117,11 +134,36 @@
             make.left.equalTo(self.sizeLabel.mas_right);
             make.size.mas_equalTo(CGSizeMake((int)scaleSize.width+1, (int)scaleSize.height+1));
         }];
+        //添加主讲人标签约束
+        CGSize speakerMaxSize = CGSizeMake(kScreenWidth - 75, MAXFLOAT);
+        CGSize realSize = [self sizeWithText:self.ac_speakerLabel.text maxSize:speakerMaxSize fontSize:FONTSIZE];
+        CGSize speakerSize = [self sizeWithText:self.ac_speakerLabel.text maxSize:speakerMaxSize fontSize:FONTSIZE];
+        if (realSize.width > kScreenWidth) {
+            //标签行数大于1
+            NSString *poetryString = self.ac_speakerLabel.text;
+            NSMutableAttributedString *muAttrString  = [[NSMutableAttributedString alloc] initWithString:poetryString];
+            NSMutableParagraphStyle *paragraphStyle = [[NSMutableParagraphStyle alloc]init];
+            paragraphStyle.alignment =NSTextAlignmentJustified;//两端对齐
+            NSDictionary *dic = @{
+                                  NSForegroundColorAttributeName:[UIColor blackColor],
+                                  NSFontAttributeName:[UIFont systemFontOfSize:FONTSIZE],
+                                  NSParagraphStyleAttributeName:paragraphStyle,
+                                  NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleNone]
+                                  };
+            [muAttrString setAttributes:dic range:NSMakeRange(0, muAttrString.length)];
+            NSAttributedString *attrString = [muAttrString copy];
+            self.ac_speakerLabel.attributedText = attrString;
+        }
+        [self.ac_speakerLabel mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.left.equalTo(self.speakerLabel.mas_right);
+            make.top.equalTo(self.ac_sizeLabel.mas_bottom).with.offset(PADDING);
+            make.size.mas_equalTo(CGSizeMake((int)speakerSize.width+1, (int)speakerSize.height+1));
+        }];
         //添加费用标签约束
         CGSize paySize = [self sizeWithText:self.ac_payLabel.text maxSize:maxSize fontSize:FONTSIZE];
         [self.ac_payLabel mas_updateConstraints:^(MASConstraintMaker *make) {
             make.left.equalTo(self.payLabel.mas_right);
-            make.top.equalTo(self.ac_sizeLabel.mas_bottom).with.offset(PADDING);
+            make.top.equalTo(self.ac_speakerLabel.mas_bottom).with.offset(PADDING);
             make.size.mas_equalTo(CGSizeMake((int)paySize.width+1, (int)paySize.height+1));
         }];
 
@@ -135,9 +177,11 @@
     {
         self.ac_placeLabel.text = model.acPlace;
         self.ac_sizeLabel.text  = model.acSize;
+        self.ac_speakerLabel.text = model.acDesc;
         self.ac_payLabel.text = model.acPay;
         self.placeLabel.text = @"地点: ";
         self.sizeLabel.text = @"规模: ";
+        self.speakerLabel.text = @"主讲人: ";
         self.payLabel.text = @"费用: ";
     }
 

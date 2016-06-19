@@ -252,6 +252,7 @@
 		C4F7E4B71D0FF10500485746 /* PublisherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4B61D0FF10500485746 /* PublisherModel.m */; };
 		C4F7E4BA1D10041B00485746 /* RCPubRecViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4B91D10041B00485746 /* RCPubRecViewCell.m */; };
 		C4F7E4BF1D113A8800485746 /* RcFollowedButon.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4BE1D113A8800485746 /* RcFollowedButon.m */; };
+		C4F7E4C21D13E1C000485746 /* PublisherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4C11D13E1C000485746 /* PublisherViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -731,6 +732,8 @@
 		C4F7E4B91D10041B00485746 /* RCPubRecViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCPubRecViewCell.m; path = View/RCPubRecViewCell.m; sourceTree = "<group>"; };
 		C4F7E4BD1D113A8800485746 /* RcFollowedButon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RcFollowedButon.h; sourceTree = "<group>"; };
 		C4F7E4BE1D113A8800485746 /* RcFollowedButon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RcFollowedButon.m; sourceTree = "<group>"; };
+		C4F7E4C01D13E1C000485746 /* PublisherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublisherViewController.h; sourceTree = "<group>"; };
+		C4F7E4C11D13E1C000485746 /* PublisherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublisherViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1119,6 +1122,8 @@
 				569773211C9AC5BD00D25338 /* RCSettingTagTableViewController.m */,
 				C4CF960E1CFD764E00786982 /* RCCityViewController.h */,
 				C4CF960F1CFD764E00786982 /* RCCityViewController.m */,
+				C4F7E4C01D13E1C000485746 /* PublisherViewController.h */,
+				C4F7E4C11D13E1C000485746 /* PublisherViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2023,6 +2028,7 @@
 				564596BA1C732A84006D8493 /* UIViewController+LewPopupViewController.m in Sources */,
 				C4D8DFC51CC65B89005DA9B3 /* RCSearchModel.m in Sources */,
 				561D01F81C47DA5600E4E013 /* AFSecurityPolicy.m in Sources */,
+				C4F7E4C21D13E1C000485746 /* PublisherViewController.m in Sources */,
 				569079DE1CA8F8AA00DEBF6F /* RCBarButtonView.m in Sources */,
 				C4CAD1BD1C7B3943003FD0B0 /* TagModel.m in Sources */,
 				C4CF96131CFD769200786982 /* CityCollectionViewCell.m in Sources */,
