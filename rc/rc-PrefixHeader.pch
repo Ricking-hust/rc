@@ -19,6 +19,7 @@
 #import "FrameAccessor.h"
 #import "DataManager.h"
 #endif
+
 typedef NS_ENUM(NSInteger, NetWorkingRequestType)
 {
     POST = 0,

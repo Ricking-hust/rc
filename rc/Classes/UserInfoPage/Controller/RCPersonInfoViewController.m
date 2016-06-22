@@ -24,6 +24,8 @@
 #include "RCNetworkingRequestOperationManager.h"
 #import "RCMyCollectionViewController.h"
 #import "RCMyReleaseViewController.h"
+#import "RCMyFollowTableViewController.h"
+#import "RCMyFocusTableViewController.h"
 //==================测试聊天=====================
 #import "RCTalkTestViewController.h"
 
@@ -230,11 +232,27 @@
         [self.navigationController pushViewController:loginVC animated:YES];
     }
 }
+#pragma mark - 获取粉丝，关注，消息
+/**
+ *  10表示点击的是粉丝
+ *  11表示点击的是关注
+ *  12表示点击的是消息
+ */
 - (void)onClickGesture:(UITapGestureRecognizer *)click
 {
     if (self.isLogin == YES)
     {
-        NSLog(@"not implement");
+        UIView *view = click.view;
+        if (view.tag == 10)
+        {
+            [self getFans];
+        }else if (view.tag == 11)
+        {
+            [self getFocus];
+        }else
+        {
+            
+        }
     }
     else
     {
@@ -242,6 +260,20 @@
         [self.navigationController pushViewController:loginVC animated:YES];
     }
 
+}
+
+#pragma mark - 获取我的粉丝
+- (void) getFans
+{
+    RCMyFollowTableViewController *followTC = [[RCMyFollowTableViewController alloc]init];
+    [self.navigationController pushViewController:followTC animated:YES];
+    
+}
+#pragma mark - 获取我的关注
+- (void) getFocus
+{
+    RCMyFocusTableViewController *focusTC = [[RCMyFocusTableViewController alloc]init];
+    [self.navigationController pushViewController:focusTC animated:YES];
 }
 #pragma mark - 单元格的点击事件
 - (void) tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
@@ -253,8 +285,9 @@
            
         }else if (indexPath.row == 1)
         {
-            RCTalkTestViewController *vc = [[RCTalkTestViewController alloc]init];
-            [self.navigationController pushViewController:vc animated:YES];
+            ;
+//            RCTalkTestViewController *vc = [[RCTalkTestViewController alloc]init];
+//            [self.navigationController pushViewController:vc animated:YES];
             
         }else if (indexPath.row == 2)
         {//我的报名
