@@ -208,7 +208,6 @@
 		953E46C11D182EB900C94CE0 /* RCMyFansCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 953E46C01D182EB900C94CE0 /* RCMyFansCell.m */; };
 		953E46C41D18337A00C94CE0 /* RCMyFansModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 953E46C31D18337A00C94CE0 /* RCMyFansModel.m */; };
 		959B64F41D192889009E7C6B /* RCMyFocusTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959B64F31D192889009E7C6B /* RCMyFocusTableViewController.m */; };
-		959B64F71D1934E4009E7C6B /* RCMyFocusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959B64F61D1934E4009E7C6B /* RCMyFocusCell.m */; };
 		959B64FA1D1936A2009E7C6B /* RCMyFocusModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959B64F91D1936A2009E7C6B /* RCMyFocusModel.m */; };
 		95BECB161D02A386009BA89B /* BWaterflowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BECB151D02A386009BA89B /* BWaterflowLayout.m */; };
 		95DA800B1D1035C300FA0C3F /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 56E85E0E1CF5D45200754E1B /* libz.tbd */; };
@@ -225,6 +224,8 @@
 		95DA803A1D10393300FA0C3F /* MOBFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95DA802D1D10393300FA0C3F /* MOBFoundation.framework */; };
 		95DA803B1D10393300FA0C3F /* ShareSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 95DA802E1D10393300FA0C3F /* ShareSDK.bundle */; };
 		95DA803C1D10393300FA0C3F /* ShareSDKConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95DA802F1D10393300FA0C3F /* ShareSDKConnector.framework */; };
+		95E4B4D41D1A9C8A00FC2EB9 /* RCMyFocusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959B64F61D1934E4009E7C6B /* RCMyFocusCell.m */; };
+		95E4B4D51D1A9C9300FC2EB9 /* RCMyFocusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959B64F61D1934E4009E7C6B /* RCMyFocusCell.m */; };
 		C409CFF41C9A7B0500D01F9D /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C409CFF31C9A7B0500D01F9D /* MBProgressHUD.m */; };
 		C41FC3E81CB7CD4D009A5DCD /* RemindManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C41FC3E71CB7CD4D009A5DCD /* RemindManager.m */; };
 		C430C1C91D0EF55B008763BD /* RCPubRecommendView.m in Sources */ = {isa = PBXBuildFile; fileRef = C430C1C81D0EF55B008763BD /* RCPubRecommendView.m */; };
@@ -749,6 +750,8 @@
 		C4F7E4B91D10041B00485746 /* RCPubRecViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCPubRecViewCell.m; path = View/RCPubRecViewCell.m; sourceTree = "<group>"; };
 		C4F7E4BD1D113A8800485746 /* RcFollowedButon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RcFollowedButon.h; sourceTree = "<group>"; };
 		C4F7E4BE1D113A8800485746 /* RcFollowedButon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RcFollowedButon.m; sourceTree = "<group>"; };
+		C4F7E4C01D13E1C000485746 /* PublisherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublisherViewController.h; sourceTree = "<group>"; };
+		C4F7E4C11D13E1C000485746 /* PublisherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublisherViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1137,6 +1140,8 @@
 				569773211C9AC5BD00D25338 /* RCSettingTagTableViewController.m */,
 				C4CF960E1CFD764E00786982 /* RCCityViewController.h */,
 				C4CF960F1CFD764E00786982 /* RCCityViewController.m */,
+				C4F7E4C01D13E1C000485746 /* PublisherViewController.h */,
+				C4F7E4C11D13E1C000485746 /* PublisherViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2056,7 +2061,6 @@
 				564596BA1C732A84006D8493 /* UIViewController+LewPopupViewController.m in Sources */,
 				C4D8DFC51CC65B89005DA9B3 /* RCSearchModel.m in Sources */,
 				561D01F81C47DA5600E4E013 /* AFSecurityPolicy.m in Sources */,
-				959B64F71D1934E4009E7C6B /* RCMyFocusCell.m in Sources */,
 				569079DE1CA8F8AA00DEBF6F /* RCBarButtonView.m in Sources */,
 				C4CAD1BD1C7B3943003FD0B0 /* TagModel.m in Sources */,
 				C4CF96131CFD769200786982 /* CityCollectionViewCell.m in Sources */,
@@ -2066,6 +2070,7 @@
 				56F02CAF1CA2884B00E0BBB4 /* MJRefreshAutoGifFooter.m in Sources */,
 				56B9CD3A1C807A7100914F00 /* UIImageView+WebCache.m in Sources */,
 				5674AF991C70B99100184A31 /* CZActivityCell.m in Sources */,
+				95E4B4D51D1A9C9300FC2EB9 /* RCMyFocusCell.m in Sources */,
 				56E523641C75AC1500794B0E /* CZAboutUsViewController.m in Sources */,
 				56E8C6701C8A2BD000435758 /* CZRemintTimeView.m in Sources */,
 				56E3C01B1C9C72BD00BDAE19 /* CZRemindView.m in Sources */,
@@ -2164,6 +2169,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				561D011D1C47D94C00E4E013 /* rcTests.m in Sources */,
+				95E4B4D41D1A9C8A00FC2EB9 /* RCMyFocusCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

@@ -238,7 +238,7 @@
         view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 60, 30)];
         label.font = [UIFont systemFontOfSize:12];
-        label.text = @"主讲人";
+        label.text = @"发布者";
         label.textColor = textcolor;
         [view addSubview:label];
     }else
@@ -246,7 +246,7 @@
         view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 60, 30)];
         label.font = [UIFont systemFontOfSize:12];
-        label.text = @"更多内容";
+        label.text = @"活动详情";
         label.textColor = textcolor;
         [view addSubview:label];
     }
@@ -307,7 +307,7 @@
         }
             break;
         case 2:
-        {//主讲人
+        {//发布者
             UITableViewCell *cell = [[UITableViewCell alloc]init];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
             UILabel *acIntroduce = [[UILabel alloc]init];
@@ -475,10 +475,12 @@
 - (CGFloat)heightForAcInfoCell
 {
     CGSize maxSize = CGSizeMake(kScreenWidth - 55, MAXFLOAT);
+    CGSize speakerMaxSize = CGSizeMake(kScreenWidth - 70, MAXFLOAT);
     CGSize placeSize = [self sizeWithText:self.activitymodel.acPlace maxSize:maxSize fontSize:FONTSIZE];
     CGSize scaleSize = [self sizeWithText:self.activitymodel.acSize maxSize:maxSize fontSize:FONTSIZE];
     CGSize paySize = [self sizeWithText:self.activitymodel.acPay maxSize:maxSize fontSize:FONTSIZE];
-    return (int)placeSize.height + (int)scaleSize.height + (int)paySize.height + 3 + 4 *PADDING;
+    CGSize speakerSize = [self sizeWithText:self.activitymodel.acDesc maxSize:speakerMaxSize fontSize:FONTSIZE];
+    return (int)placeSize.height + (int)scaleSize.height + (int)paySize.height + (int)speakerSize.height+ 3 + 5 *PADDING;
 }
 #pragma mark - UIWebView Delegate Methods
 -(void)webViewDidFinishLoad:(UIWebView *)webView

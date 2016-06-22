@@ -10,7 +10,7 @@
 #import "RCNetworkingRequestOperationManager.h"
 #import "RCHomeRefreshHeader.h"
 #import "MJRefresh.h"
-#include "RCMyFocusModel.h"
+#import "RCMyFocusModel.h"
 #import "RCMyFocusCell.h"
 #import "Masonry.h"
 @interface RCMyFocusTableViewController ()<UITableViewDataSource, UITableViewDelegate>
