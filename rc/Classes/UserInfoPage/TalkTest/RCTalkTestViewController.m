@@ -137,51 +137,77 @@
 }
 - (void)click:(id)button
 {
+//    NSNumber *conersation = [[NSNumber alloc]initWithInt:ConversationType_PRIVATE];
+//    NSNumber *conersation1 = [[NSNumber alloc]initWithInt:ConversationType_PRIVATE];
+//    
+//    RCConversation *talk = [[RCConversation alloc]init];
+//    talk.targetId = @"15";
+//    talk.conversationTitle = @"与21号聊天";
+//    
+//    RCConversationModel *model = [[RCConversationModel alloc]init:RC_CONVERSATION_MODEL_TYPE_COLLECTION conversation:talk extend:nil];
+//    
+//    RCConversationListViewController *vc = [[RCConversationListViewController alloc]initWithDisplayConversationTypes:@[conersation] collectionConversationType:@[conersation,conersation1]];
+//    
+//    NSMutableArray *talkList = [[NSMutableArray alloc]init];
+//    [talkList addObject:model];
+//    vc.conversationListDataSource = talkList;
+//    [vc didTapCellPortrait:model];
+    //新建一个聊天会话View Controller对象
+    RCConversationViewController *chat = [[RCConversationViewController alloc]init];
+    //设置会话的类型，如单聊、讨论组、群聊、聊天室、客服、公众服务会话等
+    chat.conversationType = ConversationType_PRIVATE;
+    //设置会话的目标会话ID。（单聊、客服、公众服务会话为对方的ID，讨论组、群聊、聊天室为会话的ID）
+    chat.targetId = @"15";
+    //设置聊天会话界面要显示的标题
+    chat.title = @"与15号聊天";
+    //显示聊天会话界面
+    [self.navigationController pushViewController:chat animated:YES];
     
-    NSString *urlStr = @"http://appv2.myrichang.com/Home/Message/getToken";
-    NetWorkingRequestType type = GET;
-    NSString *usr_id = [userDefaults objectForKey:@"userId"];
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",nil];
-    [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
-        id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-        NSString *token = [dict valueForKey:@"token"];
-    
-        static dispatch_once_t pred;
-        dispatch_once(&pred, ^{
-           
-            [[RCIM sharedRCIM] connectWithToken:token success:^(NSString *userId) {
-                NSLog(@"登陆成功。当前登录的用户ID：%@", userId);
-            } error:^(RCConnectErrorCode status) {
-                
-            } tokenIncorrect:^{
-                
-            }];
-        });
-        
-//        RCConversationViewController *vc = [[RCConversationViewController alloc]initWithConversationType:ConversationType_PRIVATE targetId:@"21"];
+    //[self.navigationController pushViewController:vc animated:YES];
+//    NSString *urlStr = @"http://appv2.myrichang.com/Home/Message/getToken";
+//    NetWorkingRequestType type = GET;
+//    NSString *usr_id = [userDefaults objectForKey:@"userId"];
+//    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",nil];
+//    [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
+//        id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+//        NSString *token = [dict valueForKey:@"token"];
+//    
+//        static dispatch_once_t pred;
+//        dispatch_once(&pred, ^{
+//           
+//            [[RCIM sharedRCIM] connectWithToken:token success:^(NSString *userId) {
+//                NSLog(@"登陆成功。当前登录的用户ID：%@", userId);
+//            } error:^(RCConnectErrorCode status) {
+//                
+//            } tokenIncorrect:^{
+//                
+//            }];
+//        });
+//        
+////        RCConversationViewController *vc = [[RCConversationViewController alloc]initWithConversationType:ConversationType_PRIVATE targetId:@"21"];
+////        [self.navigationController pushViewController:vc animated:YES];
+//
+//        NSNumber *conersation = [[NSNumber alloc]initWithInt:ConversationType_PRIVATE];
+//        NSNumber *conersation1 = [[NSNumber alloc]initWithInt:ConversationType_PRIVATE];
+//        
+//        RCConversation *talk = [[RCConversation alloc]init];
+//        talk.targetId = @"21";
+//        talk.conversationTitle = @"与21号聊天";
+//        
+//        RCConversationModel *model = [[RCConversationModel alloc]init:RC_CONVERSATION_MODEL_TYPE_COLLECTION conversation:talk extend:nil];
+//        
+//        RCConversationListViewController *vc = [[RCConversationListViewController alloc]initWithDisplayConversationTypes:@[conersation] collectionConversationType:@[conersation,conersation1]];
+//        
+//        NSMutableArray *talkList = [[NSMutableArray alloc]init];
+//        [talkList addObject:model];
+//        vc.conversationListDataSource = talkList;
+//        [vc didTapCellPortrait:model];
 //        [self.navigationController pushViewController:vc animated:YES];
-
-        NSNumber *conersation = [[NSNumber alloc]initWithInt:ConversationType_PRIVATE];
-        NSNumber *conersation1 = [[NSNumber alloc]initWithInt:ConversationType_PRIVATE];
-        
-        RCConversation *talk = [[RCConversation alloc]init];
-        talk.targetId = @"21";
-        talk.conversationTitle = @"与21号聊天";
-        
-        RCConversationModel *model = [[RCConversationModel alloc]init:RC_CONVERSATION_MODEL_TYPE_COLLECTION conversation:talk extend:nil];
-        
-        RCConversationListViewController *vc = [[RCConversationListViewController alloc]initWithDisplayConversationTypes:@[conersation] collectionConversationType:@[conersation,conersation1]];
-        
-        NSMutableArray *talkList = [[NSMutableArray alloc]init];
-        [talkList addObject:model];
-        vc.conversationListDataSource = talkList;
-        [vc didTapCellPortrait:model];
-        [self.navigationController pushViewController:vc animated:YES];
-        
-    } errorBlock:^(NSError *error) {
-        NSLog(@"请求失败:%@",error);
-    }];
-
+//        
+//    } errorBlock:^(NSError *error) {
+//        NSLog(@"请求失败:%@",error);
+//    }];
+//
     
 
 

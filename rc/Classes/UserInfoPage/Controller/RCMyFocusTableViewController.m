@@ -13,7 +13,7 @@
 #import "RCMyFocusModel.h"
 #import "RCMyFocusCell.h"
 #import "Masonry.h"
-@interface RCMyFocusTableViewController ()<UITableViewDataSource, UITableViewDelegate>
+@interface RCMyFocusTableViewController ()
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) UISearchBar *searchBar;
 @property (nonatomic, strong) NSMutableArray *focus;
@@ -36,6 +36,10 @@
     [self setSubviews];
     self.tableView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewFocus)];
     [self getFocusList];
+    UITapGestureRecognizer *gestureRecognizer = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(hideKeyboard)];
+    gestureRecognizer.numberOfTapsRequired = 1;
+    gestureRecognizer.cancelsTouchesInView = NO;
+    [self.tableView addGestureRecognizer:gestureRecognizer];;
     //self.tableView.mj_footer= [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreFans)];
 }
 #pragma mark - 发出网络请求，获取我的关注列表
@@ -151,8 +155,18 @@
     //
     //        [self.navigationItem setRightBarButtonItem:rightButton];
 }
-#pragma mark - Table view data source
+- (void)hideKeyboard
+{
+    self.searchBar.text = @"";
+    [self.searchBar resignFirstResponder];
 
+}
+#pragma mark - Table view data delegate
+- (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    NSLog(@"row :%ld",indexPath.row);
+}
+#pragma mark - Table view data source
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     return 1;
@@ -187,6 +201,7 @@
 {
     return 55;
 }
+
 - (void)backToForwardViewController
 {
     [self.navigationController popViewControllerAnimated:YES];

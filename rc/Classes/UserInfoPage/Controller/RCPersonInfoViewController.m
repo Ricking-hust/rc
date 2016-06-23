@@ -251,7 +251,7 @@
             [self getFocus];
         }else
         {
-            
+            [self getNews];
         }
     }
     else
@@ -261,7 +261,12 @@
     }
 
 }
-
+#pragma mark - 获取我的消息
+- (void) getNews
+{
+    RCTalkTestViewController *vc = [[RCTalkTestViewController alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
+}
 #pragma mark - 获取我的粉丝
 - (void) getFans
 {

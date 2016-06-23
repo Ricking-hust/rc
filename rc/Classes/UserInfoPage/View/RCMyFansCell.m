@@ -12,7 +12,7 @@
 #import "Masonry.h"
 #import "MBProgressHUD.h"
 @interface RCMyFansCell()
-@property (nonatomic, strong) MBProgressHUD    *HUD;
+//@property (nonatomic, strong) MBProgressHUD    *HUD;
 @property (nonatomic, strong) NSTimer *timer;
 @end
 @implementation RCMyFansCell
@@ -114,10 +114,10 @@
  */
 - (void)cancelFollow:(UIButton *)button
 {
-    self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
-    self.HUD.removeFromSuperViewOnHide = YES;
-    [self.view addSubview:self.HUD];
-    [self.HUD showAnimated:YES];
+//    self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+//    self.HUD.removeFromSuperViewOnHide = YES;
+//    [self.view addSubview:self.HUD];
+//    [self.HUD showAnimated:YES];
     if ([button.titleLabel.text isEqualToString:@"加关注"])
     {
         [self cancelFollowUserRequest:self.model.usr_id WithOpertaionType:@"1"];
@@ -139,13 +139,23 @@
         NSNumber *code = [dict valueForKey:@"code"];
         if ([code isEqualToNumber:[[NSNumber alloc]initWithInt:200]])//msg=操作成功
         {
-            self.HUD.mode = MBProgressHUDModeCustomView;
-            self.HUD.label.text = @"关注成功";
-            [self.HUD hideAnimated:YES afterDelay:0.6];
+
+        }else if ([code isEqualToNumber:[[NSNumber alloc]initWithInt:210]])//msg = 操作失败
+        {
+            
+        }else if ([code isEqualToNumber:[[NSNumber alloc]initWithInt:220]])//msg = 关注失败
+        {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
+            
+            // Set the annular determinate mode to show task progress.
+            hud.mode = MBProgressHUDModeText;
+            hud.label.text = @"这只是测试";
+            [hud hideAnimated:YES afterDelay:0.6f];
+            
+        }else//msg = 取消息关注失败
+        {
+            
         }
-        self.HUD.mode = MBProgressHUDModeCustomView;
-        self.HUD.label.text = @"这只是测试";
-        [self.HUD hideAnimated:YES afterDelay:0.6];
 
     } errorBlock:^(NSError *error) {
         

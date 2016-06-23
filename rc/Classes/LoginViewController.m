@@ -14,6 +14,9 @@
 #import "RegisteViewController.h"
 #import "ResetPasswordViewController.h"
 #import "CZHomeViewController.h"
+#import "RCNetworkingRequestOperationManager.h"
+#import <RongIMKit/RongIMKit.h>
+#import <RongIMLib/RongIMLib.h>
 static CGFloat const kContainViewYNormal = 70.0;
 
 @interface LoginViewController ()
@@ -216,6 +219,7 @@ static CGFloat const kContainViewYNormal = 70.0;
         [[DataManager manager] UserLoginOrRegisteWithUserphone:self.usernameField.text password:self.passwordField.text op_type:@"1" success:^(UserModel *user) {
             [DataManager manager].user = user;
             [self endLogin];
+            [self connectToRCIM];
             [self.navigationController popToRootViewControllerAnimated:YES];
         } failure:^(NSError *error) {
             NSString *reasonString;
@@ -236,7 +240,43 @@ static CGFloat const kContainViewYNormal = 70.0;
 
     }
 }
+#pragma mark - 用户登录后，请求token，用token连接融云服务器
+- (void)connectToRCIM
+{
+    NSString *urlStr = @"http://appv2.myrichang.com/Home/Message/getToken";
+    NetWorkingRequestType type = GET;
+    NSString *usr_id = [userDefaults objectForKey:@"userId"];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",nil];
+    [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
+        id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        NSNumber *code = [dict valueForKey:@"code"];
+        if ([code isEqualToNumber:[[NSNumber alloc]initWithInt:200]])//msg = 获取成功
+        {
+            
+            NSString *token = [dict valueForKey:@"token"];
+            [userDefaults setObject:token forKey:@"token"];
+            static dispatch_once_t pred;
+            dispatch_once(&pred, ^{
+                
+                [[RCIM sharedRCIM] connectWithToken:token success:^(NSString *userId) {
+                    NSLog(@"登陆成功。当前登录的用户ID：%@", userId);
+                } error:^(RCConnectErrorCode status) {
+                    
+                } tokenIncorrect:^{
+                    
+                }];
+            });
+        }else//msg = 获取失败
+        {
+            ;
+        }
+                
+    } errorBlock:^(NSError *error) {
+        NSLog(@"请求失败:%@",error);
+    }];
 
+        
+}
 -(void)goPassword{
     [self.passwordField becomeFirstResponder];
 }

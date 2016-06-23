@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RCMyFocusTableViewController : UIViewController
+@interface RCMyFocusTableViewController : UIViewController<UITableViewDataSource, UITableViewDelegate,UIGestureRecognizerDelegate>
 
 @end

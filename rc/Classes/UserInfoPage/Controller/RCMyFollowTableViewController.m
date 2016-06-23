@@ -54,7 +54,7 @@
 {
     NSString *URLString = @"http://appv2.myrichang.com/home/Person/getFollows";
     NSString *usr_id = [userDefaults objectForKey:@"userId"];
-    NSDictionary *parameters = [[NSDictionary alloc]initWithObjectsAndKeys:usr_id,@"usr_id",@"2",@"op_type", nil];
+    NSDictionary *parameters = [[NSDictionary alloc]initWithObjectsAndKeys:usr_id,@"usr_id",@"1",@"op_type", nil];
     
     [RCNetworkingRequestOperationManager request:URLString requestType:GET parameters:parameters completeBlock:^(NSData *data) {
         id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
