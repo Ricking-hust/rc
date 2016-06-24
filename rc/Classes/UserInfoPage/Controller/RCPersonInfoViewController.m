@@ -26,6 +26,7 @@
 #import "RCMyReleaseViewController.h"
 #import "RCMyFollowTableViewController.h"
 #import "RCMyFocusTableViewController.h"
+#import "RCChatListViewController.h"
 //==================测试聊天=====================
 #import "RCTalkTestViewController.h"
 
@@ -73,7 +74,54 @@
     [self setNavigation];
 
 }
+#pragma mark - 显示粉丝，关注与消息数
+- (void)displayNumbersAtCell:(RCPersonNewsCell *)cell
+{
 
+    NSString *URLString = @"http://appv2.myrichang.com/home/Person/getFollows";
+    NSString *usr_id = [userDefaults objectForKey:@"userId"];
+    NSDictionary *fansParam = [[NSDictionary alloc]initWithObjectsAndKeys:usr_id,@"usr_id",@"1",@"op_type", nil];
+    //显示粉丝数
+    [RCNetworkingRequestOperationManager request:URLString requestType:GET parameters:fansParam completeBlock:^(NSData *data) {
+        id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        NSArray *fansNum = [dict valueForKey:@"data"];
+
+
+        cell.fans.numbers.text = [NSString stringWithFormat:@"%ld",[fansNum count]];
+        [cell.fans setConstraints];
+        [cell.fans mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(cell.contentView);
+            make.left.equalTo(cell.contentView.mas_left).offset(kScreenWidth * 0.12);
+        }];
+
+
+    } errorBlock:^(NSError *error) {
+        NSLog(@"网络请求错误:%@",error);
+    }];
+    //显示关注数
+        NSDictionary *focusParam = [[NSDictionary alloc]initWithObjectsAndKeys:usr_id,@"usr_id",@"2",@"op_type", nil];
+    [RCNetworkingRequestOperationManager request:URLString requestType:GET parameters:focusParam completeBlock:^(NSData *data) {
+        id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        NSArray *focusNum = [dict valueForKey:@"data"];
+        
+        cell.foucs.numbers.text = [NSString stringWithFormat:@"%ld",[focusNum count]];
+        [cell.foucs setConstraints];
+        [cell.foucs mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(cell.contentView);
+            make.centerX.equalTo(cell.contentView);
+        }];
+    } errorBlock:^(NSError *error) {
+        NSLog(@"网络请求错误:%@",error);
+    }];
+    //显示消息数暂时未设置
+    cell.news.numbers.text = @"0";
+    [cell.news setConstraints];
+    [cell.news mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(cell.contentView);
+        make.right.equalTo(cell.contentView.mas_right).offset(-kScreenWidth* 0.12);
+    }];
+    
+}
 - (void)setNavigation
 {
     self.tittleLable = [[UILabel alloc]init];
@@ -200,15 +248,14 @@
         
         if (self.isLogin == YES)
         {
-            person_news.fans.numbers.text  = @"234";
-            person_news.foucs.numbers.text = @"421";
-            person_news.news.numbers.text  = @"100";
+            [self displayNumbersAtCell:person_news];
         }
         else
         {
             person_news.fans.numbers.text  = @"0";
             person_news.foucs.numbers.text = @"0";
             person_news.news.numbers.text  = @"0";
+
         }
 
         [person_news setConstraint];
@@ -264,8 +311,10 @@
 #pragma mark - 获取我的消息
 - (void) getNews
 {
-    RCTalkTestViewController *vc = [[RCTalkTestViewController alloc]init];
-    [self.navigationController pushViewController:vc animated:YES];
+    RCChatListViewController *chatList = [[RCChatListViewController alloc]init];
+    [self.navigationController pushViewController:chatList animated:YES];
+//    RCTalkTestViewController *vc = [[RCTalkTestViewController alloc]init];
+//    [self.navigationController pushViewController:vc animated:YES];
 }
 #pragma mark - 获取我的粉丝
 - (void) getFans

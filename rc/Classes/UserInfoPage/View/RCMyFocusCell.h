@@ -12,7 +12,9 @@
 @property (nonatomic, strong) UIImageView *userImageView;
 @property (nonatomic, strong) UILabel *userNameLabel;
 @property (nonatomic, strong) UIView *segmentView;
+@property (nonatomic, strong) UIButton *cancelFocus;
 @property (nonatomic, assign) BOOL isLastCell;
+@property (nonatomic, strong) UIView *view;
 @property (nonatomic, strong) RCMyFocusModel *model;
 /**
  *  生成可复用的Cell

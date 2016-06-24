@@ -12,7 +12,7 @@
 #import "Masonry.h"
 #import "MBProgressHUD.h"
 @interface RCMyFansCell()
-//@property (nonatomic, strong) MBProgressHUD    *HUD;
+@property (nonatomic, strong) MBProgressHUD    *HUD;
 @property (nonatomic, strong) NSTimer *timer;
 @end
 @implementation RCMyFansCell
@@ -82,15 +82,15 @@
         self.focusButton.layer.borderColor = color.CGColor;
         self.focusButton.layer.borderWidth = 1.0f;
         self.focusButton.layer.cornerRadius = 3.0f;
-        self.focusButton.titleLabel.font = [UIFont systemFontOfSize:12];
+        self.focusButton.titleLabel.font = [UIFont systemFontOfSize:13];
         [self.focusButton setTitle:@"加关注" forState:UIControlStateNormal];
         [self.focusButton setTitleColor:color forState:UIControlStateNormal];
         [self.focusButton addTarget:self action:@selector(cancelFollow:) forControlEvents:UIControlEventTouchUpInside];
         [self.focusButton mas_updateConstraints:^(MASConstraintMaker *make) {
             make.centerY.equalTo(self.contentView);
             make.right.equalTo(self.contentView.mas_right).offset(-15);
-            make.width.mas_equalTo(45);
-            make.height.mas_equalTo(20);
+            make.width.mas_equalTo(50);
+            make.height.mas_equalTo(22);
         }];
         if (self.isLastCell == NO)
         {
@@ -114,10 +114,11 @@
  */
 - (void)cancelFollow:(UIButton *)button
 {
-//    self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
-//    self.HUD.removeFromSuperViewOnHide = YES;
-//    [self.view addSubview:self.HUD];
-//    [self.HUD showAnimated:YES];
+    self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    self.HUD.removeFromSuperViewOnHide = YES;
+    [self.view addSubview:self.HUD];
+    [self.HUD showAnimated:YES];
+     NSLog(@"cell usrid = %@",self.model.usr_id);
     if ([button.titleLabel.text isEqualToString:@"加关注"])
     {
         [self cancelFollowUserRequest:self.model.usr_id WithOpertaionType:@"1"];
@@ -137,7 +138,7 @@
     [RCNetworkingRequestOperationManager request:URLString requestType:GET parameters:parameters completeBlock:^(NSData *data) {
         id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
         NSNumber *code = [dict valueForKey:@"code"];
-        if ([code isEqualToNumber:[[NSNumber alloc]initWithInt:200]])//msg=操作成功
+        if ([code isEqualToNumber:[[NSNumber alloc]initWithInt:200]])//msg = 操作成功
         {
 
         }else if ([code isEqualToNumber:[[NSNumber alloc]initWithInt:210]])//msg = 操作失败
@@ -145,18 +146,15 @@
             
         }else if ([code isEqualToNumber:[[NSNumber alloc]initWithInt:220]])//msg = 关注失败
         {
-            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.view animated:YES];
-            
-            // Set the annular determinate mode to show task progress.
-            hud.mode = MBProgressHUDModeText;
-            hud.label.text = @"这只是测试";
-            [hud hideAnimated:YES afterDelay:0.6f];
             
         }else//msg = 取消息关注失败
         {
             
         }
-
+        NSLog(@"msg = %@",[dict valueForKey:@"msg"]);
+        self.HUD.mode = MBProgressHUDModeCustomView;
+        self.HUD.label.text = @"test";
+        [self.HUD hideAnimated:YES afterDelay:0.6];
     } errorBlock:^(NSError *error) {
         
     }];

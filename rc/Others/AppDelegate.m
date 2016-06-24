@@ -34,7 +34,7 @@
 //================融云SDK头文件=======================
 #import <RongIMKit/RongIMKit.h>
 
-@interface AppDelegate ()
+@interface AppDelegate ()<RCIMUserInfoDataSource>
 
 @end
 
@@ -165,11 +165,18 @@
     [alert addAction:action];
     [self.window.rootViewController showDetailViewController:alert sender:nil];
 }
-
+- (void)getUserInfoWithUserId:(NSString *)userId completion:(void (^)(RCUserInfo *))completion
+{
+    //NSLog(@"userID %@",userId);
+//    RCUserInfo *userInfo = [[RCUserInfo alloc]init];
+//    userInfo.portraitUri = [userDefaults valueForKey:@"userPic"];
+//    completion(userInfo);
+}
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
-    [[RCIM sharedRCIM] initWithAppKey:@"25wehl3uwn16w"];    
+    [[RCIM sharedRCIM] initWithAppKey:@"25wehl3uwn16w"];
+    [[RCIM sharedRCIM] setUserInfoDataSource:self];
+    [[RCIM sharedRCIM] setEnableTypingStatus:YES];
     if ([DataManager manager].user.isLogin == YES && ![[userDefaults valueForKey:@"token"] isEqualToString:@""])//如果用户已登录则连接融云服务器,且token不为空
     {
         NSString *token = [userDefaults valueForKey:@"token"];

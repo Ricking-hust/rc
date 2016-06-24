@@ -7,7 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import <RongIMKit/RongIMKit.h>
 @interface RCTalkTestViewController : UIViewController
 
 @end
