@@ -10,6 +10,12 @@
 #import <RongIMKit/RongIMKit.h>
 #import <RongIMLib/RongIMLib.h>
 #import "RCNetworkingRequestOperationManager.h"
+#import "Masonry.h"
+#import "chatList.h"
+@interface RCTalkTestViewController()<UITextFieldDelegate>
+@property(nonatomic, strong) UITextField *textField ;
+@property(nonatomic, assign) CGFloat height ;
+@end
 @implementation RCTalkTestViewController
 
 
@@ -27,6 +33,96 @@
     [self.view addSubview:upButton];
     [upButton addTarget:self action:@selector(up:) forControlEvents:UIControlEventTouchUpInside];
     
+    self.textField = [[UITextField alloc]init];
+    self.textField.delegate = self;
+    self.textField.backgroundColor = [UIColor redColor];
+    [self.view addSubview:self.textField];
+    [self.textField mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.right.left.bottom.equalTo(self.view);
+        make.height.mas_equalTo(20);
+    }];
+    
+    
+    //增加监听，当键盘出现或改变时收出消息
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillShow:)
+                                                 name:UIKeyboardWillShowNotification
+                                               object:nil];
+    
+    //增加监听，当键退出时收出消息
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(keyboardWillHide:)
+                                                 name:UIKeyboardWillHideNotification
+                                               object:nil];
+    
+}
+//当键盘出现或改变时调用
+- (void)keyboardWillShow:(NSNotification *)aNotification
+{
+    //获取键盘的高度
+    NSDictionary *userInfo = [aNotification userInfo];
+    NSValue *aValue = [userInfo objectForKey:UIKeyboardFrameEndUserInfoKey];
+    CGRect keyboardRect = [aValue CGRectValue];
+    self.height = keyboardRect.size.height;
+    
+    //设置动画的名字
+    [UIView beginAnimations:@"Animation" context:nil];
+    //设置动画的间隔时间
+    [UIView setAnimationDuration:0.60];
+    //⭐️使用当前正在运行的状态开始下一段动画
+    [UIView setAnimationBeginsFromCurrentState: YES];
+    //设置视图移动的位移
+    self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y - self.height, self.view.frame.size.width, self.view.frame.size.height);
+    //设置动画结束
+    [UIView commitAnimations];
+   // NSLog(@"%f",self.height);
+//    CGFloat x = self.view.bounds.origin.x;
+//    CGFloat y = self.view.bounds.origin.y;
+//    CGFloat width = self.view.bounds.size.width;
+//    CGFloat height1 = self.view.bounds.size.height;
+//    CGFloat newY = 20 + height1 + height;
+//    [self.view setBounds:CGRectMake(x, newY, width, height1)];
+    
+}
+
+//当键退出时调用
+- (void)keyboardWillHide:(NSNotification *)aNotification
+{
+    
+}
+//***更改frame的值***//
+//在UITextField 编辑之前调用方法
+- (void)textFieldDidBeginEditing:(UITextField *)textField
+{
+//    //设置动画的名字
+//    [UIView beginAnimations:@"Animation" context:nil];
+//    //设置动画的间隔时间
+//    [UIView setAnimationDuration:0.20];
+//    //⭐️使用当前正在运行的状态开始下一段动画
+//    [UIView setAnimationBeginsFromCurrentState: YES];
+//    //设置视图移动的位移
+//    self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y - 258, self.view.frame.size.width, self.view.frame.size.height);
+//    //设置动画结束
+//    [UIView commitAnimations];
+}
+//在UITextField 编辑完成调用方法
+- (void)textFieldDidEndEditing:(UITextField *)textField
+{
+    //设置动画的名字
+    [UIView beginAnimations:@"Animation" context:nil];
+    //设置动画的间隔时间
+    [UIView setAnimationDuration:0.60];
+    //⭐️使用当前正在运行的状态开始下一段动画
+    [UIView setAnimationBeginsFromCurrentState: YES];
+    //设置视图移动的位移
+    NSLog(@"%f",self.height);
+    self.view.frame = CGRectMake(self.view.frame.origin.x, self.view.frame.origin.y + self.height, self.view.frame.size.width, self.view.frame.size.height);
+    //设置动画结束
+    [UIView commitAnimations];
+}
+- (void)touchesBegan:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event
+{
+    [self.textField resignFirstResponder];
 }
 - (void)up:(UIButton *)button
 {
@@ -42,21 +138,72 @@
 }
 - (void)click:(id)button
 {
-    [[RCIM sharedRCIM]connectWithToken:@"QzdjvL+0MjokfTBmlS6gIKQ7HNppyUlZZb+Bu0BEgHpfVXPCwbRMwaraBm7kwdzalfZPt9fFjJzZbo2Jn2BLhw==" success:^(NSString *userId) {
-        
-        NSLog(@"%@",userId);
-        dispatch_async(dispatch_get_main_queue(), ^{
-            RCConversationViewController *vc = [[RCConversationViewController alloc]initWithConversationType:ConversationType_PRIVATE targetId:@"test2"];
-            [self.navigationController pushViewController:vc animated:YES];
-            
-        });
-    } error:^(RCConnectErrorCode status) {
-        
-    } tokenIncorrect:^{
-        
-    }];
+    chatList *vc = [[chatList alloc]init];
+    [self.navigationController pushViewController:vc animated:YES];
     
+//    NSNumber *conersation = [[NSNumber alloc]initWithInt:ConversationType_PRIVATE];
+//    NSNumber *conersation1 = [[NSNumber alloc]initWithInt:ConversationType_PRIVATE];
+//    
+//    RCConversation *talk = [[RCConversation alloc]init];
+//    talk.targetId = @"15";
+//    talk.conversationTitle = @"与21号聊天";
+//    
+//    RCConversationModel *model = [[RCConversationModel alloc]init:RC_CONVERSATION_MODEL_TYPE_COLLECTION conversation:talk extend:nil];
+//    
+//    RCConversationListViewController *vc = [[RCConversationListViewController alloc]initWithDisplayConversationTypes:@[conersation] collectionConversationType:@[conersation,conersation1]];
+//    
+//    NSMutableArray *talkList = [[NSMutableArray alloc]init];
+//    [talkList addObject:model];
+//    vc.conversationListDataSource = talkList;
+//    [vc didTapCellPortrait:model];
     
+    //[self.navigationController pushViewController:vc animated:YES];
+//    NSString *urlStr = @"http://appv2.myrichang.com/Home/Message/getToken";
+//    NetWorkingRequestType type = GET;
+//    NSString *usr_id = [userDefaults objectForKey:@"userId"];
+//    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",nil];
+//    [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
+//        id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+//        NSString *token = [dict valueForKey:@"token"];
+//    
+//        static dispatch_once_t pred;
+//        dispatch_once(&pred, ^{
+//           
+//            [[RCIM sharedRCIM] connectWithToken:token success:^(NSString *userId) {
+//                NSLog(@"登陆成功。当前登录的用户ID：%@", userId);
+//            } error:^(RCConnectErrorCode status) {
+//                
+//            } tokenIncorrect:^{
+//                
+//            }];
+//        });
+//        
+////        RCConversationViewController *vc = [[RCConversationViewController alloc]initWithConversationType:ConversationType_PRIVATE targetId:@"21"];
+////        [self.navigationController pushViewController:vc animated:YES];
+//
+//        NSNumber *conersation = [[NSNumber alloc]initWithInt:ConversationType_PRIVATE];
+//        NSNumber *conersation1 = [[NSNumber alloc]initWithInt:ConversationType_PRIVATE];
+//        
+//        RCConversation *talk = [[RCConversation alloc]init];
+//        talk.targetId = @"21";
+//        talk.conversationTitle = @"与21号聊天";
+//        
+//        RCConversationModel *model = [[RCConversationModel alloc]init:RC_CONVERSATION_MODEL_TYPE_COLLECTION conversation:talk extend:nil];
+//        
+//        RCConversationListViewController *vc = [[RCConversationListViewController alloc]initWithDisplayConversationTypes:@[conersation] collectionConversationType:@[conersation,conersation1]];
+//        
+//        NSMutableArray *talkList = [[NSMutableArray alloc]init];
+//        [talkList addObject:model];
+//        vc.conversationListDataSource = talkList;
+//        [vc didTapCellPortrait:model];
+//        [self.navigationController pushViewController:vc animated:YES];
+//        
+//    } errorBlock:^(NSError *error) {
+//        NSLog(@"请求失败:%@",error);
+//    }];
+//
+    
+
 
 }
 @end

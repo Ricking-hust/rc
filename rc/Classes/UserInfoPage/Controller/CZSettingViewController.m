@@ -164,6 +164,8 @@
     if (indexPath.section == 1) {
         [[DataManager manager] UserLogout];
         [[NSNotificationCenter defaultCenter]postNotificationName:@"scState" object:@"update"];
+        //退出登录消除token
+        [userDefaults setObject:@"" forKey:@"token"];
         [self.navigationController popToRootViewControllerAnimated:YES];
     }
     if (indexPath.section == 0 &&indexPath.row == 0)

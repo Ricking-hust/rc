@@ -9,6 +9,7 @@
 #import "RCNetworkingRequestOperationManager.h"
 
 @implementation RCNetworkingRequestOperationManager
+
 + (id)request:(NSString *)requestUrl requestType:(NetWorkingRequestType)type parameters:(NSDictionary *)dict completeBlock:(completeBlock_t)completeBlock errorBlock:(errorBlock_t)errorBlock
 {
     
@@ -89,6 +90,7 @@
         request.HTTPMethod = @"POST";
         request.HTTPBody = [para dataUsingEncoding:NSUTF8StringEncoding];
     }
+
     request.URL = [NSURL URLWithString:requestUrl];
     request.timeoutInterval = 15;
     request.cachePolicy = 1;

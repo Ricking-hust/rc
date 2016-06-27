@@ -204,6 +204,12 @@
 		56F7BE111CA3CA45005D1475 /* RCNewsNoteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56F7BE101CA3CA45005D1475 /* RCNewsNoteViewController.m */; };
 		56FFF2591CF72A2E00B2C85D /* UserActivity.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FFF2581CF72A2E00B2C85D /* UserActivity.m */; };
 		56FFF25C1CF72A6300B2C85D /* RCTalkTestViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56FFF25B1CF72A6300B2C85D /* RCTalkTestViewController.m */; };
+		950C02D31D1BA70C0001C6EA /* chatList.m in Sources */ = {isa = PBXBuildFile; fileRef = 950C02D21D1BA70C0001C6EA /* chatList.m */; };
+		953E46BE1D182AC000C94CE0 /* RCMyFollowTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 953E46BD1D182AC000C94CE0 /* RCMyFollowTableViewController.m */; };
+		953E46C11D182EB900C94CE0 /* RCMyFansCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 953E46C01D182EB900C94CE0 /* RCMyFansCell.m */; };
+		953E46C41D18337A00C94CE0 /* RCMyFansModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 953E46C31D18337A00C94CE0 /* RCMyFansModel.m */; };
+		959B64F41D192889009E7C6B /* RCMyFocusTableViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 959B64F31D192889009E7C6B /* RCMyFocusTableViewController.m */; };
+		959B64FA1D1936A2009E7C6B /* RCMyFocusModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 959B64F91D1936A2009E7C6B /* RCMyFocusModel.m */; };
 		95BECB161D02A386009BA89B /* BWaterflowLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 95BECB151D02A386009BA89B /* BWaterflowLayout.m */; };
 		95DA800B1D1035C300FA0C3F /* libz.tbd in Frameworks */ = {isa = PBXBuildFile; fileRef = 56E85E0E1CF5D45200754E1B /* libz.tbd */; };
 		95DA80301D10393300FA0C3F /* ShareSDK.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95DA800E1D10393200FA0C3F /* ShareSDK.framework */; };
@@ -219,6 +225,10 @@
 		95DA803A1D10393300FA0C3F /* MOBFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95DA802D1D10393300FA0C3F /* MOBFoundation.framework */; };
 		95DA803B1D10393300FA0C3F /* ShareSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 95DA802E1D10393300FA0C3F /* ShareSDK.bundle */; };
 		95DA803C1D10393300FA0C3F /* ShareSDKConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95DA802F1D10393300FA0C3F /* ShareSDKConnector.framework */; };
+		95DBA8681D1BC14100CFFDAF /* RCChatListViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DBA8671D1BC14100CFFDAF /* RCChatListViewController.m */; };
+		95E404F51D1CD27E00A57B7E /* RCPrivateChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95E404F41D1CD27E00A57B7E /* RCPrivateChatViewController.m */; };
+		95E4B4D41D1A9C8A00FC2EB9 /* RCMyFocusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959B64F61D1934E4009E7C6B /* RCMyFocusCell.m */; };
+		95E4B4D51D1A9C9300FC2EB9 /* RCMyFocusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959B64F61D1934E4009E7C6B /* RCMyFocusCell.m */; };
 		C409CFF41C9A7B0500D01F9D /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C409CFF31C9A7B0500D01F9D /* MBProgressHUD.m */; };
 		C41FC3E81CB7CD4D009A5DCD /* RemindManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C41FC3E71CB7CD4D009A5DCD /* RemindManager.m */; };
 		C430C1C91D0EF55B008763BD /* RCPubRecommendView.m in Sources */ = {isa = PBXBuildFile; fileRef = C430C1C81D0EF55B008763BD /* RCPubRecommendView.m */; };
@@ -253,7 +263,6 @@
 		C4F7E4B71D0FF10500485746 /* PublisherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4B61D0FF10500485746 /* PublisherModel.m */; };
 		C4F7E4BA1D10041B00485746 /* RCPubRecViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4B91D10041B00485746 /* RCPubRecViewCell.m */; };
 		C4F7E4BF1D113A8800485746 /* RcFollowedButon.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4BE1D113A8800485746 /* RcFollowedButon.m */; };
-		C4F7E4C21D13E1C000485746 /* PublisherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4C11D13E1C000485746 /* PublisherViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -633,6 +642,20 @@
 		56FFF2581CF72A2E00B2C85D /* UserActivity.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = UserActivity.m; sourceTree = "<group>"; };
 		56FFF25A1CF72A6300B2C85D /* RCTalkTestViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCTalkTestViewController.h; sourceTree = "<group>"; };
 		56FFF25B1CF72A6300B2C85D /* RCTalkTestViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCTalkTestViewController.m; sourceTree = "<group>"; };
+		950C02D11D1BA70C0001C6EA /* chatList.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = chatList.h; sourceTree = "<group>"; };
+		950C02D21D1BA70C0001C6EA /* chatList.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = chatList.m; sourceTree = "<group>"; };
+		953E46BC1D182AC000C94CE0 /* RCMyFollowTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMyFollowTableViewController.h; sourceTree = "<group>"; };
+		953E46BD1D182AC000C94CE0 /* RCMyFollowTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMyFollowTableViewController.m; sourceTree = "<group>"; };
+		953E46BF1D182EB900C94CE0 /* RCMyFansCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMyFansCell.h; sourceTree = "<group>"; };
+		953E46C01D182EB900C94CE0 /* RCMyFansCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMyFansCell.m; sourceTree = "<group>"; };
+		953E46C21D18337A00C94CE0 /* RCMyFansModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMyFansModel.h; sourceTree = "<group>"; };
+		953E46C31D18337A00C94CE0 /* RCMyFansModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMyFansModel.m; sourceTree = "<group>"; };
+		959B64F21D192889009E7C6B /* RCMyFocusTableViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMyFocusTableViewController.h; sourceTree = "<group>"; };
+		959B64F31D192889009E7C6B /* RCMyFocusTableViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMyFocusTableViewController.m; sourceTree = "<group>"; };
+		959B64F51D1934E4009E7C6B /* RCMyFocusCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMyFocusCell.h; sourceTree = "<group>"; };
+		959B64F61D1934E4009E7C6B /* RCMyFocusCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMyFocusCell.m; sourceTree = "<group>"; };
+		959B64F81D1936A2009E7C6B /* RCMyFocusModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCMyFocusModel.h; sourceTree = "<group>"; };
+		959B64F91D1936A2009E7C6B /* RCMyFocusModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCMyFocusModel.m; sourceTree = "<group>"; };
 		95BECB141D02A386009BA89B /* BWaterflowLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = BWaterflowLayout.h; sourceTree = "<group>"; };
 		95BECB151D02A386009BA89B /* BWaterflowLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = BWaterflowLayout.m; sourceTree = "<group>"; };
 		95DA800E1D10393200FA0C3F /* ShareSDK.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDK.framework; sourceTree = "<group>"; };
@@ -662,6 +685,10 @@
 		95DA802D1D10393300FA0C3F /* MOBFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MOBFoundation.framework; sourceTree = "<group>"; };
 		95DA802E1D10393300FA0C3F /* ShareSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareSDK.bundle; sourceTree = "<group>"; };
 		95DA802F1D10393300FA0C3F /* ShareSDKConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKConnector.framework; sourceTree = "<group>"; };
+		95DBA8661D1BC14100CFFDAF /* RCChatListViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCChatListViewController.h; sourceTree = "<group>"; };
+		95DBA8671D1BC14100CFFDAF /* RCChatListViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCChatListViewController.m; sourceTree = "<group>"; };
+		95E404F31D1CD27E00A57B7E /* RCPrivateChatViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPrivateChatViewController.h; sourceTree = "<group>"; };
+		95E404F41D1CD27E00A57B7E /* RCPrivateChatViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPrivateChatViewController.m; sourceTree = "<group>"; };
 		C409CFF21C9A7B0500D01F9D /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = ../MBProgressHUD.h; sourceTree = "<group>"; };
 		C409CFF31C9A7B0500D01F9D /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = ../MBProgressHUD.m; sourceTree = "<group>"; };
 		C41FC3E61CB7CD4D009A5DCD /* RemindManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemindManager.h; sourceTree = "<group>"; };
@@ -1238,6 +1265,14 @@
 			children = (
 				5634EEEA1CEBB2D1002B4283 /* RCPersonInfoViewController.h */,
 				5634EEEB1CEBB2D1002B4283 /* RCPersonInfoViewController.m */,
+				953E46BC1D182AC000C94CE0 /* RCMyFollowTableViewController.h */,
+				953E46BD1D182AC000C94CE0 /* RCMyFollowTableViewController.m */,
+				959B64F21D192889009E7C6B /* RCMyFocusTableViewController.h */,
+				959B64F31D192889009E7C6B /* RCMyFocusTableViewController.m */,
+				95E404F31D1CD27E00A57B7E /* RCPrivateChatViewController.h */,
+				95E404F41D1CD27E00A57B7E /* RCPrivateChatViewController.m */,
+				95DBA8661D1BC14100CFFDAF /* RCChatListViewController.h */,
+				95DBA8671D1BC14100CFFDAF /* RCChatListViewController.m */,
 				56AD28451CEC597D0080B9DE /* RCSignupViewController.h */,
 				56AD28461CEC597D0080B9DE /* RCSignupViewController.m */,
 				56F54DB01CF07BE300BE264D /* RCMyCollectionViewController.h */,
@@ -1283,6 +1318,10 @@
 				5654C3371C97D4800018DA93 /* RCMyActivityCell.m */,
 				56E6FB0B1CEC3B7400B7B101 /* RCNumWithLabel.h */,
 				56E6FB0C1CEC3B7400B7B101 /* RCNumWithLabel.m */,
+				953E46BF1D182EB900C94CE0 /* RCMyFansCell.h */,
+				953E46C01D182EB900C94CE0 /* RCMyFansCell.m */,
+				959B64F51D1934E4009E7C6B /* RCMyFocusCell.h */,
+				959B64F61D1934E4009E7C6B /* RCMyFocusCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1494,6 +1533,8 @@
 			children = (
 				56FFF25A1CF72A6300B2C85D /* RCTalkTestViewController.h */,
 				56FFF25B1CF72A6300B2C85D /* RCTalkTestViewController.m */,
+				950C02D11D1BA70C0001C6EA /* chatList.h */,
+				950C02D21D1BA70C0001C6EA /* chatList.m */,
 			);
 			path = TalkTest;
 			sourceTree = "<group>";
@@ -1605,6 +1646,10 @@
 			children = (
 				56FFF2571CF72A2E00B2C85D /* UserActivity.h */,
 				56FFF2581CF72A2E00B2C85D /* UserActivity.m */,
+				953E46C21D18337A00C94CE0 /* RCMyFansModel.h */,
+				953E46C31D18337A00C94CE0 /* RCMyFansModel.m */,
+				959B64F81D1936A2009E7C6B /* RCMyFocusModel.h */,
+				959B64F91D1936A2009E7C6B /* RCMyFocusModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -1982,11 +2027,15 @@
 				56D7FB2C1C579511003247AF /* UINavigationBar+Awesome.m in Sources */,
 				56F02CB41CA2884B00E0BBB4 /* MJRefreshBackStateFooter.m in Sources */,
 				56B9CD391C807A7100914F00 /* UIImageView+HighlightedWebCache.m in Sources */,
+				950C02D31D1BA70C0001C6EA /* chatList.m in Sources */,
 				56B9CD301C807A7100914F00 /* SDWebImageDecoder.m in Sources */,
 				56F7BE111CA3CA45005D1475 /* RCNewsNoteViewController.m in Sources */,
 				C457D6C91CAE514B00075D9B /* RCColumnScrollViewDelegate.m in Sources */,
 				561D01FE1C47DA5600E4E013 /* AFAutoPurgingImageCache.m in Sources */,
+				95E404F51D1CD27E00A57B7E /* RCPrivateChatViewController.m in Sources */,
 				56F02CB91CA2884B00E0BBB4 /* MJRefreshConst.m in Sources */,
+				953E46C41D18337A00C94CE0 /* RCMyFansModel.m in Sources */,
+				953E46BE1D182AC000C94CE0 /* RCMyFollowTableViewController.m in Sources */,
 				C4CAD1BE1C7B3943003FD0B0 /* ThemeModel.m in Sources */,
 				569773221C9AC5BD00D25338 /* RCSettingTagTableViewController.m in Sources */,
 				56E2AAAD1C59E229009371F7 /* CZSearchViewController.m in Sources */,
@@ -2005,6 +2054,7 @@
 				C4D8DFED1CC66968005DA9B3 /* TMDiskCache.m in Sources */,
 				562CC4461C6C962100774C22 /* CZTimeSelectView.m in Sources */,
 				56FFF2591CF72A2E00B2C85D /* UserActivity.m in Sources */,
+				959B64FA1D1936A2009E7C6B /* RCMyFocusModel.m in Sources */,
 				C4CAD1BC1C7B3943003FD0B0 /* PlanModel.m in Sources */,
 				561D02121C47DA5600E4E013 /* README.md in Sources */,
 				561D02051C47DA5600E4E013 /* UIRefreshControl+AFNetworking.m in Sources */,
@@ -2033,7 +2083,6 @@
 				564596BA1C732A84006D8493 /* UIViewController+LewPopupViewController.m in Sources */,
 				C4D8DFC51CC65B89005DA9B3 /* RCSearchModel.m in Sources */,
 				561D01F81C47DA5600E4E013 /* AFSecurityPolicy.m in Sources */,
-				C4F7E4C21D13E1C000485746 /* PublisherViewController.m in Sources */,
 				569079DE1CA8F8AA00DEBF6F /* RCBarButtonView.m in Sources */,
 				C4CAD1BD1C7B3943003FD0B0 /* TagModel.m in Sources */,
 				C4CF96131CFD769200786982 /* CityCollectionViewCell.m in Sources */,
@@ -2043,6 +2092,7 @@
 				56F02CAF1CA2884B00E0BBB4 /* MJRefreshAutoGifFooter.m in Sources */,
 				56B9CD3A1C807A7100914F00 /* UIImageView+WebCache.m in Sources */,
 				5674AF991C70B99100184A31 /* CZActivityCell.m in Sources */,
+				95E4B4D51D1A9C9300FC2EB9 /* RCMyFocusCell.m in Sources */,
 				56E523641C75AC1500794B0E /* CZAboutUsViewController.m in Sources */,
 				56E8C6701C8A2BD000435758 /* CZRemintTimeView.m in Sources */,
 				56E3C01B1C9C72BD00BDAE19 /* CZRemindView.m in Sources */,
@@ -2051,9 +2101,11 @@
 				561D02001C47DA5600E4E013 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				C4CF96101CFD764E00786982 /* RCCityViewController.m in Sources */,
 				C4B300161CA44BCC004516B0 /* NSString+MD5.m in Sources */,
+				95DBA8681D1BC14100CFFDAF /* RCChatListViewController.m in Sources */,
 				56B9CD2C1C807A7100914F00 /* MKAnnotationView+WebCache.m in Sources */,
 				C4A8B5BE1D1AD72000C61B5E /* publisherCell.m in Sources */,
 				561D020B1C47DA5600E4E013 /* MASLayoutConstraint.m in Sources */,
+				953E46C11D182EB900C94CE0 /* RCMyFansCell.m in Sources */,
 				563FC6C31CAD0C4E00B7DD25 /* RCCollectionViewLayout.m in Sources */,
 				56E523551C75909A00794B0E /* CZPersonInfoViewController.m in Sources */,
 				56F02CB11CA2884B00E0BBB4 /* MJRefreshAutoStateFooter.m in Sources */,
@@ -2122,6 +2174,7 @@
 				560F36B71CBE7E2B0088AA19 /* WKWebViewJavascriptBridge.m in Sources */,
 				56655EEF1C87189200F4BE9E /* CZDownView.m in Sources */,
 				56E8427B1C4BA74C00D1D198 /* CZTimeCell.m in Sources */,
+				959B64F41D192889009E7C6B /* RCMyFocusTableViewController.m in Sources */,
 				56F02CAD1CA2884B00E0BBB4 /* MJRefreshFooter.m in Sources */,
 				561D020A1C47DA5600E4E013 /* MASConstraintMaker.m in Sources */,
 				561D01F61C47DA5600E4E013 /* AFHTTPSessionManager.m in Sources */,
@@ -2140,6 +2193,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				561D011D1C47D94C00E4E013 /* rcTests.m in Sources */,
+				95E4B4D41D1A9C8A00FC2EB9 /* RCMyFocusCell.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

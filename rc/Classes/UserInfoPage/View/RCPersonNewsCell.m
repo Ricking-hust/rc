@@ -31,8 +31,11 @@
 - (void)setConstraint
 {
     self.fans.label.text  = @"粉丝";
+    self.fans.tag = 10;
     self.foucs.label.text = @"关注";
+    self.foucs.tag = 11;
     self.news.label.text  = @"消息";
+    self.news.tag = 12;
     [self.fans setConstraints];
     [self.fans mas_updateConstraints:^(MASConstraintMaker *make) {
         make.centerY.equalTo(self.contentView);

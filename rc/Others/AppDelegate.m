@@ -34,7 +34,7 @@
 //================融云SDK头文件=======================
 #import <RongIMKit/RongIMKit.h>
 
-@interface AppDelegate ()
+@interface AppDelegate ()<RCIMUserInfoDataSource>
 
 @end
 
@@ -165,12 +165,33 @@
     [alert addAction:action];
     [self.window.rootViewController showDetailViewController:alert sender:nil];
 }
-
+- (void)getUserInfoWithUserId:(NSString *)userId completion:(void (^)(RCUserInfo *))completion
+{
+    //NSLog(@"userID %@",userId);
+//    RCUserInfo *userInfo = [[RCUserInfo alloc]init];
+//    userInfo.portraitUri = [userDefaults valueForKey:@"userPic"];
+//    completion(userInfo);
+}
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.
-    
-    [[RCIM sharedRCIM] initWithAppKey:@"25wehl3uwn16w"];    
-    
+    [[RCIM sharedRCIM] initWithAppKey:@"25wehl3uwn16w"];
+    [[RCIM sharedRCIM] setUserInfoDataSource:self];
+    [[RCIM sharedRCIM] setEnableTypingStatus:YES];
+    if ([DataManager manager].user.isLogin == YES && ![[userDefaults valueForKey:@"token"] isEqualToString:@""])//如果用户已登录则连接融云服务器,且token不为空
+    {
+        NSString *token = [userDefaults valueForKey:@"token"];
+        static dispatch_once_t launchedPred;
+        dispatch_once(&launchedPred, ^{
+            
+            [[RCIM sharedRCIM] connectWithToken:token success:^(NSString *userId) {
+                NSLog(@"app加载完成，登录融云成功。当前登录的用户ID：%@", userId);
+            } error:^(RCConnectErrorCode status) {
+                
+            } tokenIncorrect:^{
+                
+            }];
+        });
+    }
     [self initShareSDK];
     //设置消息通知
     //[self settingNotification];
@@ -209,13 +230,13 @@
 - (void)application:(UIApplication *)application didRegisterForRemoteNotificationsWithDeviceToken:(NSData *)deviceToken
 {
     NSString *string = [[[[deviceToken description] stringByReplacingOccurrencesOfString:@"<" withString:@""] stringByReplacingOccurrencesOfString:@">" withString:@""] stringByReplacingOccurrencesOfString:@" " withString:@""];
-    NSLog(@"deviceTokenString--------------》 : %@",string);
-    NSLog(@"deviceToken ------->: %@",deviceToken);
+    //NSLog(@"deviceTokenString--------------》 : %@",string);
+    //NSLog(@"deviceToken ------->: %@",deviceToken);
     
 }
 // 注册失败回调方法，处理失败情况
 - (void)application:(UIApplication *)application didFailToRegisterForRemoteNotificationsWithError:(NSError *)error {
-    NSLog(@"远程推送注册失败：%@",error);
+    //NSLog(@"远程推送注册失败：%@",error);
     
 }
 /**
@@ -223,7 +244,7 @@
  */
 - (void) application:(UIApplication *)application didReceiveRemoteNotification:(NSDictionary *)userInfo
 {
-    NSLog(@"%@",userInfo);
+    //NSLog(@"%@",userInfo);
 }
 /**
  *  ios8之后，接收消息的代理方法
@@ -235,18 +256,18 @@
 {
     if (application.applicationState == UIApplicationStateInactive)
     {
-        NSLog(@"inactive");
+        //NSLog(@"inactive");
         completionHandler(UIBackgroundFetchResultNewData);
     }else if (application.applicationState == UIApplicationStateBackground)
     {
-        NSLog(@"background");
+        //NSLog(@"background");
         completionHandler(UIBackgroundFetchResultNewData);
     }else if (application.applicationState == UIApplicationStateActive)
     {
-        NSLog(@"active");
+        //NSLog(@"active");
         completionHandler(UIBackgroundFetchResultNewData);
     }
-    NSLog(@"%@",userInfo);
+   // NSLog(@"%@",userInfo);
 }
 - (void)settingNotification
 {
