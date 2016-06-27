@@ -232,6 +232,7 @@
 		C46A93D11C85DA5E009626F6 /* ViewFrameAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = C46A93CF1C85DA5E009626F6 /* ViewFrameAccessor.m */; };
 		C472ABC01CFDCF1E006725B9 /* RCDirectView.m in Sources */ = {isa = PBXBuildFile; fileRef = C472ABBF1CFDCF1E006725B9 /* RCDirectView.m */; };
 		C47606F31CBE86BE00181854 /* RCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C47606F21CBE86BE00181854 /* RCUtils.m */; };
+		C4A8B5BE1D1AD72000C61B5E /* publisherCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A8B5BD1D1AD72000C61B5E /* publisherCell.m */; };
 		C4B300161CA44BCC004516B0 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = C4B300151CA44BCC004516B0 /* NSString+MD5.m */; };
 		C4BBA81A1C89B93300AD02EE /* RegisteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BBA8191C89B93300AD02EE /* RegisteViewController.m */; };
 		C4C05E6D1C842126005E7FEE /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C05E6B1C842126005E7FEE /* EXTScope.m */; };
@@ -689,6 +690,8 @@
 		C472ABBF1CFDCF1E006725B9 /* RCDirectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDirectView.m; sourceTree = "<group>"; };
 		C47606F11CBE86BE00181854 /* RCUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUtils.h; sourceTree = "<group>"; };
 		C47606F21CBE86BE00181854 /* RCUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCUtils.m; sourceTree = "<group>"; };
+		C4A8B5BC1D1AD72000C61B5E /* publisherCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = publisherCell.h; sourceTree = "<group>"; };
+		C4A8B5BD1D1AD72000C61B5E /* publisherCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = publisherCell.m; sourceTree = "<group>"; };
 		C4B300141CA44BCC004516B0 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
 		C4B300151CA44BCC004516B0 /* NSString+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5.m"; sourceTree = "<group>"; };
 		C4BBA8181C89B93300AD02EE /* RegisteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisteViewController.h; sourceTree = "<group>"; };
@@ -1778,6 +1781,8 @@
 				C4CF96121CFD769200786982 /* CityCollectionViewCell.m */,
 				56E842791C4BA74C00D1D198 /* CZTimeCell.h */,
 				56E8427A1C4BA74C00D1D198 /* CZTimeCell.m */,
+				C4A8B5BC1D1AD72000C61B5E /* publisherCell.h */,
+				C4A8B5BD1D1AD72000C61B5E /* publisherCell.m */,
 				56E8427C1C4BB8E500D1D198 /* CZActivityInfoCell.h */,
 				56E8427D1C4BB8E500D1D198 /* CZActivityInfoCell.m */,
 				5674AF971C70B99100184A31 /* CZActivityCell.h */,
@@ -2047,6 +2052,7 @@
 				C4CF96101CFD764E00786982 /* RCCityViewController.m in Sources */,
 				C4B300161CA44BCC004516B0 /* NSString+MD5.m in Sources */,
 				56B9CD2C1C807A7100914F00 /* MKAnnotationView+WebCache.m in Sources */,
+				C4A8B5BE1D1AD72000C61B5E /* publisherCell.m in Sources */,
 				561D020B1C47DA5600E4E013 /* MASLayoutConstraint.m in Sources */,
 				563FC6C31CAD0C4E00B7DD25 /* RCCollectionViewLayout.m in Sources */,
 				56E523551C75909A00794B0E /* CZPersonInfoViewController.m in Sources */,

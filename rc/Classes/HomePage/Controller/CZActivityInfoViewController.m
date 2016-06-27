@@ -16,6 +16,7 @@
 #import "UIViewController+LewPopupViewController.h"
 #import "LewPopupViewAnimationSlide.h"
 #import "UIImageView+WebCache.h"
+#import "UIButton+WebCache.h"
 #import "UINavigationBar+Awesome.h"
 #import "UIImageView+LBBlurredImage.h"
 #import "UIColor+YDAddition.h"
@@ -310,14 +311,20 @@
         {//发布者
             UITableViewCell *cell = [[UITableViewCell alloc]init];
             cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            UILabel *acIntroduce = [[UILabel alloc]init];
-            [cell addSubview:acIntroduce];
+            UIButton *acPublisher = [[UIButton alloc]init];
+            UIButton *followBtn = [[UIButton alloc]init];
+            [cell addSubview:acPublisher];
+            [cell addSubview:followBtn];
+            
             //对cell的控件进行赋值
-            [acIntroduce setText:self.activitymodel.acDesc];
+            [acPublisher sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.userInfo.userPic] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"user2"]];
+            [acPublisher setTitle:self.activitymodel.userInfo.userName forState:UIControlStateNormal];
+            [acPublisher setTitleColor:themeColor forState:UIControlStateNormal];
+            [followBtn setTitle:@"+ 关注" forState:UIControlStateNormal];
+            [followBtn setTitleColor:themeColor forState:UIControlStateNormal];
             
             //对cell的控件进行布局
-            [self setSpeakerCell:cell Constraint:acIntroduce];
-            //[self cell:cell Constraint:acIntroduce];
+            [self setPublisherCell:cell Publisher:acPublisher Follow:followBtn];
             return cell;
         }
             break;
@@ -355,41 +362,19 @@
     }];
 }
 //两端对齐
-- (void) setSpeakerCell:(UITableViewCell *)cell Constraint:(UILabel *)acIntroduce
+- (void) setPublisherCell:(UITableViewCell *)cell Publisher:(UIButton *)publisher Follow:(UIButton *)followBtn
 {
-    CGSize realSize = [self sizeWithText:self.activitymodel.acDesc maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:FONTSIZE];
-    acIntroduce.numberOfLines = 0;
-    CGSize maxSize = CGSizeMake(kScreenWidth - 30, MAXFLOAT);
-    CGSize size = [self sizeWithText:self.activitymodel.acDesc maxSize:maxSize fontSize:FONTSIZE];
-    if (realSize.width > kScreenWidth)
-    {//标签行数为大于1
-        
-        NSString *poetryString = self.activitymodel.acDesc;
-        NSMutableAttributedString *muAttrString = [[NSMutableAttributedString alloc] initWithString:poetryString];
-        NSMutableParagraphStyle *paragtaphStyle = [[NSMutableParagraphStyle alloc] init];
-        paragtaphStyle.alignment = NSTextAlignmentJustified;//两端对齐
-//        paragtaphStyle.paragraphSpacing = 11.0;//段落后面的间距待研究
-//        paragtaphStyle.paragraphSpacingBefore = 11.0;//段落之前的间距待研究
-//        paragtaphStyle.firstLineHeadIndent = 0.0;//首行头缩进待研究
-//        paragtaphStyle.headIndent = 0.0;//头部缩进待研究
-        NSDictionary *dic = @{
-                              NSForegroundColorAttributeName:[UIColor blackColor],
-                              NSFontAttributeName:[UIFont systemFontOfSize:FONTSIZE],
-                              NSParagraphStyleAttributeName:paragtaphStyle,
-                              NSUnderlineStyleAttributeName:[NSNumber numberWithInteger:NSUnderlineStyleNone]
-                              };
-        [muAttrString setAttributes:dic range:NSMakeRange(0, muAttrString.length)];
-        NSAttributedString *attrString = [muAttrString copy];
-        acIntroduce.frame = CGRectMake(15, PADDING, kScreenWidth - 30, (int)size.height+1);
-        acIntroduce.attributedText = attrString;
-        
-    }else
-    {
-        acIntroduce.font = [UIFont systemFontOfSize:FONTSIZE];
-        acIntroduce.frame = CGRectMake(15, PADDING, kScreenWidth - 30, (int)size.height+1);
-        acIntroduce.text = self.activitymodel.acDesc;
-    }
-    
+    [publisher mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(cell.mas_top).offset(PADDING);
+        make.left.equalTo(cell.mas_left).offset(15);
+        make.size.mas_equalTo(CGSizeMake(kScreenWidth-70, 45));
+    }];
+    [followBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(cell.mas_top).offset(PADDING);
+        make.bottom.equalTo(cell.mas_bottom).offset(-PADDING);
+        make.right.equalTo(cell.mas_right).offset(-15);
+        make.width.mas_equalTo(45);
+    }];
 }
 //cell的控件进行赋值
 - (void) setCellValue:(UITableViewCell *)cell AtIndexPath:(NSIndexPath *)indexPath
@@ -467,10 +452,8 @@
     }
 }
 - (CGFloat)heightForSpeakerCell
-{//主讲人Cell的高度
-    CGSize maxSize = CGSizeMake(kScreenWidth - 20, MAXFLOAT);
-    CGSize size = [self sizeWithText:self.activitymodel.acDesc maxSize:maxSize fontSize:FONTSIZE];
-    return (int)size.height + 2*PADDING;
+{//发布者Cell的高度
+    return 45 + 2*PADDING;
 }
 - (CGFloat)heightForAcInfoCell
 {
