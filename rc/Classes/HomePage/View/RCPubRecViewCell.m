@@ -10,7 +10,7 @@
 #import "Masonry.h"
 #import "UIButton+WebCache.h"
 
-static const CGFloat pubPicRadius = 27.5;
+static const CGFloat pubPicRadius = 37.5;
 
 @implementation RCPubRecViewCell
 

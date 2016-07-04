@@ -10,6 +10,7 @@
 #import "ActivityModel.h"
 #import "Masonry.h"
 #import "CZTimeCell.h"
+#import "PublisherCell.h"
 #import "CZActivityInfoCell.h"
 #import "CZRemindMeView.h"
 #import "RemindManager.h"
@@ -45,6 +46,7 @@
 
 @property (nonatomic, strong) UIButton *addSchedule;
 @property (nonatomic, strong) UIButton *signUp;
+@property (nonatomic,strong) UIButton *showComment;
 @property (nonatomic, strong) RCBarButtonView *barButtonView;
 
 @property (nonatomic, strong) MBProgressHUD    *HUD;
@@ -215,6 +217,9 @@
     {
         return 1;
     }
+    if (section == 4) {
+        return 0;
+    }
     return 30;
 }
 
@@ -242,7 +247,8 @@
         label.text = @"发布者";
         label.textColor = textcolor;
         [view addSubview:label];
-    }else
+    }
+    else
     {
         view = [[UIView alloc]initWithFrame:CGRectMake(0, 0,[[UIScreen mainScreen]bounds].size.width, 60.0/2)];
         UILabel *label = [[UILabel alloc]initWithFrame:CGRectMake(15, 0, 60, 30)];
@@ -309,22 +315,9 @@
             break;
         case 2:
         {//发布者
-            UITableViewCell *cell = [[UITableViewCell alloc]init];
-            cell.selectionStyle = UITableViewCellSelectionStyleNone;
-            UIButton *acPublisher = [[UIButton alloc]init];
-            UIButton *followBtn = [[UIButton alloc]init];
-            [cell addSubview:acPublisher];
-            [cell addSubview:followBtn];
-            
+            PublisherCell *cell = [[PublisherCell alloc]init];
             //对cell的控件进行赋值
-            [acPublisher sd_setImageWithURL:[NSURL URLWithString:self.activitymodel.userInfo.userPic] forState:UIControlStateNormal placeholderImage:[UIImage imageNamed:@"user2"]];
-            [acPublisher setTitle:self.activitymodel.userInfo.userName forState:UIControlStateNormal];
-            [acPublisher setTitleColor:themeColor forState:UIControlStateNormal];
-            [followBtn setTitle:@"+ 关注" forState:UIControlStateNormal];
-            [followBtn setTitleColor:themeColor forState:UIControlStateNormal];
-            
-            //对cell的控件进行布局
-            [self setPublisherCell:cell Publisher:acPublisher Follow:followBtn];
+            [cell setSubviewsValueWithImage:self.activitymodel.userInfo.userPic PubName:self.activitymodel.userInfo.userName];
             return cell;
         }
             break;
@@ -336,6 +329,18 @@
             {
                 cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                 [cell.contentView addSubview:self.webView];
+                UIButton *showComBtn = [[UIButton alloc]init];
+                [showComBtn setImage:[UIImage imageNamed:@"moreCom_icon"] forState:UIControlStateNormal];
+                [showComBtn addTarget:self action:@selector(onClickShowCommment) forControlEvents:UIControlEventTouchUpInside];
+                showComBtn.backgroundColor = [UIColor whiteColor];
+                self.showComment = showComBtn;
+                [cell.contentView addSubview:self.showComment];
+                [self.showComment mas_makeConstraints:^(MASConstraintMaker *make) {
+                    make.left.equalTo(cell.contentView.mas_left);
+                    make.right.equalTo(cell.contentView.mas_right);
+                    make.height.mas_equalTo(35);
+                    make.bottom.equalTo(cell.contentView.mas_bottom);
+                }];
                 /* 忽略点击效果 */
                 [cell setSelectionStyle:UITableViewCellSelectionStyleNone];
             }
@@ -361,21 +366,7 @@
         make.height.mas_equalTo((int)size.height + 1);
     }];
 }
-//两端对齐
-- (void) setPublisherCell:(UITableViewCell *)cell Publisher:(UIButton *)publisher Follow:(UIButton *)followBtn
-{
-    [publisher mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(cell.mas_top).offset(PADDING);
-        make.left.equalTo(cell.mas_left).offset(15);
-        make.size.mas_equalTo(CGSizeMake(kScreenWidth-70, 45));
-    }];
-    [followBtn mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(cell.mas_top).offset(PADDING);
-        make.bottom.equalTo(cell.mas_bottom).offset(-PADDING);
-        make.right.equalTo(cell.mas_right).offset(-15);
-        make.width.mas_equalTo(45);
-    }];
-}
+
 //cell的控件进行赋值
 - (void) setCellValue:(UITableViewCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
@@ -448,7 +439,7 @@
         return [self heightForSpeakerCell];
     }else
     {
-        return self.webView.frame.size.height;
+        return self.webView.frame.size.height+35;
     }
 }
 - (CGFloat)heightForSpeakerCell
@@ -1102,6 +1093,18 @@
     [self onClickRemind];
     [self lew_dismissPopupView];
 }
+
+//弹出评论视图
+-(void)onClickShowCommment{
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.showComment mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.height.mas_equalTo(100);
+        }];
+    } completion:^(BOOL finished) {
+        
+    }];
+}
+
 #pragma mark - 废弃
 -(void)displayInfo
 {
