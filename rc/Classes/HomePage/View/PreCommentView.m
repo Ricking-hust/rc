@@ -14,29 +14,79 @@
 
 -(id)initWithFrame:(CGRect)frame{
     if(self =[super initWithFrame:frame]){
-        if (!_collectTooLab) {
-            UILabel *collectToo = [[UILabel alloc]init];
-            _collectTooLab = collectToo;
-            [self addSubview:_collectTooLab];
+        self.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
+        if (!_showCommentBtn) {
+            UIButton *showComBtn = [[UIButton alloc]init];
+            [showComBtn setImage:[UIImage imageNamed:@"moreCom_icon"] forState:UIControlStateNormal];
+            showComBtn.backgroundColor = [UIColor whiteColor];
+            _showCommentBtn = showComBtn;
+            [self addSubview:_showCommentBtn];
+        }
+        
+        if (!_collectTooBtn) {
+            _collectTooH = 0;
+            UIButton *collectToo = [[UIButton alloc]init];
+            [collectToo.titleLabel setFont:[UIFont systemFontOfSize:12]];
+            [collectToo setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            collectToo.backgroundColor = [UIColor whiteColor];
+            _collectTooBtn = collectToo;
+            [self addSubview:_collectTooBtn];
         }
         if (!_checkMoreBtn) {
-            UIButton *checMore = [[UIButton alloc]init];
-            _checkMoreBtn = checMore;
+            _checkMoreBtnH = 0;
+            UIButton *checkMore = [[UIButton alloc]init];
+            _checkMoreBtn = checkMore;
             [self addSubview:_checkMoreBtn];
         }
         _preCommentView = ({
-            UITableView *tableView = [[UITableView alloc]initWithFrame:self.bounds style:UITableViewStylePlain];
+            _preCommentViewH = 0;
+            UITableView *tableView = [[UITableView alloc]init];
             tableView.backgroundColor = [UIColor clearColor];
             tableView.delegate = self;
             tableView.dataSource = self;
+            //tableView.estimatedRowHeight = 80;
             [tableView registerClass:[RCCommentcell class] forCellReuseIdentifier:kCellIdentifier_CommentCell];
             tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
             [self addSubview:tableView];
             tableView;
         });
-
+        if (!_backView) {
+            _backView = [[UIView alloc]init];
+            _backView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
+            [self addSubview:_backView];
+        }
     }
     return self;
+}
+
+-(void)layoutSubviews{
+    [self.showCommentBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.mas_top);
+        make.left.equalTo(self.mas_left);
+        make.right.equalTo(self.mas_right);
+        make.height.mas_equalTo(35);
+    }];
+    
+    [self.collectTooBtn mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.mas_left);
+        make.top.equalTo(self.showCommentBtn.mas_bottom).offset(10);
+        make.right.equalTo(self.mas_right);
+        make.height.mas_equalTo(self.collectTooH);
+    }];
+    
+    [self.preCommentView mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.collectTooBtn.mas_bottom);
+        make.left.equalTo(self.mas_left);
+        make.right.equalTo(self.mas_right);
+        make.height.mas_equalTo(200);
+    }];
+}
+
+-(void)setSubViewsValue{
+    [self.collectTooBtn setTitle:@"大家都收藏了" forState:UIControlStateNormal];
+    [self.collectTooBtn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
+    [self.collectTooBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 30)];
+    [self.checkMoreBtn setTitle:@"查看更多" forState:UIControlStateNormal];
 }
 
 #pragma mark - TableView 数据源
@@ -54,7 +104,7 @@
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 100;
+    return 80;
 }
 
 //section头部间距
@@ -65,7 +115,7 @@
 
 -(UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section{
     UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 3)];
-    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];;
+    view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     return view;
 }
 

@@ -11,6 +11,7 @@
 #import "Masonry.h"
 #import "CZTimeCell.h"
 #import "PublisherCell.h"
+#import "PreCommentView.h"
 #import "CZActivityInfoCell.h"
 #import "CZRemindMeView.h"
 #import "RemindManager.h"
@@ -46,8 +47,8 @@
 
 @property (nonatomic, strong) UIButton *addSchedule;
 @property (nonatomic, strong) UIButton *signUp;
-@property (nonatomic,strong) UIButton *showComment;
 @property (nonatomic, strong) RCBarButtonView *barButtonView;
+@property (nonatomic, strong) PreCommentView *prePreCommentView;
 
 @property (nonatomic, strong) MBProgressHUD    *HUD;
 @property (nonatomic, strong) NSString *isCollect;
@@ -58,6 +59,8 @@
 @property (nonatomic, copy) NSURLSessionDataTask* (^getActivityBlock)();
 @property (nonatomic, strong) UIWebView *webView;
 @property (nonatomic, strong) UIBarButtonItem *collectionItem;
+
+@property (nonatomic,assign)  BOOL isShowComment;
 
 /**
  *  面板
@@ -299,7 +302,6 @@
             [self setCellValue:cell AtIndexPath:indexPath];
             //对cell的控件进行布局
             [cell setSubViewsConstraint];
-            
             return cell;
         }
             break;
@@ -329,13 +331,12 @@
             {
                 cell = [[UITableViewCell alloc]initWithStyle:UITableViewCellStyleDefault reuseIdentifier:identifier];
                 [cell.contentView addSubview:self.webView];
-                UIButton *showComBtn = [[UIButton alloc]init];
-                [showComBtn setImage:[UIImage imageNamed:@"moreCom_icon"] forState:UIControlStateNormal];
-                [showComBtn addTarget:self action:@selector(onClickShowCommment) forControlEvents:UIControlEventTouchUpInside];
-                showComBtn.backgroundColor = [UIColor whiteColor];
-                self.showComment = showComBtn;
-                [cell.contentView addSubview:self.showComment];
-                [self.showComment mas_makeConstraints:^(MASConstraintMaker *make) {
+                self.isShowComment = NO;
+                self.prePreCommentView = [[PreCommentView alloc]init];
+                [self.prePreCommentView.showCommentBtn addTarget:self action:@selector(onClickShowCommment) forControlEvents:UIControlEventTouchUpInside];
+                [cell.contentView addSubview:self.prePreCommentView];
+                [self.prePreCommentView setSubViewsValue];
+                [self.prePreCommentView mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.left.equalTo(cell.contentView.mas_left);
                     make.right.equalTo(cell.contentView.mas_right);
                     make.height.mas_equalTo(35);
@@ -1094,15 +1095,28 @@
     [self lew_dismissPopupView];
 }
 
-//弹出评论视图
+#pragma mark - 评论视图点击事件
 -(void)onClickShowCommment{
-    [UIView animateWithDuration:0.5 animations:^{
-        [self.showComment mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.height.mas_equalTo(100);
+    if (self.isShowComment == NO) {
+        self.prePreCommentView.collectTooH = 40;
+        [UIView animateWithDuration:0.5 animations:^{
+            [self.prePreCommentView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.height.mas_equalTo(250);
+            }];
+        } completion:^(BOOL finished) {
+            self.isShowComment = YES;
         }];
-    } completion:^(BOOL finished) {
-        
-    }];
+    }
+    if (self.isShowComment == YES) {
+        self.prePreCommentView.collectTooH = 0;
+        [UIView animateWithDuration:0.5 animations:^{
+            [self.prePreCommentView mas_updateConstraints:^(MASConstraintMaker *make) {
+                make.height.mas_equalTo(35);
+            }];
+        } completion:^(BOOL finished) {
+            self.isShowComment = NO;
+        }];
+    }
 }
 
 #pragma mark - 废弃

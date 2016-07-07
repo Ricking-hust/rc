@@ -8,12 +8,17 @@
 
 #import <UIKit/UIKit.h>
 
-#define kCellIdentifier_CommentCell @"kCellIdentifier_CommentCell"
-
 @interface PreCommentView : UIView<UITableViewDataSource,UITableViewDelegate>
 
-@property (nonatomic,strong) UILabel *collectTooLab;
+@property (nonatomic,strong) UIButton *showCommentBtn;
+@property (nonatomic,strong) UIButton *collectTooBtn;
 @property (nonatomic,strong) UIButton *checkMoreBtn;
 @property (nonatomic,strong) UITableView *preCommentView;
+@property (nonatomic,strong) UIView *backView;
+@property (nonatomic,assign) CGFloat collectTooH;
+@property (nonatomic,assign) CGFloat preCommentViewH;
+@property (nonatomic,assign) CGFloat checkMoreBtnH;
+
+-(void)setSubViewsValue;
 
 @end

@@ -18,4 +18,5 @@
 @property (strong, nonatomic) UIView *searchView;
 @property (strong, nonatomic) UITableView *tableView;
 @property (nonatomic,strong) CLLocationManager *locationManager;
+
 @end

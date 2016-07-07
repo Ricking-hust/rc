@@ -242,6 +242,7 @@
 		C46A93D11C85DA5E009626F6 /* ViewFrameAccessor.m in Sources */ = {isa = PBXBuildFile; fileRef = C46A93CF1C85DA5E009626F6 /* ViewFrameAccessor.m */; };
 		C472ABC01CFDCF1E006725B9 /* RCDirectView.m in Sources */ = {isa = PBXBuildFile; fileRef = C472ABBF1CFDCF1E006725B9 /* RCDirectView.m */; };
 		C47606F31CBE86BE00181854 /* RCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C47606F21CBE86BE00181854 /* RCUtils.m */; };
+		C4923DF11D2CA46A00F8CADC /* CommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4923DF01D2CA46A00F8CADC /* CommentModel.m */; };
 		C4A8B5BE1D1AD72000C61B5E /* PublisherCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A8B5BD1D1AD72000C61B5E /* PublisherCell.m */; };
 		C4B300161CA44BCC004516B0 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = C4B300151CA44BCC004516B0 /* NSString+MD5.m */; };
 		C4BBA81A1C89B93300AD02EE /* RegisteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BBA8191C89B93300AD02EE /* RegisteViewController.m */; };
@@ -719,6 +720,8 @@
 		C472ABBF1CFDCF1E006725B9 /* RCDirectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDirectView.m; sourceTree = "<group>"; };
 		C47606F11CBE86BE00181854 /* RCUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUtils.h; sourceTree = "<group>"; };
 		C47606F21CBE86BE00181854 /* RCUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCUtils.m; sourceTree = "<group>"; };
+		C4923DEF1D2CA46A00F8CADC /* CommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentModel.h; sourceTree = "<group>"; };
+		C4923DF01D2CA46A00F8CADC /* CommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentModel.m; sourceTree = "<group>"; };
 		C4A8B5BC1D1AD72000C61B5E /* PublisherCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublisherCell.h; sourceTree = "<group>"; };
 		C4A8B5BD1D1AD72000C61B5E /* PublisherCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublisherCell.m; sourceTree = "<group>"; };
 		C4B300141CA44BCC004516B0 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
@@ -1148,10 +1151,10 @@
 				56DF01EF1C4915CD00E80DFA /* CZNavigationViewController.m */,
 				565EF66A1C48ED1E0067C032 /* CZTabbarController.h */,
 				565EF66B1C48ED1E0067C032 /* CZTabbarController.m */,
-				56DF02301C49356100E80DFA /* CZActivityInfoViewController.h */,
-				56DF02311C49356100E80DFA /* CZActivityInfoViewController.m */,
 				56423F491C4FB4710072CCC3 /* CZHomeViewController.h */,
 				56423F4A1C4FB4710072CCC3 /* CZHomeViewController.m */,
+				56DF02301C49356100E80DFA /* CZActivityInfoViewController.h */,
+				56DF02311C49356100E80DFA /* CZActivityInfoViewController.m */,
 				56E2AAAB1C59E229009371F7 /* CZSearchViewController.h */,
 				56E2AAAC1C59E229009371F7 /* CZSearchViewController.m */,
 				569773201C9AC5BD00D25338 /* RCSettingTagTableViewController.h */,
@@ -1258,6 +1261,8 @@
 				C4CAD1B81C7B3943003FD0B0 /* TagModel.m */,
 				C4CAD1B91C7B3943003FD0B0 /* ThemeModel.h */,
 				C4CAD1BA1C7B3943003FD0B0 /* ThemeModel.m */,
+				C4923DEF1D2CA46A00F8CADC /* CommentModel.h */,
+				C4923DF01D2CA46A00F8CADC /* CommentModel.m */,
 				C459AD8C1C8D9633009922EE /* NSDictionary+NotNullKey.h */,
 				C459AD8D1C8D9633009922EE /* NSDictionary+NotNullKey.m */,
 				C4D8DFC31CC65B89005DA9B3 /* RCSearchModel.h */,
@@ -2154,6 +2159,7 @@
 				561D01F91C47DA5600E4E013 /* AFURLRequestSerialization.m in Sources */,
 				C46A93D11C85DA5E009626F6 /* ViewFrameAccessor.m in Sources */,
 				C47606F31CBE86BE00181854 /* RCUtils.m in Sources */,
+				C4923DF11D2CA46A00F8CADC /* CommentModel.m in Sources */,
 				56DF02321C49356100E80DFA /* CZActivityInfoViewController.m in Sources */,
 				C4DAF4621D2A5D5B009DE31A /* RCCommentcell.m in Sources */,
 				56E2AAA81C59A964009371F7 /* CZRemindTimeButton.m in Sources */,
