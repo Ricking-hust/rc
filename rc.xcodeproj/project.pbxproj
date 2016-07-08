@@ -55,7 +55,6 @@
 		561D02101C47DA5600E4E013 /* View+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 561D01C01C47DA5600E4E013 /* View+MASAdditions.m */; };
 		561D02111C47DA5600E4E013 /* ViewController+MASAdditions.m in Sources */ = {isa = PBXBuildFile; fileRef = 561D01C31C47DA5600E4E013 /* ViewController+MASAdditions.m */; };
 		561D02121C47DA5600E4E013 /* README.md in Sources */ = {isa = PBXBuildFile; fileRef = 561D01C41C47DA5600E4E013 /* README.md */; };
-		561D02151C47DA5600E4E013 /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 561D01CA1C47DA5600E4E013 /* AppDelegate.m */; };
 		562CC4461C6C962100774C22 /* CZTimeSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CC4451C6C962100774C22 /* CZTimeSelectView.m */; };
 		562FD2751CA674FA0014E5D8 /* RCBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 562FD2741CA674FA0014E5D8 /* RCBarButton.m */; };
 		5634EEEF1CEBBE2A002B4283 /* RCPersonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5634EEEE1CEBBE2A002B4283 /* RCPersonCell.m */; };
@@ -223,6 +222,7 @@
 		95DEDB4E1D2FFF040030BF6C /* RCPrivateChatViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DEDB3A1D2FFF040030BF6C /* RCPrivateChatViewController.m */; };
 		95DEDB4F1D2FFF040030BF6C /* RCSettingUpViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DEDB3D1D2FFF040030BF6C /* RCSettingUpViewController.m */; };
 		95DEDB501D2FFF040030BF6C /* RCNewsSettingViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DEDB3F1D2FFF040030BF6C /* RCNewsSettingViewController.m */; };
+		95DEDB571D3003E00030BF6C /* AppDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DEDB561D3003E00030BF6C /* AppDelegate.m */; };
 		95E4B4D41D1A9C8A00FC2EB9 /* RCMyFocusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959B64F61D1934E4009E7C6B /* RCMyFocusCell.m */; };
 		95E4B4D51D1A9C9300FC2EB9 /* RCMyFocusCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 959B64F61D1934E4009E7C6B /* RCMyFocusCell.m */; };
 		C409CFF41C9A7B0500D01F9D /* MBProgressHUD.m in Sources */ = {isa = PBXBuildFile; fileRef = C409CFF31C9A7B0500D01F9D /* MBProgressHUD.m */; };
@@ -374,8 +374,6 @@
 		561D01C21C47DA5600E4E013 /* ViewController+MASAdditions.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "ViewController+MASAdditions.h"; sourceTree = "<group>"; };
 		561D01C31C47DA5600E4E013 /* ViewController+MASAdditions.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "ViewController+MASAdditions.m"; sourceTree = "<group>"; };
 		561D01C41C47DA5600E4E013 /* README.md */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = net.daringfireball.markdown; path = README.md; sourceTree = "<group>"; };
-		561D01C91C47DA5600E4E013 /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
-		561D01CA1C47DA5600E4E013 /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		562CC4441C6C962100774C22 /* CZTimeSelectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZTimeSelectView.h; sourceTree = "<group>"; };
 		562CC4451C6C962100774C22 /* CZTimeSelectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZTimeSelectView.m; sourceTree = "<group>"; };
 		562FD2731CA674FA0014E5D8 /* RCBarButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCBarButton.h; sourceTree = "<group>"; };
@@ -680,6 +678,8 @@
 		95DEDB3D1D2FFF040030BF6C /* RCSettingUpViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCSettingUpViewController.m; sourceTree = "<group>"; };
 		95DEDB3E1D2FFF040030BF6C /* RCNewsSettingViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNewsSettingViewController.h; sourceTree = "<group>"; };
 		95DEDB3F1D2FFF040030BF6C /* RCNewsSettingViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNewsSettingViewController.m; sourceTree = "<group>"; };
+		95DEDB551D3003E00030BF6C /* AppDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AppDelegate.h; sourceTree = "<group>"; };
+		95DEDB561D3003E00030BF6C /* AppDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AppDelegate.m; sourceTree = "<group>"; };
 		C409CFF21C9A7B0500D01F9D /* MBProgressHUD.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = MBProgressHUD.h; path = ../MBProgressHUD.h; sourceTree = "<group>"; };
 		C409CFF31C9A7B0500D01F9D /* MBProgressHUD.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = MBProgressHUD.m; path = ../MBProgressHUD.m; sourceTree = "<group>"; };
 		C41FC3E61CB7CD4D009A5DCD /* RemindManager.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RemindManager.h; sourceTree = "<group>"; };
@@ -888,7 +888,6 @@
 			children = (
 				56E603F51CA5368100EB0446 /* res */,
 				5683EC221C817EA1006430CB /* Main */,
-				561D01C81C47DA5600E4E013 /* Others */,
 				561D01361C47DA5600E4E013 /* Classes */,
 				565EF6121C48EBA20067C032 /* Managers */,
 				565EF6191C48EBA20067C032 /* Models */,
@@ -1104,15 +1103,6 @@
 			path = Masonry;
 			sourceTree = "<group>";
 		};
-		561D01C81C47DA5600E4E013 /* Others */ = {
-			isa = PBXGroup;
-			children = (
-				561D01C91C47DA5600E4E013 /* AppDelegate.h */,
-				561D01CA1C47DA5600E4E013 /* AppDelegate.m */,
-			);
-			path = Others;
-			sourceTree = "<group>";
-		};
 		564596A81C732A84006D8493 /* popupViewController */ = {
 			isa = PBXGroup;
 			children = (
@@ -1289,6 +1279,8 @@
 		5683EC221C817EA1006430CB /* Main */ = {
 			isa = PBXGroup;
 			children = (
+				95DEDB551D3003E00030BF6C /* AppDelegate.h */,
+				95DEDB561D3003E00030BF6C /* AppDelegate.m */,
 				5683EC261C817F7B006430CB /* Main.storyboard */,
 				5683EC251C817F7B006430CB /* LaunchScreen.storyboard */,
 			);
@@ -2155,6 +2147,7 @@
 				95DEDB4F1D2FFF040030BF6C /* RCSettingUpViewController.m in Sources */,
 				56A3112E1C870B6300E82262 /* CZUpView.m in Sources */,
 				561D02001C47DA5600E4E013 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				95DEDB571D3003E00030BF6C /* AppDelegate.m in Sources */,
 				C4CF96101CFD764E00786982 /* RCCityViewController.m in Sources */,
 				C4B300161CA44BCC004516B0 /* NSString+MD5.m in Sources */,
 				56B9CD2C1C807A7100914F00 /* MKAnnotationView+WebCache.m in Sources */,
@@ -2183,7 +2176,6 @@
 				561D02091C47DA5600E4E013 /* MASConstraint.m in Sources */,
 				95DEDB411D2FFF040030BF6C /* RCFeedbackViewController.m in Sources */,
 				560F36B51CBE7E2B0088AA19 /* WebViewJavascriptBridge_JS.m in Sources */,
-				561D02151C47DA5600E4E013 /* AppDelegate.m in Sources */,
 				C43EEB691CA68C2700B83670 /* FlashActivityModel.m in Sources */,
 				C4DAF45F1D2A584E009DE31A /* PreCommentView.m in Sources */,
 				564596B61C732A84006D8493 /* LewPopupViewAnimationDrop.m in Sources */,

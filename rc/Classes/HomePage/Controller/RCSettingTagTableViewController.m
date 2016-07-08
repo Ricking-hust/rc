@@ -18,7 +18,6 @@
 
 @interface RCSettingTagTableViewController ()
 @property (nonatomic, assign) CurrentDevice device;
-@property (nonatomic, assign) BOOL isShake;
 @property (nonatomic, strong) NSMutableArray *myButton;
 @property (nonatomic, strong) NSMutableArray *tags;
 @property (nonatomic, strong) NSMutableArray *myTags;
@@ -130,7 +129,6 @@
     [super viewDidLoad];
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    self.isShake = NO;
     [self configureBlocks];
     //self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     [self setNavigation];
@@ -145,7 +143,6 @@
 - (void)setNavigation
 {
     self.navigationItem.title = @"标签选择";
-//    UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithTitle:@"取消" style:UIBarButtonItemStylePlain target:self action:@selector(backToForwardVC)];
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(backToForwardVC)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
     UIBarButtonItem *rightButtont = [[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(updateMyTag)];
@@ -173,23 +170,13 @@
         self.HUD.mode = MBProgressHUDModeCustomView;
         self.HUD.label.text = @"标签修改成功";
         [self.HUD hideAnimated:YES afterDelay:0.6];
-
+        [self.navigationController popViewControllerAnimated:YES];
     } failure:^(NSError *error) {
         self.HUD.mode = MBProgressHUDModeCustomView;
         self.HUD.label.text = @"设置失败";
         [self.HUD hideAnimated:YES afterDelay:0.6];
         NSLog(@"Error:%@",error);
     }];
-    if (self.isShake)
-    {
-        [self pause];
-        self.isShake = NO;
-    }else
-    {
-        [self.navigationController popViewControllerAnimated:YES];
-    }
-
-    
 }
 #pragma mark - Table view data source
 
@@ -267,10 +254,6 @@
     {
         [self addButton:self.tags ToCell:cell];
     }
-    if (self.isShake == YES)
-    {
-        [self shakeImage:self.myButton];
-    }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
 }
@@ -312,8 +295,6 @@
         if (cell.tag == 0)
         {
             [self.myButton addObject:btn];
-//            UILongPressGestureRecognizer *longPress = [[UILongPressGestureRecognizer alloc]initWithTarget:self action:@selector(buttonLongPress:)];
-//            [btn addGestureRecognizer:longPress];
         }
         if ((i) % 4 == 0 && i != 0 )
         {
@@ -329,11 +310,6 @@
         }];
         x++;
     }
-}
-- (void)buttonLongPress:(UILongPressGestureRecognizer *)longPress
-{
-    [self shakeImage:self.myButton];
-    self.isShake = YES;
 }
 - (void)click:(UIButton *)button
 {
@@ -375,87 +351,6 @@
         }
         
     }
-}
-
-//- (void)click:(UIButton *)button
-//{
-//    UIView *view = [button superview];
-//    RCTagCell *cell = (RCTagCell *)view.superview;
-//    if (cell.tag == 0)
-//    {
-//        if (self.isShake == YES)
-//        {
-//            for (int i = 0; i<self.myTags.count; i++) {
-//                TagModel *model = self.myTags[i];
-//                if ([model.tagName isEqualToString:button.titleLabel.text]) {
-//                    [self.myTags removeObject:model];
-//                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-//                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-//                }
-//            }
-//        }
-//    }else
-//    {
-//        BOOL isAdd = NO;
-//        for (TagModel *model in self.myTags) {
-//            if ([model.tagName isEqualToString:button.titleLabel.text]) {
-//                isAdd = YES;
-//                break;
-//            }
-//        }
-//        if (isAdd == NO)
-//        {
-//            for (int i = 0; i<self.tags.count; i++) {
-//                TagModel *model = self.tags[i];
-//                if ([model.tagName isEqualToString:button.titleLabel.text]) {
-//                    [self.myTags addObject:model];
-//                    NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
-//                    [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
-//                }
-//            }
-//        }
-//
-//    }
-//}
-
-- (void)pause
-{
-    for (int i = 0; i <self.myButton.count; i++) {
-        UIButton *button = self.myButton[i];
-        button.layer.speed = 0.0;
-    }
-}
-
-- (void)resume
-{
-    for (int i = 0; i <self.myButton.count; i++) {
-        UIButton *button = self.myButton[i];
-        button.layer.speed = 1.0;
-    }
-}
-- (void)shakeImage:(NSMutableArray *)button
-{
-    //创建动画对象,绕Z轴旋转
-    CABasicAnimation *animation = [CABasicAnimation animationWithKeyPath:@"transform.rotation.z"];
-    
-    //设置属性，周期时长
-    [animation setDuration:0.08];
-    
-    //抖动角度
-    animation.fromValue = @(-M_1_PI/2);
-    animation.toValue = @(M_1_PI/2);
-    //重复次数，无限大
-    animation.repeatCount = HUGE_VAL;
-    //恢复原样
-    animation.autoreverses = YES;
-    //锚点设置为图片中心，绕中心抖动
-    for (int i = 0; i <self.myButton.count; i++) {
-        UIButton *button = self.myButton[i];
-        button.layer.anchorPoint = CGPointMake(0.5, 0.5);
-        
-        [button.layer addAnimation:animation forKey:@"rotation"];
-    }
-
 }
 - (void)setButton:(UIButton *)button WithTittle:(NSString *)tittle AtCell:(RCTagCell *)cell
 {
