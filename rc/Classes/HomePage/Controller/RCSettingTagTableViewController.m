@@ -11,6 +11,7 @@
 #import "RCTagCell.h"
 #import "MBProgressHUD.h"
 #include <sys/sysctl.h>
+#import "RCNetworkingRequestOperationManager.h"
 #define buttonSize CGSizeMake(65, 30)
 #define IPHONE5PADDING  12
 #define IPHONE6PADDING  23
@@ -18,119 +19,109 @@
 
 @interface RCSettingTagTableViewController ()
 @property (nonatomic, assign) CurrentDevice device;
-@property (nonatomic, strong) NSMutableArray *myButton;
-@property (nonatomic, strong) NSMutableArray *tags;
-@property (nonatomic, strong) NSMutableArray *myTags;
+@property (nonatomic, strong) NSMutableArray *allTags;
+@property (nonatomic, strong) NSMutableArray *userTags;
 @property (nonatomic, strong) MBProgressHUD    *HUD;
-@property (nonatomic,strong) TagsList *allTag;
-@property (nonatomic,strong) TagsList *myTag;
-@property (nonatomic,copy) NSURLSessionDataTask *(^getAllTagBlock)();
-@property (nonatomic,copy) NSURLSessionDataTask *(^getmyTagBlock)();
+//@property (nonatomic, strong) TagsList *allTag;
+//@property (nonatomic, strong) TagsList *myTag;
+//@property (nonatomic,   copy) NSURLSessionDataTask *(^getAllTagBlock)();
+//@property (nonatomic,   copy) NSURLSessionDataTask *(^getmyTagBlock)();
 
 @end
 
 @implementation RCSettingTagTableViewController
-- (CurrentDevice)device
-{
-    if (!_device)
-    {
-        _device = [self currentDeviceSize];
-    }
-    return _device;
-}
-- (NSMutableArray *)myButton
-{
-    if (!_myButton)
-    {
-        _myButton = [[NSMutableArray alloc]init];
-    }
-    return _myButton;
-}
 
-- (NSMutableArray *)tags
-{
-    if (!_tags) {
-        _tags = [[NSMutableArray alloc]init];
-    }
-    
-    return _tags;
-}
-
-- (NSMutableArray *)myTags
-{
-    if (!_myTags) {
-        _myTags = [[NSMutableArray alloc]init];
-    }
-    
-    return _myTags;
-}
 #pragma mark - get data
--(void)configureBlocks{
-    @weakify(self)
-    self.getAllTagBlock = ^(){
-        @strongify(self);
-        return [[DataManager manager] getAllTagsSuccess:^(TagsList *tagList) {
-            @strongify(self);
-            self.allTag = tagList;
-        } failure:^(NSError *error) {
-            NSLog(@"Error:%@",error);
-        }];
-    };
-    
-    self.getmyTagBlock = ^(){
-        @strongify(self);
-        NSString *userId = [[NSString alloc]init];
-        if ([userDefaults objectForKey:@"userId"]) {
-            userId = [userDefaults objectForKey:@"userId"];
-        } else {
-            userId = @"-1";
+- (void)setUserTags:(NSMutableArray *)userTags
+{
+    _userTags = userTags;
+    if (_userTags != nil || _userTags.count != 0)
+    {
+        [self.tableView reloadData];
+    }
+}
+- (void)setAllTags:(NSMutableArray *)allTags
+{
+    _allTags = allTags;
+    if (_allTags != nil || _allTags.count != 0)
+    {
+        [self.tableView reloadData];
+    }
+    [self.tableView reloadData];
+}
+/**
+ *  获取用户标签
+ */
+- (void)getUserTagsRequest
+{
+    NSString *urlStr = @"http://appv2.myrichang.com/Home/PersonalInfo/getUsrTags";
+    NetWorkingRequestType type = POST;
+    NSString *usr_id = [userDefaults objectForKey:@"userId"];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",nil];
+    [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
+        id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        NSMutableArray *temp = [self initacListWithDict:dict];
+        self.userTags = temp;
+    } errorBlock:^(NSError *error) {
+        NSLog(@"请求失败:%@",error);
+    }];
+}
+/**
+ *  获取系统标签
+ */
+- (void)getAllTagsRequest
+{
+    NSString *urlStr = @"http://app.myrichang.com/Home/PersonalInfo/getAllTags";
+    NetWorkingRequestType type = POST;
+    [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:nil completeBlock:^(NSData *data) {
+        id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        NSMutableArray *temp = [self initacListWithDict:dict];
+        self.allTags = temp;
+    } errorBlock:^(NSError *error) {
+        NSLog(@"请求失败:%@",error);
+    }];
+}
+- (NSMutableArray *)initacListWithDict:(NSDictionary *)dict
+{
+    NSNumber *code = [dict valueForKey:@"code"];
+    if ([code isEqualToNumber:[[NSNumber alloc]initWithInt:200]])
+    {//返回正确的数据
+        
+        NSMutableArray *temp = [[NSMutableArray alloc]init];
+        NSArray *data = [dict valueForKey:@"data"];
+        for (NSDictionary *dic in data)
+        {
+            TagModel *model = [[TagModel alloc]init];
+            model.tagId = [dic valueForKey:@"tag_id"];
+            model.tagName = [dic valueForKey:@"tag_name"];
+            [temp addObject:model];
         }
-        return [[DataManager manager] getUsrTagsWithUserId:userId success:^(TagsList *tagsList) {
-            @strongify(self);
-            self.myTag = tagsList;
-        } failure:^(NSError *error) {
-            NSLog(@"Error:%@",error);
-        }];
-    };
-}
-
-- (void)startget{
-    if (self.getAllTagBlock) {
-        self.getAllTagBlock();
+        return temp;
+    }else if ([code isEqualToNumber:[[NSNumber alloc]initWithInt:210]])
+    {//返回失败:操作类型无效或用户ID为空
+        NSLog(@"%@",[dict valueForKey:@"msg"]);
+        return nil;
+    }else
+    {
+        NSLog(@"解析用户标签json错误：%@",code);
+        return nil;
     }
     
-    if (self.getmyTagBlock) {
-        self.getmyTagBlock();
-    }
 }
 
--(void)setAllTag:(TagsList *)allTag{
-    _allTag = allTag;
-    
-    [self.tags addObjectsFromArray:self.allTag.list];
-    
-    [self.tableView reloadData];
-}
-
--(void)setMyTag:(TagsList *)myTag{
-    _myTag = myTag;
-    
-    [self.myTags addObjectsFromArray:self.myTag.list];
-    [self.tableView reloadData];
-}
-
--(void)viewWillAppear:(BOOL)animated{
+-(void)viewWillAppear:(BOOL)animated
+{
     [super viewWillAppear:animated];
-    
-    [self startget];
+
 }
 
-- (void)viewDidLoad {
+- (void)viewDidLoad
+{
     [super viewDidLoad];
     self.tableView.backgroundColor = [UIColor whiteColor];
     self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [self configureBlocks];
-    //self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
+    [self getUserTagsRequest];
+    [self getAllTagsRequest];
     [self setNavigation];
     
    
@@ -146,7 +137,8 @@
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(backToForwardVC)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
     UIBarButtonItem *rightButtont = [[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(updateMyTag)];
-    [self.navigationItem setRightBarButtonItem:rightButtont];}
+    [self.navigationItem setRightBarButtonItem:rightButtont];
+}
 - (void)backToForwardVC
 {
     [self.navigationController popViewControllerAnimated:YES];
@@ -159,7 +151,7 @@
     [self.view addSubview:self.HUD];
     [self.HUD showAnimated:YES];
     NSMutableArray *updateArray = [[NSMutableArray alloc]init];
-    for (TagModel *model in self.myTags) {
+    for (TagModel *model in self.userTags) {
         [updateArray addObject:model.tagId];
     }
     NSString *str = [updateArray componentsJoinedByString:@","];
@@ -248,11 +240,11 @@
     cell.tag = indexPath.section;
     if (indexPath.section == 0)
     {
-        [self addButton:self.myTags ToCell:cell];
+        [self addButton:self.userTags ToCell:cell];
         
     }else
     {
-        [self addButton:self.tags ToCell:cell];
+        [self addButton:self.allTags ToCell:cell];
     }
     cell.selectionStyle = UITableViewCellSelectionStyleNone;
     return cell;
@@ -261,10 +253,10 @@
 {
     if (indexPath.section == 0)
     {
-        return [self heightForRow:self.myTags];
+        return [self heightForRow:self.userTags];
     }else
     {
-        return [self heightForRow:self.tags];
+        return [self heightForRow:self.allTags];
     }
 }
 - (void)addButton:(NSArray *)array ToCell:(RCTagCell *)cell
@@ -292,10 +284,7 @@
         [btn addTarget:self action:@selector(click:) forControlEvents:UIControlEventTouchUpInside];
         TagModel *model = array[i];
         [self setButton:btn WithTittle:model.tagName AtCell:cell];
-        if (cell.tag == 0)
-        {
-            [self.myButton addObject:btn];
-        }
+
         if ((i) % 4 == 0 && i != 0 )
         {
             x = 0;
@@ -318,12 +307,12 @@
     if (cell.tag == 0)
     {
 
-        for (int i = 0; i<self.myTags.count; i++)
+        for (int i = 0; i<self.userTags.count; i++)
         {
-            TagModel *model = self.myTags[i];
+            TagModel *model = self.userTags[i];
             if ([model.tagName isEqualToString:button.titleLabel.text])
             {
-                [self.myTags removeObject:model];
+                [self.userTags removeObject:model];
                 NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
                 [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
             }
@@ -331,19 +320,37 @@
         
     }else
     {
+        self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+        self.HUD.removeFromSuperViewOnHide = YES;
+        [self.view addSubview:self.HUD];
+        [self.HUD showAnimated:YES];
         BOOL isAdd = NO;
-        for (TagModel *model in self.myTags) {
-            if ([model.tagName isEqualToString:button.titleLabel.text]) {
+        for (TagModel *model in self.userTags)
+        {
+            if ([model.tagName isEqualToString:button.titleLabel.text])
+            {
                 isAdd = YES;
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"标签已添加！";
+                [self.HUD hideAnimated:YES afterDelay:0.8];
                 break;
             }
         }
         if (isAdd == NO)
         {
-            for (int i = 0; i<self.tags.count; i++) {
-                TagModel *model = self.tags[i];
-                if ([model.tagName isEqualToString:button.titleLabel.text]) {
-                    [self.myTags addObject:model];
+            for (int i = 0; i<self.allTags.count; i++)
+            {
+                TagModel *model = self.allTags[i];
+                if ([model.tagName isEqualToString:button.titleLabel.text])
+                {
+                    if (self.userTags == nil)
+                    {
+                        self.userTags = [[NSMutableArray alloc]init];
+                    }
+                    [self.userTags addObject:model];
+                    self.HUD.mode = MBProgressHUDModeCustomView;
+                    self.HUD.label.text = @"添加成功。";
+                    [self.HUD hideAnimated:YES afterDelay:0.3];
                     NSIndexPath *indexPath = [NSIndexPath indexPathForRow:0 inSection:0];
                     [self.tableView reloadRowsAtIndexPaths:@[indexPath] withRowAnimation:UITableViewRowAnimationNone];
                 }
@@ -388,6 +395,15 @@
         return (height + 1) * 12 + height * 30;
     }
 
+}
+#pragma mark - load lazy
+- (CurrentDevice)device
+{
+    if (!_device)
+    {
+        _device = [self currentDeviceSize];
+    }
+    return _device;
 }
 //获得设备型号
 - (NSString *)getCurrentDeviceModel
