@@ -22,11 +22,6 @@
 @property (nonatomic, strong) NSMutableArray *allTags;
 @property (nonatomic, strong) NSMutableArray *userTags;
 @property (nonatomic, strong) MBProgressHUD    *HUD;
-//@property (nonatomic, strong) TagsList *allTag;
-//@property (nonatomic, strong) TagsList *myTag;
-//@property (nonatomic,   copy) NSURLSessionDataTask *(^getAllTagBlock)();
-//@property (nonatomic,   copy) NSURLSessionDataTask *(^getmyTagBlock)();
-
 @end
 
 @implementation RCSettingTagTableViewController
@@ -108,13 +103,6 @@
     }
     
 }
-
--(void)viewWillAppear:(BOOL)animated
-{
-    [super viewWillAppear:animated];
-
-}
-
 - (void)viewDidLoad
 {
     [super viewDidLoad];
