@@ -50,7 +50,7 @@
     UserActivity *lastActivity = self.acList.lastObject;
     NSString *start_id = lastActivity.ac_id;
     
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",@"2",@"op_type",start_id,@"start_id",nil];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",@"4",@"op_type",start_id,@"start_id",nil];
     [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
         id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
         NSMutableArray *temp = [self initacListWithDict:dict];
@@ -86,7 +86,7 @@
     NSString *urlStr = @"http://appv2.myrichang.com/home/Person/getUserActivity";
     NetWorkingRequestType type = GET;
     NSString *usr_id = [userDefaults objectForKey:@"userId"];
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",@"2",@"op_type",nil];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",@"4",@"op_type",nil];
     [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
         id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
         NSMutableArray *temp = [self initacListWithDict:dict];
