@@ -6,11 +6,11 @@
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
 
-#import "CZSettingViewController.h"
-#import "RCNewsNoteViewController.h"
+#import "RCSettingUpViewController.h"
+#import "RCNewsSettingViewController.h"
 #import "Masonry.h"
 
-@implementation CZSettingViewController
+@implementation RCSettingUpViewController
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -192,7 +192,7 @@
 }
 - (void)newsNote
 {
-    RCNewsNoteViewController *newsVC = [[RCNewsNoteViewController alloc]init];
+    RCNewsSettingViewController *newsVC = [[RCNewsSettingViewController alloc]init];
     newsVC.title = @"消息通知";
     
     [self.navigationController pushViewController:newsVC animated:YES];

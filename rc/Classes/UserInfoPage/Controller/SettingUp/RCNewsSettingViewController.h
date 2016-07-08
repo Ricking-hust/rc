@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RCNewsNoteViewController : UITableViewController
+@interface RCNewsSettingViewController : UITableViewController
 
 @end

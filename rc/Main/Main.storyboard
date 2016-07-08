@@ -180,10 +180,10 @@
             </objects>
             <point key="canvasLocation" x="762.39999999999998" y="337.95999999999998"/>
         </scene>
-        <!--Person Info View Controller-->
+        <!--My Info View Controller-->
         <scene sceneID="b1r-xG-48Z">
             <objects>
-                <viewController id="bjo-Uj-Bii" customClass="RCPersonInfoViewController" sceneMemberID="viewController">
+                <viewController id="bjo-Uj-Bii" customClass="RCMyInfoViewController" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="ba9-Ng-zTC">
                         <rect key="frame" x="0.0" y="0.0" width="320" height="568"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>

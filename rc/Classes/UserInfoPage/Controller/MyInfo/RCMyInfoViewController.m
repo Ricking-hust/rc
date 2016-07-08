@@ -6,22 +6,20 @@
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
 
-#import "RCPersonInfoViewController.h"
+#import "RCMyInfoViewController.h"
 #import "Masonry.h"
 #import "DataManager.h"
 #import "RCPersonCell.h"
 #import "RCPersonNewsCell.h"
 #import "RCNumWithLabel.h"
 #import "RCTableViewCell.h"
-#import "CZSettingViewController.h"
+#import "RCSettingUpViewController.h"
 #import "RCSignupViewController.h"
-#import "CZMyCollectionViewController.h"
-#import "CZAboutUsViewController.h"
-#import "CZFeedbackViewController.h"
+#import "RCAboutUsViewController.h"
+#import "RCFeedbackViewController.h"
 #import "LoginViewController.h"
-#import "CZPersonInfoViewController.h"
-#import "CZMyReleseViewController.h"
-#include "RCNetworkingRequestOperationManager.h"
+#import "RCPersonInfoViewController.h"
+#import "RCNetworkingRequestOperationManager.h"
 #import "RCMyCollectionViewController.h"
 #import "RCMyReleaseViewController.h"
 #import "RCMyFollowTableViewController.h"
@@ -30,16 +28,16 @@
 //==================测试聊天=====================
 #import "RCTalkTestViewController.h"
 
-@interface RCPersonInfoViewController()
+@interface RCMyInfoViewController()
 @property (nonatomic, strong) UILabel *tittleLable;
 @property (nonatomic, strong) IBOutlet UIView  *tittleView;
 @property (nonatomic, assign) BOOL isLogin;
 @end
-@implementation RCPersonInfoViewController
+@implementation RCMyInfoViewController
 
 - (IBAction)jumpToSettingViewController:(id)sender
 {
-    CZSettingViewController *settingVC = [[CZSettingViewController alloc]init];
+    RCSettingUpViewController *settingVC = [[RCSettingUpViewController alloc]init];
     [self.navigationController pushViewController:settingVC animated:YES];
     
 }
@@ -66,7 +64,7 @@
 }
 - (void)viewDidLoad
 {
-    [super viewDidLoad];
+    //[super viewDidLoad];
     self.view.backgroundColor = [UIColor whiteColor];
     UIView *temp = [[UIView alloc]initWithFrame:CGRectZero];
     [self.view addSubview:temp];
@@ -271,7 +269,7 @@
 {
     if (self.isLogin == YES)
     {
-        CZPersonInfoViewController *personInfoVC = [[CZPersonInfoViewController alloc]init];
+        RCPersonInfoViewController *personInfoVC = [[RCPersonInfoViewController alloc]init];
         [self.navigationController pushViewController:personInfoVC animated:YES];
     }else
     {
@@ -359,11 +357,11 @@
             [self.navigationController pushViewController:collectionVC animated:YES];
         }else if (indexPath.row == 5)
         {//关于我们
-            CZAboutUsViewController *aboutUS = [[CZAboutUsViewController alloc]init];
+            RCAboutUsViewController *aboutUS = [[RCAboutUsViewController alloc]init];
             [self.navigationController pushViewController:aboutUS animated:YES];
         }else
         {//建议反馈
-            CZFeedbackViewController *feedbackVC = [[CZFeedbackViewController alloc]init];
+            RCFeedbackViewController *feedbackVC = [[RCFeedbackViewController alloc]init];
             [self.navigationController pushViewController:feedbackVC animated:YES];
         }
 

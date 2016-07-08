@@ -6,15 +6,15 @@
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
 
-#import "RCNewsNoteViewController.h"
+#import "RCNewsSettingViewController.h"
 #import "LoginViewController.h"
 #import "Masonry.h"
-@interface RCNewsNoteViewController()
+@interface RCNewsSettingViewController()
 @property (nonatomic, strong) PlanList *planList;
 @property (nonatomic, strong) NSMutableArray *planListRanged;
 @property (nonatomic, copy) NSURLSessionDataTask *(^getPlanListBlock)();
 @end
-@implementation RCNewsNoteViewController
+@implementation RCNewsSettingViewController
 -(NSMutableArray *)planListRanged{
     if (!_planListRanged) {
         _planListRanged = [[NSMutableArray alloc]init];

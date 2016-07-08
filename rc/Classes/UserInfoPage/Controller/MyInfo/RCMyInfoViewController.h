@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RCPersonInfoViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
+@interface RCMyInfoViewController : UIViewController<UITableViewDataSource, UITableViewDelegate>
 @property (nonatomic, strong) UITableView  *tableView;
 @end

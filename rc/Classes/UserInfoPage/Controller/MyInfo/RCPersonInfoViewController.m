@@ -6,20 +6,20 @@
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
 
-#import "CZPersonInfoViewController.h"
+#import "RCPersonInfoViewController.h"
 #import "CZPersonInfoCell.h"
 #import "Masonry.h"
 #import "RegisteViewController.h"
 #import "LoginViewController.h"
 #import "MBProgressHUD.h"
 
-@interface CZPersonInfoViewController()
+@interface RCPersonInfoViewController()
 
 @property (nonatomic, strong) MBProgressHUD    *HUD;
 
 @end
 
-@implementation CZPersonInfoViewController
+@implementation RCPersonInfoViewController
 
 
 - (void)viewDidLoad

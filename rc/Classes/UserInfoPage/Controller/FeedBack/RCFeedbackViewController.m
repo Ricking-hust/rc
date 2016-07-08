@@ -6,12 +6,12 @@
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
 
-#import "CZFeedbackViewController.h"
+#import "RCFeedbackViewController.h"
 #import "Masonry.h"
 #import "MBProgressHUD.h"
 #define MAXLENGTH   200
 
-@interface CZFeedbackViewController() <UITextViewDelegate>
+@interface RCFeedbackViewController() <UITextViewDelegate>
 @property (nonatomic, strong) UIView *textViewSuperView;
 @property (nonatomic, strong) UITextView *feedbackTextView;
 @property (nonatomic, strong) UILabel *textLimintLabel;
@@ -20,7 +20,7 @@
 @property (nonatomic, strong) MBProgressHUD    *HUD;
 
 @end
-@implementation CZFeedbackViewController
+@implementation RCFeedbackViewController
 
 
 - (void)viewDidLoad

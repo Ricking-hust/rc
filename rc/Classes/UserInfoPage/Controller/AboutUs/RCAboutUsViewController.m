@@ -6,16 +6,16 @@
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
 
-#import "CZAboutUsViewController.h"
+#import "RCAboutUsViewController.h"
 #import "Masonry.h"
 
-@interface CZAboutUsViewController()
+@interface RCAboutUsViewController()
 @property (nonatomic, strong) UIView *headerView;
 @property (nonatomic, strong) UIImageView *appIcon;
 @property (nonatomic, strong) UILabel *appVersion;
 @property (nonatomic, strong) NSArray *teamMember;
 @end
-@implementation CZAboutUsViewController
+@implementation RCAboutUsViewController
 - (NSArray *)teamMember
 {
     if (!_teamMember)

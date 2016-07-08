@@ -1,5 +1,5 @@
 //
-//  CZSettingViewController.h
+//  CZFeedbackViewController.h
 //  rc
 //
 //  Created by AlanZhang on 16/2/18.
@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CZSettingViewController : UITableViewController
+@interface RCFeedbackViewController : UIViewController
 
 @end
