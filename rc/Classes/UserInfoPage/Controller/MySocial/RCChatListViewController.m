@@ -52,45 +52,50 @@
     self.navigationItem.title = @"我的消息";
 
 }
-- (void)rcConversationListTableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+//- (void)rcConversationListTableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
+//{
+//    
+//}
+//- (void)willDisplayConversationTableCell:(RCConversationBaseCell *)cell atIndexPath:(NSIndexPath *)indexPath
+//{
+//    if ([cell isKindOfClass:[RCMessageCell class]])
+//    {
+//        RCMessageCell *messageCell = (RCMessageCell *)cell;
+//        //messageCell.portraitImageView
+//        UIImageView *portraitImageView= (UIImageView *)messageCell.portraitImageView;
+//        portraitImageView.layer.cornerRadius = 10;
+//    }else if ([cell isKindOfClass:[RCConversationCell class]])
+//    {
+//        NSLog(@"converstaion cell");
+//        
+//    }else if ([cell isKindOfClass:[RCTextMessageCell class]])
+//    {
+//        NSLog(@"textMessage cell");
+//    }else if ([cell isKindOfClass:[RCImageMessageCell class]])
+//    {
+//        NSLog(@"imageMessage cell");
+//    }else if ([cell isKindOfClass:[RCLocationMessageCell class]])
+//    {
+//        NSLog(@"locationMessage cell");
+//    }else if ([cell isKindOfClass:[RCVoiceMessageCell class]])
+//    {
+//        NSLog(@"voiceMessage cell");
+//    }else if ([cell isKindOfClass:[RCRichContentMessageCell class]])
+//    {
+//        NSLog(@"richContentMessage cell");
+//    }else if ([cell isKindOfClass:[RCTipMessageCell class]])
+//    {
+//        NSLog(@"tipMessage cell");
+//    }else
+//    {
+//        NSLog(@"baseMessage cell");
+//    }
+//    
+//}
+#pragma mark - 点击cell进入到聊天界面
+- (void)onSelectedTableRow:(RCConversationModelType)conversationModelType conversationModel:(RCConversationModel *)model atIndexPath:(NSIndexPath *)indexPath
 {
-    
-}
-- (void)willDisplayConversationTableCell:(RCConversationBaseCell *)cell atIndexPath:(NSIndexPath *)indexPath
-{
-    if ([cell isKindOfClass:[RCMessageCell class]])
-    {
-        RCMessageCell *messageCell = (RCMessageCell *)cell;
-        //messageCell.portraitImageView
-        UIImageView *portraitImageView= (UIImageView *)messageCell.portraitImageView;
-        portraitImageView.layer.cornerRadius = 10;
-    }else if ([cell isKindOfClass:[RCConversationCell class]])
-    {
-        NSLog(@"converstaion cell");
-        
-    }else if ([cell isKindOfClass:[RCTextMessageCell class]])
-    {
-        NSLog(@"textMessage cell");
-    }else if ([cell isKindOfClass:[RCImageMessageCell class]])
-    {
-        NSLog(@"imageMessage cell");
-    }else if ([cell isKindOfClass:[RCLocationMessageCell class]])
-    {
-        NSLog(@"locationMessage cell");
-    }else if ([cell isKindOfClass:[RCVoiceMessageCell class]])
-    {
-        NSLog(@"voiceMessage cell");
-    }else if ([cell isKindOfClass:[RCRichContentMessageCell class]])
-    {
-        NSLog(@"richContentMessage cell");
-    }else if ([cell isKindOfClass:[RCTipMessageCell class]])
-    {
-        NSLog(@"tipMessage cell");
-    }else
-    {
-        NSLog(@"baseMessage cell");
-    }
-    
+    NSLog(@"还未实现点击cell进入到聊天界面");
 }
 - (void)backToForwardViewController
 {
