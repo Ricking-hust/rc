@@ -9,8 +9,19 @@
 #import "RCSettingUpViewController.h"
 #import "RCNewsSettingViewController.h"
 #import "Masonry.h"
-
+#import <RongIMKit/RongIMKit.h>
+@interface RCSettingUpViewController ()
+@property (nonatomic, assign) BOOL isLogin;
+@end
 @implementation RCSettingUpViewController
+- (BOOL)isLogin
+{
+    if (!_isLogin)
+    {
+        _isLogin = [DataManager manager].user.isLogin;
+    }
+    return _isLogin;
+}
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -163,16 +174,30 @@
 {
     if (indexPath.section == 1)
     {
-        [[DataManager manager] UserLogout];
-        [[NSNotificationCenter defaultCenter]postNotificationName:@"scState" object:@"update"];
-        //退出登录消除token
-        [userDefaults setObject:@"" forKey:@"token"];
-        [self.navigationController popToRootViewControllerAnimated:YES];
+        if (self.isLogin == NO)
+        {
+            [self notLogin];
+        }else
+        {
+            [[DataManager manager] UserLogout];
+            [[RCIM sharedRCIM] logout];
+            [[NSNotificationCenter defaultCenter]postNotificationName:@"scState" object:@"update"];
+            //退出登录消除token
+            [userDefaults setObject:@"" forKey:@"token"];
+            [self.navigationController popToRootViewControllerAnimated:YES];
+        }
+
     }
     if (indexPath.section == 0 &&indexPath.row == 0)
     {//设置新消息通知
-        [self newsNote];
-//        [self addLocalNote];
+        
+        if (self.isLogin == NO)
+        {
+            [self notLogin];
+        }else
+        {
+            [self newsNote];
+        }
     }else if(indexPath.section == 0 && indexPath.row == 1)
     {
         CGFloat size = [self getCacheSizeAtPath:[self getCachesPath]];;
@@ -190,6 +215,19 @@
         [alert addAction:okAction];
         [self presentViewController:alert animated:YES completion:nil];
     }
+}
+- (void)notLogin
+{
+    NSString *str = @"您尚未登录！";
+    UIAlertController* alert = [UIAlertController alertControllerWithTitle:@"提示"
+                                                                   message:str
+                                                            preferredStyle:UIAlertControllerStyleAlert];
+    
+    UIAlertAction *okAction = [UIAlertAction actionWithTitle:@"我知道了" style:UIAlertActionStyleDefault handler:^(UIAlertAction * _Nonnull action) {
+
+    }];
+    [alert addAction:okAction];
+    [self presentViewController:alert animated:YES completion:nil];
 }
 - (void)newsNote
 {

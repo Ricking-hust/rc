@@ -116,7 +116,7 @@
 }
 - (void)URLSession:(NSURLSession *)session task:(NSURLSessionTask *)task didSendBodyData:(int64_t)bytesSent totalBytesSent:(int64_t)totalBytesSent totalBytesExpectedToSend:(int64_t)totalBytesExpectedToSend
 {
-    NSLog(@"upload delegate");
+    //NSLog(@"upload delegate");
 }
 
 @end
