@@ -124,7 +124,7 @@
     {
         if (indexPath.row == 0)
         {
-            cell.textLabel.text = @"新消息通知";
+            cell.textLabel.text = @"消息通知";
             cell.accessoryType = UITableViewCellAccessoryDisclosureIndicator;
         }else
         {
@@ -161,7 +161,8 @@
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    if (indexPath.section == 1) {
+    if (indexPath.section == 1)
+    {
         [[DataManager manager] UserLogout];
         [[NSNotificationCenter defaultCenter]postNotificationName:@"scState" object:@"update"];
         //退出登录消除token

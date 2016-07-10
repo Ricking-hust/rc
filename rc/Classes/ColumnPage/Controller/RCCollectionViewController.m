@@ -535,10 +535,10 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
         if (i == 0)
         {
             btnView.tagButton.selected = YES;
-            btnView.line.hidden = NO;
+            //btnView.line.hidden = NO;
         }else
         {
-            btnView.line.hidden = YES;
+            //btnView.line.hidden = YES;
         }
         [self.toolButtonArray addObject:btnView.tagButton];
         btnView.tagButton.tag = i;
@@ -561,15 +561,15 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     for (int i = 0; i < self.toolButtonArray.count; ++i)
     {
         UIButton *button = self.toolButtonArray[i];
-        UIView *view = button.superview;
-        UIView *line = [view viewWithTag:12];
-        line.hidden = YES;
+        //UIView *view = button.superview;
+        //UIView *line = [view viewWithTag:12];
+        //line.hidden = YES;
         button.selected = NO;
     }
     btn.selected = YES;
-    UIView *view = btn.superview;
-    UIView *line = [view viewWithTag:12];
-    line.hidden = NO;
+    //UIView *view = btn.superview;
+    //UIView *line = [view viewWithTag:12];
+    //line.hidden = NO;
 }
 - (CurrentDevice)device
 {

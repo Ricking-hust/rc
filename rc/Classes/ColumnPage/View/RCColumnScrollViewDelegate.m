@@ -95,14 +95,14 @@
     for (int i = 0; i < self.toolButtonArray.count; ++i)
     {
         UIButton *button = self.toolButtonArray[i];
-        UIView *view = button.superview;
-        UIView *line = [view viewWithTag:12];
-        line.hidden = YES;
+        //UIView *view = button.superview;
+        //UIView *line = [view viewWithTag:12];
+        //line.hidden = YES;
         button.selected = NO;
     }
     btn.selected = YES;
-    UIView *view = btn.superview;
-    UIView *line = [view viewWithTag:12];
-    line.hidden = NO;
+    //UIView *view = btn.superview;
+    //UIView *line = [view viewWithTag:12];
+    //line.hidden = NO;
 }
 @end

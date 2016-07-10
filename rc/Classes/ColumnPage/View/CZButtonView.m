@@ -21,7 +21,7 @@
     buttonView.line = [[UIView alloc]init];
     buttonView.line.tag = 2;
     [buttonView addSubview:buttonView.line];
-    
+    buttonView.line.hidden = YES;
     [buttonView addsubviewConstraints];
     return buttonView;
 }
@@ -43,7 +43,7 @@
         self.line = [[UIView alloc]init];
         self.line.tag = 12;
         self.line.backgroundColor = selectedColor;
-        
+        self.line.hidden = YES;
         [self addSubview:self.line];
         
         [self addsubviewConstraints];

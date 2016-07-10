@@ -244,9 +244,11 @@ static CGFloat const kContainViewYNormal = 70.0;
 - (void)connectToRCIM
 {
     NSString *urlStr = @"http://appv2.myrichang.com/Home/Message/getToken";
-    NetWorkingRequestType type = GET;
+    NetWorkingRequestType type = POST;
     NSString *usr_id = [userDefaults objectForKey:@"userId"];
-    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",nil];
+    NSString *usr_pic = [userDefaults objectForKey:@"userPic"];
+    NSString *usr_name = [userDefaults objectForKey:@"userName"];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",usr_name, @"usr_name",usr_pic, @"usr_pic",nil];
     [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
         id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
         NSNumber *code = [dict valueForKey:@"code"];

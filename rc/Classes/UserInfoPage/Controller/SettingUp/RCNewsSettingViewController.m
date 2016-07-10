@@ -9,6 +9,7 @@
 #import "RCNewsSettingViewController.h"
 #import "LoginViewController.h"
 #import "Masonry.h"
+#import <RongIMKit/RongIMKit.h>
 @interface RCNewsSettingViewController()
 @property (nonatomic, strong) PlanList *planList;
 @property (nonatomic, strong) NSMutableArray *planListRanged;
@@ -95,7 +96,7 @@
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
     
-    return 1;
+    return 2;
 }
 - (UIView *)tableView:(UITableView *)tableView viewForHeaderInSection:(NSInteger)section
 {
@@ -107,60 +108,142 @@
 {
     return 5;
 }
+- (UIView *)tableView:(UITableView *)tableView viewForFooterInSection:(NSInteger)section
+{
+    if (section == 0)
+    {
+        UIView *view = [[UIView alloc]init];
+        UILabel *label = [[UILabel alloc]init];
+        label.text = @"请在iPhone的“设置”-“通知”中进行修改";
+        label.font = [UIFont systemFontOfSize:12];
+        [view addSubview:label];
+        [label setTextColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.5]];
+        CGSize size = [self sizeWithText:label.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:12];
+        [label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(view);
+            make.left.equalTo(view).offset(10);
+            make.width.mas_equalTo((int)size.width+1);
+            make.height.mas_equalTo((int)size.height+1);
+        }];
+        return view;
+    }else
+    {
+        UIView *view = [[UIView alloc]init];
+        UILabel *label = [[UILabel alloc]init];
+        label.text = @"当日常在运行时，接收新消息时你可以设置是否需要声音";
+        label.font = [UIFont systemFontOfSize:12];
+        [view addSubview:label];
+        [label setTextColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.5]];
+        CGSize size = [self sizeWithText:label.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:12];
+        [label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(view);
+            make.left.equalTo(view).offset(10);
+            make.width.mas_equalTo((int)size.width+1);
+            make.height.mas_equalTo((int)size.height+1);
+        }];
+        return view;
+    }
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForFooterInSection:(NSInteger)section
+{
+    if (section == 0)
+    {
+        CGSize size = [self sizeWithText:@"请在iPhone的“设置”-“通知”中进行修改" maxSize:CGSizeMake(kScreenWidth - 20, MAXFLOAT) fontSize:12];
+        return size.height + 20;
+    }else
+    {
+        CGSize size = [self sizeWithText:@"当日常在运行时，接收新消息时你可以设置是否需要声音" maxSize:CGSizeMake(kScreenWidth - 20, MAXFLOAT) fontSize:12];
+        return size.height + 20;
+    }
+}
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
-    UITableViewCell *cell = [[UITableViewCell alloc]init];
-    UILabel *label = [[UILabel alloc]init];
-    label.alpha = 0.8;
-    label.text = @"消息通知";
-    label.font = [UIFont systemFontOfSize:14];
-    [cell addSubview:label];
-    [label mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(cell);
-        make.left.equalTo(cell.mas_left).offset(10);
-        make.width.mas_equalTo(100);
-        make.height.mas_equalTo(20);
-    }];
-    UISwitch *s = [[UISwitch alloc]init];
-    [s addTarget:self action:@selector(onSwitchValueChanged:) forControlEvents:UIControlEventValueChanged]; // 添加事件监听器的方法
-    [cell addSubview:s];
-    [s mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.centerY.equalTo(cell.mas_centerY);
-        make.right.equalTo(cell.mas_right).offset(-10);
-        make.width.mas_equalTo(51);
-        make.height.mas_equalTo(31);
-    }];
-    cell.selectionStyle = UITableViewCellSelectionStyleNone;
-    return cell;
+    if (indexPath.section == 0)
+    {
+        UITableViewCell *cell = [[UITableViewCell alloc]init];
+        UILabel *label = [[UILabel alloc]init];
+        label.alpha = 0.8;
+        label.text = @"新消息通知";
+        label.font = [UIFont systemFontOfSize:14];
+        [cell addSubview:label];
+        [label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(cell);
+            make.left.equalTo(cell.mas_left).offset(10);
+            make.width.mas_equalTo(100);
+            make.height.mas_equalTo(20);
+        }];
+
+        UILabel *hint = [[UILabel alloc]init];
+        hint.font = [UIFont systemFontOfSize:14];
+        [hint setTextColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.5]];
+        if ([[UIApplication sharedApplication] currentUserNotificationSettings].types  == UIUserNotificationTypeNone)
+        {
+            hint.text = @"未开启";
+        }else
+        {
+            hint.text = @"已开启";
+        }
+        [cell addSubview:hint];
+        CGSize size = [self sizeWithText:hint.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:14];
+        [hint mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(cell);
+            make.right.equalTo(cell).offset(-10);
+            make.height.mas_equalTo((int)size.height);
+            make.width.mas_equalTo((int)size.width);
+        }];
+
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    }else
+    {
+        UITableViewCell *cell = [[UITableViewCell alloc]init];
+        UILabel *label = [[UILabel alloc]init];
+        label.alpha = 0.8;
+        label.text = @"新消息通知";
+        label.font = [UIFont systemFontOfSize:14];
+        [cell addSubview:label];
+        [label mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(cell);
+            make.left.equalTo(cell.mas_left).offset(10);
+            make.width.mas_equalTo(100);
+            make.height.mas_equalTo(20);
+        }];
+        
+        UISwitch *s = [[UISwitch alloc]init];
+        [s addTarget:self action:@selector(onSwitchValueChanged:) forControlEvents:UIControlEventValueChanged]; // 添加事件监听器的方法
+        [cell addSubview:s];
+        if ([RCIM sharedRCIM].disableMessageAlertSound == YES)
+        {
+            s.on = NO;
+        }else
+        {
+            s.on = YES;
+        }
+        [s mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(cell.mas_centerY);
+            make.right.equalTo(cell.mas_right).offset(-10);
+            make.width.mas_equalTo(51);
+            make.height.mas_equalTo(31);
+        }];
+        cell.selectionStyle = UITableViewCellSelectionStyleNone;
+        return cell;
+    }
     
+}
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 40;
 }
 #pragma mark - 监听消息通知的开关
 - (void)onSwitchValueChanged:(UISwitch *)s
 {
     if (s.on)
     {
-        NSLog(@"on");
-        [self settingNotification];
+        [[RCIM sharedRCIM] setDisableMessageAlertSound:NO];
     }else
     {
-        NSLog(@"off");
+        [[RCIM sharedRCIM] setDisableMessageAlertSound:YES];
     }
-}
-- (void)settingNotification
-{
-    
-    if ([[UIApplication sharedApplication]currentUserNotificationSettings].types != UIUserNotificationTypeNone)
-    {
-        
-        //[self addLocalNotification];
-    }else
-    {
-        [[UIApplication sharedApplication]registerUserNotificationSettings:[UIUserNotificationSettings settingsForTypes:UIUserNotificationTypeAlert|UIUserNotificationTypeBadge|UIUserNotificationTypeSound  categories:nil]];
-    }
-}
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 44;
 }
 - (void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath
 {
@@ -183,6 +266,22 @@
     [chooseView addAction:configureController];
     
     [self presentViewController:chooseView animated:YES completion:nil];
+}
+
+/**
+ *  计算字体的长和宽
+ *
+ *  @param text 待计算大小的字符串
+ *
+ *  @param fontSize 指定绘制字符串所用的字体大小
+ *
+ *  @return 字符串的大小
+ */
+- (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize
+{
+    //计算文本的大小
+    CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
+    return nameSize;
 }
 
 @end
