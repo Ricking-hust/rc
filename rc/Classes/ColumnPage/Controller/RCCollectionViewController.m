@@ -20,6 +20,7 @@
 #import "RCCollectionCell.h"
 #import "RCColumnScrollViewDelegate.h"
 #import "BWaterflowLayout.h"
+#import "RCAblumCollectionCell.h"
 //MJReflesh--------------------------------
 #import "MJRefresh.h"
 #import "RCHomeRefreshHeader.h"
@@ -47,7 +48,7 @@
 @implementation RCCollectionViewController
 
 static NSString * const reuseIdentifier = @"RCColumnCell";
-
+static NSString * const albumReuseIdentifier =@"albumCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -97,25 +98,41 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 -(NSInteger)collectionView:(UICollectionView *)collectionView numberOfItemsInSection:(NSInteger)section
 {
     RCCollectionView *cv = (RCCollectionView *)collectionView;
-    NSMutableArray *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
+    if ([cv.indModel.indName isEqualToString:@"精选"])
+    {
+        return 10;
+    }else
+    {
+        NSMutableArray *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
+        
+        return activityList.count;
+    }
 
-    return activityList.count;
 }
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-
-    RCCollectionCell *cell = (RCCollectionCell *)[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
-
-    //[self collectionView:collectionView setCellValue:cell AtIndexPath:indexPath];
     RCCollectionView *cv = (RCCollectionView *)collectionView;
-    NSMutableArray *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
-    ActivityModel *model = activityList[indexPath.row];
-    cell.model = model;
-
-    [cell setSubviewConstraint];
+    if ([cv.indModel.indName isEqualToString:@"精选"])
+    {
+        RCAblumCollectionCell *cell = (RCAblumCollectionCell *)[collectionView dequeueReusableCellWithReuseIdentifier:albumReuseIdentifier forIndexPath:indexPath];
+        [cell setPicture:[UIImage imageNamed:@"img_1"]];
+        [cell setTittle:@"六月的雨六月的雨六月的雨六月的雨六月的雨六月的雨六月的雨六月的雨六月的雨"];
+        [cell setResponder:self.view];
+        return cell;
+    }else
+    {
+        RCCollectionCell *cell = (RCCollectionCell *)[collectionView dequeueReusableCellWithReuseIdentifier:reuseIdentifier forIndexPath:indexPath];
+        
+        //[self collectionView:collectionView setCellValue:cell AtIndexPath:indexPath];
+        NSMutableArray *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
+        ActivityModel *model = activityList[indexPath.row];
+        cell.model = model;
+        
+        [cell setSubviewConstraint];
+        
+        return cell;
+    }
     
-    return cell;
-
 }
 - (void)collectionView:(UICollectionView *)collectionView setCellValue:(RCCollectionCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
@@ -193,13 +210,20 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 -(void)collectionView:(UICollectionView *)collectionView didSelectItemAtIndexPath:(NSIndexPath *)indexPath
 {
     RCCollectionView *cv = (RCCollectionView *)collectionView;
-    NSMutableArray *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
-    
-    CZActivityInfoViewController *info = [[CZActivityInfoViewController alloc]init];
-    info.title = @"活动介绍";
-    info.activityModelPre = activityList[indexPath.row];
+    if ([cv.indModel.indName isEqualToString:@"精选"])
+    {
+        ;
+    }else
+    {
+        NSMutableArray *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
+        
+        CZActivityInfoViewController *info = [[CZActivityInfoViewController alloc]init];
+        info.title = @"活动介绍";
+        info.activityModelPre = activityList[indexPath.row];
+        
+        [self.navigationController pushViewController:info animated:YES];
+    }
 
-    [self.navigationController pushViewController:info animated:YES];
 }
 #pragma mark - 返回指定数据的大小
 - (CGSize)sizeByActivityModel:(ActivityModel *)model ForSepcifiedCell:(NSIndexPath *)indexPath
@@ -272,6 +296,7 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
                 ActivityModel *acmodel = [[ActivityModel alloc]init];
                 acmodel = acList.list.firstObject;
             }
+//            NSLog(@"%@",model.indName);
             [self loadData:acList.list ByIndustry:model];
         } failure:^(NSError *error) {
             NSLog(@"Error:%@",error);
@@ -344,6 +369,10 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
     allAc.indName = @"综合";
     NSMutableArray *indAry =[[NSMutableArray alloc]initWithArray:indList.list];
     [indAry insertObject:allAc atIndex:0];
+    IndustryModel *album = [[IndustryModel alloc]init];
+    album.indId =@"-2";
+    album.indName = @"精选";
+    [indAry insertObject:album atIndex:0];
     _indList.list = [[NSArray alloc] initWithArray:indAry];
     //创建工具条按钮
     if (_indList.list != 0)
@@ -362,29 +391,60 @@ static NSString * const reuseIdentifier = @"RCColumnCell";
 {
 //    RCCollectionViewLayout *layout= [[RCCollectionViewLayout alloc]init];
 //    layout.layoutDelegate = self;
+    if ([indModel.indName isEqualToString:@"精选"])
+    {
+        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+        CGFloat margin = 10;
+        CGFloat itemWH = (kScreenWidth - 2 * margin - 4) / 4 - margin;
+        layout.itemSize = CGSizeMake(kScreenWidth, 200);
+        layout.minimumInteritemSpacing = 0;//行间距
+        layout.minimumLineSpacing = 0;    //列间距
+        //CGFloat top = margin + 44;
 
+        RCCollectionView *collectionView = [[RCCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+        collectionView.indModel = indModel;
+        [self.scrollView addSubview:collectionView];
+        [collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.scrollView.mas_top).offset(-64);//64用于消除collectionView在ScrollView的位置影响
+            make.left.equalTo(self.scrollView.mas_left).offset(index *kScreenWidth);
+            make.width.mas_equalTo(kScreenWidth);
+            make.bottom.equalTo(self.view.mas_bottom).offset(-49);
+        }];
+        collectionView.backgroundColor = [UIColor clearColor];
+        collectionView.dataSource = self;
+        collectionView.delegate = self;
+        collectionView.alwaysBounceHorizontal = NO;
+        //if (iOS7Later) _collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 2);
+        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, 0, -2);
+        
+        [collectionView registerClass:[RCAblumCollectionCell class] forCellWithReuseIdentifier:albumReuseIdentifier];
+        return collectionView;
+        
+    }else
+    {
 #pragma mark - 修改布局
-    //创建布局
-    BWaterflowLayout * layout = [[BWaterflowLayout alloc]init];
-    layout.delegate = self;
-    
-    RCCollectionView * collectionView = [[RCCollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
-    collectionView.indModel = indModel;
-    collectionView.backgroundColor = [UIColor clearColor];
-    collectionView.delegate = self;
-    collectionView.dataSource = self;
-    [self.scrollView addSubview:collectionView];
-    [collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.top.equalTo(self.scrollView.mas_top).offset(-64);//64用于消除collectionView在ScrollView的位置影响
-        make.left.equalTo(self.scrollView.mas_left).offset(index *kScreenWidth);
-        make.width.mas_equalTo(kScreenWidth);
-        make.bottom.equalTo(self.view.mas_bottom).offset(-49);
-    }];
-    collectionView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
-    collectionView.mj_footer= [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
-    // Register cell classes
-    [collectionView registerClass:[RCCollectionCell class] forCellWithReuseIdentifier:reuseIdentifier];
-    return collectionView;
+        //创建布局
+        BWaterflowLayout * layout = [[BWaterflowLayout alloc]init];
+        layout.delegate = self;
+        
+        RCCollectionView * collectionView = [[RCCollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
+        collectionView.indModel = indModel;
+        collectionView.backgroundColor = [UIColor clearColor];
+        collectionView.delegate = self;
+        collectionView.dataSource = self;
+        [self.scrollView addSubview:collectionView];
+        [collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(self.scrollView.mas_top).offset(-64);//64用于消除collectionView在ScrollView的位置影响
+            make.left.equalTo(self.scrollView.mas_left).offset(index *kScreenWidth);
+            make.width.mas_equalTo(kScreenWidth);
+            make.bottom.equalTo(self.view.mas_bottom).offset(-49);
+        }];
+        collectionView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+        collectionView.mj_footer= [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
+        // Register cell classes
+        [collectionView registerClass:[RCCollectionCell class] forCellWithReuseIdentifier:reuseIdentifier];
+        return collectionView;
+    }
 }
 
 #pragma mark - <BWaterflowLayoutDelegate>

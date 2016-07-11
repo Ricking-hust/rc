@@ -8,6 +8,7 @@
 
 #import "AppDelegate.h"
 #import "RemindManager.h"
+#import "RCNetworkingRequestOperationManager.h"
 //＝＝＝＝＝＝＝＝＝＝ShareSDK头文件V3.3＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝＝
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKConnector/ShareSDKConnector.h>
@@ -114,10 +115,21 @@
 #pragma mark - 设置聊天界面用户的头像和昵称
 - (void)getUserInfoWithUserId:(NSString *)userId completion:(void (^)(RCUserInfo *))completion
 {
-    //NSLog(@"userID %@",userId);
-//    RCUserInfo *userInfo = [[RCUserInfo alloc]init];
-//    userInfo.portraitUri = [userDefaults valueForKey:@"userPic"];
-//    completion(userInfo);
+    
+    NSString *URLString = @"http://appv2.myrichang.com/home/Person/getPersonInfo";
+    NSDictionary *fansParam = [[NSDictionary alloc]initWithObjectsAndKeys:userId,@"usr_id", nil];
+    //显示粉丝数
+    [RCNetworkingRequestOperationManager request:URLString requestType:POST parameters:fansParam completeBlock:^(NSData *data) {
+        id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        NSArray *userInfo = [dict valueForKey:@"data"];
+        NSString *usr_name = [userInfo valueForKey:@"usr_name"];
+        NSString *usr_pic = [userInfo valueForKey:@"usr_pic"];
+        RCUserInfo *info = [[RCUserInfo alloc]initWithUserId:userId name:usr_name portrait:usr_pic];
+        completion(info);
+    } errorBlock:^(NSError *error) {
+        NSLog(@"网络请求错误:%@",error);
+    }];
+    
 }
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions {
     // Override point for customization after application launch.

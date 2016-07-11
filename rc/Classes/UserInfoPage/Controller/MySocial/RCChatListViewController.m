@@ -7,7 +7,7 @@
 //
 
 #import "RCChatListViewController.h"
-
+#import "RCPrivateChatViewController.h"
 @interface RCChatListViewController ()
 
 @end
@@ -95,7 +95,19 @@
 #pragma mark - 点击cell进入到聊天界面
 - (void)onSelectedTableRow:(RCConversationModelType)conversationModelType conversationModel:(RCConversationModel *)model atIndexPath:(NSIndexPath *)indexPath
 {
-    NSLog(@"还未实现点击cell进入到聊天界面");
+    RCConversationCell *cell = [self.conversationListTableView cellForRowAtIndexPath:indexPath];
+    //新建一个聊天会话View Controller对象
+    RCPrivateChatViewController *chat = [[RCPrivateChatViewController alloc]init];
+    //设置会话的类型，如单聊、讨论组、群聊、聊天室、客服、公众服务会话等
+    chat.conversationType = ConversationType_PRIVATE;
+    //设置会话的目标会话ID。（单聊、客服、公众服务会话为对方的ID，讨论组、群聊、聊天室为会话的ID）
+    
+    chat.targetId = cell.model.targetId;
+    //设置聊天会话界面要显示的标题
+    NSString *tittle = [NSString stringWithFormat:@"与%@聊天中",cell.model.conversationTitle];
+    chat.title = tittle;
+    //显示聊天会话界面
+    [self.navigationController pushViewController:chat animated:YES];
 }
 - (void)backToForwardViewController
 {

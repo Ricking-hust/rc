@@ -209,6 +209,8 @@
 		95DA803A1D10393300FA0C3F /* MOBFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95DA802D1D10393300FA0C3F /* MOBFoundation.framework */; };
 		95DA803B1D10393300FA0C3F /* ShareSDK.bundle in Resources */ = {isa = PBXBuildFile; fileRef = 95DA802E1D10393300FA0C3F /* ShareSDK.bundle */; };
 		95DA803C1D10393300FA0C3F /* ShareSDKConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95DA802F1D10393300FA0C3F /* ShareSDKConnector.framework */; };
+		95DE89121D33E73700B8DEE4 /* RCAblumCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DE89111D33E73700B8DEE4 /* RCAblumCollectionCell.m */; };
+		95DE89151D33F7D200B8DEE4 /* RCAblumInfoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DE89141D33F7D200B8DEE4 /* RCAblumInfoCollectionViewController.m */; };
 		95DEDB401D2FFF040030BF6C /* RCAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DEDB181D2FFF040030BF6C /* RCAboutUsViewController.m */; };
 		95DEDB411D2FFF040030BF6C /* RCFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DEDB1B1D2FFF040030BF6C /* RCFeedbackViewController.m */; };
 		95DEDB431D2FFF040030BF6C /* RCMyCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DEDB201D2FFF040030BF6C /* RCMyCollectionViewController.m */; };
@@ -652,6 +654,10 @@
 		95DA802D1D10393300FA0C3F /* MOBFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = MOBFoundation.framework; sourceTree = "<group>"; };
 		95DA802E1D10393300FA0C3F /* ShareSDK.bundle */ = {isa = PBXFileReference; lastKnownFileType = "wrapper.plug-in"; path = ShareSDK.bundle; sourceTree = "<group>"; };
 		95DA802F1D10393300FA0C3F /* ShareSDKConnector.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; path = ShareSDKConnector.framework; sourceTree = "<group>"; };
+		95DE89101D33E73700B8DEE4 /* RCAblumCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAblumCollectionCell.h; sourceTree = "<group>"; };
+		95DE89111D33E73700B8DEE4 /* RCAblumCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAblumCollectionCell.m; sourceTree = "<group>"; };
+		95DE89131D33F7D200B8DEE4 /* RCAblumInfoCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAblumInfoCollectionViewController.h; sourceTree = "<group>"; };
+		95DE89141D33F7D200B8DEE4 /* RCAblumInfoCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAblumInfoCollectionViewController.m; sourceTree = "<group>"; };
 		95DEDB171D2FFF040030BF6C /* RCAboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAboutUsViewController.h; sourceTree = "<group>"; };
 		95DEDB181D2FFF040030BF6C /* RCAboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAboutUsViewController.m; sourceTree = "<group>"; };
 		95DEDB1A1D2FFF040030BF6C /* RCFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFeedbackViewController.h; sourceTree = "<group>"; };
@@ -1182,6 +1188,8 @@
 			children = (
 				563FC6B81CACE74F00B7DD25 /* RCCollectionViewController.h */,
 				563FC6B91CACE74F00B7DD25 /* RCCollectionViewController.m */,
+				95DE89131D33F7D200B8DEE4 /* RCAblumInfoCollectionViewController.h */,
+				95DE89141D33F7D200B8DEE4 /* RCAblumInfoCollectionViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1406,6 +1414,8 @@
 				C457D6C81CAE514B00075D9B /* RCColumnScrollViewDelegate.m */,
 				C457D6CA1CAE51ED00075D9B /* RCReleaseCell.h */,
 				C457D6CB1CAE51ED00075D9B /* RCReleaseCell.m */,
+				95DE89101D33E73700B8DEE4 /* RCAblumCollectionCell.h */,
+				95DE89111D33E73700B8DEE4 /* RCAblumCollectionCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2053,6 +2063,7 @@
 				561D01FF1C47DA5600E4E013 /* AFImageDownloader.m in Sources */,
 				56B9CD331C807A7100914F00 /* SDWebImageManager.m in Sources */,
 				C4CAD1BB1C7B3943003FD0B0 /* IndustryModel.m in Sources */,
+				95DE89151D33F7D200B8DEE4 /* RCAblumInfoCollectionViewController.m in Sources */,
 				56E3C0181C9C722000BDAE19 /* CZScheduleInfoCell.m in Sources */,
 				56E3C0101C9C5A9A00BDAE19 /* RCUpdateScheduleViewController.m in Sources */,
 				95BECB161D02A386009BA89B /* BWaterflowLayout.m in Sources */,
@@ -2141,6 +2152,7 @@
 				56B9CD3A1C807A7100914F00 /* UIImageView+WebCache.m in Sources */,
 				5674AF991C70B99100184A31 /* CZActivityCell.m in Sources */,
 				95E4B4D51D1A9C9300FC2EB9 /* RCMyFocusCell.m in Sources */,
+				95DE89121D33E73700B8DEE4 /* RCAblumCollectionCell.m in Sources */,
 				56E8C6701C8A2BD000435758 /* CZRemintTimeView.m in Sources */,
 				56E3C01B1C9C72BD00BDAE19 /* CZRemindView.m in Sources */,
 				56B9CD411C807C4A00914F00 /* UIImage+ImageEffects.m in Sources */,

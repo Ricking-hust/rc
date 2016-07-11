@@ -114,7 +114,7 @@
     {
         UIView *view = [[UIView alloc]init];
         UILabel *label = [[UILabel alloc]init];
-        label.text = @"请在iPhone的“设置”-“通知”中进行修改";
+        label.text = @"请在iPhone的“设置”-“通知”中进行修改。";
         label.font = [UIFont systemFontOfSize:12];
         [view addSubview:label];
         [label setTextColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.5]];
@@ -130,7 +130,7 @@
     {
         UIView *view = [[UIView alloc]init];
         UILabel *label = [[UILabel alloc]init];
-        label.text = @"当日常在运行时，接收新消息时你可以设置是否需要声音";
+        label.text = @"当日常在运行时，接收新消息时你可以设置是否需要声音。";
         label.font = [UIFont systemFontOfSize:12];
         [view addSubview:label];
         [label setTextColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.5]];
@@ -148,11 +148,11 @@
 {
     if (section == 0)
     {
-        CGSize size = [self sizeWithText:@"请在iPhone的“设置”-“通知”中进行修改" maxSize:CGSizeMake(kScreenWidth - 20, MAXFLOAT) fontSize:12];
+        CGSize size = [self sizeWithText:@"请在iPhone的“设置”-“通知”中进行修改。" maxSize:CGSizeMake(kScreenWidth - 20, MAXFLOAT) fontSize:12];
         return size.height + 20;
     }else
     {
-        CGSize size = [self sizeWithText:@"当日常在运行时，接收新消息时你可以设置是否需要声音" maxSize:CGSizeMake(kScreenWidth - 20, MAXFLOAT) fontSize:12];
+        CGSize size = [self sizeWithText:@"当日常在运行时，接收新消息时你可以设置是否需要声音。" maxSize:CGSizeMake(kScreenWidth - 20, MAXFLOAT) fontSize:12];
         return size.height + 20;
     }
 }
