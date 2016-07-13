@@ -7,13 +7,16 @@
 //
 
 #import "RCAblumCollectionCell.h"
+#import "RCAblumModel.h"
 #import "RCAblumInfoCollectionViewController.h"
 #import "Masonry.h"
+#import "RCAblumModel.h"
 @interface RCAblumCollectionCell()
 @property (nonatomic, strong) UIImageView *imageView;
 @property (nonatomic, strong) UILabel *label;
 @property (nonatomic, strong) UITapGestureRecognizer *clickImageView;
-@property (nonatomic, weak) UIView *superView;
+@property (nonatomic, weak)   UIView *superView;
+@property (nonatomic, strong) RCAblumModel *ablumModel;
 @end
 @implementation RCAblumCollectionCell
 - (id)initWithFrame:(CGRect)frame
@@ -31,9 +34,18 @@
         self.imageView.userInteractionEnabled = YES;
         self.clickImageView = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didClickImageView:)];
         [self.imageView addGestureRecognizer:self.clickImageView];
+        
+        self.ablumModel = [[RCAblumModel alloc]init];
     }
     self.backgroundColor = [UIColor whiteColor];
     return self;
+}
+- (void)setModel:(RCAblumModel *)model
+{
+    self.ablumModel = model;
+    [self setTittle:self.ablumModel.album_name];
+    NSURL *imageURL = [NSURL URLWithString:self.ablumModel.album_img];
+    [self.imageView sd_setImageWithURL:imageURL placeholderImage:[UIImage imageNamed:@"img_1"]];
 }
 - (void)setResponder:(UIView *)view
 {
@@ -56,6 +68,8 @@
 - (void)didClickImageView:(UITapGestureRecognizer *)gesture
 {
     RCAblumInfoCollectionViewController *vc = [[RCAblumInfoCollectionViewController alloc]init];
+    [vc setNavigationTittle:self.ablumModel.album_name];
+    [vc setAblumID:self.ablumModel.album_id];
     [[self viewController].navigationController pushViewController:vc animated:YES];
 }
 - (UIResponder *)nextResponder

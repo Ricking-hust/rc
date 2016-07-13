@@ -136,7 +136,6 @@
         NSLog(@"错误代码：%@",code);
         return nil;
     }
-    
 }
 - (UserActivity *)userActivityfromDict:(NSDictionary *)dict
 {

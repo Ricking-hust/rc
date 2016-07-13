@@ -7,8 +7,14 @@
 //
 
 #import <UIKit/UIKit.h>
-
+@class RCAblumModel;
 @interface RCAblumCollectionCell : UICollectionViewCell
+/**
+ *  设置cell的model
+ *
+ *  @param model cell的数据模型
+ */
+- (void)setModel:(RCAblumModel *)model;
 /**
  *  设置图片
  *

@@ -9,5 +9,6 @@
 #import <UIKit/UIKit.h>
 
 @interface RCAblumInfoCollectionViewController : UIViewController
-
+- (void)setNavigationTittle:(NSString *)tittle;
+- (void)setAblumID:(NSString *)ablumID;
 @end

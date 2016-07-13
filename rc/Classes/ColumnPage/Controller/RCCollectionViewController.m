@@ -21,6 +21,8 @@
 #import "RCColumnScrollViewDelegate.h"
 #import "BWaterflowLayout.h"
 #import "RCAblumCollectionCell.h"
+#import "RCNetworkingRequestOperationManager.h"
+#import "RCAblumModel.h"
 //MJReflesh--------------------------------
 #import "MJRefresh.h"
 #import "RCHomeRefreshHeader.h"
@@ -43,6 +45,7 @@
 @property (nonatomic, copy) NSURLSessionDataTask *(^getIndListBlock)();
 @property (nonatomic, copy) NSURLSessionDataTask *(^getActivityListWithIndBlock)(IndustryModel *model);
 @property (nonatomic,copy) NSURLSessionDataTask *(^refreshAcListWithIndBlock)(IndustryModel *model,NSString *minAcId);
+@property (nonatomic, strong) UIView *line; //工具栏下的线
 @end
 
 @implementation RCCollectionViewController
@@ -100,7 +103,8 @@ static NSString * const albumReuseIdentifier =@"albumCell";
     RCCollectionView *cv = (RCCollectionView *)collectionView;
     if ([cv.indModel.indName isEqualToString:@"精选"])
     {
-        return 10;
+        NSArray *ablumArr = [self.activityListByInd valueForKey:@"精选"];
+        return ablumArr.count;
     }else
     {
         NSMutableArray *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
@@ -115,9 +119,16 @@ static NSString * const albumReuseIdentifier =@"albumCell";
     if ([cv.indModel.indName isEqualToString:@"精选"])
     {
         RCAblumCollectionCell *cell = (RCAblumCollectionCell *)[collectionView dequeueReusableCellWithReuseIdentifier:albumReuseIdentifier forIndexPath:indexPath];
-        [cell setPicture:[UIImage imageNamed:@"img_1"]];
-        [cell setTittle:@"六月的雨六月的雨六月的雨六月的雨六月的雨六月的雨六月的雨六月的雨六月的雨"];
+//        [cell setPicture:[UIImage imageNamed:@"img_1"]];
+//        [cell setTittle:@"六月的雨六月的雨六月的雨六月的雨六月的雨六月的雨六月的雨六月的雨六月的雨"];
         [cell setResponder:self.view];
+        NSArray *ablumArr = [self.activityListByInd valueForKey:@"精选"];
+        if (ablumArr.count != 0 && ablumArr != nil)
+        {
+            RCAblumModel *model = ablumArr[indexPath.row];
+            [cell setModel:model];
+        }
+        
         return cell;
     }else
     {
@@ -272,7 +283,8 @@ static NSString * const albumReuseIdentifier =@"albumCell";
         return [[DataManager manager] getAllIndustriesWithSuccess:^(IndustryList *indList) {
             @strongify(self)
             self.indList = indList;
-            for (IndustryModel *model in self.indList.list) {
+            for (IndustryModel *model in self.indList.list)
+            {
                 self.getActivityListWithIndBlock(model);
             }
             
@@ -331,14 +343,30 @@ static NSString * const albumReuseIdentifier =@"albumCell";
 
 - (void)loadData:(NSArray *)acListRecived ByIndustry:(IndustryModel *)model
 {
-    long int index = [self.indList.list indexOfObject:model];
-    RCCollectionView *collectionView = [self createCollectionView:(int)index WithIndModel:model];
-    NSMutableArray *acList = [[NSMutableArray alloc]init];
-    for (ActivityModel *model in acListRecived) {
-        [acList addObject:model];
+    if ([model.indName isEqualToString:@"精选"])
+    {
+        long int index = [self.indList.list indexOfObject:model];
+        RCCollectionView *collectionView = [self creatAblumCollection:(int)index WithIndModel:model];
+        NSMutableArray *acList = [[NSMutableArray alloc]init];
+        for (ActivityModel *model in acListRecived)
+        {
+            [acList addObject:model];
+        }
+        [self.collectionViewByInd setObject:collectionView forKey:model.indName];
+        //[self.activityListByInd setObject:acList forKey:model.indName];
+        [self getAblumActivity:collectionView];
+    }else
+    {
+        long int index = [self.indList.list indexOfObject:model];
+        RCCollectionView *collectionView = [self createCollectionView:(int)index WithIndModel:model];
+        NSMutableArray *acList = [[NSMutableArray alloc]init];
+        for (ActivityModel *model in acListRecived) {
+            [acList addObject:model];
+        }
+        [self.collectionViewByInd setObject:collectionView forKey:model.indName];
+        [self.activityListByInd setObject:acList forKey:model.indName];
     }
-    [self.collectionViewByInd setObject:collectionView forKey:model.indName];
-    [self.activityListByInd setObject:acList forKey:model.indName];
+
 }
 
 -(void)refreshData:(NSArray *)acListRecived ByIndustry:(IndustryModel *)model{
@@ -359,6 +387,58 @@ static NSString * const albumReuseIdentifier =@"albumCell";
     }
     [self.activityListByInd setObject:acList forKey:model.indName];
     [collectionView reloadData];
+}
+#pragma mark - 请求精选数据
+- (void)getAblumActivity:(RCCollectionView *) collectionView
+{
+    NSString *urlStr = @"http://appv2.myrichang.com/Home/Industry/getAlbums";
+    NetWorkingRequestType type = POST;
+    NSString *ct_id = [userDefaults objectForKey:@"cityId"];
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:ct_id,@"ct_id",nil];
+    [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
+        id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        //NSArray *activity = [dict valueForKey:@"data"];
+        NSMutableArray *temp = [self initablumListWithDict:dict];
+        [self.activityListByInd setObject:temp forKey:@"精选"];
+        [collectionView reloadData];
+
+    } errorBlock:^(NSError *error) {
+        NSLog(@"请求失败:%@",error);
+    }];
+}
+- (NSMutableArray *)initablumListWithDict:(NSDictionary *)dict
+{
+    NSNumber *code = [dict valueForKey:@"code"];
+    if ([code isEqualToNumber:[[NSNumber alloc]initWithInt:200]])
+    {//返回正确的数据
+        
+        NSMutableArray *temp = [[NSMutableArray alloc]init];
+        NSArray *data = [dict valueForKey:@"data"];
+        for (NSDictionary *dic in data)
+        {
+            [temp addObject:[self ablumActivityfromDict:dic]];
+        }
+        return temp;
+    }else if ([code isEqualToNumber:[[NSNumber alloc]initWithInt:210]])
+    {//返回失败:操作类型无效或用户ID为空
+        NSLog(@"获取精选失败:%@",[dict valueForKey:@"msg"]);
+        return nil;
+    }else
+    {
+        NSLog(@"获取精选其他错误：%@",code);
+        return nil;
+    }
+}
+- (RCAblumModel *)ablumActivityfromDict:(NSDictionary *)dict
+{
+    RCAblumModel *ablum_ac = [[RCAblumModel alloc]init];
+    ablum_ac.album_id = [dict valueForKey:@"album_id"];
+    ablum_ac.album_name = [dict valueForKey:@"album_name"];
+    ablum_ac.album_img = [dict valueForKey:@"album_img"];
+    ablum_ac.album_desc = [dict valueForKey:@"album_desc"];
+    ablum_ac.album_time = [dict valueForKey:@"album_time"];
+    ablum_ac.read_num = [dict valueForKey:@"read_num"];
+    return ablum_ac;
 }
 
 -(void)setIndList:(IndustryList *)indList
@@ -386,65 +466,65 @@ static NSString * const albumReuseIdentifier =@"albumCell";
         self.toolScrollView.hidden = YES;
     }
 }
+#pragma mark - 创建精选collectionView
+- (RCCollectionView *)creatAblumCollection:(int)index WithIndModel:(IndustryModel *)indModel
+{
+    UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
+    CGFloat margin = 10;
+    //CGFloat itemWH = (kScreenWidth - 2 * margin - 4) / 4 - margin;
+    layout.itemSize = CGSizeMake(kScreenWidth, 200);
+    layout.minimumInteritemSpacing = 0;//行间距
+    layout.minimumLineSpacing = 0;    //列间距
+    //CGFloat top = margin + 44;
+    
+    RCCollectionView *collectionView = [[RCCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
+    collectionView.indModel = indModel;
+    [self.scrollView addSubview:collectionView];
+    [collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.scrollView.mas_top).offset(-64);//64用于消除collectionView在ScrollView的位置影响
+        make.left.equalTo(self.scrollView.mas_left).offset(index *kScreenWidth);
+        make.width.mas_equalTo(kScreenWidth);
+        make.bottom.equalTo(self.view.mas_bottom).offset(-49);
+    }];
+    collectionView.backgroundColor = [UIColor clearColor];
+    collectionView.dataSource = self;
+    collectionView.delegate = self;
+    collectionView.alwaysBounceHorizontal = NO;
+    //if (iOS7Later) _collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 2);
+    collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, 0, -2);
+    collectionView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    collectionView.mj_footer= [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
+    [collectionView registerClass:[RCAblumCollectionCell class] forCellWithReuseIdentifier:albumReuseIdentifier];
+    return collectionView;
+}
 #pragma mark - 根据行业在indlist中的下标生成对应的collectionView
 - (RCCollectionView *)createCollectionView:(int)index WithIndModel:(IndustryModel *)indModel
 {
 //    RCCollectionViewLayout *layout= [[RCCollectionViewLayout alloc]init];
 //    layout.layoutDelegate = self;
-    if ([indModel.indName isEqualToString:@"精选"])
-    {
-        UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        CGFloat margin = 10;
-        CGFloat itemWH = (kScreenWidth - 2 * margin - 4) / 4 - margin;
-        layout.itemSize = CGSizeMake(kScreenWidth, 200);
-        layout.minimumInteritemSpacing = 0;//行间距
-        layout.minimumLineSpacing = 0;    //列间距
-        //CGFloat top = margin + 44;
 
-        RCCollectionView *collectionView = [[RCCollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
-        collectionView.indModel = indModel;
-        [self.scrollView addSubview:collectionView];
-        [collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.scrollView.mas_top).offset(-64);//64用于消除collectionView在ScrollView的位置影响
-            make.left.equalTo(self.scrollView.mas_left).offset(index *kScreenWidth);
-            make.width.mas_equalTo(kScreenWidth);
-            make.bottom.equalTo(self.view.mas_bottom).offset(-49);
-        }];
-        collectionView.backgroundColor = [UIColor clearColor];
-        collectionView.dataSource = self;
-        collectionView.delegate = self;
-        collectionView.alwaysBounceHorizontal = NO;
-        //if (iOS7Later) _collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 2);
-        collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, 0, -2);
-        
-        [collectionView registerClass:[RCAblumCollectionCell class] forCellWithReuseIdentifier:albumReuseIdentifier];
-        return collectionView;
-        
-    }else
-    {
 #pragma mark - 修改布局
-        //创建布局
-        BWaterflowLayout * layout = [[BWaterflowLayout alloc]init];
-        layout.delegate = self;
-        
-        RCCollectionView * collectionView = [[RCCollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
-        collectionView.indModel = indModel;
-        collectionView.backgroundColor = [UIColor clearColor];
-        collectionView.delegate = self;
-        collectionView.dataSource = self;
-        [self.scrollView addSubview:collectionView];
-        [collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.scrollView.mas_top).offset(-64);//64用于消除collectionView在ScrollView的位置影响
-            make.left.equalTo(self.scrollView.mas_left).offset(index *kScreenWidth);
-            make.width.mas_equalTo(kScreenWidth);
-            make.bottom.equalTo(self.view.mas_bottom).offset(-49);
-        }];
-        collectionView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
-        collectionView.mj_footer= [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
-        // Register cell classes
-        [collectionView registerClass:[RCCollectionCell class] forCellWithReuseIdentifier:reuseIdentifier];
-        return collectionView;
-    }
+    //创建布局
+    BWaterflowLayout * layout = [[BWaterflowLayout alloc]init];
+    layout.delegate = self;
+    
+    RCCollectionView * collectionView = [[RCCollectionView alloc]initWithFrame:CGRectZero collectionViewLayout:layout];
+    collectionView.indModel = indModel;
+    collectionView.backgroundColor = [UIColor clearColor];
+    collectionView.delegate = self;
+    collectionView.dataSource = self;
+    [self.scrollView addSubview:collectionView];
+    [collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.scrollView.mas_top).offset(-64);//64用于消除collectionView在ScrollView的位置影响
+        make.left.equalTo(self.scrollView.mas_left).offset(index *kScreenWidth);
+        make.width.mas_equalTo(kScreenWidth);
+        make.bottom.equalTo(self.view.mas_bottom).offset(-49);
+    }];
+    collectionView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    collectionView.mj_footer= [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
+    // Register cell classes
+    [collectionView registerClass:[RCCollectionCell class] forCellWithReuseIdentifier:reuseIdentifier];
+    return collectionView;
 }
 
 #pragma mark - <BWaterflowLayoutDelegate>
@@ -483,9 +563,18 @@ static NSString * const albumReuseIdentifier =@"albumCell";
 {
     //获取当前的collectionView
     RCCollectionView *collectionView = [self getCurrentCollectionView];
-    if (self.refreshAcListWithIndBlock) {
-        self.refreshAcListWithIndBlock(collectionView.indModel,@"0");
+    if ([collectionView.indModel.indName isEqualToString:@"精选"])
+    {
+        [self.activityListByInd removeObjectForKey:@"精选"];
+        [self getAblumActivity:collectionView];
+    }else
+    {
+        if (self.refreshAcListWithIndBlock)
+        {
+            self.refreshAcListWithIndBlock(collectionView.indModel,@"0");
+        }
     }
+
     [collectionView.mj_header endRefreshing];
     [collectionView.mj_footer endRefreshing];
 }
@@ -503,16 +592,64 @@ static NSString * const albumReuseIdentifier =@"albumCell";
 {
     //获取当前的collectionView
     RCCollectionView *collectionView = [self getCurrentCollectionView];
-    NSMutableArray *acList = [self.activityListByInd objectForKey:collectionView.indModel.indName];
-    ActivityModel *minModel = acList.lastObject;
-    NSString *minId = minModel.acID;
-    if (minId.length == 0) {
-        [collectionView.mj_footer endRefreshingWithNoMoreData];
-    } else {
-        if (self.refreshAcListWithIndBlock) {
-            self.refreshAcListWithIndBlock(collectionView.indModel,minId);
+    if ([collectionView.indModel.indName isEqualToString:@"精选"])
+    {
+        [self getMoreAblum:collectionView];
+    }else
+    {
+        NSMutableArray *acList = [self.activityListByInd objectForKey:collectionView.indModel.indName];
+        ActivityModel *minModel = acList.lastObject;
+        NSString *minId = minModel.acID;
+        if (minId.length == 0)
+        {
+            [collectionView.mj_footer endRefreshingWithNoMoreData];
+        } else
+        {
+            if (self.refreshAcListWithIndBlock)
+            {
+                self.refreshAcListWithIndBlock(collectionView.indModel,minId);
+            }
+            [collectionView.mj_footer endRefreshing];
         }
-        [collectionView.mj_footer endRefreshing];
+    }
+
+}
+#pragma mark - 精选的上拉刷新
+- (void)getMoreAblum:(RCCollectionView *)collectionView
+{
+    NSMutableArray *ablumArr = [self.activityListByInd objectForKey:collectionView.indModel.indName];
+    if (ablumArr.count == 0 || ablumArr == nil)
+    {
+        [self getAblumActivity:collectionView];
+    }else
+    {
+        RCAblumModel *model = ablumArr.firstObject;
+        NSString *ct_id = [userDefaults objectForKey:@"cityId"];
+        NSString *URLString = @"http://appv2.myrichang.com/Home/Industry/getAlbums";
+        NSString *start_id = model.album_id;
+        NSDictionary *paramters = [NSDictionary dictionaryWithObjectsAndKeys:start_id, @"start_id",ct_id, @"ct_id", nil];
+        [RCNetworkingRequestOperationManager request:URLString requestType:POST parameters:paramters completeBlock:^(NSData *data) {
+            id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+            NSArray *ablums = [dict valueForKey:@"data"];
+            if (ablums.count == 0 || ablums == nil)
+            {
+                ;//[collectionView.mj_footer endRefreshing];
+            }else
+            {
+                NSMutableArray *temp = [self initablumListWithDict:dict];
+                for (RCAblumModel *model in temp)
+                {
+                    [ablumArr addObject:model];
+                }
+                //[collectionView.mj_footer endRefreshing];
+            }
+            [collectionView.mj_footer endRefreshing];
+            [collectionView reloadData];
+        } errorBlock:^(NSError *error) {
+            NSLog(@"精选上拉刷新失败:%@",error);
+            [collectionView.mj_footer endRefreshing];
+        }];
+
     }
 }
 - (RCCollectionView *)getCurrentCollectionView
@@ -612,6 +749,18 @@ static NSString * const albumReuseIdentifier =@"albumCell";
         }];
         
     }
+    
+    self.line = [[UIView alloc]init];
+    self.line.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
+    self.line.backgroundColor = [UIColor redColor];
+    [self.toolScrollView addSubview:self.line];
+    [self.line mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.height.mas_equalTo(11);
+        make.width.mas_equalTo(30);
+        make.left.equalTo(self.toolScrollView).offset(30);
+        make.bottom.equalTo(self.toolScrollView.mas_bottom).offset(-1);
+    }];
+    
 #pragma mark - 赋值scrollViewDelegate滚动按键数组
     self.scrollViewDelegate.toolButtonArray = self.toolButtonArray;
 }

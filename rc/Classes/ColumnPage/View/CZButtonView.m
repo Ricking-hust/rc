@@ -10,21 +10,6 @@
 #import "Masonry.h"
 @implementation CZButtonView
 
-+(instancetype) buttonView
-{
-    CZButtonView *buttonView = [[CZButtonView alloc]initWithFrame:CGRectMake(0, 0, 30, 35)];
-    
-    buttonView.tagButton = [[UIButton alloc]init];
-    buttonView.tagButton.tag = 1;
-    [buttonView addSubview:buttonView.tagButton];
-    
-    buttonView.line = [[UIView alloc]init];
-    buttonView.line.tag = 2;
-    [buttonView addSubview:buttonView.line];
-    buttonView.line.hidden = YES;
-    [buttonView addsubviewConstraints];
-    return buttonView;
-}
 - (id)initWithTittle:(NSString *)tittle
 {
     if (self = [super init])
