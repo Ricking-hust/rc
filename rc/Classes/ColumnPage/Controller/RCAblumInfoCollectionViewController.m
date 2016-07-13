@@ -9,6 +9,7 @@
 #import "RCAblumInfoCollectionViewController.h"
 #import "RCNetworkingRequestOperationManager.h"
 #import "RCAblumActivityModel.h"
+#import "RCAblumInfoCollectionCell.h"
 #import "Masonry.h"
 @interface RCAblumInfoCollectionViewController()<UICollectionViewDataSource, UICollectionViewDelegate>
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -33,25 +34,40 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
     self.navigationItem.title = self.tittle;
-    [self getAllAblumActivity];
+    //[self getAllAblumActivity];
+    [self test];
+}
+#pragma mark - 测试函数
+- (void)test
+{
+    NSMutableArray *arr = [[NSMutableArray alloc]init];
+    RCAblumActivityModel *model = [[RCAblumActivityModel alloc]init];
+    model.ac_id = @"2404";
+    model.ac_img = @"http://img.myrichang.com/img/banner/2016-06/06/1-6.jpg";
+    model.ac_title = @"【武昌VOX】6月26日 前卫摇滚 木推瓜 新专悲剧的诞生首发及重组巡演";
+    model.ac_time = @"2016-06-26 21:00:00";
+    model.ac_place = @"武汉 洪山区 鲁磨路118号国光大厦VOX LIVEHOUSE";
+    model.ac_des = @"暂无";
+    [arr addObject:model];
+    self.ablumActivity = [[NSArray alloc]initWithArray:arr];
+    [self.collectionView reloadData];
 }
 - (void)getAllAblumActivity
 {
     NSString *urlStr = @"http://appv2.myrichang.com/Home/Industry/getAlbumAcs";
+    NSLog(@"url = %@",urlStr);
+    NSLog(@"参数--》album_id = %@",self.album_id);
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:self.album_id,@"album_id",nil];
     [RCNetworkingRequestOperationManager request:urlStr requestType:POST parameters:parameters completeBlock:^(NSData *data) {
         id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
         
-        NSLog(@"%@",[dict valueForKey:@"msg"]);
         NSArray *temp = [self activityFromDict:dict];
-        
         if (temp.count !=0 && temp != nil)
         {
             self.ablumActivity = temp;
             [self.collectionView reloadData];
         }
         
-
     } errorBlock:^(NSError *error) {
         NSLog(@"请求失败:%@",error);
     }];
@@ -60,6 +76,9 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
 - (NSArray *)activityFromDict:(NSDictionary *)dict
 {
     NSNumber *code = [dict valueForKey:@"code"];
+    
+    NSLog(@"msg = %@",[dict valueForKey:@"msg"]);
+    NSLog(@"code = %@",code);
     if ([code isEqualToNumber:[[NSNumber alloc]initWithInt:200]])
     {//返回正确的数据
         
@@ -115,8 +134,8 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
 }
 -(UICollectionViewCell *)collectionView:(UICollectionView *)collectionView cellForItemAtIndexPath:(NSIndexPath *)indexPath
 {
-    UICollectionViewCell *cell = [collectionView dequeueReusableCellWithReuseIdentifier:albumInfoReuseIdentifier forIndexPath:indexPath];
-    cell.backgroundColor = [UIColor redColor];
+     RCAblumInfoCollectionCell*cell = (RCAblumInfoCollectionCell *)[collectionView dequeueReusableCellWithReuseIdentifier:albumInfoReuseIdentifier forIndexPath:indexPath];
+    cell.model = self.ablumActivity.firstObject;
     return cell;
 }
 #pragma mark - load lazy
@@ -146,7 +165,7 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
         //if (iOS7Later) _collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 2);
         _collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, 0, -2);
         
-        [_collectionView registerClass:[UICollectionViewCell class] forCellWithReuseIdentifier:albumInfoReuseIdentifier];
+        [_collectionView registerClass:[RCAblumInfoCollectionCell class] forCellWithReuseIdentifier:albumInfoReuseIdentifier];
 
     }
     return _collectionView;

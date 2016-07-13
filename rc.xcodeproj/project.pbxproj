@@ -211,6 +211,7 @@
 		95DA803C1D10393300FA0C3F /* ShareSDKConnector.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 95DA802F1D10393300FA0C3F /* ShareSDKConnector.framework */; };
 		95DBDC641D34C48A00D5DE3E /* RCAblumModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DBDC631D34C48A00D5DE3E /* RCAblumModel.m */; };
 		95DE5C2A1D36243C00FF4B82 /* RCAblumActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DE5C291D36243C00FF4B82 /* RCAblumActivityModel.m */; };
+		95DE5C2D1D363AF900FF4B82 /* RCAblumInfoCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DE5C2C1D363AF900FF4B82 /* RCAblumInfoCollectionCell.m */; };
 		95DE89121D33E73700B8DEE4 /* RCAblumCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DE89111D33E73700B8DEE4 /* RCAblumCollectionCell.m */; };
 		95DE89151D33F7D200B8DEE4 /* RCAblumInfoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DE89141D33F7D200B8DEE4 /* RCAblumInfoCollectionViewController.m */; };
 		95DEDB401D2FFF040030BF6C /* RCAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DEDB181D2FFF040030BF6C /* RCAboutUsViewController.m */; };
@@ -660,6 +661,8 @@
 		95DBDC631D34C48A00D5DE3E /* RCAblumModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAblumModel.m; sourceTree = "<group>"; };
 		95DE5C281D36243C00FF4B82 /* RCAblumActivityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAblumActivityModel.h; sourceTree = "<group>"; };
 		95DE5C291D36243C00FF4B82 /* RCAblumActivityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAblumActivityModel.m; sourceTree = "<group>"; };
+		95DE5C2B1D363AF900FF4B82 /* RCAblumInfoCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAblumInfoCollectionCell.h; sourceTree = "<group>"; };
+		95DE5C2C1D363AF900FF4B82 /* RCAblumInfoCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAblumInfoCollectionCell.m; sourceTree = "<group>"; };
 		95DE89101D33E73700B8DEE4 /* RCAblumCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAblumCollectionCell.h; sourceTree = "<group>"; };
 		95DE89111D33E73700B8DEE4 /* RCAblumCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAblumCollectionCell.m; sourceTree = "<group>"; };
 		95DE89131D33F7D200B8DEE4 /* RCAblumInfoCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCAblumInfoCollectionViewController.h; path = Controller/RCAblumInfoCollectionViewController.h; sourceTree = "<group>"; };
@@ -1423,6 +1426,8 @@
 				C457D6CB1CAE51ED00075D9B /* RCReleaseCell.m */,
 				95DE89101D33E73700B8DEE4 /* RCAblumCollectionCell.h */,
 				95DE89111D33E73700B8DEE4 /* RCAblumCollectionCell.m */,
+				95DE5C2B1D363AF900FF4B82 /* RCAblumInfoCollectionCell.h */,
+				95DE5C2C1D363AF900FF4B82 /* RCAblumInfoCollectionCell.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -2220,6 +2225,7 @@
 				C46A93D01C85DA5E009626F6 /* ScrollViewFrameAccessor.m in Sources */,
 				561D01F91C47DA5600E4E013 /* AFURLRequestSerialization.m in Sources */,
 				C46A93D11C85DA5E009626F6 /* ViewFrameAccessor.m in Sources */,
+				95DE5C2D1D363AF900FF4B82 /* RCAblumInfoCollectionCell.m in Sources */,
 				95DEDB461D2FFF040030BF6C /* RCMyInfoViewController.m in Sources */,
 				C47606F31CBE86BE00181854 /* RCUtils.m in Sources */,
 				C4923DF11D2CA46A00F8CADC /* CommentModel.m in Sources */,
