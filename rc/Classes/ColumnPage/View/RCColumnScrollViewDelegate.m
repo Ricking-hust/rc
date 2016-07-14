@@ -21,14 +21,17 @@
 }
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    
+    if (decelerate)
+    {
+        NSLog(@"didenddragging %f",scrollView.contentOffsetX);
+    }
     
     
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     int index = scrollView.contentOffsetX / kScreenWidth;
-
+    NSLog(@"index = %d",index);
     if (self.toolButtonArray.count != 0)
     {
         UIButton *button = self.toolButtonArray[index];
@@ -87,6 +90,11 @@
                 [self.toolScrollView setContentOffsetX:0];
             }
         }
+        CGFloat x = scrollView.contentOffsetX * 30 / kScreenWidth + 10 + index * padding;
+        [UIView animateWithDuration:0.5 animations:^{
+            [self.line setFrame:CGRectMake(x, 34, 30, 1)];
+        }];
+        
 
     }
 }

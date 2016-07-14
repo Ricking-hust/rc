@@ -675,8 +675,7 @@ static NSString * const albumReuseIdentifier =@"albumCell";
 - (UIScrollView *)toolScrollView
 {
     if (!_toolScrollView) {
-        CGRect rect = [[UIScreen mainScreen]bounds];
-        _toolScrollView  = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 68, rect.size.width, 35)];
+        _toolScrollView  = [[UIScrollView alloc]initWithFrame:CGRectMake(0, 68, kScreenWidth, 35)];
         _toolScrollView.backgroundColor = [UIColor whiteColor];
         //设置分布滚动，去掉水平和垂直滚动条
         _toolScrollView.showsHorizontalScrollIndicator = NO;
@@ -747,22 +746,23 @@ static NSString * const albumReuseIdentifier =@"albumCell";
             make.left.equalTo(self.toolScrollView.mas_left).with.offset(ofButtonPadding);
             make.top.equalTo(self.toolScrollView.mas_top).with.offset(topPadding);
         }];
+//        btnView.backgroundColor = [UIColor redColor];
         
     }
-    
+//    [self.toolScrollView addSubview:[[UIView alloc]init]];
     self.line = [[UIView alloc]init];
     self.line.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
-    self.line.backgroundColor = [UIColor redColor];
     [self.toolScrollView addSubview:self.line];
     [self.line mas_updateConstraints:^(MASConstraintMaker *make) {
-        make.height.mas_equalTo(11);
-        make.width.mas_equalTo(30);
-        make.left.equalTo(self.toolScrollView).offset(30);
-        make.bottom.equalTo(self.toolScrollView.mas_bottom).offset(-1);
+        make.top.equalTo(self.toolScrollView).offset(34);
+        make.left.equalTo(self.toolScrollView.mas_left).offset(10);
+        make.width.mas_equalTo(40);
+        make.height.mas_equalTo(1);
     }];
     
 #pragma mark - 赋值scrollViewDelegate滚动按键数组
     self.scrollViewDelegate.toolButtonArray = self.toolButtonArray;
+    self.scrollViewDelegate.line = self.line;
 }
 
 - (void)isToolButtonSelected:(UIButton *)btn

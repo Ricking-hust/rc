@@ -124,17 +124,17 @@
 {
     ActivityModel *model = [[ActivityModel alloc]init];
     
-    model.acID = @"";
-    model.acPoster = @"";
+    model.acID = @"2403";
+    model.acPoster = @"http://img.myrichang.com/upload/2016-06-18_13:18:51_d41d8cd98f00b204e9800998ecf8427e.png";
     model.acPosterTop = @"";
-    model.acTitle = @"";
-    model.acTime = @"";
+    model.acTitle = @"世界五大童声合唱团之一 巴黎男童合唱团";
+    model.acTime = @"2016-07-22 19:30:00";
     model.acTheme = @"";
-    model.acPlace = @"";
+    model.acPlace = @"武汉 江岸区 武汉剧院";
     model.acCollectNum = @"zhangdy";
     model.acSize = @"";
     model.acPay = @"";
-    model.acDesc = @"";
+    model.acDesc = @"暂无";
     model.acReview = @"";
     model.acStatus = @"";
     model.acPraiseNum = @"";
@@ -143,10 +143,34 @@
     model.acCollectNum = @"";
     model.plan = @"";
     model.planId = @"";
-    model.userInfo.userId = @"";
-    model.userInfo.userName = @"";
-    model.userInfo.userPic = @"";
+    model.userInfo.userId = [userDefaults valueForKey:@"userId"];
+    model.userInfo.userName = [userDefaults valueForKey:@"userName"];
+    model.userInfo.userPic = [userDefaults valueForKey:@"userPic"];
     model.tagsList.list = [[NSMutableArray alloc]init];
+
+//    model.acID = self.ablumInfomodel.ac_id;
+//    model.acPoster = self.ablumInfomodel.ac_img;
+//    model.acPosterTop = @"";
+//    model.acTitle = self.ablumInfomodel.ac_title;
+//    model.acTime = self.ablumInfomodel.ac_time;
+//    model.acTheme = @"";
+//    model.acPlace = self.ablumInfomodel.ac_place;
+//    model.acCollectNum = @"zhangdy";
+//    model.acSize = @"";
+//    model.acPay = @"";
+//    model.acDesc = self.ablumInfomodel.ac_des;
+//    model.acReview = @"";
+//    model.acStatus = @"";
+//    model.acPraiseNum = @"";
+//    model.acReadNum = @"";
+//    model.acHtml = @"";
+//    model.acCollectNum = @"";
+//    model.plan = @"";
+//    model.planId = @"";
+//    model.userInfo.userId = [userDefaults valueForKey:@"userId"];
+//    model.userInfo.userName = [userDefaults valueForKey:@"userName"];
+//    model.userInfo.userPic = [userDefaults valueForKey:@"userPic"];
+//    model.tagsList.list = [[NSMutableArray alloc]init];
     
     return model;
 }

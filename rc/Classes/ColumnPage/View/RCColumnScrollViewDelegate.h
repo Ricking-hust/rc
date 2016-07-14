@@ -12,4 +12,5 @@
 @property (nonatomic, strong) NSMutableArray *toolButtonArray;
 @property (nonatomic, strong) UIScrollView *toolScrollView;
 @property (nonatomic, assign) CurrentDevice device;
+@property (nonatomic, strong) UIView *line;
 @end
