@@ -76,7 +76,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="EVZ-g9-G01">
                         <barButtonItem key="leftBarButtonItem" style="plain" id="1OR-4H-lKd">
-                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="gfJ-bJ-XM9" customClass="CZCityButton">
+                            <button key="customView" opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="left" contentVerticalAlignment="center" lineBreakMode="middleTruncation" id="gfJ-bJ-XM9" customClass="RCButton">
                                 <rect key="frame" x="16" y="7" width="46" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                                 <fontDescription key="fontDescription" type="system" pointSize="15"/>
@@ -101,7 +101,7 @@
                         </barButtonItem>
                     </navigationItem>
                     <connections>
-                        <outlet property="leftButton" destination="gfJ-bJ-XM9" id="MzW-6z-xWB"/>
+                        <outlet property="leftButton" destination="gfJ-bJ-XM9" id="ZXv-4J-z2j"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="1rb-eh-veG" userLabel="First Responder" sceneMemberID="firstResponder"/>

@@ -127,7 +127,7 @@
 		56E3C0141C9C691200BDAE19 /* RCAddScheduleViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E3C0131C9C691200BDAE19 /* RCAddScheduleViewController.m */; };
 		56E3C0181C9C722000BDAE19 /* CZScheduleInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E3C0171C9C722000BDAE19 /* CZScheduleInfoCell.m */; };
 		56E3C01B1C9C72BD00BDAE19 /* CZRemindView.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E3C01A1C9C72BD00BDAE19 /* CZRemindView.m */; };
-		56E470071C5735900056BE17 /* CZCityButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E470061C5735900056BE17 /* CZCityButton.m */; };
+		56E470071C5735900056BE17 /* RCButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E470061C5735900056BE17 /* RCButton.m */; };
 		56E523581C75922700794B0E /* CZPersonInfoCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 56E523571C75922700794B0E /* CZPersonInfoCell.m */; };
 		56E603F81CA5369000EB0446 /* loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 56E603F61CA5369000EB0446 /* loading.gif */; };
 		56E603F91CA5369000EB0446 /* 50%loading.gif in Resources */ = {isa = PBXBuildFile; fileRef = 56E603F71CA5369000EB0446 /* 50%loading.gif */; };
@@ -526,8 +526,8 @@
 		56E3C0171C9C722000BDAE19 /* CZScheduleInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZScheduleInfoCell.m; sourceTree = "<group>"; };
 		56E3C0191C9C72BD00BDAE19 /* CZRemindView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZRemindView.h; sourceTree = "<group>"; };
 		56E3C01A1C9C72BD00BDAE19 /* CZRemindView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZRemindView.m; sourceTree = "<group>"; };
-		56E470051C5735900056BE17 /* CZCityButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZCityButton.h; sourceTree = "<group>"; };
-		56E470061C5735900056BE17 /* CZCityButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZCityButton.m; sourceTree = "<group>"; };
+		56E470051C5735900056BE17 /* RCButton.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCButton.h; sourceTree = "<group>"; };
+		56E470061C5735900056BE17 /* RCButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCButton.m; sourceTree = "<group>"; };
 		56E523561C75922700794B0E /* CZPersonInfoCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZPersonInfoCell.h; sourceTree = "<group>"; };
 		56E523571C75922700794B0E /* CZPersonInfoCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZPersonInfoCell.m; sourceTree = "<group>"; };
 		56E603F61CA5369000EB0446 /* loading.gif */ = {isa = PBXFileReference; lastKnownFileType = image.gif; path = loading.gif; sourceTree = "<group>"; };
@@ -1178,8 +1178,8 @@
 				C430C1C81D0EF55B008763BD /* RCPubRecommendView.m */,
 				56637D731C5611230000BF46 /* CZCityView.h */,
 				56637D741C5611230000BF46 /* CZCityView.m */,
-				56E470051C5735900056BE17 /* CZCityButton.h */,
-				56E470061C5735900056BE17 /* CZCityButton.m */,
+				56E470051C5735900056BE17 /* RCButton.h */,
+				56E470061C5735900056BE17 /* RCButton.m */,
 				56814C141C58A64600CB60D6 /* CZRemindMeView.h */,
 				56814C151C58A64600CB60D6 /* CZRemindMeView.m */,
 				56E2AAA61C59A964009371F7 /* CZRemindTimeButton.h */,
@@ -2148,7 +2148,7 @@
 				560F36B41CBE7E2B0088AA19 /* WebViewJavascriptBridge.m in Sources */,
 				56E6FB0A1CEC33D800B7B101 /* RCPersonNewsCell.m in Sources */,
 				561D020C1C47DA5600E4E013 /* MASViewAttribute.m in Sources */,
-				56E470071C5735900056BE17 /* CZCityButton.m in Sources */,
+				56E470071C5735900056BE17 /* RCButton.m in Sources */,
 				C430C1C91D0EF55B008763BD /* RCPubRecommendView.m in Sources */,
 				95DEDB4E1D2FFF040030BF6C /* RCPrivateChatViewController.m in Sources */,
 				95DEDB4A1D2FFF040030BF6C /* RCSignupViewController.m in Sources */,

@@ -27,9 +27,10 @@
         self.label = [[UILabel alloc]initWithFrame:CGRectMake(10, 160, kScreenWidth, 40)];
         UIView *line = [[UIView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 10)];
         line.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-        [self.contentView addSubview:line];
+
         [self.contentView addSubview:self.imageView];
         [self.contentView addSubview:self.label];
+        [self.contentView addSubview:line];
         
         self.imageView.userInteractionEnabled = YES;
         self.clickImageView = [[UITapGestureRecognizer alloc]initWithTarget:self action:@selector(didClickImageView:)];

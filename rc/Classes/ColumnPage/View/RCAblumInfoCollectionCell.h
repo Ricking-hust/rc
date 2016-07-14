@@ -9,5 +9,16 @@
 #import <UIKit/UIKit.h>
 @class RCAblumActivityModel;
 @interface RCAblumInfoCollectionCell : UICollectionViewCell
-@property (nonatomic, strong)RCAblumActivityModel *model;
+/**
+ *  设置cell的数据模型
+ *
+ *  @param model 数据模型
+ */
+- (void)setModel:(RCAblumActivityModel *)model;
+/**
+ *  设置响应链
+ *
+ *  @param view 响应链上的View
+ */
+- (void)setResponder:(UIView *)view;
 @end

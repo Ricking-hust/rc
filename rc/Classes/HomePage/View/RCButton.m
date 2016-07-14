@@ -6,10 +6,10 @@
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
 
-#import "CZCityButton.h"
+#import "RCButton.h"
 #define ImageW 15//图片的宽度
 
-@implementation CZCityButton
+@implementation RCButton
 
 
 //控件从xib/storyboard中创建时调用

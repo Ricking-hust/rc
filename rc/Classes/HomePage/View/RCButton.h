@@ -8,6 +8,6 @@
 
 #import <UIKit/UIKit.h>
 
-@interface CZCityButton : UIButton
+@interface RCButton : UIButton
 
 @end

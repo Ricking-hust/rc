@@ -10,7 +10,7 @@
 #import "CZHomeViewController.h"
 #import "CZHomeHeaderView.h"
 #import "Masonry.h"
-#import "CZCityButton.h"
+#import "RCButton.h"
 #import "RCDirectView.h"
 #import "RCCityViewController.h"
 #import "RCPubRecommendView.h"
@@ -47,7 +47,7 @@ typedef void (^HomeViewBlock)(id);
 @property (nonatomic,copy) NSURLSessionDataTask *(^getActivityListBlock)(NSString *minAcId);
 @property (nonatomic,copy) NSURLSessionDataTask *(^getFlash)();
 @property (nonatomic,copy) NSURLSessionDataTask *(^getCityListBlock)();
-@property (weak, nonatomic) IBOutlet CZCityButton *leftButton;
+@property (weak, nonatomic) IBOutlet RCButton *leftButton;
 @property (strong, nonatomic) RCPubRecommendView *pubRecommendView;
 @property (nonatomic,strong) UIButton *acRecButton;
 @property (nonatomic,strong) UIButton *pubRecButton;
