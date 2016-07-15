@@ -32,7 +32,6 @@
         }];
     }
     
-    
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
