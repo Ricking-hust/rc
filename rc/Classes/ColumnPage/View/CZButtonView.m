@@ -39,7 +39,7 @@
 - (void)addsubviewConstraints
 {
     [self mas_makeConstraints:^(MASConstraintMaker *make) {
-        make.size.mas_equalTo(CGSizeMake(30, 30));
+        make.size.mas_equalTo(CGSizeMake(40, 30));
     }];
     [self.tagButton mas_makeConstraints:^(MASConstraintMaker *make) {
         make.centerY.left.equalTo(self);

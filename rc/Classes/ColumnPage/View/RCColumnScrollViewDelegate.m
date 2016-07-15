@@ -8,6 +8,9 @@
 
 #import "RCColumnScrollViewDelegate.h"
 
+@interface RCColumnScrollViewDelegate()
+@property (nonatomic, assign) int index;
+@end
 @implementation RCColumnScrollViewDelegate
 - (id)init
 {
@@ -23,18 +26,20 @@
 {
     if (decelerate)
     {
-        NSLog(@"didenddragging %f",scrollView.contentOffsetX);
+        CGFloat x = self.index * (26 + 42) + 10;
+        [UIView animateWithDuration:0 animations:^{
+            [self.line setFrame:CGRectMake(x, 34, 42, 1)];
+        }];
     }
     
     
 }
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    int index = scrollView.contentOffsetX / kScreenWidth;
-    NSLog(@"index = %d",index);
+    self.index = (scrollView.contentOffset.x + scrollView.frame.size.width / 2)/ scrollView.frame.size.width;
     if (self.toolButtonArray.count != 0)
     {
-        UIButton *button = self.toolButtonArray[index];
+        UIButton *button = self.toolButtonArray[self.index];
         [self isToolButtonSelected:button];
         //to do here -----------------------------------
         CGFloat padding = kScreenWidth * 0.07;
@@ -90,12 +95,8 @@
                 [self.toolScrollView setContentOffsetX:0];
             }
         }
-        CGFloat x = scrollView.contentOffsetX * 30 / kScreenWidth + 10 + index * padding;
-        [UIView animateWithDuration:0.5 animations:^{
-            [self.line setFrame:CGRectMake(x, 34, 30, 1)];
-        }];
-        
-
+        CGFloat x = scrollView.contentOffsetX * 42 / kScreenWidth + 10 + self.index * 26;
+        [self.line setFrame:CGRectMake(x, 34, 42, 1)];
     }
 }
 - (void)isToolButtonSelected:(UIButton *)btn

@@ -78,14 +78,13 @@
 {
     self.acList = flashArray;
     //设置父容器的大小
-    CGRect rect = [[UIScreen mainScreen]bounds];
-    [self setFrame:CGRectMake(0, 0, rect.size.width, (rect.size.width*0.427)+119)];
+    [self setFrame:CGRectMake(0, 0, kScreenWidth, (kScreenWidth*0.427)+119)];
     
     //configure scrollView constraint
     [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.and.top.equalTo(self);
-        make.width.mas_equalTo(rect.size.width);
-        make.height.mas_equalTo(rect.size.width*0.427);
+        make.width.mas_equalTo(kScreenWidth);
+        make.height.mas_equalTo(kScreenWidth*0.427);
         
     }];
     
@@ -101,7 +100,7 @@
     [self.directView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.scrollView.mas_right);
         make.top.equalTo(self.pageControl.mas_bottom).offset(9);
-        make.width.mas_equalTo(rect.size.width);
+        make.width.mas_equalTo(kScreenWidth);
         make.height.mas_equalTo(110);
     }];
     
@@ -120,18 +119,18 @@
         //NSLog(@"%@",imageName);
         [imageView sd_setImageWithURL:[NSURL URLWithString:imageName] placeholderImage:[UIImage imageNamed:@"img_3"]];
         [button mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.scrollView.mas_left).with.offset(i * rect.size.width);
+            make.left.equalTo(self.scrollView.mas_left).with.offset(i * kScreenWidth);
             make.top.equalTo(self.scrollView.mas_top);
             make.size.equalTo(self.scrollView);
         }];
         [imageView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.scrollView.mas_left).with.offset(i * rect.size.width);
+            make.left.equalTo(self.scrollView.mas_left).with.offset(i * kScreenWidth);
             make.top.equalTo(self.scrollView.mas_top);
             make.size.equalTo(self.scrollView);
         }];
     }
     //设置滚动范围
-    self.scrollView.contentSize = CGSizeMake(count * rect.size.width, 0);
+    self.scrollView.contentSize = CGSizeMake(count * kScreenWidth, 0);
 
     //设置分布滚动，去掉水平和垂直滚动条
     self.scrollView.pagingEnabled = YES;

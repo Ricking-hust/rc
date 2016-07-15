@@ -104,12 +104,23 @@ static NSString * const albumReuseIdentifier =@"albumCell";
     if ([cv.indModel.indName isEqualToString:@"精选"])
     {
         NSArray *ablumArr = [self.activityListByInd valueForKey:@"精选"];
-        return ablumArr.count;
+        if (ablumArr.count == 0 || ablumArr == nil)
+        {
+            return 0;
+        }else
+        {
+            return ablumArr.count;
+        }
     }else
     {
         NSMutableArray *activityList = [self.activityListByInd valueForKey:cv.indModel.indName];
-        
-        return activityList.count;
+        if (activityList.count == 0 || activityList == nil)
+        {
+            return 0;
+        }else
+        {
+            return activityList.count;
+        }
     }
 
 }
@@ -399,8 +410,14 @@ static NSString * const albumReuseIdentifier =@"albumCell";
         id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
         //NSArray *activity = [dict valueForKey:@"data"];
         NSMutableArray *temp = [self initablumListWithDict:dict];
-        [self.activityListByInd setObject:temp forKey:@"精选"];
-        [collectionView reloadData];
+        if (temp.count == 0 || temp == nil)
+        {
+            
+        }else
+        {
+            [self.activityListByInd setObject:temp forKey:@"精选"];
+            [collectionView reloadData];
+        }
 
     } errorBlock:^(NSError *error) {
         NSLog(@"请求失败:%@",error);
@@ -718,45 +735,47 @@ static NSString * const albumReuseIdentifier =@"albumCell";
 - (void)showToolButtons
 {
     CGFloat leftPadding = 10;
-    CGFloat topPadding = (self.toolScrollView.frame.size.height - 30)/2;
-    CGFloat padding = kScreenWidth * 0.07;
+    //CGFloat topPadding = (self.toolScrollView.frame.size.height - 30)/2;
+    //CGFloat padding = kScreenWidth * 0.07;
     
     //设置工具条的水平滚动范围
-    CGFloat horizontalContentSize = self.indList.list.count*30 + (self.indList.list.count - 1)*padding + leftPadding + 10;
+    CGFloat horizontalContentSize = self.indList.list.count*42 + (self.indList.list.count - 1)*26 + leftPadding + 10;
+
     self.toolScrollView.contentSize = CGSizeMake(horizontalContentSize, 0);
     for (int i = 0; i<self.indList.list.count; i++)
     {
         IndustryModel *indModel = self.indList.list[i];
-        CZButtonView *btnView = [[CZButtonView alloc]initWithTittle:indModel.indName];
+//        CZButtonView *btnView = [[CZButtonView alloc]initWithTittle:indModel.indName];
+        UIButton *indButton = [[UIButton alloc]init];
+        [indButton setTitle:indModel.indName forState:UIControlStateNormal];
+        UIColor *selectedColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0] ;
+        UIColor *notSelectedColor = [UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.6] ;
+        [indButton setTitleColor:selectedColor forState:UIControlStateSelected];
+        [indButton setTitleColor:notSelectedColor forState:UIControlStateNormal];
+        indButton.titleLabel.font = [UIFont systemFontOfSize:14];
+        [self.toolScrollView addSubview:indButton];
+        CGFloat ofButtonPadding = i * (26 + 42) + leftPadding;
+        [indButton mas_updateConstraints:^(MASConstraintMaker *make) {
+            make.centerY.equalTo(self.toolScrollView);
+            make.width.mas_equalTo(42);
+            make.height.mas_equalTo(30);
+            make.left.equalTo(self.toolScrollView).offset(ofButtonPadding);
+        }];
+        [indButton addTarget:self action:@selector(onClickTooBtn:) forControlEvents:UIControlEventTouchUpInside];
+        [self.toolButtonArray addObject:indButton];
         if (i == 0)
         {
-            btnView.tagButton.selected = YES;
-            //btnView.line.hidden = NO;
-        }else
-        {
-            //btnView.line.hidden = YES;
+            indButton.selected = YES;
         }
-        [self.toolButtonArray addObject:btnView.tagButton];
-        btnView.tagButton.tag = i;
-        CGFloat ofButtonPadding = i * (padding + 30) + leftPadding;
-        [btnView.tagButton addTarget:self action:@selector(onClickTooBtn:) forControlEvents:UIControlEventTouchUpInside];
-        [self.toolScrollView addSubview:btnView];
-        
-        [btnView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.toolScrollView.mas_left).with.offset(ofButtonPadding);
-            make.top.equalTo(self.toolScrollView.mas_top).with.offset(topPadding);
-        }];
-//        btnView.backgroundColor = [UIColor redColor];
         
     }
-//    [self.toolScrollView addSubview:[[UIView alloc]init]];
     self.line = [[UIView alloc]init];
     self.line.backgroundColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0];
     [self.toolScrollView addSubview:self.line];
     [self.line mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.toolScrollView).offset(34);
         make.left.equalTo(self.toolScrollView.mas_left).offset(10);
-        make.width.mas_equalTo(40);
+        make.width.mas_equalTo(42);
         make.height.mas_equalTo(1);
     }];
     
