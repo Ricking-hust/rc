@@ -27,7 +27,6 @@
 {
     if (self = [super initWithFrame:frame])
     {
-//        self.imageView = [[UIImageView alloc]initWithFrame:CGRectMake(0, 10, kScreenWidth, 150)];
         self.imageView = [[UIImageView alloc]init];
         self.tittleLabel = [[UILabel alloc]init];
         self.timeLabel = [[UILabel alloc]init];
@@ -51,51 +50,51 @@
 
     [self.imageView sd_setImageWithURL:[NSURL URLWithString:_ablumInfomodel.ac_img] placeholderImage:[UIImage imageNamed:@"img_1"]];
     self.tittleLabel.text = _ablumInfomodel.ac_title;
-    NSString *time = [NSString stringWithFormat:@"时间：%@", _ablumInfomodel.ac_time];
+    NSString *time = _ablumInfomodel.ac_time;
     self.timeLabel.text = [time substringWithRange:NSMakeRange(0, [time length]-3)];
-    self.desLabel.text = [NSString stringWithFormat:@"主讲：%@", _ablumInfomodel.ac_des];
-    self.placeLabel.text = [NSString stringWithFormat:@"地点：%@", _ablumInfomodel.ac_place];
+    self.desLabel.text = _ablumInfomodel.ac_des;
+    self.placeLabel.text = _ablumInfomodel.ac_place;
     
     [self.imageView setFrame:CGRectMake(0, 0, kScreenWidth, 150)];
 
     self.tittleLabel.font = [UIFont systemFontOfSize:16];
     self.tittleLabel.alpha = 0.8;
-    CGSize tittleSize = [self sizeWithText:self.tittleLabel.text maxSize:CGSizeMake(kScreenWidth - 30, 20) fontSize:16];
+    //CGSize tittleSize = [self sizeWithText:self.tittleLabel.text maxSize:CGSizeMake(kScreenWidth - 30, 20) fontSize:16];
     [self.tittleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_left).offset(15);
         make.top.equalTo(self.imageView.mas_bottom).offset(15);
-        make.width.mas_equalTo((int)tittleSize.width + 1);
-        make.height.mas_equalTo((int)tittleSize.height + 1);
+        make.width.mas_equalTo((int)_ablumInfomodel.tittleSize.width + 1);
+        make.height.mas_equalTo((int)_ablumInfomodel.tittleSize.height + 1);
     }];
     self.timeLabel.font = [UIFont systemFontOfSize:14];
     self.timeLabel.alpha = 0.8;
-    CGSize timeSize = [self sizeWithText:self.timeLabel.text maxSize:CGSizeMake(kScreenWidth - 30, 17) fontSize:14];
+    //CGSize timeSize = [self sizeWithText:self.timeLabel.text maxSize:CGSizeMake(kScreenWidth - 30, 17) fontSize:14];
 //    NSLog(@"%f,%f",timeSize.width,timeSize.height);
     [self.timeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.tittleLabel.mas_left);
         make.top.equalTo(self.tittleLabel.mas_bottom).offset(15);
-        make.width.mas_equalTo((int)timeSize.width+1);
-        make.height.mas_equalTo((int)timeSize.height+1);
+        make.width.mas_equalTo((int)_ablumInfomodel.timeSize.width+1);
+        make.height.mas_equalTo((int)_ablumInfomodel.timeSize.height+1);
     }];
     self.desLabel.font = [UIFont systemFontOfSize:14];
     self.desLabel.alpha = 0.8;
     self.desLabel.numberOfLines = 0;
-    CGSize desSize = [self sizeWithText:self.desLabel.text maxSize:CGSizeMake(kScreenWidth - 30, 35) fontSize:14];
+    //CGSize desSize = [self sizeWithText:self.desLabel.text maxSize:CGSizeMake(kScreenWidth - 30, 35) fontSize:14];
     [self.desLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.tittleLabel.mas_left);
         make.top.equalTo(self.timeLabel.mas_bottom).offset(5);
-        make.width.mas_equalTo((int)desSize.width+1);
-        make.height.mas_equalTo((int)desSize.height+1);
+        make.width.mas_equalTo((int)_ablumInfomodel.desSize.width+1);
+        make.height.mas_equalTo((int)_ablumInfomodel.desSize.height+1);
     }];
     self.placeLabel.font = [UIFont systemFontOfSize:14];
     self.placeLabel.alpha = 0.8;
     self.placeLabel.numberOfLines = 0;
-    CGSize placeSize = [self sizeWithText:self.placeLabel.text maxSize:CGSizeMake(kScreenWidth - 30, 35) fontSize:14];
+    //CGSize placeSize = [self sizeWithText:self.placeLabel.text maxSize:CGSizeMake(kScreenWidth - 30, 35) fontSize:14];
     [self.placeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.tittleLabel.mas_left);
         make.top.equalTo(self.desLabel.mas_bottom).offset(5);
-        make.width.mas_equalTo((int)placeSize.width+1);
-        make.height.mas_equalTo((int)placeSize.height+1);
+        make.width.mas_equalTo((int)_ablumInfomodel.placeSize.width+1);
+        make.height.mas_equalTo((int)_ablumInfomodel.placeSize.height+1);
     }];
     
     self.infoButton.titleLabel.font = [UIFont systemFontOfSize:14];

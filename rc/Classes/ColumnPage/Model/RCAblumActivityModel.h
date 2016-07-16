@@ -15,4 +15,9 @@
 @property (nonatomic, strong) NSString *ac_time;    //活动开始时间
 @property (nonatomic, strong) NSString *ac_place;   //活动地点
 @property (nonatomic, strong) NSString *ac_des;     //主讲人简介
+@property (nonatomic, assign) CGFloat height;       //cell的高度
+@property (nonatomic, assign) CGSize tittleSize;    //tittle的大小
+@property (nonatomic, assign) CGSize timeSize;      //timeSize的大小
+@property (nonatomic, assign) CGSize desSize;       //desSize的大小
+@property (nonatomic, assign) CGSize placeSize;     //placeSize的大小
 @end

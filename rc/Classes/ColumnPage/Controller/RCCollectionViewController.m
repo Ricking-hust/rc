@@ -10,7 +10,6 @@
 #import "RCCollectionView.h"
 #import "Masonry.h"
 #include <sys/sysctl.h>
-#import "CZButtonView.h"
 #import "IndustryModel.h"
 #import "ActivityModel.h"
 #import "DataManager.h"
@@ -51,7 +50,7 @@
 @implementation RCCollectionViewController
 
 static NSString * const reuseIdentifier = @"RCColumnCell";
-static NSString * const albumReuseIdentifier =@"albumCell";
+static NSString * const albumReuseIdentifier = @"albumCell";
 - (void)viewWillAppear:(BOOL)animated
 {
     [super viewWillAppear:animated];
@@ -735,9 +734,6 @@ static NSString * const albumReuseIdentifier =@"albumCell";
 - (void)showToolButtons
 {
     CGFloat leftPadding = 10;
-    //CGFloat topPadding = (self.toolScrollView.frame.size.height - 30)/2;
-    //CGFloat padding = kScreenWidth * 0.07;
-    
     //设置工具条的水平滚动范围
     CGFloat horizontalContentSize = self.indList.list.count*42 + (self.indList.list.count - 1)*26 + leftPadding + 10;
 
@@ -745,7 +741,6 @@ static NSString * const albumReuseIdentifier =@"albumCell";
     for (int i = 0; i<self.indList.list.count; i++)
     {
         IndustryModel *indModel = self.indList.list[i];
-//        CZButtonView *btnView = [[CZButtonView alloc]initWithTittle:indModel.indName];
         UIButton *indButton = [[UIButton alloc]init];
         [indButton setTitle:indModel.indName forState:UIControlStateNormal];
         UIColor *selectedColor = [UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0] ;
@@ -789,15 +784,9 @@ static NSString * const albumReuseIdentifier =@"albumCell";
     for (int i = 0; i < self.toolButtonArray.count; ++i)
     {
         UIButton *button = self.toolButtonArray[i];
-        //UIView *view = button.superview;
-        //UIView *line = [view viewWithTag:12];
-        //line.hidden = YES;
         button.selected = NO;
     }
     btn.selected = YES;
-    //UIView *view = btn.superview;
-    //UIView *line = [view viewWithTag:12];
-    //line.hidden = NO;
 }
 - (CurrentDevice)device
 {

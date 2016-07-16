@@ -62,7 +62,6 @@
 		563FC6BD1CACF83E00B7DD25 /* RCCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 563FC6BC1CACF83E00B7DD25 /* RCCollectionCell.m */; };
 		563FC6C01CACFBA400B7DD25 /* RCCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 563FC6BF1CACFBA400B7DD25 /* RCCollectionView.m */; };
 		563FC6C31CAD0C4E00B7DD25 /* RCCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 563FC6C21CAD0C4E00B7DD25 /* RCCollectionViewLayout.m */; };
-		563FC6C51CAD444700B7DD25 /* CZButtonView.m in Sources */ = {isa = PBXBuildFile; fileRef = 563FC6C41CAD444700B7DD25 /* CZButtonView.m */; };
 		56423F4B1C4FB4710072CCC3 /* CZHomeViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 56423F4A1C4FB4710072CCC3 /* CZHomeViewController.m */; };
 		564596B51C732A84006D8493 /* LewPopupBackgroundView.m in Sources */ = {isa = PBXBuildFile; fileRef = 564596AA1C732A84006D8493 /* LewPopupBackgroundView.m */; };
 		564596B61C732A84006D8493 /* LewPopupViewAnimationDrop.m in Sources */ = {isa = PBXBuildFile; fileRef = 564596AC1C732A84006D8493 /* LewPopupViewAnimationDrop.m */; };
@@ -393,8 +392,6 @@
 		563FC6BF1CACFBA400B7DD25 /* RCCollectionView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCollectionView.m; sourceTree = "<group>"; };
 		563FC6C11CAD0C4E00B7DD25 /* RCCollectionViewLayout.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCollectionViewLayout.h; sourceTree = "<group>"; };
 		563FC6C21CAD0C4E00B7DD25 /* RCCollectionViewLayout.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCollectionViewLayout.m; sourceTree = "<group>"; };
-		563FC6C41CAD444700B7DD25 /* CZButtonView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZButtonView.m; sourceTree = "<group>"; };
-		563FC6C61CAD444F00B7DD25 /* CZButtonView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZButtonView.h; sourceTree = "<group>"; };
 		56423F491C4FB4710072CCC3 /* CZHomeViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CZHomeViewController.h; sourceTree = "<group>"; };
 		56423F4A1C4FB4710072CCC3 /* CZHomeViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CZHomeViewController.m; sourceTree = "<group>"; };
 		564596A91C732A84006D8493 /* LewPopupBackgroundView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LewPopupBackgroundView.h; sourceTree = "<group>"; };
@@ -1418,8 +1415,6 @@
 				563FC6BF1CACFBA400B7DD25 /* RCCollectionView.m */,
 				563FC6BB1CACF83E00B7DD25 /* RCCollectionCell.h */,
 				563FC6BC1CACF83E00B7DD25 /* RCCollectionCell.m */,
-				563FC6C61CAD444F00B7DD25 /* CZButtonView.h */,
-				563FC6C41CAD444700B7DD25 /* CZButtonView.m */,
 				C457D6C71CAE514B00075D9B /* RCColumnScrollViewDelegate.h */,
 				C457D6C81CAE514B00075D9B /* RCColumnScrollViewDelegate.m */,
 				C457D6CA1CAE51ED00075D9B /* RCReleaseCell.h */,
@@ -2200,7 +2195,6 @@
 				5654C3381C97D4800018DA93 /* RCMyActivityCell.m in Sources */,
 				56F02CB01CA2884B00E0BBB4 /* MJRefreshAutoNormalFooter.m in Sources */,
 				564596B51C732A84006D8493 /* LewPopupBackgroundView.m in Sources */,
-				563FC6C51CAD444700B7DD25 /* CZButtonView.m in Sources */,
 				563FC6C01CACFBA400B7DD25 /* RCCollectionView.m in Sources */,
 				563FC6BA1CACE74F00B7DD25 /* RCCollectionViewController.m in Sources */,
 				566094651C9C1A9000433AD8 /* RCTableView.m in Sources */,

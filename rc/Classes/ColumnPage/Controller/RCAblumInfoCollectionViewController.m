@@ -30,8 +30,7 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-//    UIView *view = [[UIView alloc]initWithFrame:CGRectZero];
-//    [self.view addSubview:view];
+
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
@@ -50,6 +49,7 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
     model.ac_time = @"2016-06-26 21:00:00";
     model.ac_place = @"武汉 洪山区 鲁磨路118号国光大厦VOX LIVEHOUSE";
     model.ac_des = @"暂无";
+    [self setCellHeight:model];
     [arr addObject:model];
     self.ablumActivity = [[NSArray alloc]initWithArray:arr];
     [self.collectionView reloadData];
@@ -67,6 +67,10 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
         if (temp.count !=0 && temp != nil)
         {
             self.ablumActivity = temp;
+            for (RCAblumActivityModel *model in self.ablumActivity)
+            {
+                [self setCellHeight:model];
+            }
             [self.collectionView reloadData];
         }
         
@@ -74,6 +78,24 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
         NSLog(@"请求失败:%@",error);
     }];
 
+}
+- (void)setCellHeight:(RCAblumActivityModel *)model
+{
+    CGSize tittleSize = [self sizeWithText:model.ac_title maxSize:CGSizeMake(kScreenWidth - 30, 20) fontSize:16];
+    model.tittleSize = tittleSize;
+    
+    CGSize timeSize = [self sizeWithText:model.ac_time maxSize:CGSizeMake(kScreenWidth - 30, 17) fontSize:14];
+    model.timeSize = timeSize;
+    
+    CGSize desSize = [self sizeWithText:model.ac_des maxSize:CGSizeMake(kScreenWidth - 30, 35) fontSize:14];
+    model.desSize = desSize;
+    
+    CGSize placeSize = [self sizeWithText:model.ac_place maxSize:CGSizeMake(kScreenWidth - 30, 35) fontSize:14];
+    model.placeSize = placeSize;
+    
+    CGFloat height = 150+15+(int)tittleSize.height+1 + 15 + (int)timeSize.height + 1 + (int)desSize.height + 5 + (int)placeSize.height + 1+20 + 30 +15;
+    
+    model.height = height;
 }
 - (NSArray *)activityFromDict:(NSDictionary *)dict
 {
@@ -109,9 +131,9 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
     model.ac_id    = [dict valueForKey:@"ac_id"];
     model.ac_img   = [dict valueForKey:@"ac_img"];
     model.ac_title = [dict valueForKey:@"ac_title"];
-    model.ac_time  = [dict valueForKey:@"ac_time"];
-    model.ac_place = [dict valueForKey:@"ac_place"];
-    model.ac_des   = [dict valueForKey:@"ac_des"];
+    model.ac_time  = [NSString stringWithFormat:@"时间：%@",[dict valueForKey:@"ac_time"]];
+    model.ac_place = [NSString stringWithFormat:@"地点：%@",[dict valueForKey:@"ac_place"]];
+    model.ac_des   = [NSString stringWithFormat:@"主讲：%@",[dict valueForKey:@"ac_des"]];
     return model;
 }
 - (void)back
@@ -141,11 +163,11 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
     [cell setResponder:self.view];
     return cell;
 }
-//- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
-//{
-//    
-//    return CGSizeMake(100, 100);
-//}
+- (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
+{
+    RCAblumActivityModel *model = self.ablumActivity[indexPath.row];
+    return CGSizeMake(model.height, kScreenWidth);
+}
 #pragma mark - load lazy
 - (UICollectionView *)collectionView
 {
@@ -202,5 +224,19 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
     }
     return _tittle;
 }
-
+/**
+ *  计算字体的长和宽
+ *
+ *  @param text 待计算大小的字符串
+ *
+ *  @param fontSize 指定绘制字符串所用的字体大小
+ *
+ *  @return 字符串的大小
+ */
+- (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize
+{
+    //计算文本的大小
+    CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
+    return nameSize;
+}
 @end
