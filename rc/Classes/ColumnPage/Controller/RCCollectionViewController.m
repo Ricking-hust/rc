@@ -727,7 +727,10 @@ static NSString * const albumReuseIdentifier = @"albumCell";
             break;
         }
     }
-    [self.scrollView setContentOffsetX:index * kScreenWidth];
+    [UIView animateWithDuration:0.5 animations:^{
+        [self.scrollView setContentOffsetX:index * kScreenWidth];
+    }];
+
 }
 
 #pragma mark -创建工具条按钮

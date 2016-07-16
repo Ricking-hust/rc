@@ -36,8 +36,8 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
     self.navigationItem.title = self.tittle;
-    //[self getAllAblumActivity];
-    [self test];
+    [self getAllAblumActivity];
+    //[self test];
 }
 #pragma mark - 测试函数
 - (void)test
