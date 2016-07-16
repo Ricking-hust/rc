@@ -26,8 +26,6 @@
 #import "RCBarButton.h"
 #import "RCBarButtonView.h"
 #import "RCReleaseCell.h"
-//----------------ShareSDK2.0-----------------
-//#import <ShareSDK/ShareSDK.h>
 //----------------ShareSDK3.3-----------------
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKUI/ShareSDK+SSUI.h>

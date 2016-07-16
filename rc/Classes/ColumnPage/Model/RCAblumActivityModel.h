@@ -20,4 +20,5 @@
 @property (nonatomic, assign) CGSize timeSize;      //timeSize的大小
 @property (nonatomic, assign) CGSize desSize;       //desSize的大小
 @property (nonatomic, assign) CGSize placeSize;     //placeSize的大小
+- (id)initWithModel:(RCAblumActivityModel *)model;
 @end

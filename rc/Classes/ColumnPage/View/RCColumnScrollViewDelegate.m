@@ -22,19 +22,6 @@
     }
     return self;
 }
-- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
-{
-
-    if (decelerate)
-    {
-        CGFloat x = self.index * (26 + 42) + 10;
-        [UIView animateWithDuration:0 animations:^{
-            [self.line setFrame:CGRectMake(x, 34, 42, 1)];
-        }];
-    }
-
-    
-}
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     self.index = (scrollView.contentOffset.x + scrollView.frame.size.width / 2)/ scrollView.frame.size.width;

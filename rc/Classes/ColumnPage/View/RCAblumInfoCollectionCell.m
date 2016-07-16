@@ -55,11 +55,20 @@
     self.desLabel.text = _ablumInfomodel.ac_des;
     self.placeLabel.text = _ablumInfomodel.ac_place;
     
-    [self.imageView setFrame:CGRectMake(0, 0, kScreenWidth, 150)];
+//    [self.imageView setFrame:CGRectMake(0, 0, kScreenWidth, 150)];
+    [self.imageView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.right.top.equalTo(self.contentView);
+        make.height.mas_equalTo(150);
+    }];
 
     self.tittleLabel.font = [UIFont systemFontOfSize:16];
     self.tittleLabel.alpha = 0.8;
-    //CGSize tittleSize = [self sizeWithText:self.tittleLabel.text maxSize:CGSizeMake(kScreenWidth - 30, 20) fontSize:16];
+    
+//    CGSize tittleSize = [self sizeWithText:self.tittleLabel.text maxSize:CGSizeMake(kScreenWidth - 30, 20) fontSize:16];
+//    CGSize timeSize = [self sizeWithText:self.timeLabel.text maxSize:CGSizeMake(kScreenWidth - 30, 17) fontSize:14];
+//    CGSize desSize = [self sizeWithText:self.desLabel.text maxSize:CGSizeMake(kScreenWidth - 30, 35) fontSize:14];
+//    CGSize placeSize = [self sizeWithText:self.placeLabel.text maxSize:CGSizeMake(kScreenWidth - 30, 35) fontSize:14];
+    
     [self.tittleLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_left).offset(15);
         make.top.equalTo(self.imageView.mas_bottom).offset(15);
@@ -68,8 +77,7 @@
     }];
     self.timeLabel.font = [UIFont systemFontOfSize:14];
     self.timeLabel.alpha = 0.8;
-    //CGSize timeSize = [self sizeWithText:self.timeLabel.text maxSize:CGSizeMake(kScreenWidth - 30, 17) fontSize:14];
-//    NSLog(@"%f,%f",timeSize.width,timeSize.height);
+
     [self.timeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.tittleLabel.mas_left);
         make.top.equalTo(self.tittleLabel.mas_bottom).offset(15);
@@ -79,7 +87,7 @@
     self.desLabel.font = [UIFont systemFontOfSize:14];
     self.desLabel.alpha = 0.8;
     self.desLabel.numberOfLines = 0;
-    //CGSize desSize = [self sizeWithText:self.desLabel.text maxSize:CGSizeMake(kScreenWidth - 30, 35) fontSize:14];
+
     [self.desLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.tittleLabel.mas_left);
         make.top.equalTo(self.timeLabel.mas_bottom).offset(5);
@@ -89,7 +97,7 @@
     self.placeLabel.font = [UIFont systemFontOfSize:14];
     self.placeLabel.alpha = 0.8;
     self.placeLabel.numberOfLines = 0;
-    //CGSize placeSize = [self sizeWithText:self.placeLabel.text maxSize:CGSizeMake(kScreenWidth - 30, 35) fontSize:14];
+
     [self.placeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.tittleLabel.mas_left);
         make.top.equalTo(self.desLabel.mas_bottom).offset(5);

@@ -10,6 +10,7 @@
 #import "RCNetworkingRequestOperationManager.h"
 #import "RCAblumActivityModel.h"
 #import "RCAblumInfoCollectionCell.h"
+#import "UINavigationBar+Awesome.h"
 #import "Masonry.h"
 @interface RCAblumInfoCollectionViewController()<UICollectionViewDataSource, UICollectionViewDelegate,UICollectionViewDelegateFlowLayout>
 @property (nonatomic, strong) UICollectionView *collectionView;
@@ -46,11 +47,19 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
     model.ac_id = @"2404";
     model.ac_img = @"http://img.myrichang.com/img/banner/2016-06/06/1-6.jpg";
     model.ac_title = @"【武昌VOX】6月26日 前卫摇滚 木推瓜 新专悲剧的诞生首发及重组巡演";
-    model.ac_time = @"2016-06-26 21:00:00";
-    model.ac_place = @"武汉 洪山区 鲁磨路118号国光大厦VOX LIVEHOUSE";
-    model.ac_des = @"暂无";
+    model.ac_time = @"时间：2016-06-26 21:00";
+    model.ac_place = @"地点：武汉 洪山区 鲁磨路118号国光大厦VOX LIVEHOUSE";
+    model.ac_des = @"主讲：暂无";
     [self setCellHeight:model];
     [arr addObject:model];
+    
+    
+    for (int i = 0; i< 30; ++i)
+    {
+        RCAblumActivityModel *m1 = [[RCAblumActivityModel alloc]initWithModel:model];
+        [arr addObject:m1];
+    }
+
     self.ablumActivity = [[NSArray alloc]initWithArray:arr];
     [self.collectionView reloadData];
 }
@@ -93,7 +102,7 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
     CGSize placeSize = [self sizeWithText:model.ac_place maxSize:CGSizeMake(kScreenWidth - 30, 35) fontSize:14];
     model.placeSize = placeSize;
     
-    CGFloat height = 150+15+(int)tittleSize.height+1 + 15 + (int)timeSize.height + 1 + (int)desSize.height + 5 + (int)placeSize.height + 1+20 + 30 +15;
+    CGFloat height = 150+15+(int)tittleSize.height+1 + 15 + (int)timeSize.height + 1 + (int)desSize.height + 5 + (int)placeSize.height + 1+10 + 30 +10;
     
     model.height = height;
 }
@@ -140,6 +149,24 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
 {
     [self.navigationController popViewControllerAnimated:YES];
 }
+#pragma mark - scrollViewDelegate
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
+{
+//    CGFloat yOffset = scrollView.contentOffset.y;  // 偏移的y值
+//    if (yOffset < 64)
+//    {
+//        [UIView animateWithDuration:0.5 animations:^{
+//            [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor clearColor]];
+//        }];
+//        
+//    }else
+//    {
+//        [UIView animateWithDuration:0.5 animations:^{
+//            [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor colorWithRed:255.0/255.0 green:133.0/255.0 blue:14.0/255.0 alpha:1.0]];
+//        }];
+//    }
+
+}
 #pragma mark - <UICollectionViewDataSource>
 -(NSInteger)numberOfSectionsInCollectionView:(UICollectionView *)collectionView
 {
@@ -166,7 +193,7 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
 - (CGSize)collectionView:(UICollectionView *)collectionView layout:(UICollectionViewLayout*)collectionViewLayout sizeForItemAtIndexPath:(NSIndexPath *)indexPath;
 {
     RCAblumActivityModel *model = self.ablumActivity[indexPath.row];
-    return CGSizeMake(model.height, kScreenWidth);
+    return CGSizeMake(kScreenWidth, model.height);
 }
 #pragma mark - load lazy
 - (UICollectionView *)collectionView
@@ -174,16 +201,15 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
     if (_collectionView == nil)
     {
         UICollectionViewFlowLayout *layout = [[UICollectionViewFlowLayout alloc] init];
-        layout.itemSize = CGSizeMake(kScreenWidth, 360);
+//        layout.itemSize = CGSizeMake(kScreenWidth, 320);
         layout.minimumInteritemSpacing = 0;//行间距
-        layout.minimumLineSpacing = 0;    //列间距
-        //CGFloat top = margin + 44;
+        layout.minimumLineSpacing = 10;    //列间距
         
        _collectionView = [[UICollectionView alloc] initWithFrame:CGRectZero collectionViewLayout:layout];
        _collectionView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
         [self.view addSubview:_collectionView];
         [_collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.view.mas_top).offset(0);//64用于消除collectionView在ScrollView的位置影响
+            make.top.equalTo(self.view.mas_top);
             make.left.equalTo(self.view.mas_left);
             make.width.mas_equalTo(kScreenWidth);
             make.bottom.equalTo(self.view.mas_bottom);
@@ -192,8 +218,8 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
         _collectionView.dataSource = self;
         _collectionView.delegate = self;
         _collectionView.alwaysBounceHorizontal = NO;
-        //if (iOS7Later) _collectionView.contentInset = UIEdgeInsetsMake(0, 0, 0, 2);
-        _collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, 0, -2);
+
+//        _collectionView.scrollIndicatorInsets = UIEdgeInsetsMake(0, 0, 0, -2);
         
         [_collectionView registerClass:[RCAblumInfoCollectionCell class] forCellWithReuseIdentifier:albumInfoReuseIdentifier];
 
