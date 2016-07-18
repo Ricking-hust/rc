@@ -273,7 +273,6 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
                                  @"usr_id":userId,
                                  };
     return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://app.myrichang.com/Home/Activity/getActivityRecommend" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
-        
         NSDictionary *returnMessage = [[NSDictionary alloc]initWithDictionary:responseObject];
         NSNumber *code = [returnMessage objectForKey:@"code"];
         NSNumber *successcode = [NSNumber numberWithLong:200];
@@ -284,6 +283,7 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
             ActivityList *acList = nil;
             success(acList);
         }
+        
     } failure:^(NSError *error) {
         failure(error);
     }];

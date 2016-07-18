@@ -1099,7 +1099,7 @@
         self.prePreCommentView.collectTooH = 40;
         [UIView animateWithDuration:0.5 animations:^{
             [self.prePreCommentView mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.height.mas_equalTo(250);
+                make.height.mas_equalTo(290 + 28);
             }];
         } completion:^(BOOL finished) {
             self.isShowComment = YES;

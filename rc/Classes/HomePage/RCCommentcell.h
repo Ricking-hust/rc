@@ -22,6 +22,8 @@
 @property (nonatomic,strong) UIButton *praiseBtn;
 @property (nonatomic,strong) UIButton *fatherComment;
 
+@property (nonatomic,assign) BOOL isPreComment;
+
 -(void)setSubViewValue;
 
 @end

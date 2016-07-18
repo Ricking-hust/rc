@@ -35,6 +35,9 @@
         if (!_checkMoreBtn) {
             _checkMoreBtnH = 0;
             UIButton *checkMore = [[UIButton alloc]init];
+            [checkMore.titleLabel setFont:[UIFont systemFontOfSize:12]];
+            [checkMore setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [checkMore addTarget:self action:@selector(checkMorCommment) forControlEvents:UIControlEventTouchUpInside];
             _checkMoreBtn = checkMore;
             [self addSubview:_checkMoreBtn];
         }
@@ -80,6 +83,12 @@
         make.right.equalTo(self.mas_right);
         make.height.mas_equalTo(200);
     }];
+    
+    [self.checkMoreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.preCommentView.mas_bottom).offset(8);
+        make.right.equalTo(self.mas_right).offset(-10);
+        make.size.mas_equalTo(CGSizeMake(65, 20));
+    }];
 }
 
 -(void)setSubViewsValue{
@@ -100,11 +109,13 @@
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     RCCommentcell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier_CommentCell forIndexPath:indexPath];
+    cell.isPreComment = YES;
+    [cell layoutSubviews];
     return cell;
 }
 
 -(CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath{
-    return 80;
+    return 100;
 }
 
 //section头部间距
@@ -120,6 +131,11 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
+    
+}
+
+
+-(void)checkMorCommment{
     
 }
 
