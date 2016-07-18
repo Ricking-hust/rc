@@ -236,7 +236,6 @@
 		C457D6C91CAE514B00075D9B /* RCColumnScrollViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C457D6C81CAE514B00075D9B /* RCColumnScrollViewDelegate.m */; };
 		C457D6CC1CAE51ED00075D9B /* RCReleaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C457D6CB1CAE51ED00075D9B /* RCReleaseCell.m */; };
 		C4591CD21D3CF05E00E33A5F /* RCCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4591CD11D3CF05E00E33A5F /* RCCommentViewController.m */; };
-		C4591CD51D3CF09700E33A5F /* RCPubInfoViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4591CD41D3CF09700E33A5F /* RCPubInfoViewController.m */; };
 		C459AD8E1C8D9633009922EE /* NSDictionary+NotNullKey.m in Sources */ = {isa = PBXBuildFile; fileRef = C459AD8D1C8D9633009922EE /* NSDictionary+NotNullKey.m */; };
 		C465906C1CAE421900590ED9 /* ResetPasswordViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C465906B1CAE421900590ED9 /* ResetPasswordViewController.m */; };
 		C46635E91CBFCEA100582DD1 /* UIColor+YDAddition.m in Sources */ = {isa = PBXBuildFile; fileRef = C46635E81CBFCEA100582DD1 /* UIColor+YDAddition.m */; };
@@ -709,8 +708,6 @@
 		C457D6CB1CAE51ED00075D9B /* RCReleaseCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCReleaseCell.m; sourceTree = "<group>"; };
 		C4591CD01D3CF05E00E33A5F /* RCCommentViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCommentViewController.h; sourceTree = "<group>"; };
 		C4591CD11D3CF05E00E33A5F /* RCCommentViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCommentViewController.m; sourceTree = "<group>"; };
-		C4591CD31D3CF09700E33A5F /* RCPubInfoViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPubInfoViewController.h; sourceTree = "<group>"; };
-		C4591CD41D3CF09700E33A5F /* RCPubInfoViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPubInfoViewController.m; sourceTree = "<group>"; };
 		C459AD8C1C8D9633009922EE /* NSDictionary+NotNullKey.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSDictionary+NotNullKey.h"; sourceTree = "<group>"; };
 		C459AD8D1C8D9633009922EE /* NSDictionary+NotNullKey.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSDictionary+NotNullKey.m"; sourceTree = "<group>"; };
 		C465906A1CAE421900590ED9 /* ResetPasswordViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ResetPasswordViewController.h; sourceTree = "<group>"; };
@@ -1167,8 +1164,6 @@
 				C4F7E4C11D13E1C000485746 /* PublisherViewController.m */,
 				C4591CD01D3CF05E00E33A5F /* RCCommentViewController.h */,
 				C4591CD11D3CF05E00E33A5F /* RCCommentViewController.m */,
-				C4591CD31D3CF09700E33A5F /* RCPubInfoViewController.h */,
-				C4591CD41D3CF09700E33A5F /* RCPubInfoViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2108,7 +2103,6 @@
 				C472ABC01CFDCF1E006725B9 /* RCDirectView.m in Sources */,
 				56B9CD381C807A7100914F00 /* UIImage+WebP.m in Sources */,
 				56F02CB31CA2884B00E0BBB4 /* MJRefreshBackNormalFooter.m in Sources */,
-				C4591CD51D3CF09700E33A5F /* RCPubInfoViewController.m in Sources */,
 				56B9CD2E1C807A7100914F00 /* SDImageCache.m in Sources */,
 				561D02081C47DA5600E4E013 /* MASCompositeConstraint.m in Sources */,
 				C465906C1CAE421900590ED9 /* ResetPasswordViewController.m in Sources */,

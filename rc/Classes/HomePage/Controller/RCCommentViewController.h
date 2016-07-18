@@ -8,6 +8,8 @@
 
 #import <UIKit/UIKit.h>
 
-@interface RCCommentViewController : UIViewController
+@interface RCCommentViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
+
+@property (nonatomic,strong) UITableView *commetnTableView;
 
 @end
