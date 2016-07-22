@@ -24,7 +24,6 @@
         }
         
         if (!_collectTooBtn) {
-            _collectTooH = 0;
             UIButton *collectToo = [[UIButton alloc]init];
             [collectToo.titleLabel setFont:[UIFont systemFontOfSize:12]];
             [collectToo setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
@@ -33,16 +32,13 @@
             [self addSubview:_collectTooBtn];
         }
         if (!_checkMoreBtn) {
-            _checkMoreBtnH = 0;
             UIButton *checkMore = [[UIButton alloc]init];
             [checkMore.titleLabel setFont:[UIFont systemFontOfSize:12]];
             [checkMore setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
-            [checkMore addTarget:self action:@selector(checkMorCommment) forControlEvents:UIControlEventTouchUpInside];
             _checkMoreBtn = checkMore;
             [self addSubview:_checkMoreBtn];
         }
         _preCommentView = ({
-            _preCommentViewH = 0;
             UITableView *tableView = [[UITableView alloc]init];
             tableView.backgroundColor = [UIColor clearColor];
             tableView.delegate = self;
@@ -53,11 +49,8 @@
             [self addSubview:tableView];
             tableView;
         });
-        if (!_backView) {
-            _backView = [[UIView alloc]init];
-            _backView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];
-            [self addSubview:_backView];
-        }
+        
+        [self testGet];
     }
     return self;
 }
@@ -74,14 +67,14 @@
         make.left.equalTo(self.mas_left);
         make.top.equalTo(self.showCommentBtn.mas_bottom).offset(10);
         make.right.equalTo(self.mas_right);
-        make.height.mas_equalTo(self.collectTooH);
+        make.height.mas_equalTo(40);
     }];
     
     [self.preCommentView mas_makeConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.collectTooBtn.mas_bottom);
         make.left.equalTo(self.mas_left);
         make.right.equalTo(self.mas_right);
-        make.height.mas_equalTo(200);
+        make.height.mas_equalTo(210);
     }];
     
     [self.checkMoreBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -98,6 +91,18 @@
     [self.checkMoreBtn setTitle:@"查看更多" forState:UIControlStateNormal];
 }
 
+-(void)showOrDissMissCommentWith:(BOOL)isShow{
+    if (isShow) {
+        self.collectTooBtn.hidden = NO;
+        self.checkMoreBtn.hidden = NO;
+        self.preCommentView.hidden = NO;
+    } else {
+        self.collectTooBtn.hidden = YES;
+        self.checkMoreBtn.hidden = YES;
+        self.preCommentView.hidden = YES;
+    }
+}
+
 #pragma mark - TableView 数据源
 -(NSInteger)numberOfSectionsInTableView:(UITableView *)tableView{
     return 2;
@@ -107,10 +112,46 @@
     return 1;
 }
 
+-(void)testGet{
+    NSDictionary *dic1 = @{
+                           @"comment_id":@"1",
+                           @"usr_id":@"6",
+                           @"usr_name":@"逃跑计划",
+                           @"usr_pic":@"http://img.myrichang.com/img/src/logo.png",
+                           @"father_comment_id":@"0",
+                           @"comment_time":@"2015年7月20日 15：32",
+                           @"comment_content":@"再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见",
+                           @"comment_praise_num":@"7",
+                           @"father_comment_usr_id":@"0",
+                           @"father_comment_usr_name":@"0",
+                           @"father_comment_content":@"0"
+                           };
+    
+    NSDictionary *dic2 = @{
+                           @"comment_id":@"2",
+                           @"usr_id":@"5",
+                           @"usr_name":@"水木年华",
+                           @"usr_pic":@"http://img.myrichang.com/upload/14637245657abe0d0a55a8cefc5270d29c90a6157a.png",
+                           @"father_comment_id":@"1",
+                           @"comment_time":@"2015年7月20日 22：13",
+                           @"comment_content":@"启程",
+                           @"comment_praise_num":@"89",
+                           @"father_comment_usr_id":@"6",
+                           @"father_comment_usr_name":@"逃跑计划",
+                           @"father_comment_content":@"再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见"
+                           };
+    
+    NSArray *commentAry = [NSArray arrayWithObjects:dic1,dic2, nil];
+    
+    self.commentList = [[CommentList alloc]initWithArray:commentAry];;
+}
+
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     RCCommentcell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier_CommentCell forIndexPath:indexPath];
     cell.isPreComment = YES;
+    cell.commentModel = self.commentList.list[indexPath.section];
     [cell layoutSubviews];
+    [cell setSubViewValue];
     return cell;
 }
 
@@ -131,11 +172,6 @@
 }
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
-}
-
-
--(void)checkMorCommment{
     
 }
 

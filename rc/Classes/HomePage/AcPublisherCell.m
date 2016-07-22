@@ -6,13 +6,13 @@
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
 
-#import "PublisherCell.h"
+#import "AcPublisherCell.h"
 #import "Masonry.h"
 #import "UIImageView+WebCache.h"
 
 #define PADDING  10 //活动详情cell 中子控件之间的垂直间距
 
-@implementation PublisherCell
+@implementation AcPublisherCell
 
 -(id)initWithStyle:(UITableViewCellStyle)style reuseIdentifier:(NSString *)reuseIdentifier{
     self = [super initWithStyle:style reuseIdentifier:reuseIdentifier];
@@ -24,9 +24,6 @@
             _publisher.layer.masksToBounds = YES;
             _publisher.layer.cornerRadius = 22.5;
             _publisher.userInteractionEnabled = YES;
-            //轻拍Tap
-            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(turnToPublisherView)];
-            [_publisher addGestureRecognizer:tap];
             [self.contentView addSubview:_publisher];
         }
         
@@ -40,6 +37,7 @@
             _follow = [[UIButton alloc]init];
             [_follow.titleLabel setFont:[UIFont systemFontOfSize:14]];
             [_follow setTitleColor:themeColor forState:UIControlStateNormal];
+            [_follow addTarget:self action:@selector(followOrCancle) forControlEvents:UIControlEventTouchUpInside];
             [self.contentView addSubview:_follow];
         }
     }
@@ -76,8 +74,8 @@
     [_pubName setText:pubName];
 }
 
--(void)turnToPublisherView{
-    NSLog(@"turnToPublisherView");
+-(void)followOrCancle{
+    NSLog(@"followOrCancle");
 }
 
 @end

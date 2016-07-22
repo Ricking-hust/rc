@@ -60,7 +60,7 @@
         
         NSArray *pubAry = [NSArray arrayWithObjects:pubDic1,pubDic2, nil];
         
-        _pubList = [[PublisherList alloc]initWithArray:pubAry];;
+        _pubList = [[PublisherList alloc]initWithArray:pubAry];
     }
     
     [self.pubRecTableView reloadData];
@@ -113,7 +113,5 @@
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
     
 }
-
-
 
 @end

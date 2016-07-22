@@ -7,6 +7,7 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CommentModel.h"
 
 @interface PreCommentView : UIView<UITableViewDataSource,UITableViewDelegate>
 
@@ -14,11 +15,10 @@
 @property (nonatomic,strong) UIButton *collectTooBtn;
 @property (nonatomic,strong) UIButton *checkMoreBtn;
 @property (nonatomic,strong) UITableView *preCommentView;
-@property (nonatomic,strong) UIView *backView;
-@property (nonatomic,assign) CGFloat collectTooH;
-@property (nonatomic,assign) CGFloat preCommentViewH;
-@property (nonatomic,assign) CGFloat checkMoreBtnH;
+
+@property (nonatomic,strong) CommentList *commentList;
 
 -(void)setSubViewsValue;
+-(void)showOrDissMissCommentWith:(BOOL)isShow;
 
 @end

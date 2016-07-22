@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "CommentModel.h"
 
 @interface RCCommentViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
 
+@property (nonatomic,strong) CommentList *commentList;
 @property (nonatomic,strong) UITableView *commetnTableView;
 
 @end

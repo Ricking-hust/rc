@@ -14,10 +14,11 @@
 -(instancetype)initWithDictionary:(NSDictionary *)dict{
     if (self = [super initWithDictionary:dict]) {
         self.comment_id                 = [dict objectForSafeKey:@"comment_id"];
+        self.commentUser           = [[UserModel alloc] init];
         self.commentUser.userId         = [dict objectForSafeKey:@"usr_id"];
         self.commentUser.userName       = [dict objectForSafeKey:@"usr_name"];
         self.commentUser.userPic        = [dict objectForSafeKey:@"usr_pic"];
-        self.father_comment_id          = [dict objectForSafeKey:@"father_comment_usr_id"];
+        self.father_comment_id          = [dict objectForSafeKey:@"father_comment_id"];
         self.comment_time               = [dict objectForSafeKey:@"comment_time"];
         self.comment_content            = [dict objectForSafeKey:@"comment_content"];
         self.comment_praise_num         = [dict objectForSafeKey:@"comment_praise_num"];

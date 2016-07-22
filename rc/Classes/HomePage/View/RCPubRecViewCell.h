@@ -15,7 +15,7 @@
 @interface RCPubRecViewCell : UITableViewCell
 
 @property (nonatomic,strong) PublisherModel *pubModel;
-@property (nonatomic,strong) UIButton *publisherBtn;
+@property (nonatomic,strong) UIImageView *publisherPic;
 @property (nonatomic,strong) UILabel *pubNameLabel;
 @property (nonatomic,strong) UITextView *pubSign;
 @property (nonatomic,strong) RcFollowedButon *followBtn;

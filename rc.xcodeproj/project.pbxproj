@@ -233,6 +233,7 @@
 		C41FC3E81CB7CD4D009A5DCD /* RemindManager.m in Sources */ = {isa = PBXBuildFile; fileRef = C41FC3E71CB7CD4D009A5DCD /* RemindManager.m */; };
 		C430C1C91D0EF55B008763BD /* RCPubRecommendView.m in Sources */ = {isa = PBXBuildFile; fileRef = C430C1C81D0EF55B008763BD /* RCPubRecommendView.m */; };
 		C43EEB691CA68C2700B83670 /* FlashActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C43EEB681CA68C2700B83670 /* FlashActivityModel.m */; };
+		C44602A11D42A0BB004E0669 /* MakeCmtViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C44602A01D42A0BB004E0669 /* MakeCmtViewController.m */; };
 		C457D6C91CAE514B00075D9B /* RCColumnScrollViewDelegate.m in Sources */ = {isa = PBXBuildFile; fileRef = C457D6C81CAE514B00075D9B /* RCColumnScrollViewDelegate.m */; };
 		C457D6CC1CAE51ED00075D9B /* RCReleaseCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C457D6CB1CAE51ED00075D9B /* RCReleaseCell.m */; };
 		C4591CD21D3CF05E00E33A5F /* RCCommentViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4591CD11D3CF05E00E33A5F /* RCCommentViewController.m */; };
@@ -244,7 +245,7 @@
 		C472ABC01CFDCF1E006725B9 /* RCDirectView.m in Sources */ = {isa = PBXBuildFile; fileRef = C472ABBF1CFDCF1E006725B9 /* RCDirectView.m */; };
 		C47606F31CBE86BE00181854 /* RCUtils.m in Sources */ = {isa = PBXBuildFile; fileRef = C47606F21CBE86BE00181854 /* RCUtils.m */; };
 		C4923DF11D2CA46A00F8CADC /* CommentModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4923DF01D2CA46A00F8CADC /* CommentModel.m */; };
-		C4A8B5BE1D1AD72000C61B5E /* PublisherCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A8B5BD1D1AD72000C61B5E /* PublisherCell.m */; };
+		C4A8B5BE1D1AD72000C61B5E /* AcPublisherCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4A8B5BD1D1AD72000C61B5E /* AcPublisherCell.m */; };
 		C4B300161CA44BCC004516B0 /* NSString+MD5.m in Sources */ = {isa = PBXBuildFile; fileRef = C4B300151CA44BCC004516B0 /* NSString+MD5.m */; };
 		C4BBA81A1C89B93300AD02EE /* RegisteViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4BBA8191C89B93300AD02EE /* RegisteViewController.m */; };
 		C4C05E6D1C842126005E7FEE /* EXTScope.m in Sources */ = {isa = PBXBuildFile; fileRef = C4C05E6B1C842126005E7FEE /* EXTScope.m */; };
@@ -264,6 +265,8 @@
 		C4D8DFF11CC66A0B005DA9B3 /* TMCacheExtend.m in Sources */ = {isa = PBXBuildFile; fileRef = C4D8DFF01CC66A0B005DA9B3 /* TMCacheExtend.m */; };
 		C4DAF45F1D2A584E009DE31A /* PreCommentView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4DAF45E1D2A584E009DE31A /* PreCommentView.m */; };
 		C4DAF4621D2A5D5B009DE31A /* RCCommentcell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4DAF4611D2A5D5B009DE31A /* RCCommentcell.m */; };
+		C4DD6A951D42B63F00405A2E /* PublisherViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = C4DD6A941D42B63F00405A2E /* PublisherViewController.m */; };
+		C4DD6A981D42C09B00405A2E /* PubInfoHeaderView.m in Sources */ = {isa = PBXBuildFile; fileRef = C4DD6A971D42C09B00405A2E /* PubInfoHeaderView.m */; };
 		C4F7E4B71D0FF10500485746 /* PublisherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4B61D0FF10500485746 /* PublisherModel.m */; };
 		C4F7E4BA1D10041B00485746 /* RCPubRecViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4B91D10041B00485746 /* RCPubRecViewCell.m */; };
 		C4F7E4BF1D113A8800485746 /* RcFollowedButon.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4BE1D113A8800485746 /* RcFollowedButon.m */; };
@@ -702,6 +705,8 @@
 		C4345F451CD8E4A500A7171A /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		C43EEB671CA68C2700B83670 /* FlashActivityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = FlashActivityModel.h; sourceTree = "<group>"; };
 		C43EEB681CA68C2700B83670 /* FlashActivityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = FlashActivityModel.m; sourceTree = "<group>"; };
+		C446029F1D42A0BB004E0669 /* MakeCmtViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = MakeCmtViewController.h; sourceTree = "<group>"; };
+		C44602A01D42A0BB004E0669 /* MakeCmtViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = MakeCmtViewController.m; sourceTree = "<group>"; };
 		C457D6C71CAE514B00075D9B /* RCColumnScrollViewDelegate.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCColumnScrollViewDelegate.h; sourceTree = "<group>"; };
 		C457D6C81CAE514B00075D9B /* RCColumnScrollViewDelegate.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCColumnScrollViewDelegate.m; sourceTree = "<group>"; };
 		C457D6CA1CAE51ED00075D9B /* RCReleaseCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCReleaseCell.h; sourceTree = "<group>"; };
@@ -721,12 +726,12 @@
 		C46A93CF1C85DA5E009626F6 /* ViewFrameAccessor.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ViewFrameAccessor.m; sourceTree = "<group>"; };
 		C472ABBE1CFDCF1E006725B9 /* RCDirectView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCDirectView.h; sourceTree = "<group>"; };
 		C472ABBF1CFDCF1E006725B9 /* RCDirectView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCDirectView.m; sourceTree = "<group>"; };
-		C47606F11CBE86BE00181854 /* RCUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCUtils.h; sourceTree = "<group>"; };
-		C47606F21CBE86BE00181854 /* RCUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCUtils.m; sourceTree = "<group>"; };
+		C47606F11CBE86BE00181854 /* RCUtils.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCUtils.h; path = ../Classes/RCUtils.h; sourceTree = "<group>"; };
+		C47606F21CBE86BE00181854 /* RCUtils.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCUtils.m; path = ../Classes/RCUtils.m; sourceTree = "<group>"; };
 		C4923DEF1D2CA46A00F8CADC /* CommentModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = CommentModel.h; sourceTree = "<group>"; };
 		C4923DF01D2CA46A00F8CADC /* CommentModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = CommentModel.m; sourceTree = "<group>"; };
-		C4A8B5BC1D1AD72000C61B5E /* PublisherCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublisherCell.h; sourceTree = "<group>"; };
-		C4A8B5BD1D1AD72000C61B5E /* PublisherCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublisherCell.m; sourceTree = "<group>"; };
+		C4A8B5BC1D1AD72000C61B5E /* AcPublisherCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = AcPublisherCell.h; sourceTree = "<group>"; };
+		C4A8B5BD1D1AD72000C61B5E /* AcPublisherCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = AcPublisherCell.m; sourceTree = "<group>"; };
 		C4B300141CA44BCC004516B0 /* NSString+MD5.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = "NSString+MD5.h"; sourceTree = "<group>"; };
 		C4B300151CA44BCC004516B0 /* NSString+MD5.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = "NSString+MD5.m"; sourceTree = "<group>"; };
 		C4BBA8181C89B93300AD02EE /* RegisteViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RegisteViewController.h; sourceTree = "<group>"; };
@@ -768,14 +773,16 @@
 		C4DAF45E1D2A584E009DE31A /* PreCommentView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PreCommentView.m; sourceTree = "<group>"; };
 		C4DAF4601D2A5D5B009DE31A /* RCCommentcell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCommentcell.h; sourceTree = "<group>"; };
 		C4DAF4611D2A5D5B009DE31A /* RCCommentcell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCommentcell.m; sourceTree = "<group>"; };
+		C4DD6A931D42B63F00405A2E /* PublisherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublisherViewController.h; sourceTree = "<group>"; };
+		C4DD6A941D42B63F00405A2E /* PublisherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublisherViewController.m; sourceTree = "<group>"; };
+		C4DD6A961D42C09B00405A2E /* PubInfoHeaderView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PubInfoHeaderView.h; sourceTree = "<group>"; };
+		C4DD6A971D42C09B00405A2E /* PubInfoHeaderView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PubInfoHeaderView.m; sourceTree = "<group>"; };
 		C4F7E4B51D0FF10500485746 /* PublisherModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublisherModel.h; sourceTree = "<group>"; };
 		C4F7E4B61D0FF10500485746 /* PublisherModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublisherModel.m; sourceTree = "<group>"; };
 		C4F7E4B81D10041B00485746 /* RCPubRecViewCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCPubRecViewCell.h; path = View/RCPubRecViewCell.h; sourceTree = "<group>"; };
 		C4F7E4B91D10041B00485746 /* RCPubRecViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCPubRecViewCell.m; path = View/RCPubRecViewCell.m; sourceTree = "<group>"; };
 		C4F7E4BD1D113A8800485746 /* RcFollowedButon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RcFollowedButon.h; sourceTree = "<group>"; };
 		C4F7E4BE1D113A8800485746 /* RcFollowedButon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RcFollowedButon.m; sourceTree = "<group>"; };
-		C4F7E4C01D13E1C000485746 /* PublisherViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PublisherViewController.h; sourceTree = "<group>"; };
-		C4F7E4C11D13E1C000485746 /* PublisherViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PublisherViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1160,10 +1167,12 @@
 				569773211C9AC5BD00D25338 /* RCSettingTagTableViewController.m */,
 				C4CF960E1CFD764E00786982 /* RCCityViewController.h */,
 				C4CF960F1CFD764E00786982 /* RCCityViewController.m */,
-				C4F7E4C01D13E1C000485746 /* PublisherViewController.h */,
-				C4F7E4C11D13E1C000485746 /* PublisherViewController.m */,
 				C4591CD01D3CF05E00E33A5F /* RCCommentViewController.h */,
 				C4591CD11D3CF05E00E33A5F /* RCCommentViewController.m */,
+				C446029F1D42A0BB004E0669 /* MakeCmtViewController.h */,
+				C44602A01D42A0BB004E0669 /* MakeCmtViewController.m */,
+				C4DD6A931D42B63F00405A2E /* PublisherViewController.h */,
+				C4DD6A941D42B63F00405A2E /* PublisherViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1195,6 +1204,8 @@
 				C4F7E4BE1D113A8800485746 /* RcFollowedButon.m */,
 				C4DAF45D1D2A584E009DE31A /* PreCommentView.h */,
 				C4DAF45E1D2A584E009DE31A /* PreCommentView.m */,
+				C4DD6A961D42C09B00405A2E /* PubInfoHeaderView.h */,
+				C4DD6A971D42C09B00405A2E /* PubInfoHeaderView.m */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1232,6 +1243,8 @@
 				C41FC3E71CB7CD4D009A5DCD /* RemindManager.m */,
 				565EF6151C48EBA20067C032 /* NSNumber+Message.h */,
 				565EF6161C48EBA20067C032 /* NSNumber+Message.m */,
+				C47606F11CBE86BE00181854 /* RCUtils.h */,
+				C47606F21CBE86BE00181854 /* RCUtils.m */,
 			);
 			path = Managers;
 			sourceTree = "<group>";
@@ -1848,8 +1861,6 @@
 				C4B300151CA44BCC004516B0 /* NSString+MD5.m */,
 				C4C075251C89CF6C00C5E54D /* MyTextField.h */,
 				C4C075261C89CF6C00C5E54D /* MyTextField.m */,
-				C47606F11CBE86BE00181854 /* RCUtils.h */,
-				C47606F21CBE86BE00181854 /* RCUtils.m */,
 			);
 			name = LoginAndRegister;
 			sourceTree = "<group>";
@@ -1908,8 +1919,8 @@
 				C4CF96121CFD769200786982 /* CityCollectionViewCell.m */,
 				56E842791C4BA74C00D1D198 /* CZTimeCell.h */,
 				56E8427A1C4BA74C00D1D198 /* CZTimeCell.m */,
-				C4A8B5BC1D1AD72000C61B5E /* PublisherCell.h */,
-				C4A8B5BD1D1AD72000C61B5E /* PublisherCell.m */,
+				C4A8B5BC1D1AD72000C61B5E /* AcPublisherCell.h */,
+				C4A8B5BD1D1AD72000C61B5E /* AcPublisherCell.m */,
 				56E8427C1C4BB8E500D1D198 /* CZActivityInfoCell.h */,
 				56E8427D1C4BB8E500D1D198 /* CZActivityInfoCell.m */,
 				5674AF971C70B99100184A31 /* CZActivityCell.h */,
@@ -2107,6 +2118,7 @@
 				561D02081C47DA5600E4E013 /* MASCompositeConstraint.m in Sources */,
 				C465906C1CAE421900590ED9 /* ResetPasswordViewController.m in Sources */,
 				561D02031C47DA5600E4E013 /* UIImageView+AFNetworking.m in Sources */,
+				C4DD6A951D42B63F00405A2E /* PublisherViewController.m in Sources */,
 				C4D8DFEC1CC66968005DA9B3 /* TMCache.m in Sources */,
 				56D7FB2C1C579511003247AF /* UINavigationBar+Awesome.m in Sources */,
 				56F02CB41CA2884B00E0BBB4 /* MJRefreshBackStateFooter.m in Sources */,
@@ -2163,6 +2175,7 @@
 				56E8427E1C4BB8E500D1D198 /* CZActivityInfoCell.m in Sources */,
 				565EF6271C48EBA20067C032 /* BaseModel.m in Sources */,
 				56E9D3951CA56F8B005FF799 /* KSGuideManager.m in Sources */,
+				C44602A11D42A0BB004E0669 /* MakeCmtViewController.m in Sources */,
 				C46635E91CBFCEA100582DD1 /* UIColor+YDAddition.m in Sources */,
 				564596BA1C732A84006D8493 /* UIViewController+LewPopupViewController.m in Sources */,
 				C4D8DFC51CC65B89005DA9B3 /* RCSearchModel.m in Sources */,
@@ -2188,9 +2201,10 @@
 				C4CF96101CFD764E00786982 /* RCCityViewController.m in Sources */,
 				C4B300161CA44BCC004516B0 /* NSString+MD5.m in Sources */,
 				56B9CD2C1C807A7100914F00 /* MKAnnotationView+WebCache.m in Sources */,
-				C4A8B5BE1D1AD72000C61B5E /* PublisherCell.m in Sources */,
+				C4A8B5BE1D1AD72000C61B5E /* AcPublisherCell.m in Sources */,
 				561D020B1C47DA5600E4E013 /* MASLayoutConstraint.m in Sources */,
 				953E46C11D182EB900C94CE0 /* RCMyFansCell.m in Sources */,
+				C4DD6A981D42C09B00405A2E /* PubInfoHeaderView.m in Sources */,
 				95DEDB4B1D2FFF040030BF6C /* RCChatListViewController.m in Sources */,
 				563FC6C31CAD0C4E00B7DD25 /* RCCollectionViewLayout.m in Sources */,
 				56F02CB11CA2884B00E0BBB4 /* MJRefreshAutoStateFooter.m in Sources */,

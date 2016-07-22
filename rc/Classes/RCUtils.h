@@ -21,4 +21,6 @@
 + (BOOL)checkEmployeeNumber : (NSString *) number;
 #pragma 正则匹配URL
 + (BOOL)checkURL : (NSString *) url;
+
++ (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize;
 @end

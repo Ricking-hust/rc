@@ -8,9 +8,10 @@
 
 #import "RCCommentcell.h"
 #import "Masonry.h"
+#import "RCUtils.h"
 
 #define COMFONT 14
-#define NAMEFONT 9
+#define NAMEFONT 11
 #define PADDING  10
 static const CGFloat userSize = 40;
 static const CGFloat praiseSzie = 15;
@@ -34,6 +35,7 @@ static const CGFloat praiseSzie = 15;
         if (!_nameLab) {
             _nameLab = [[UILabel alloc]init];
             [_nameLab setFont:[UIFont systemFontOfSize:NAMEFONT]];
+            [_nameLab setTextColor:[UIColor blackColor]];
             [self.contentView addSubview:_nameLab];
         }
         
@@ -41,6 +43,8 @@ static const CGFloat praiseSzie = 15;
             _commentLab = [[UILabel alloc]init];
             [_commentLab setFont:[UIFont systemFontOfSize:COMFONT]];
             [_commentLab setTextColor:RGB(0x464646, 0.8)];
+            _commentLab.lineBreakMode = NSLineBreakByCharWrapping;
+            _commentLab.numberOfLines = 0;
             [self.contentView addSubview:_commentLab];
         }
         
@@ -55,6 +59,7 @@ static const CGFloat praiseSzie = 15;
             _praiseNum = [[UILabel alloc]init];
             [_praiseNum setFont:[UIFont systemFontOfSize:COMFONT]];
             [_praiseNum setTextColor:[UIColor blackColor]];
+            [_praiseNum setTextAlignment:NSTextAlignmentRight];
             [self.contentView addSubview:_praiseNum];
         }
         
@@ -75,7 +80,7 @@ static const CGFloat praiseSzie = 15;
     [super layoutSubviews];
     
     CGSize maxSize = CGSizeMake(kScreenWidth - PADDING*5 - userSize - praiseSzie*2, MAXFLOAT);
-    CGSize commentLabSize = [self sizeWithText:self.commentLab.text maxSize:maxSize fontSize:COMFONT];
+    CGSize commentLabSize = [RCUtils sizeWithText:self.commentModel.comment_content maxSize:maxSize fontSize:COMFONT];
     
     [self.user mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.contentView.mas_left).offset(PADDING);
@@ -85,8 +90,8 @@ static const CGFloat praiseSzie = 15;
     
     [self.timeLab mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.contentView.mas_right).offset(-PADDING);
-        make.top.equalTo(self.contentView.mas_top).offset(14);
-        make.size.mas_equalTo(CGSizeMake(100, 10));
+        make.top.equalTo(self.contentView.mas_top).offset(10);
+        make.size.mas_equalTo(CGSizeMake(150, 14));
     }];
     
     [self.nameLab mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -116,7 +121,7 @@ static const CGFloat praiseSzie = 15;
     [self.praiseNum mas_makeConstraints:^(MASConstraintMaker *make) {
         make.right.equalTo(self.praiseBtn.mas_left).offset(-PADDING);
         make.bottom.equalTo(self.praiseBtn.mas_bottom);
-        make.size.mas_equalTo(CGSizeMake(praiseSzie, praiseSzie));
+        make.size.mas_equalTo(CGSizeMake(praiseSzie * 5, praiseSzie));
     }];
     
     [self.praiseBtn mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -127,27 +132,19 @@ static const CGFloat praiseSzie = 15;
 }
 
 -(void)setSubViewValue{
+    [self.user sd_setImageWithURL:[NSURL URLWithString:self.commentModel.commentUser.userPic] placeholderImage:[UIImage imageNamed:@"MyIconNormal" ] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+    }];
+    [self.timeLab setText:self.commentModel.comment_time];
+    [self.nameLab setText:self.commentModel.commentUser.userName];
+    [self.commentLab setText:self.commentModel.comment_content];
+    [self.praiseNum setText:self.commentModel.comment_praise_num];
+    [self.praiseBtn setImage:[UIImage imageNamed:@"zan_done icon"] forState:UIControlStateNormal];
     
 }
 
 -(void)turnToUsererView{
     NSLog(@"turnToUsererView");
-}
-
-/**
- *  计算字符串的长度
- *
- *  @param text 待计算大小的字符串
- *
- *  @param fontSize 指定绘制字符串所用的字体大小
- *
- *  @return 字符串的大小
- */
-- (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize
-{
-    //计算文本的大小
-    CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
-    return nameSize;
 }
 
 @end

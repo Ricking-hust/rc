@@ -10,7 +10,7 @@
 #import "ActivityModel.h"
 #import "Masonry.h"
 #import "CZTimeCell.h"
-#import "PublisherCell.h"
+#import "AcPublisherCell.h"
 #import "PreCommentView.h"
 #import "CZActivityInfoCell.h"
 #import "CZRemindMeView.h"
@@ -26,6 +26,8 @@
 #import "RCBarButton.h"
 #import "RCBarButtonView.h"
 #import "RCReleaseCell.h"
+#import "RCCommentViewController.h"
+#import "PublisherViewController.h"
 //----------------ShareSDK3.3-----------------
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKUI/ShareSDK+SSUI.h>
@@ -315,9 +317,12 @@
             break;
         case 2:
         {//发布者
-            PublisherCell *cell = [[PublisherCell alloc]init];
+            AcPublisherCell *cell = [[AcPublisherCell alloc]init];
             //对cell的控件进行赋值
             [cell setSubviewsValueWithImage:self.activitymodel.userInfo.userPic PubName:self.activitymodel.userInfo.userName];
+            //轻拍Tap
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(turnToPublisherView)];
+            [cell.publisher addGestureRecognizer:tap];
             return cell;
         }
             break;
@@ -334,6 +339,8 @@
                 [self.prePreCommentView.showCommentBtn addTarget:self action:@selector(onClickShowCommment) forControlEvents:UIControlEventTouchUpInside];
                 [cell.contentView addSubview:self.prePreCommentView];
                 [self.prePreCommentView setSubViewsValue];
+                [self.prePreCommentView showOrDissMissCommentWith:NO];
+                [self.prePreCommentView.checkMoreBtn addTarget:self action:@selector(checkMorCommment) forControlEvents:UIControlEventTouchUpInside];
                 [self.prePreCommentView mas_makeConstraints:^(MASConstraintMaker *make) {
                     make.left.equalTo(cell.contentView.mas_left);
                     make.right.equalTo(cell.contentView.mas_right);
@@ -1093,20 +1100,25 @@
     [self lew_dismissPopupView];
 }
 
+-(void)turnToPublisherView{
+    PublisherViewController *publisherViewController = [[PublisherViewController alloc]init];
+    [self.navigationController pushViewController:publisherViewController animated:YES];
+}
+
 #pragma mark - 评论视图点击事件
 -(void)onClickShowCommment{
     if (self.isShowComment == NO) {
-        self.prePreCommentView.collectTooH = 40;
+        [self.prePreCommentView showOrDissMissCommentWith:YES];
         [UIView animateWithDuration:0.5 animations:^{
             [self.prePreCommentView mas_updateConstraints:^(MASConstraintMaker *make) {
-                make.height.mas_equalTo(290 + 28);
+                make.height.mas_equalTo(300 + 28);
             }];
         } completion:^(BOOL finished) {
             self.isShowComment = YES;
         }];
     }
     if (self.isShowComment == YES) {
-        self.prePreCommentView.collectTooH = 0;
+        [self.prePreCommentView showOrDissMissCommentWith:NO];
         [UIView animateWithDuration:0.5 animations:^{
             [self.prePreCommentView mas_updateConstraints:^(MASConstraintMaker *make) {
                 make.height.mas_equalTo(35);
@@ -1115,6 +1127,12 @@
             self.isShowComment = NO;
         }];
     }
+}
+
+-(void)checkMorCommment{
+    RCCommentViewController *commentViewController = [[RCCommentViewController alloc]init];
+    commentViewController.title = @"评论详情";
+    [self.navigationController pushViewController:commentViewController animated:YES];
 }
 
 #pragma mark - 废弃

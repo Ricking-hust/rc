@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface PublisherCell : UITableViewCell
+@interface AcPublisherCell : UITableViewCell
 
 @property (nonatomic,strong) UIImageView *publisher;
 @property (nonatomic,strong) UILabel *pubName;
