@@ -40,14 +40,15 @@
 {
     [super viewWillAppear:animated];
     [self.navigationController.navigationBar lt_setBackgroundColor:[UIColor whiteColor]];
-    [self.tableView.mj_header beginRefreshing];
+//    [self.tableView.mj_header beginRefreshing];
+    [self sendURLRequest];
 }
 #pragma mark - 下拉刷新
 - (void)loadNewData
 {
     //[self.acList removeAllObjects];
     NSString *urlStr = @"http://appv2.myrichang.com/home/Person/getUserActivity";
-    NetWorkingRequestType type = GET;
+    NetWorkingRequestType type = POST;
     NSString *usr_id = [userDefaults objectForKey:@"userId"];
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",@"2",@"op_type",nil];
     [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {

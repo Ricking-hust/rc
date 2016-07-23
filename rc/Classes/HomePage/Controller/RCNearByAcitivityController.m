@@ -170,7 +170,6 @@
         NetWorkingRequestType type = POST;
         NSString *ct_id = [userDefaults valueForKey:@"cityId"];
         NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:ct_id,@"ct_id",longitude,@"usr_longitude",latitude,@"usr_latitude",nil];
-//        NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:ct_id,@"ct_id",longitude,@"usr_longitude",latitude,@"usr_latitude",@"0",@"start_id",nil];
         [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
             id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
             self.activitySoucres = [self extractActivityFrom:dict];
@@ -289,7 +288,7 @@
     ac.activityModelPre = [self activityModeFromUserActivity:self.activitySoucres[indexPath.section]];
     [self.navigationController pushViewController:ac animated:YES];
 }
-#pragma mark - 我的数据模型与余笃的数据模型的转换函数
+#pragma mark - 我的数据模型与余笃的数据模型的转换函数，转换后以余笃的数据模型做为参数传至活动详情页面
 - (ActivityModel *)activityModeFromUserActivity:(RCNearByActivtiyModel *)nearbyModel
 {
     ActivityModel *model = [[ActivityModel alloc]init];
