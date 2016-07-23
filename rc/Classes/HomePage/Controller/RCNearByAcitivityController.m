@@ -19,6 +19,8 @@
 @interface RCNearByAcitivityController ()<CLLocationManagerDelegate>
 @property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) NSArray *activitySoucres;
+@property (nonatomic, strong) NSString *longitude;
+@property (nonatomic, strong) NSString *latitude;
 @end
 
 @implementation RCNearByAcitivityController
@@ -52,14 +54,17 @@
 {
     NSLog(@"error:%@",error);
 }
+#pragma mark - 定位成功
 - (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
 {
     [self.locationManager stopUpdatingLocation];
     CLLocation *newLocaion = locations.firstObject;
     //经度
     NSString *longitude = [NSString stringWithFormat:@"%lf", newLocaion.coordinate.longitude];
+    self.longitude = longitude;
     //纬度
     NSString *latitude = [NSString stringWithFormat:@"%lf", newLocaion.coordinate.latitude];
+    self.latitude = latitude;
     //NSLog(@"经度：%@ 纬度：%@",longitude,latitude);
     [self getNearByActivity:longitude latitude:latitude];
     
@@ -71,11 +76,82 @@
 }
 - (void)loadNewData
 {
-    [self.tableView.mj_header endRefreshing];
+    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+        NSString *urlStr = @"http://appv2.myrichang.com/Home/Activity/getNearbyAcs";
+        NetWorkingRequestType type = POST;
+        NSString *ct_id = [userDefaults valueForKey:@"cityId"];
+        NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:ct_id,@"ct_id",self.longitude,@"usr_longitude",self.latitude,@"usr_latitude",nil];
+        //        NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:ct_id,@"ct_id",longitude,@"usr_longitude",latitude,@"usr_latitude",@"0",@"start_id",nil];
+        [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
+            id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+            self.activitySoucres = [self extractActivityFrom:dict];
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self.tableView reloadData];
+                [self.tableView.mj_header endRefreshing];
+            });
+            
+        } errorBlock:^(NSError *error) {
+            NSLog(@"请求失败:%@",error);
+            [self.tableView.mj_header endRefreshing];
+        }];
+    });
+
 }
 - (void)getMoreData
 {
-    [self.tableView.mj_footer endRefreshing];
+    if (self.activitySoucres == nil || self.activitySoucres.count == 0)
+    {
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSString *urlStr = @"http://appv2.myrichang.com/Home/Activity/getNearbyAcs";
+            NetWorkingRequestType type = POST;
+            NSString *ct_id = [userDefaults valueForKey:@"cityId"];
+            NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:ct_id,@"ct_id",self.longitude,@"usr_longitude",self.latitude,@"usr_latitude",nil];
+            //        NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:ct_id,@"ct_id",longitude,@"usr_longitude",latitude,@"usr_latitude",@"0",@"start_id",nil];
+            [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
+                id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+                self.activitySoucres = [self extractActivityFrom:dict];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                    [self.tableView.mj_footer endRefreshing];
+                });
+                
+            } errorBlock:^(NSError *error) {
+                NSLog(@"请求失败:%@",error);
+                [self.tableView.mj_footer endRefreshing];
+            }];
+        });
+
+    }else
+    {
+        NSMutableArray __block *moreActivity = [[NSMutableArray alloc]initWithArray:self.activitySoucres];
+        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
+            NSString *urlStr = @"http://appv2.myrichang.com/Home/Activity/getNearbyAcs";
+            NetWorkingRequestType type = POST;
+            NSString *ct_id = [userDefaults valueForKey:@"cityId"];
+            RCNearByActivtiyModel *lastActivity = self.activitySoucres.lastObject;
+            NSString *start_id = lastActivity.ac_id;
+            NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:ct_id,@"ct_id",self.longitude,@"usr_longitude",self.latitude,@"usr_latitude",start_id,@"start_id",nil];
+            [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
+                id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+                NSArray *newActivtiy = [self extractActivityFrom:dict];
+                for (RCNearByActivtiyModel *model in newActivtiy)
+                {
+                    [moreActivity addObject:model];
+                }
+                self.activitySoucres = [[NSArray alloc]initWithArray:moreActivity];
+                dispatch_async(dispatch_get_main_queue(), ^{
+                    [self.tableView reloadData];
+                    [self.tableView.mj_footer endRefreshing];
+                });
+                
+            } errorBlock:^(NSError *error) {
+                NSLog(@"请求失败:%@",error);
+                [self.tableView.mj_footer endRefreshing];
+            }];
+        });
+
+        
+    }
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -89,12 +165,12 @@
 }
 - (void)getNearByActivity:(NSString *)longitude latitude:(NSString *)latitude
 {
-    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
         NSString *urlStr = @"http://appv2.myrichang.com/Home/Activity/getNearbyAcs";
         NetWorkingRequestType type = POST;
         NSString *ct_id = [userDefaults valueForKey:@"cityId"];
-        NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:ct_id,@"ct_id",longitude,@"usr_longitude",latitude,@"usr_latitude",@"0",@"start_id",nil];
+        NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:ct_id,@"ct_id",longitude,@"usr_longitude",latitude,@"usr_latitude",nil];
+//        NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:ct_id,@"ct_id",longitude,@"usr_longitude",latitude,@"usr_latitude",@"0",@"start_id",nil];
         [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
             id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
             self.activitySoucres = [self extractActivityFrom:dict];
