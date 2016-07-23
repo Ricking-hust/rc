@@ -125,7 +125,8 @@
     [self.acTag mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.acTagImageView.mas_right).offset(7);
         make.top.equalTo(self.acTagImageView.mas_top).offset(-5);
-        make.width.mas_equalTo(sizeW);
+//        make.width.mas_equalTo(sizeW-40);
+        make.right.equalTo(self.contentView.mas_right).offset(-85);
         make.height.mas_equalTo(20);
     }];
 

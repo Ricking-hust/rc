@@ -8,6 +8,7 @@
 
 #import "RCChatListViewController.h"
 #import "RCPrivateChatViewController.h"
+#import "Masonry.h"
 @interface RCChatListViewController ()
 
 @end
@@ -27,6 +28,34 @@
         //设置需要将哪些类型的会话在会话列表中聚合显示
         [self setCollectionConversationType:@[@(ConversationType_DISCUSSION),
                                               @(ConversationType_GROUP)]];
+        UIView *view = [[UIView alloc]init];
+        UIImageView *imgeView = [[UIImageView alloc]init];
+        imgeView.image = [UIImage imageNamed:@"heartbrokenIcon"];
+        [view addSubview:imgeView];
+        
+        [imgeView mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.centerX.equalTo(view.mas_centerX);
+            make.top.equalTo(view.mas_top);
+            make.size.mas_equalTo(imgeView.image.size);
+        }];
+        
+        UILabel *label = [[UILabel alloc]init];
+        label.text = @"暂时没有会话。";
+        label.font = [UIFont systemFontOfSize:14];
+        label.textColor = [UIColor colorWithRed:220.0/255.0 green:220.0/255.0 blue:220.0/255.0 alpha:1.0];
+        [view addSubview:label];
+        CGSize labelSize = [self sizeWithText:label.text maxSize:CGSizeMake(MAXFLOAT, MAXFLOAT) fontSize:14];
+        [label mas_makeConstraints:^(MASConstraintMaker *make) {
+            make.top.equalTo(imgeView.mas_bottom).offset(10);
+            make.centerX.equalTo(imgeView.mas_centerX).offset(10);
+            make.width.mas_equalTo(labelSize.width+1);
+            make.height.mas_equalTo(labelSize.height+1);
+        }];
+
+        CGFloat emptyViewHeight = imgeView.image.size.height+labelSize.height+1+10;
+        CGFloat emptyViewWidth = imgeView.image.size.width>labelSize.width?imgeView.image.size.width:labelSize.width+1;
+        view.frame = CGRectMake(kScreenWidth/2-emptyViewWidth/2 , kScreenHeight/2-emptyViewHeight/2, emptyViewWidth, emptyViewHeight);
+        self.emptyConversationView = view;
         
     }
     return self;
@@ -37,6 +66,7 @@
     [super viewDidLoad];
     // Do any additional setup after loading the view.
     [self setController];
+    NSLog(@"%d",[[RCIMClient sharedRCIMClient]getTotalUnreadCount]);
 }
 #pragma mark - 设置导航栏
 - (void)setController
@@ -44,13 +74,18 @@
     //设置导航栏
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(backToForwardViewController)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
-    
+//     UIBarButtonItem *addChart = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"plus_icon2"] style:UIBarButtonItemStylePlain target:self action:@selector(addChart)];
+//    [self.navigationItem setRightBarButtonItem:addChart];
     UIColor *color = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     self.conversationListTableView.backgroundColor = color;
     self.conversationListTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
     
     self.navigationItem.title = @"我的消息";
 
+}
+- (void)addChart
+{
+    
 }
 //- (void)rcConversationListTableView:(UITableView *)tableView commitEditingStyle:(UITableViewCellEditingStyle)editingStyle forRowAtIndexPath:(NSIndexPath *)indexPath
 //{
@@ -117,7 +152,21 @@
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
 }
-
+/**
+ *  计算字体的长和宽
+ *
+ *  @param text 待计算大小的字符串
+ *
+ *  @param fontSize 指定绘制字符串所用的字体大小
+ *
+ *  @return 字符串的大小
+ */
+- (CGSize)sizeWithText:(NSString *)text maxSize:(CGSize)maxSize fontSize:(CGFloat)fontSize
+{
+    //计算文本的大小
+    CGSize nameSize = [text boundingRectWithSize:maxSize options:NSStringDrawingUsesLineFragmentOrigin attributes:@{NSFontAttributeName:[UIFont systemFontOfSize:fontSize]} context:nil].size;
+    return nameSize;
+}
 /*
 #pragma mark - Navigation
 

@@ -25,6 +25,7 @@
 #import "UIImageView+WebCache.h"
 #import "UINavigationBar+Awesome.h"
 #import "EXTScope.h"
+#import "RCHotActivityTableController.h"
 //MJReflesh--------------------------------
 #import "MJRefresh.h"
 #import "RCHomeRefreshHeader.h"
@@ -707,10 +708,12 @@ typedef void (^HomeViewBlock)(id);
 -(void)dealloc{
     [[NSNotificationCenter defaultCenter] removeObserver:self name:@"refresh" object:nil];
 }
-
+#pragma mark - 热门活动
 -(void)turnToHotPage{
-    AppDelegate *thisAppDelegate = [[UIApplication sharedApplication] delegate];
-    [(UITabBarController *)thisAppDelegate.window.rootViewController setSelectedIndex:1];
+//    AppDelegate *thisAppDelegate = [[UIApplication sharedApplication] delegate];
+//    [(UITabBarController *)thisAppDelegate.window.rootViewController setSelectedIndex:1];
+    RCHotActivityTableController *hotVC = [[RCHotActivityTableController alloc]init];
+    [self.navigationController pushViewController:hotVC animated:YES];
 }
 
 -(void)turnToUniverPage{

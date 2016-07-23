@@ -28,6 +28,7 @@
 #import "RCReleaseCell.h"
 #import "RCCommentViewController.h"
 #import "PublisherViewController.h"
+#import "RCNetworkingRequestOperationManager.h"
 //----------------ShareSDK3.3-----------------
 #import <ShareSDK/ShareSDK.h>
 #import <ShareSDKUI/ShareSDK+SSUI.h>
@@ -781,40 +782,6 @@
                        }
                    }
          ];}
-    //sharSDK2.0
-//    UIView *sender = [[UIView alloc]init];
-//    //1、创建分享参数
-//    //构造分享内容
-//    id<ISSContent> publishContent = [ShareSDK content:self.activitymodel.acDesc
-//                                       defaultContent:@"日常"
-//                                                image:[ShareSDK imageWithUrl:self.activitymodel.acPoster]
-//                                                title:self.activitymodel.acTitle
-//                                                  url:[NSString stringWithFormat:@"http://myrichang.com/activity.php?id=%@",self.activitymodel.acID]
-//                                          description:self.activitymodel.acTitle
-//                                            mediaType:SSPublishContentMediaTypeNews];
-//    //创建弹出菜单容器
-//    id<ISSContainer> container = [ShareSDK container];
-//    [container setIPadContainerWithView:sender arrowDirect:UIPopoverArrowDirectionUp];
-//    
-//    //弹出分享菜单
-//    [ShareSDK showShareActionSheet:container
-//                         shareList:nil
-//                           content:publishContent
-//                     statusBarTips:YES
-//                       authOptions:nil
-//                      shareOptions:nil
-//                            result:^(ShareType type, SSResponseState state, id<ISSPlatformShareInfo> statusInfo, id<ICMErrorInfo> error, BOOL end) {
-//                                
-//                                if (state == SSResponseStateSuccess)
-//                                {
-//                                    NSLog(@"分享成功");
-//                                }
-//                                else if (state == SSResponseStateFail)
-//                                {
-//                                    NSLog(@"分享失败,错误码:%ld,错误描述:%@", [error errorCode], [error errorDescription]);
-//                                }
-//                            }];
-//    
 }
 //对tableView头进行布局
 - (void)setSubViewsConstraint
@@ -896,7 +863,38 @@
 #pragma mark - 我要报名 2.0新增接口
 - (void)onClickSignUp
 {
+    NSString *urlStr = @"http://appv2.myrichang.com/Home/Activity/enrollActivity";
+    NetWorkingRequestType type = POST;
+    NSString *usr_id = [userDefaults objectForKey:@"userId"];
     
+    NSString *ac_id = self.activitymodel.acID;
+    NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",ac_id,@"ac_id",nil];
+    [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
+        id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+        NSString *msg = [dict valueForKey:@"msg"];
+        if ([msg isEqualToString:@"操作成功！"])
+        {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            
+            // Set the annular determinate mode to show task progress.
+            hud.mode = MBProgressHUDModeText;
+            hud.label.text = @"报名成功。";
+            [hud hideAnimated:YES afterDelay:0.7];
+            
+        }else if ([msg isEqualToString:@"操作失败！"])
+        {
+            MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
+            
+            hud.mode = MBProgressHUDModeText;
+            hud.label.text = @"请不要重复报名！";
+            [hud hideAnimated:YES afterDelay:0.7];
+            
+        }
+        NSLog(@"%@",msg);
+    } errorBlock:^(NSError *error) {
+        NSLog(@"请求失败:%@",error);
+    }];
+
 }
 #pragma mark - 添加行程
 - (void)onClickAdd
@@ -1134,54 +1132,6 @@
     commentViewController.title = @"评论详情";
     [self.navigationController pushViewController:commentViewController animated:YES];
 }
-
-#pragma mark - 废弃
--(void)displayInfo
-{
-    NSOperationQueue *queue = [[NSOperationQueue alloc] init];
-    //创建三个任务
-    NSBlockOperation *operationA = [NSBlockOperation blockOperationWithBlock:^{
-        [self configureBlocks];
-        self.getActivityBlock();
-        
-        
-    }];
-    
-    NSBlockOperation *operationB = [NSBlockOperation blockOperationWithBlock:^{
-        NSLog(@"task reflesh UI");
-        
-    }];
-    
-    NSBlockOperation *operationC = [NSBlockOperation blockOperationWithBlock:^{
-        NSLog(@"task c");
-        //[self performSelectorOnMainThread:@selector(refleshUI) withObject:nil waitUntilDone:YES];
-        self.view.backgroundColor = [UIColor whiteColor];
-        //设置tableView头
-        [self layoutHeaderImageView];
-        
-        self.tableView.delegate = self;
-        self.tableView.dataSource = self;
-        self.isCollect = self.activitymodel.acCollect;
-        [self setaddScheduleStyle];
-        //对tableView头进行赋值
-        [self setTableViewHeader];
-        [self.tableView reloadData];
-    }];
-    
-    //设置三个任务相互依赖
-    // operationB 任务依赖于 operationA
-    [operationB addDependency:operationA];
-    // operationC 任务依赖于 operationB
-    [operationC addDependency:operationB];
-    [operationC addDependency:operationA];
-    
-    
-    //添加操作到队列中（自动异步执行任务，并发）
-    [queue addOperation:operationA];
-    [queue addOperation:operationB];
-    [queue addOperation:operationC];
-}
-
 /**
  *  计算字符串的长度
  *

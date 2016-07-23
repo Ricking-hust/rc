@@ -270,6 +270,8 @@
 		C4F7E4BF1D113A8800485746 /* RcFollowedButon.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4BE1D113A8800485746 /* RcFollowedButon.m */; };
 		E7E563441D433E1E007E43A9 /* RCAblumInfoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7E563411D433E1E007E43A9 /* RCAblumInfoCollectionViewController.m */; };
 		E7E563451D433E1E007E43A9 /* RCCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7E563431D433E1E007E43A9 /* RCCollectionViewController.m */; };
+		E7E563481D4344E4007E43A9 /* RCHotActivityTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7E563471D4344E4007E43A9 /* RCHotActivityTableController.m */; };
+		E7E5634B1D434AC0007E43A9 /* RCHotActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E7E5634A1D434AC0007E43A9 /* RCHotActivityModel.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -783,6 +785,10 @@
 		E7E563411D433E1E007E43A9 /* RCAblumInfoCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAblumInfoCollectionViewController.m; sourceTree = "<group>"; };
 		E7E563421D433E1E007E43A9 /* RCCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCollectionViewController.h; sourceTree = "<group>"; };
 		E7E563431D433E1E007E43A9 /* RCCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCollectionViewController.m; sourceTree = "<group>"; };
+		E7E563461D4344E4007E43A9 /* RCHotActivityTableController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCHotActivityTableController.h; sourceTree = "<group>"; };
+		E7E563471D4344E4007E43A9 /* RCHotActivityTableController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCHotActivityTableController.m; sourceTree = "<group>"; };
+		E7E563491D434AC0007E43A9 /* RCHotActivityModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCHotActivityModel.h; sourceTree = "<group>"; };
+		E7E5634A1D434AC0007E43A9 /* RCHotActivityModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCHotActivityModel.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -1169,6 +1175,8 @@
 				C44602A01D42A0BB004E0669 /* MakeCmtViewController.m */,
 				C4DD6A931D42B63F00405A2E /* PublisherViewController.h */,
 				C4DD6A941D42B63F00405A2E /* PublisherViewController.m */,
+				E7E563461D4344E4007E43A9 /* RCHotActivityTableController.h */,
+				E7E563471D4344E4007E43A9 /* RCHotActivityTableController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1209,10 +1217,10 @@
 		565EF6081C48EB3B0067C032 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
-				E7E563401D433E1E007E43A9 /* RCAblumInfoCollectionViewController.h */,
-				E7E563411D433E1E007E43A9 /* RCAblumInfoCollectionViewController.m */,
 				E7E563421D433E1E007E43A9 /* RCCollectionViewController.h */,
 				E7E563431D433E1E007E43A9 /* RCCollectionViewController.m */,
+				E7E563401D433E1E007E43A9 /* RCAblumInfoCollectionViewController.h */,
+				E7E563411D433E1E007E43A9 /* RCAblumInfoCollectionViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1637,6 +1645,8 @@
 				953E46C31D18337A00C94CE0 /* RCMyFansModel.m */,
 				959B64F81D1936A2009E7C6B /* RCMyFocusModel.h */,
 				959B64F91D1936A2009E7C6B /* RCMyFocusModel.m */,
+				E7E563491D434AC0007E43A9 /* RCHotActivityModel.h */,
+				E7E5634A1D434AC0007E43A9 /* RCHotActivityModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2097,6 +2107,7 @@
 				56B9CD331C807A7100914F00 /* SDWebImageManager.m in Sources */,
 				C4CAD1BB1C7B3943003FD0B0 /* IndustryModel.m in Sources */,
 				56E3C0181C9C722000BDAE19 /* CZScheduleInfoCell.m in Sources */,
+				E7E563481D4344E4007E43A9 /* RCHotActivityTableController.m in Sources */,
 				56E3C0101C9C5A9A00BDAE19 /* RCUpdateScheduleViewController.m in Sources */,
 				95BECB161D02A386009BA89B /* BWaterflowLayout.m in Sources */,
 				C4CAD1C11C7B3975003FD0B0 /* UserModel.m in Sources */,
@@ -2151,6 +2162,7 @@
 				56FFF2591CF72A2E00B2C85D /* UserActivity.m in Sources */,
 				C4591CD21D3CF05E00E33A5F /* RCCommentViewController.m in Sources */,
 				959B64FA1D1936A2009E7C6B /* RCMyFocusModel.m in Sources */,
+				E7E5634B1D434AC0007E43A9 /* RCHotActivityModel.m in Sources */,
 				C4CAD1BC1C7B3943003FD0B0 /* PlanModel.m in Sources */,
 				561D02121C47DA5600E4E013 /* README.md in Sources */,
 				561D02051C47DA5600E4E013 /* UIRefreshControl+AFNetworking.m in Sources */,
