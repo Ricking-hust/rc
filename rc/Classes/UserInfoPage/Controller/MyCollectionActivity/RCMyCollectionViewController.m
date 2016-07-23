@@ -263,7 +263,7 @@
     [cell.addSchedule setTitle:@"加入行程" forState:UIControlStateNormal];
     UserActivity *user_ac = self.acList[indexPath.section];
     cell.acName.text = user_ac.ac_title;
-    cell.acTime.text = user_ac.ac_title;
+    cell.acTime.text = [user_ac.ac_time substringWithRange:NSMakeRange(0, [user_ac.ac_time length] - 3)];;
     cell.acPlace.text = user_ac.ac_place;
     NSArray *tagArray = [[NSArray alloc]initWithArray:user_ac.ac_tags];
     NSMutableArray *temp = [[NSMutableArray alloc]init];

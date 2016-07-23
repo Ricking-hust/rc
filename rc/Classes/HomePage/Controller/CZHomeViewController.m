@@ -26,6 +26,7 @@
 #import "UINavigationBar+Awesome.h"
 #import "EXTScope.h"
 #import "RCHotActivityTableController.h"
+#import "RCNearByAcitivityController.h"
 //MJReflesh--------------------------------
 #import "MJRefresh.h"
 #import "RCHomeRefreshHeader.h"
@@ -720,10 +721,12 @@ typedef void (^HomeViewBlock)(id);
     AppDelegate *thisAppDelegate = [[UIApplication sharedApplication] delegate];
     [(UITabBarController *)thisAppDelegate.window.rootViewController setSelectedIndex:1];
 }
-
+#pragma mark - 附近活动
 -(void)turnToBesidesPage{
-    AppDelegate *thisAppDelegate = [[UIApplication sharedApplication] delegate];
-    [(UITabBarController *)thisAppDelegate.window.rootViewController setSelectedIndex:1];
+//    AppDelegate *thisAppDelegate = [[UIApplication sharedApplication] delegate];
+//    [(UITabBarController *)thisAppDelegate.window.rootViewController setSelectedIndex:1];
+    RCNearByAcitivityController *nearbyVC = [[RCNearByAcitivityController alloc]init];
+    [self.navigationController pushViewController:nearbyVC animated:YES];
 }
 
 -(void)turnToCarePage{

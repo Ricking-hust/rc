@@ -268,6 +268,8 @@
 		C4F7E4B71D0FF10500485746 /* PublisherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4B61D0FF10500485746 /* PublisherModel.m */; };
 		C4F7E4BA1D10041B00485746 /* RCPubRecViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4B91D10041B00485746 /* RCPubRecViewCell.m */; };
 		C4F7E4BF1D113A8800485746 /* RcFollowedButon.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4BE1D113A8800485746 /* RcFollowedButon.m */; };
+		E7ABFCA21D438D5200276243 /* RCNearByAcitivityController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7ABFCA11D438D5200276243 /* RCNearByAcitivityController.m */; };
+		E7ABFCA51D43979000276243 /* RCNearByActivtiyModel.m in Sources */ = {isa = PBXBuildFile; fileRef = E7ABFCA41D43979000276243 /* RCNearByActivtiyModel.m */; };
 		E7E563441D433E1E007E43A9 /* RCAblumInfoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7E563411D433E1E007E43A9 /* RCAblumInfoCollectionViewController.m */; };
 		E7E563451D433E1E007E43A9 /* RCCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7E563431D433E1E007E43A9 /* RCCollectionViewController.m */; };
 		E7E563481D4344E4007E43A9 /* RCHotActivityTableController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7E563471D4344E4007E43A9 /* RCHotActivityTableController.m */; };
@@ -781,6 +783,10 @@
 		C4F7E4B91D10041B00485746 /* RCPubRecViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCPubRecViewCell.m; path = View/RCPubRecViewCell.m; sourceTree = "<group>"; };
 		C4F7E4BD1D113A8800485746 /* RcFollowedButon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RcFollowedButon.h; sourceTree = "<group>"; };
 		C4F7E4BE1D113A8800485746 /* RcFollowedButon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RcFollowedButon.m; sourceTree = "<group>"; };
+		E7ABFCA01D438D5200276243 /* RCNearByAcitivityController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNearByAcitivityController.h; sourceTree = "<group>"; };
+		E7ABFCA11D438D5200276243 /* RCNearByAcitivityController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNearByAcitivityController.m; sourceTree = "<group>"; };
+		E7ABFCA31D43979000276243 /* RCNearByActivtiyModel.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCNearByActivtiyModel.h; sourceTree = "<group>"; };
+		E7ABFCA41D43979000276243 /* RCNearByActivtiyModel.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCNearByActivtiyModel.m; sourceTree = "<group>"; };
 		E7E563401D433E1E007E43A9 /* RCAblumInfoCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAblumInfoCollectionViewController.h; sourceTree = "<group>"; };
 		E7E563411D433E1E007E43A9 /* RCAblumInfoCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAblumInfoCollectionViewController.m; sourceTree = "<group>"; };
 		E7E563421D433E1E007E43A9 /* RCCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCollectionViewController.h; sourceTree = "<group>"; };
@@ -1177,6 +1183,8 @@
 				C4DD6A941D42B63F00405A2E /* PublisherViewController.m */,
 				E7E563461D4344E4007E43A9 /* RCHotActivityTableController.h */,
 				E7E563471D4344E4007E43A9 /* RCHotActivityTableController.m */,
+				E7ABFCA01D438D5200276243 /* RCNearByAcitivityController.h */,
+				E7ABFCA11D438D5200276243 /* RCNearByAcitivityController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -1647,6 +1655,8 @@
 				959B64F91D1936A2009E7C6B /* RCMyFocusModel.m */,
 				E7E563491D434AC0007E43A9 /* RCHotActivityModel.h */,
 				E7E5634A1D434AC0007E43A9 /* RCHotActivityModel.m */,
+				E7ABFCA31D43979000276243 /* RCNearByActivtiyModel.h */,
+				E7ABFCA41D43979000276243 /* RCNearByActivtiyModel.m */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -2134,6 +2144,7 @@
 				56F02CB41CA2884B00E0BBB4 /* MJRefreshBackStateFooter.m in Sources */,
 				95DEDB501D2FFF040030BF6C /* RCNewsSettingViewController.m in Sources */,
 				56B9CD391C807A7100914F00 /* UIImageView+HighlightedWebCache.m in Sources */,
+				E7ABFCA51D43979000276243 /* RCNearByActivtiyModel.m in Sources */,
 				950C02D31D1BA70C0001C6EA /* chatList.m in Sources */,
 				56B9CD301C807A7100914F00 /* SDWebImageDecoder.m in Sources */,
 				C457D6C91CAE514B00075D9B /* RCColumnScrollViewDelegate.m in Sources */,
@@ -2209,6 +2220,7 @@
 				56A3112E1C870B6300E82262 /* CZUpView.m in Sources */,
 				E7E563451D433E1E007E43A9 /* RCCollectionViewController.m in Sources */,
 				561D02001C47DA5600E4E013 /* AFNetworkActivityIndicatorManager.m in Sources */,
+				E7ABFCA21D438D5200276243 /* RCNearByAcitivityController.m in Sources */,
 				95DEDB571D3003E00030BF6C /* AppDelegate.m in Sources */,
 				C4CF96101CFD764E00786982 /* RCCityViewController.m in Sources */,
 				C4B300161CA44BCC004516B0 /* NSString+MD5.m in Sources */,

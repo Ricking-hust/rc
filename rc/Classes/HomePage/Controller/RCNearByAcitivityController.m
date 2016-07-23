@@ -1,26 +1,27 @@
 //
-//  RCHotActivityTableController.m
+//  RCNearByAcitivityController.m
 //  rc
 //
 //  Created by AlanZhang on 16/7/23.
 //  Copyright © 2016年 AlanZhang. All rights reserved.
 //
 
-#import "RCHotActivityTableController.h"
-#import "RCNetworkingRequestOperationManager.h"
-#import "CZActivityInfoViewController.h"
-#import "RCHotActivityModel.h"
-#import "UINavigationBar+Awesome.h"
-#import "RCMyActivityCell.h"
-#import "MBProgressHUD.h"
+#import "RCNearByAcitivityController.h"
 #import "MJRefresh.h"
 #import "RCHomeRefreshHeader.h"
-NSString const *hotActivityCount = @"5";
-@interface RCHotActivityTableController ()
+#import "RCMyActivityCell.h"
+#import <CoreLocation/CoreLocation.h>
+#import "RCNetworkingRequestOperationManager.h"
+#import "UINavigationBar+Awesome.h"
+#import "RCNearByActivtiyModel.h"
+#import "MBProgressHUD.h"
+#import "CZActivityInfoViewController.h"
+@interface RCNearByAcitivityController ()<CLLocationManagerDelegate>
+@property (nonatomic, strong) CLLocationManager *locationManager;
 @property (nonatomic, strong) NSArray *activitySoucres;
 @end
-@implementation RCHotActivityTableController
 
+@implementation RCNearByAcitivityController
 - (id)init
 {
     if (self = [super init])
@@ -28,83 +29,53 @@ NSString const *hotActivityCount = @"5";
         self.activitySoucres = [[NSArray alloc]init];
         UIBarButtonItem *back = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(back)];
         [self.navigationItem setLeftBarButtonItem:back];
-        self.navigationItem.title = @"热门活动";
+        self.navigationItem.title = @"附近活动";
         self.tableView.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
         self.tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
         self.tableView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
         self.tableView.mj_footer= [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
+        // 初始化定位管理器
+        self.locationManager = [[CLLocationManager alloc] init];
+        // 设置代理
+        self.locationManager.delegate = self;
+        // 设置定位精确度到米
+        self.locationManager.desiredAccuracy = kCLLocationAccuracyBest;
+        // 设置过滤器为无
+        self.locationManager.distanceFilter = kCLDistanceFilterNone;
+        // 开始定位
+        [self.locationManager startUpdatingLocation];
     }
     return self;
 }
-#pragma mark - 刷新数据
+// 定位失误时触发
+- (void)locationManager:(CLLocationManager *)manager didFailWithError:(NSError *)error
+{
+    NSLog(@"error:%@",error);
+}
+- (void)locationManager:(CLLocationManager *)manager didUpdateLocations:(NSArray<CLLocation *> *)locations
+{
+    [self.locationManager stopUpdatingLocation];
+    CLLocation *newLocaion = locations.firstObject;
+    //经度
+    NSString *longitude = [NSString stringWithFormat:@"%lf", newLocaion.coordinate.longitude];
+    //纬度
+    NSString *latitude = [NSString stringWithFormat:@"%lf", newLocaion.coordinate.latitude];
+    //NSLog(@"经度：%@ 纬度：%@",longitude,latitude);
+    [self getNearByActivity:longitude latitude:latitude];
+    
+}
+
+- (void)back
+{
+    [self.navigationController popViewControllerAnimated:YES];
+}
 - (void)loadNewData
 {
-    dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *urlStr = @"http://appv2.myrichang.com/Home/Activity/getTopNActivity";
-        NetWorkingRequestType type = POST;
-        NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:hotActivityCount,@"num",nil];
-        [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
-            id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-            self.activitySoucres = [self extractActivityFrom:dict];
-            dispatch_async(dispatch_get_main_queue(), ^{
-                [self.tableView reloadData];
-                [self.tableView.mj_header endRefreshing];
-            });
-            
-        } errorBlock:^(NSError *error) {
-            NSLog(@"请求失败:%@",error);
-            [self.tableView.mj_header endRefreshing];
-        }];
-        
-    });
-
+    [self.tableView.mj_header endRefreshing];
 }
-#pragma mark - 刷新加载更多数据
 - (void)getMoreData
 {
-    if (self.activitySoucres.count == 0 || self.activitySoucres == nil)
-    {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSString *urlStr = @"http://appv2.myrichang.com/Home/Activity/getTopNActivity";
-            NetWorkingRequestType type = POST;
-            NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:hotActivityCount,@"num",nil];
-            [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
-                id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-                self.activitySoucres = [self extractActivityFrom:dict];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableView reloadData];
-                    [self.tableView.mj_footer endRefreshing];
-                });
-                
-            } errorBlock:^(NSError *error) {
-                NSLog(@"请求失败:%@",error);
-                [self.tableView.mj_footer endRefreshing];
-            }];
-            
-        });
-    }else
-    {
-        dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-            NSString *urlStr = @"http://appv2.myrichang.com/Home/Activity/getTopNActivity";
-            NetWorkingRequestType type = POST;
-            NSString *countParam = [NSString stringWithFormat:@"%ld",self.activitySoucres.count+5];
-            NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:countParam,@"num",nil];
-            [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
-                id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
-                self.activitySoucres = [self extractActivityFrom:dict];
-                dispatch_async(dispatch_get_main_queue(), ^{
-                    [self.tableView reloadData];
-                    [self.tableView.mj_footer endRefreshing];
-                });
-                
-            } errorBlock:^(NSError *error) {
-                NSLog(@"请求失败:%@",error);
-                [self.tableView.mj_footer endRefreshing];
-            }];
-            
-        });
-
-    }
+    [self.tableView.mj_footer endRefreshing];
 }
 - (void)viewWillAppear:(BOOL)animated
 {
@@ -114,27 +85,29 @@ NSString const *hotActivityCount = @"5";
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    [self getHotActivity];
 
 }
-- (void)getHotActivity
+- (void)getNearByActivity:(NSString *)longitude latitude:(NSString *)latitude
 {
+    
     dispatch_async(dispatch_get_global_queue(DISPATCH_QUEUE_PRIORITY_DEFAULT, 0), ^{
-        NSString *urlStr = @"http://appv2.myrichang.com/Home/Activity/getTopNActivity";
+        NSString *urlStr = @"http://appv2.myrichang.com/Home/Activity/getNearbyAcs";
         NetWorkingRequestType type = POST;
-        NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:hotActivityCount,@"num",nil];
+        NSString *ct_id = [userDefaults valueForKey:@"cityId"];
+        NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:ct_id,@"ct_id",longitude,@"usr_longitude",latitude,@"usr_latitude",@"0",@"start_id",nil];
         [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
             id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
             self.activitySoucres = [self extractActivityFrom:dict];
             dispatch_async(dispatch_get_main_queue(), ^{
                 [self.tableView reloadData];
             });
-
+            
         } errorBlock:^(NSError *error) {
             NSLog(@"请求失败:%@",error);
         }];
-
+        
     });
+
 }
 - (NSArray *)extractActivityFrom:(NSDictionary *)dic
 {
@@ -156,32 +129,26 @@ NSString const *hotActivityCount = @"5";
         return nil;
     }
 }
-- (RCHotActivityModel *)getActivityForm:(NSDictionary *)dict
+- (RCNearByActivtiyModel *)getActivityForm:(NSDictionary *)dict
 {
-    RCHotActivityModel *model = [[RCHotActivityModel alloc]init];
+    RCNearByActivtiyModel *model = [[RCNearByActivtiyModel alloc]init];
     model.ac_id = [dict valueForKey:@"ac_id"];
-    model.ac_title = [dict valueForKey:@"ac_title"];
-    model.ac_poster = [dict valueForKey:@"ac_poster"];
-    model.ac_poster_top = [dict valueForKey:@"ac_poster_top"];
-    model.theme_id = [dict valueForKey:@"theme_id"];
-    model.ac_time = [dict valueForKey:@"ac_time"];
-    model.theme_name = [dict valueForKey:@"theme_name"];
-    model.ac_sustain_time = [dict valueForKey:@"ac_sustain_time"];
-    model.ac_place = [dict valueForKey:@"ac_place"];
-    model.ac_size = [dict valueForKey:@"ac_size"];
-    model.ac_pay = [dict valueForKey:@"ac_pay"];
-    model.ac_type = [dict valueForKey:@"ac_type"];
-    model.ac_review = [dict valueForKey:@"ac_review"];
-    model.ac_status = [dict valueForKey:@"ac_status"];
-    model.ac_desc = [dict valueForKey:@"ac_desc"];
-    model.ac_tags = [dict valueForKey:@"ac_tags"];
-    model.usr_name = [dict valueForKey:@"usr_name"];
-    model.usr_pic = [dict valueForKey:@"usr_pic"];
-    model.ac_read_num = [dict valueForKey:@"ac_read_num"];
-    model.ac_praise_num = [dict valueForKey:@"ac_praise_num"];
-    model.ac_collect_num = [dict valueForKey:@"ac_collect_num"];
+    model.usr_id =  [dict valueForKey:@"usr_id"];
+    model.usr_name =  [dict valueForKey:@"usr_name"];
+    model.usr_pic =  [dict valueForKey:@"usr_pic"];
+    model.ac_poster =  [dict valueForKey:@"ac_poster"];
+    model.ac_poster_top =  [dict valueForKey:@"ac_poster_top"];
+    model.ac_title =  [dict valueForKey:@"ac_title"];
+    model.ac_time =  [dict valueForKey:@"ac_time"];
+    model.ac_place =  [dict valueForKey:@"ac_place"];
+    model.ac_collect_num =  [dict valueForKey:@"ac_collect_num"];
+    model.ac_read_num =  [dict valueForKey:@"ac_read_num"];
+    model.ac_distance =  [dict valueForKey:@"ac_distance"];
+    model.ac_tags =  [dict valueForKey:@"ac_tags"];
+
     return model;
 }
+
 - (void)didReceiveMemoryWarning {
     [super didReceiveMemoryWarning];
     // Dispose of any resources that can be recreated.
@@ -208,8 +175,13 @@ NSString const *hotActivityCount = @"5";
     view.backgroundColor = [UIColor clearColor];
     return view;
 }
+- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
+{
+    return 130;
+}
 - (NSInteger)numberOfSectionsInTableView:(UITableView *)tableView
 {
+
     if (self.activitySoucres.count == 0 || self.activitySoucres == nil)
     {
         return 0;
@@ -217,16 +189,15 @@ NSString const *hotActivityCount = @"5";
     {
         return self.activitySoucres.count;
     }
-
 }
+
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section
 {
+
     return 1;
 }
-- (CGFloat)tableView:(UITableView *)tableView heightForRowAtIndexPath:(NSIndexPath *)indexPath
-{
-    return 130;
-}
+
+
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath
 {
     RCMyActivityCell *cell = [RCMyActivityCell cellWithTableView:tableView];
@@ -242,21 +213,22 @@ NSString const *hotActivityCount = @"5";
     ac.activityModelPre = [self activityModeFromUserActivity:self.activitySoucres[indexPath.section]];
     [self.navigationController pushViewController:ac animated:YES];
 }
-- (ActivityModel *)activityModeFromUserActivity:(RCHotActivityModel *)hotActivityModel
+#pragma mark - 我的数据模型与余笃的数据模型的转换函数
+- (ActivityModel *)activityModeFromUserActivity:(RCNearByActivtiyModel *)nearbyModel
 {
     ActivityModel *model = [[ActivityModel alloc]init];
     
-    model.acID = hotActivityModel.ac_id;
-    model.acPoster = hotActivityModel.ac_poster;
-    model.acPosterTop = hotActivityModel.ac_poster_top;
-    model.acTitle = hotActivityModel.ac_title;
-    model.acTime = hotActivityModel.ac_time;
-    model.acTheme = hotActivityModel.theme_name;
-    model.acPlace = hotActivityModel.ac_place;
+    model.acID = nearbyModel.ac_id;
+    model.acPoster = nearbyModel.ac_poster;
+    model.acPosterTop = nearbyModel.ac_poster_top;
+    model.acTitle = nearbyModel.ac_title;
+    model.acTime = nearbyModel.ac_time;
+    model.acTheme = @"";
+    model.acPlace = nearbyModel.ac_place;
     model.acCollectNum = @"zhangdy";
-    model.acSize = hotActivityModel.ac_size;
-    model.acPay = hotActivityModel.ac_pay;
-    model.acDesc = hotActivityModel.ac_desc;
+    model.acSize = @"";
+    model.acPay = @"";
+    model.acDesc = @"";
     model.acReview = @"";
     model.acStatus = @"";
     model.acPraiseNum = @"";
@@ -266,9 +238,9 @@ NSString const *hotActivityCount = @"5";
     model.plan = @"";
     model.planId = @"";
     model.userInfo.userId = [userDefaults valueForKey:@"userId"];
-    model.userInfo.userName = hotActivityModel.usr_name;
-    model.userInfo.userPic = hotActivityModel.usr_pic;
-    model.tagsList.list = [[NSMutableArray alloc]initWithArray:hotActivityModel.ac_tags];
+    model.userInfo.userName = nearbyModel.usr_name;
+    model.userInfo.userPic = nearbyModel.usr_pic;
+    model.tagsList.list = [[NSMutableArray alloc]initWithArray:nearbyModel.ac_tags];
     
     return model;
 }
@@ -277,7 +249,7 @@ NSString const *hotActivityCount = @"5";
 - (void)setValueOfCell:(RCMyActivityCell *)cell AtIndexPath:(NSIndexPath *)indexPath
 {
     [cell.addSchedule setTitle:@"加入行程" forState:UIControlStateNormal];
-    RCHotActivityModel *acModel = self.activitySoucres[indexPath.section];
+    RCNearByActivtiyModel *acModel = self.activitySoucres[indexPath.section];
     cell.acName.text = acModel.ac_title;
     cell.acTime.text = [acModel.ac_time substringWithRange:NSMakeRange(0, [acModel.ac_time length] - 3)];
     cell.acPlace.text = acModel.ac_place;
@@ -301,8 +273,8 @@ NSString const *hotActivityCount = @"5";
     NSString *urlStr = @"http://appv2.myrichang.com/Home/Activity/joinTrip";
     NetWorkingRequestType type = POST;
     NSString *usr_id = [userDefaults objectForKey:@"userId"];
-    RCHotActivityModel *hotActivityModel = self.activitySoucres[(int)button.tag];
-    NSString *ac_id = hotActivityModel.ac_id;
+    RCNearByActivtiyModel *nearbyActivity = self.activitySoucres[(int)button.tag];
+    NSString *ac_id = nearbyActivity.ac_id;
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:usr_id,@"usr_id",@"1",@"op_type",ac_id,@"ac_id",nil];
     [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
         id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
@@ -315,28 +287,22 @@ NSString const *hotActivityCount = @"5";
             hud.mode = MBProgressHUDModeText;
             //hud.label.text = NSLocalizedString(@"Message here!", @"HUD message title");
             hud.label.text = @"加入行程成功。";
-            [hud hideAnimated:YES afterDelay:0.6];
-            
-            [[NSNotificationCenter defaultCenter]postNotificationName:@"scState" object:@"update"];
+            [hud hideAnimated:YES afterDelay:0.7];
         }else if ([msg isEqualToString:@"此活动已经加入行程！"])
         {
             MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
             
             hud.mode = MBProgressHUDModeText;
             hud.label.text = @"此活动已经加入行程！";
-            [hud hideAnimated:YES afterDelay:0.6];
+            [hud hideAnimated:YES afterDelay:0.7];
             
         }
-        NSLog(@"%@",msg);
     } errorBlock:^(NSError *error) {
         NSLog(@"请求失败:%@",error);
     }];
     
 }
-- (void)back
-{
-    [self.navigationController popViewControllerAnimated:YES];
-}
+
 
 /*
 // Override to support conditional editing of the table view.
