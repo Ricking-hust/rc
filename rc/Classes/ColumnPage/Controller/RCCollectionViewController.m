@@ -636,7 +636,26 @@ static NSString * const albumReuseIdentifier = @"albumCell";
     NSMutableArray *ablumArr = [self.activityListByInd objectForKey:collectionView.indModel.indName];
     if (ablumArr.count == 0 || ablumArr == nil)
     {
-        [self getAblumActivity:collectionView];
+        NSString *urlStr = @"http://appv2.myrichang.com/Home/Industry/getAlbums";
+        NetWorkingRequestType type = POST;
+        NSString *ct_id = [userDefaults objectForKey:@"cityId"];
+        NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:ct_id,@"ct_id",nil];
+        [RCNetworkingRequestOperationManager request:urlStr requestType:type parameters:parameters completeBlock:^(NSData *data) {
+            id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
+            //NSArray *activity = [dict valueForKey:@"data"];
+            NSMutableArray *temp = [self initablumListWithDict:dict];
+            if (temp.count == 0 || temp == nil)
+            {
+                [collectionView.mj_footer endRefreshing];
+            }else
+            {
+                [self.activityListByInd setObject:temp forKey:@"精选"];
+                [collectionView reloadData];
+            }
+        } errorBlock:^(NSError *error) {
+            NSLog(@"请求失败:%@",error);
+            [collectionView.mj_footer endRefreshing];
+        }];
     }else
     {
         RCAblumModel *model = ablumArr.firstObject;
@@ -649,7 +668,7 @@ static NSString * const albumReuseIdentifier = @"albumCell";
             NSArray *ablums = [dict valueForKey:@"data"];
             if (ablums.count == 0 || ablums == nil)
             {
-                ;//[collectionView.mj_footer endRefreshing];
+                [collectionView.mj_footer endRefreshing];
             }else
             {
                 NSMutableArray *temp = [self initablumListWithDict:dict];
@@ -657,9 +676,9 @@ static NSString * const albumReuseIdentifier = @"albumCell";
                 {
                     [ablumArr addObject:model];
                 }
-                //[collectionView.mj_footer endRefreshing];
+                [collectionView.mj_footer endRefreshing];
             }
-            [collectionView.mj_footer endRefreshing];
+//            [collectionView.mj_footer endRefreshing];
             [collectionView reloadData];
         } errorBlock:^(NSError *error) {
             NSLog(@"精选上拉刷新失败:%@",error);

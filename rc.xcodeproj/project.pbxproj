@@ -58,7 +58,6 @@
 		562CC4461C6C962100774C22 /* CZTimeSelectView.m in Sources */ = {isa = PBXBuildFile; fileRef = 562CC4451C6C962100774C22 /* CZTimeSelectView.m */; };
 		562FD2751CA674FA0014E5D8 /* RCBarButton.m in Sources */ = {isa = PBXBuildFile; fileRef = 562FD2741CA674FA0014E5D8 /* RCBarButton.m */; };
 		5634EEEF1CEBBE2A002B4283 /* RCPersonCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 5634EEEE1CEBBE2A002B4283 /* RCPersonCell.m */; };
-		563FC6BA1CACE74F00B7DD25 /* RCCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 563FC6B91CACE74F00B7DD25 /* RCCollectionViewController.m */; };
 		563FC6BD1CACF83E00B7DD25 /* RCCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 563FC6BC1CACF83E00B7DD25 /* RCCollectionCell.m */; };
 		563FC6C01CACFBA400B7DD25 /* RCCollectionView.m in Sources */ = {isa = PBXBuildFile; fileRef = 563FC6BF1CACFBA400B7DD25 /* RCCollectionView.m */; };
 		563FC6C31CAD0C4E00B7DD25 /* RCCollectionViewLayout.m in Sources */ = {isa = PBXBuildFile; fileRef = 563FC6C21CAD0C4E00B7DD25 /* RCCollectionViewLayout.m */; };
@@ -212,7 +211,6 @@
 		95DE5C2A1D36243C00FF4B82 /* RCAblumActivityModel.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DE5C291D36243C00FF4B82 /* RCAblumActivityModel.m */; };
 		95DE5C2D1D363AF900FF4B82 /* RCAblumInfoCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DE5C2C1D363AF900FF4B82 /* RCAblumInfoCollectionCell.m */; };
 		95DE89121D33E73700B8DEE4 /* RCAblumCollectionCell.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DE89111D33E73700B8DEE4 /* RCAblumCollectionCell.m */; };
-		95DE89151D33F7D200B8DEE4 /* RCAblumInfoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DE89141D33F7D200B8DEE4 /* RCAblumInfoCollectionViewController.m */; };
 		95DEDB401D2FFF040030BF6C /* RCAboutUsViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DEDB181D2FFF040030BF6C /* RCAboutUsViewController.m */; };
 		95DEDB411D2FFF040030BF6C /* RCFeedbackViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DEDB1B1D2FFF040030BF6C /* RCFeedbackViewController.m */; };
 		95DEDB431D2FFF040030BF6C /* RCMyCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 95DEDB201D2FFF040030BF6C /* RCMyCollectionViewController.m */; };
@@ -270,6 +268,8 @@
 		C4F7E4B71D0FF10500485746 /* PublisherModel.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4B61D0FF10500485746 /* PublisherModel.m */; };
 		C4F7E4BA1D10041B00485746 /* RCPubRecViewCell.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4B91D10041B00485746 /* RCPubRecViewCell.m */; };
 		C4F7E4BF1D113A8800485746 /* RcFollowedButon.m in Sources */ = {isa = PBXBuildFile; fileRef = C4F7E4BE1D113A8800485746 /* RcFollowedButon.m */; };
+		E7E563441D433E1E007E43A9 /* RCAblumInfoCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7E563411D433E1E007E43A9 /* RCAblumInfoCollectionViewController.m */; };
+		E7E563451D433E1E007E43A9 /* RCCollectionViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = E7E563431D433E1E007E43A9 /* RCCollectionViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -388,8 +388,6 @@
 		562FD2741CA674FA0014E5D8 /* RCBarButton.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCBarButton.m; sourceTree = "<group>"; };
 		5634EEED1CEBBE2A002B4283 /* RCPersonCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCPersonCell.h; sourceTree = "<group>"; };
 		5634EEEE1CEBBE2A002B4283 /* RCPersonCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCPersonCell.m; sourceTree = "<group>"; };
-		563FC6B81CACE74F00B7DD25 /* RCCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCCollectionViewController.h; path = Controller/RCCollectionViewController.h; sourceTree = "<group>"; };
-		563FC6B91CACE74F00B7DD25 /* RCCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCCollectionViewController.m; path = Controller/RCCollectionViewController.m; sourceTree = "<group>"; };
 		563FC6BB1CACF83E00B7DD25 /* RCCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCollectionCell.h; sourceTree = "<group>"; };
 		563FC6BC1CACF83E00B7DD25 /* RCCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCollectionCell.m; sourceTree = "<group>"; };
 		563FC6BE1CACFBA400B7DD25 /* RCCollectionView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCollectionView.h; sourceTree = "<group>"; };
@@ -666,8 +664,6 @@
 		95DE5C2C1D363AF900FF4B82 /* RCAblumInfoCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAblumInfoCollectionCell.m; sourceTree = "<group>"; };
 		95DE89101D33E73700B8DEE4 /* RCAblumCollectionCell.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAblumCollectionCell.h; sourceTree = "<group>"; };
 		95DE89111D33E73700B8DEE4 /* RCAblumCollectionCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAblumCollectionCell.m; sourceTree = "<group>"; };
-		95DE89131D33F7D200B8DEE4 /* RCAblumInfoCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = RCAblumInfoCollectionViewController.h; path = Controller/RCAblumInfoCollectionViewController.h; sourceTree = "<group>"; };
-		95DE89141D33F7D200B8DEE4 /* RCAblumInfoCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCAblumInfoCollectionViewController.m; path = Controller/RCAblumInfoCollectionViewController.m; sourceTree = "<group>"; };
 		95DEDB171D2FFF040030BF6C /* RCAboutUsViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAboutUsViewController.h; sourceTree = "<group>"; };
 		95DEDB181D2FFF040030BF6C /* RCAboutUsViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAboutUsViewController.m; sourceTree = "<group>"; };
 		95DEDB1A1D2FFF040030BF6C /* RCFeedbackViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCFeedbackViewController.h; sourceTree = "<group>"; };
@@ -783,6 +779,10 @@
 		C4F7E4B91D10041B00485746 /* RCPubRecViewCell.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = RCPubRecViewCell.m; path = View/RCPubRecViewCell.m; sourceTree = "<group>"; };
 		C4F7E4BD1D113A8800485746 /* RcFollowedButon.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RcFollowedButon.h; sourceTree = "<group>"; };
 		C4F7E4BE1D113A8800485746 /* RcFollowedButon.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RcFollowedButon.m; sourceTree = "<group>"; };
+		E7E563401D433E1E007E43A9 /* RCAblumInfoCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCAblumInfoCollectionViewController.h; sourceTree = "<group>"; };
+		E7E563411D433E1E007E43A9 /* RCAblumInfoCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCAblumInfoCollectionViewController.m; sourceTree = "<group>"; };
+		E7E563421D433E1E007E43A9 /* RCCollectionViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = RCCollectionViewController.h; sourceTree = "<group>"; };
+		E7E563431D433E1E007E43A9 /* RCCollectionViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = RCCollectionViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -969,10 +969,6 @@
 			isa = PBXGroup;
 			children = (
 				565EF6081C48EB3B0067C032 /* Controller */,
-				563FC6B81CACE74F00B7DD25 /* RCCollectionViewController.h */,
-				563FC6B91CACE74F00B7DD25 /* RCCollectionViewController.m */,
-				95DE89131D33F7D200B8DEE4 /* RCAblumInfoCollectionViewController.h */,
-				95DE89141D33F7D200B8DEE4 /* RCAblumInfoCollectionViewController.m */,
 				56E46FFC1C57088B0056BE17 /* View */,
 				95DBDC611D34C46300D5DE3E /* Model */,
 			);
@@ -1213,6 +1209,10 @@
 		565EF6081C48EB3B0067C032 /* Controller */ = {
 			isa = PBXGroup;
 			children = (
+				E7E563401D433E1E007E43A9 /* RCAblumInfoCollectionViewController.h */,
+				E7E563411D433E1E007E43A9 /* RCAblumInfoCollectionViewController.m */,
+				E7E563421D433E1E007E43A9 /* RCCollectionViewController.h */,
+				E7E563431D433E1E007E43A9 /* RCCollectionViewController.m */,
 			);
 			path = Controller;
 			sourceTree = "<group>";
@@ -2096,7 +2096,6 @@
 				561D01FF1C47DA5600E4E013 /* AFImageDownloader.m in Sources */,
 				56B9CD331C807A7100914F00 /* SDWebImageManager.m in Sources */,
 				C4CAD1BB1C7B3943003FD0B0 /* IndustryModel.m in Sources */,
-				95DE89151D33F7D200B8DEE4 /* RCAblumInfoCollectionViewController.m in Sources */,
 				56E3C0181C9C722000BDAE19 /* CZScheduleInfoCell.m in Sources */,
 				56E3C0101C9C5A9A00BDAE19 /* RCUpdateScheduleViewController.m in Sources */,
 				95BECB161D02A386009BA89B /* BWaterflowLayout.m in Sources */,
@@ -2196,6 +2195,7 @@
 				56B9CD411C807C4A00914F00 /* UIImage+ImageEffects.m in Sources */,
 				95DEDB4F1D2FFF040030BF6C /* RCSettingUpViewController.m in Sources */,
 				56A3112E1C870B6300E82262 /* CZUpView.m in Sources */,
+				E7E563451D433E1E007E43A9 /* RCCollectionViewController.m in Sources */,
 				561D02001C47DA5600E4E013 /* AFNetworkActivityIndicatorManager.m in Sources */,
 				95DEDB571D3003E00030BF6C /* AppDelegate.m in Sources */,
 				C4CF96101CFD764E00786982 /* RCCityViewController.m in Sources */,
@@ -2215,7 +2215,6 @@
 				56F02CB01CA2884B00E0BBB4 /* MJRefreshAutoNormalFooter.m in Sources */,
 				564596B51C732A84006D8493 /* LewPopupBackgroundView.m in Sources */,
 				563FC6C01CACFBA400B7DD25 /* RCCollectionView.m in Sources */,
-				563FC6BA1CACE74F00B7DD25 /* RCCollectionViewController.m in Sources */,
 				566094651C9C1A9000433AD8 /* RCTableView.m in Sources */,
 				56B9CD321C807A7100914F00 /* SDWebImageDownloaderOperation.m in Sources */,
 				56B9CD2D1C807A7100914F00 /* NSData+ImageContentType.m in Sources */,
@@ -2226,6 +2225,7 @@
 				561D02091C47DA5600E4E013 /* MASConstraint.m in Sources */,
 				95DEDB411D2FFF040030BF6C /* RCFeedbackViewController.m in Sources */,
 				560F36B51CBE7E2B0088AA19 /* WebViewJavascriptBridge_JS.m in Sources */,
+				E7E563441D433E1E007E43A9 /* RCAblumInfoCollectionViewController.m in Sources */,
 				C43EEB691CA68C2700B83670 /* FlashActivityModel.m in Sources */,
 				C4DAF45F1D2A584E009DE31A /* PreCommentView.m in Sources */,
 				564596B61C732A84006D8493 /* LewPopupViewAnimationDrop.m in Sources */,
