@@ -38,7 +38,7 @@
 #pragma mark - 创建首页子控件
 - (void)createSubViews
 {
-    PubInfoHeaderView *pubInfoHeaderView = [[PubInfoHeaderView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 160)];
+    PubInfoHeaderView *pubInfoHeaderView = [[PubInfoHeaderView alloc]initWithFrame:CGRectMake(0, 0, kScreenWidth, 200)];
     [pubInfoHeaderView setSubViewsValue];
     self.pubInfoView = [[UITableView alloc]initWithFrame:CGRectMake(0, 10, kScreenWidth, kScreenHeight-10)];
     self.pubInfoView.separatorStyle = UITableViewCellSeparatorStyleNone;
