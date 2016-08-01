@@ -479,8 +479,8 @@ typedef void (^HomeViewBlock)(id);
             cell.ac_title.textColor = [UIColor blackColor];
             cell.ac_time.textColor  = [UIColor blackColor];
             cell.ac_place.textColor = [UIColor blackColor];
-            [cell.ac_type setTitleColor:[UIColor blackColor] forState:UIControlStateNormal ];
-            [cell.ac_praise setTitleColor:[UIColor blackColor] forState:UIControlStateNormal];
+            [cell.ac_type setTitleColor:RGB(0x464646, 1) forState:UIControlStateNormal ];
+            [cell.ac_praise setTitleColor:RGB(0x464646, 1) forState:UIControlStateNormal];
             cell.ac_poster.alpha    = 1.0;
         }
         
@@ -605,7 +605,7 @@ typedef void (^HomeViewBlock)(id);
     _acRecButton.backgroundColor = [UIColor whiteColor];
     [_acRecButton setTitle:@"活动推荐" forState:UIControlStateNormal];
     _acRecButton.titleLabel.font = [UIFont systemFontOfSize:15];
-    [_acRecButton setTitleColor:[UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [_acRecButton setTitleColor:RGB(0xa4a4a4, 1) forState:UIControlStateNormal];
     [_acRecButton setTitleColor:themeColor forState:UIControlStateSelected];
     _acRecButton.selected = YES;
     _acRecButton.tag = (NSInteger) (0);
@@ -615,7 +615,7 @@ typedef void (^HomeViewBlock)(id);
     _pubRecButton.backgroundColor = [UIColor whiteColor];
     [_pubRecButton setTitle:@"发布者推荐" forState:UIControlStateNormal];
     _pubRecButton.titleLabel.font = [UIFont systemFontOfSize:14];
-    [_pubRecButton setTitleColor:[UIColor colorWithRed:183.0/255.0 green:183.0/255.0 blue:183.0/255.0 alpha:1.0] forState:UIControlStateNormal];
+    [_pubRecButton setTitleColor:RGB(0xa4a4a4, 1) forState:UIControlStateNormal];
     [_pubRecButton setTitleColor:themeColor forState:UIControlStateSelected];
     _pubRecButton.tag = (NSInteger) (1);
     [_pubRecButton addTarget:self action:@selector(switchMessageDetailView:) forControlEvents:UIControlEventTouchUpInside];

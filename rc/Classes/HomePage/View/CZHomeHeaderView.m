@@ -78,7 +78,7 @@
 {
     self.acList = flashArray;
     //设置父容器的大小
-    [self setFrame:CGRectMake(0, 0, kScreenWidth, (kScreenWidth*0.427)+119)];
+    [self setFrame:CGRectMake(0, 0, kScreenWidth, (kScreenWidth*0.427)+123)];
     
     //configure scrollView constraint
     [self.scrollView mas_makeConstraints:^(MASConstraintMaker *make) {
@@ -101,7 +101,7 @@
         make.right.equalTo(self.scrollView.mas_right);
         make.top.equalTo(self.pageControl.mas_bottom).offset(9);
         make.width.mas_equalTo(kScreenWidth);
-        make.height.mas_equalTo(110);
+        make.height.mas_equalTo(114);
     }];
     
     int count = (int)flashArray.count;

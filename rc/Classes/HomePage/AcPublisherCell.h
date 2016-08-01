@@ -15,6 +15,6 @@
 @property (nonatomic,strong) UIButton *follow;
 
 
--(void)setSubviewsValueWithImage:(NSString *)imageStr PubName:(NSString *)pubName;
+-(void)setSubviewsValueWithImage:(NSString *)imageStr PubName:(NSString *)pubName isFollowed:(NSString *)followed;
 
 @end

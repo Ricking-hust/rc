@@ -37,7 +37,6 @@
             _follow = [[UIButton alloc]init];
             [_follow.titleLabel setFont:[UIFont systemFontOfSize:14]];
             [_follow setTitleColor:themeColor forState:UIControlStateNormal];
-            [_follow addTarget:self action:@selector(followOrCancle) forControlEvents:UIControlEventTouchUpInside];
             [self.contentView addSubview:_follow];
         }
     }
@@ -66,16 +65,18 @@
     }];
 }
 
--(void)setSubviewsValueWithImage:(NSString *)imageStr PubName:(NSString *)pubName{
+-(void)setSubviewsValueWithImage:(NSString *)imageStr PubName:(NSString *)pubName isFollowed:(NSString *)followed{
     [_publisher sd_setImageWithURL:[NSURL URLWithString:imageStr] placeholderImage:[UIImage imageNamed:@"user2"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
 
     }];
-    [_follow setTitle:@"+ 关注" forState:UIControlStateNormal];
+    
+    if ([followed isEqualToString:@"0"]) {
+        [_follow setTitle:@"+ 关注" forState:UIControlStateNormal];
+    } else {
+        [_follow setTitle:@"已关注" forState:UIControlStateNormal];
+    }
+    
     [_pubName setText:pubName];
-}
-
--(void)followOrCancle{
-    NSLog(@"followOrCancle");
 }
 
 @end

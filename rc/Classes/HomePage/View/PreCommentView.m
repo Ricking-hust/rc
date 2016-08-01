@@ -88,7 +88,10 @@
     [self.collectTooBtn setTitle:@"大家都收藏了" forState:UIControlStateNormal];
     [self.collectTooBtn setContentHorizontalAlignment:UIControlContentHorizontalAlignmentLeft];
     [self.collectTooBtn setTitleEdgeInsets:UIEdgeInsetsMake(0, 10, 0, 30)];
-    [self.checkMoreBtn setTitle:@"查看更多" forState:UIControlStateNormal];
+    NSMutableAttributedString *content = [[NSMutableAttributedString alloc]initWithString:[NSString stringWithFormat:@"查看更多"]];
+    NSRange contentRange = {0,[content length]};
+    [content addAttribute:NSUnderlineStyleAttributeName value:[NSNumber numberWithInteger:NSUnderlineStyleSingle] range:contentRange];
+    [self.checkMoreBtn setAttributedTitle:content forState:UIControlStateNormal];
 }
 
 -(void)showOrDissMissCommentWith:(BOOL)isShow{

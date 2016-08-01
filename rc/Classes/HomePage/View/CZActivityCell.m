@@ -73,14 +73,12 @@
         self.ac_type = typeLabel;
         self.ac_type.titleLabel.font = [UIFont systemFontOfSize:TAG_FONTSIZE];
         [self.contentView addSubview:self.ac_type];
-        self.ac_type.alpha = 0.6;
         
         //6.创建ac_tags(UILable)
         UIButton *tagsLabel = [[UIButton alloc]init];
         self.ac_praise = tagsLabel;
         self.ac_praise.titleLabel.font = [UIFont systemFontOfSize:TAG_FONTSIZE];
         [self.contentView addSubview:self.ac_praise];
-        self.ac_praise.alpha = 0.6;
     }
     return self;
 }

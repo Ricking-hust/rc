@@ -88,7 +88,7 @@
     [self.recommendLabel setFont:[UIFont systemFontOfSize:13]];
     [self.recommendLabel setTextColor:themeColor];
     
-    UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 5)];
+    UIView *view=[[UIView alloc] initWithFrame:CGRectMake(0, 0, [[UIScreen mainScreen]bounds].size.width, 9)];
     view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0  blue:245.0/255.0  alpha:1.0];;
     [self addSubview:view];
     
@@ -134,7 +134,7 @@
     
     [self.recommendLabel mas_makeConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.mas_left).offset(10);
-        make.top.equalTo(self.hotLable.mas_bottom).offset(15);
+        make.top.equalTo(self.hotLable.mas_bottom).offset(19);
         make.width.mas_equalTo(64);
         make.height.mas_equalTo(16);
     }];

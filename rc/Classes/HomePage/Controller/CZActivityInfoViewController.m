@@ -53,6 +53,7 @@
 
 @property (nonatomic, strong) MBProgressHUD    *HUD;
 @property (nonatomic, strong) NSString *isCollect;
+@property (nonatomic, strong) NSString *isFollwed;
 @property (nonatomic, strong) NSString *planId;
 @property (nonatomic, strong) NSMutableArray *plAlarm;
 @property (nonatomic, strong) ActivityModel *activitymodel;
@@ -122,6 +123,7 @@
     self.tableView.delegate = self;
     self.tableView.dataSource = self;
     self.isCollect = self.activitymodel.acCollect;
+    self.isFollwed = self.activitymodel.followed;
     [self setaddScheduleStyle];
     //对tableView头进行赋值
     [self setTableViewHeader];
@@ -190,6 +192,12 @@
         _isCollect = @"0";
     }
     return _isCollect;
+}
+-(NSString *)isFollwed{
+    if (!_isFollwed) {
+        _isFollwed = @"0";
+    }
+    return _isFollwed;
 }
 
 -(NSString *)planId{
@@ -320,10 +328,21 @@
         {//发布者
             AcPublisherCell *cell = [[AcPublisherCell alloc]init];
             //对cell的控件进行赋值
-            [cell setSubviewsValueWithImage:self.activitymodel.userInfo.userPic PubName:self.activitymodel.userInfo.userName];
+            [cell setSubviewsValueWithImage:self.activitymodel.userInfo.userPic PubName:self.activitymodel.userInfo.userName isFollowed:self.activitymodel.followed];
             //轻拍Tap
             UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(turnToPublisherView)];
             [cell.publisher addGestureRecognizer:tap];
+            if ([DataManager manager].user.isLogin) {
+                [cell.follow addTarget:self action:@selector(followOrDis:) forControlEvents:UIControlEventTouchUpInside];
+            } else {
+                self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+                self.HUD.removeFromSuperViewOnHide = YES;
+                [self.view addSubview:self.HUD];
+                [self.HUD showAnimated:YES];
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"请登录";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+            }
             return cell;
         }
             break;
@@ -874,6 +893,8 @@
         NSString *msg = [dict valueForKey:@"msg"];
         if ([msg isEqualToString:@"操作成功！"])
         {
+            [self.signUp setTitleColor:[UIColor grayColor] forState:UIControlStateNormal];
+            self.signUp.userInteractionEnabled = NO;
             MBProgressHUD *hud = [MBProgressHUD showHUDAddedTo:self.navigationController.view animated:YES];
             
             // Set the annular determinate mode to show task progress.
@@ -1010,6 +1031,52 @@
         [self.HUD hideAnimated:YES afterDelay:0.6];
     }
 }
+
+#pragma mark - 关注点击事件
+-(void)followOrDis:(UIButton *)btn{
+    self.HUD = [[MBProgressHUD alloc] initWithView:self.view];
+    self.HUD.removeFromSuperViewOnHide = YES;
+    [self.view addSubview:self.HUD];
+    [self.HUD showAnimated:YES];
+    
+    if ([DataManager manager].user.isLogin)
+    {
+        if ([self.isFollwed isEqualToString:@"0"]) {
+            [[DataManager manager] setPubFollwedWithUserID:[userDefaults objectForKey:@"userId"] publisherId:self.activityModelPre.userInfo.userId opType:@"1" success:^(NSString *msg) {
+                self.isFollwed = @"1";
+                [btn setTitle:@"已关注" forState:UIControlStateNormal];
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"关注成功";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+            } failure:^(NSError *error) {
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"操作失败";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+                NSLog(@"Error:%@",error);
+            }];
+        } else {
+            [[DataManager manager] setPubFollwedWithUserID:[userDefaults objectForKey:@"userId"] publisherId:self.activityModelPre.userInfo.userId opType:@"2" success:^(NSString *msg) {
+                self.isFollwed = @"0";
+                [btn setTitle:@"+ 关注" forState:UIControlStateNormal];
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"取消关注成功";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+            } failure:^(NSError *error) {
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"操作失败";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+                NSLog(@"Error:%@",error);
+            }];
+        }
+    } else
+    {
+        self.HUD.mode = MBProgressHUDModeCustomView;
+        self.HUD.label.text = @"请登录";
+        [self.HUD hideAnimated:YES afterDelay:0.6];
+    }
+
+}
+
 #pragma mark - 弹出提醒视图
 - (void)onClickRemindMe:(UIButton *)btn
 {

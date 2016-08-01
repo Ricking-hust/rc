@@ -35,6 +35,7 @@
         self.acHtml             = [dict objectForSafeKey:@"ac_html"];
         self.acCollect          = [dict objectForSafeKey:@"ac_collect"];
         self.plan               = [dict objectForSafeKey:@"plan"];
+        self.followed           = [dict objectForSafeKey:@"followed"];
         if ([[dict objectForSafeKey:@"pl_id"] isKindOfClass:[NSString class]]) {
             self.planId             = [dict objectForSafeKey:@"pl_id"];
         }else {

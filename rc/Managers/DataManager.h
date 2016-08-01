@@ -28,14 +28,28 @@ typedef NS_ENUM(NSInteger,RcErrorType) {
 
 #pragma mark - Public Request Methods - HomePage
 
+/**
+ *  获取城市列表
+ *  @param status       用户的 timeline 信息
+ *  @return 标签个数
+ */
 -(NSURLSessionDataTask *)getCityListSuccess:(void (^)(CityList *ctList))success
                                     failure:(void (^)(NSError *error))failure;
+
 
 -(NSURLSessionDataTask *) setCityWithUserId:(NSString *)userId
                                      cityId:(NSString *)cityId
                                     success:(void (^)(NSString *))success
                                     failure:(void (^)(NSError *))failure;
 
+/**
+ *  获取首页幻灯片
+ *
+ *  @param success Json转化为FlashList
+ *  @param failure 返回NSError
+ *
+ *  @return 网络请求任务
+ */
 -(NSURLSessionDataTask *) getFlashWithSuccess:(void (^)(FlashList *flashList))success
                                       failure:(void (^)(NSError *error))failure;
 
@@ -78,6 +92,12 @@ typedef NS_ENUM(NSInteger,RcErrorType) {
                                                 opType:(NSString *)opType
                                                success:(void (^)(NSString *msg))success
                                                failure:(void (^)(NSError *error))failure;
+
+-(NSURLSessionDataTask *) setPubFollwedWithUserID:(NSString *)userId
+                                      publisherId:(NSString *)publisherId
+                                           opType:(NSString *)opType
+                                          success:(void (^)(NSString *msg))success
+                                          failure:(void (^)(NSError *error))failure;
 
 -(NSURLSessionDataTask *) joinTripWithUserId:(NSString *)userId
                                         acId:(NSString *)acId

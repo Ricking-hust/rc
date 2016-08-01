@@ -31,6 +31,7 @@
 @property (nonatomic,copy) NSString *acCollect;
 @property (nonatomic,copy) NSString *plan;
 @property (nonatomic,copy) NSString *planId;
+@property (nonatomic,copy) NSString *followed;
 
 @property (nonatomic,strong) UserModel *userInfo;
 @property (nonatomic,strong) TagsList *tagsList;
