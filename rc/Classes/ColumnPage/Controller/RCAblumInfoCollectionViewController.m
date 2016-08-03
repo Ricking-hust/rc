@@ -37,6 +37,12 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
     [self.navigationItem setLeftBarButtonItem:leftButton];
     self.navigationItem.title = self.tittle;
     [self getAllAblumActivity];
+    UIView *view = [[UIView alloc]initWithFrame:CGRectMake(0, 64, kScreenWidth, 4)];
+    view.backgroundColor = [UIColor whiteColor];
+    [self.view addSubview:view];
+    [self.collectionView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.top.equalTo(self.view).offset(68);
+    }];
     //[self test];
 }
 #pragma mark - 测试函数
@@ -66,8 +72,6 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
 - (void)getAllAblumActivity
 {
     NSString *urlStr = @"http://appv2.myrichang.com/Home/Industry/getAlbumAcs";
-    NSLog(@"url = %@",urlStr);
-    NSLog(@"参数--》album_id = %@",self.album_id);
     NSDictionary *parameters = [NSDictionary dictionaryWithObjectsAndKeys:self.album_id,@"album_id",nil];
     [RCNetworkingRequestOperationManager request:urlStr requestType:POST parameters:parameters completeBlock:^(NSData *data) {
         id dict = [NSJSONSerialization JSONObjectWithData:data options:kNilOptions error:nil];
@@ -84,7 +88,7 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
         }
         
     } errorBlock:^(NSError *error) {
-        NSLog(@"请求失败:%@",error);
+        NSLog(@"网络超时:%@",error);
     }];
 
 }
@@ -109,9 +113,6 @@ static NSString * const albumInfoReuseIdentifier = @"albumCell";
 - (NSArray *)activityFromDict:(NSDictionary *)dict
 {
     NSNumber *code = [dict valueForKey:@"code"];
-    
-    NSLog(@"msg = %@",[dict valueForKey:@"msg"]);
-    NSLog(@"code = %@",code);
     if ([code isEqualToNumber:[[NSNumber alloc]initWithInt:200]])
     {//返回正确的数据
         

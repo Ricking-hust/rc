@@ -716,10 +716,12 @@ typedef void (^HomeViewBlock)(id);
     RCHotActivityTableController *hotVC = [[RCHotActivityTableController alloc]init];
     [self.navigationController pushViewController:hotVC animated:YES];
 }
-
+#pragma mark - 大学
 -(void)turnToUniverPage{
+    [[NSNotificationCenter defaultCenter] postNotificationName:@"JumpToObject" object:@"大学"];
     AppDelegate *thisAppDelegate = [[UIApplication sharedApplication] delegate];
     [(UITabBarController *)thisAppDelegate.window.rootViewController setSelectedIndex:1];
+    
 }
 #pragma mark - 附近活动
 -(void)turnToBesidesPage{
@@ -728,10 +730,12 @@ typedef void (^HomeViewBlock)(id);
     RCNearByAcitivityController *nearbyVC = [[RCNearByAcitivityController alloc]init];
     [self.navigationController pushViewController:nearbyVC animated:YES];
 }
-
+#pragma mark - 精选
 -(void)turnToCarePage{
+        [[NSNotificationCenter defaultCenter] postNotificationName:@"JumpToObject" object:@"精选"];
     AppDelegate *thisAppDelegate = [[UIApplication sharedApplication] delegate];
     [(UITabBarController *)thisAppDelegate.window.rootViewController setSelectedIndex:1];
+
 }
 
 @end

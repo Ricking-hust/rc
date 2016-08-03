@@ -148,9 +148,6 @@
     }else if (indexPath.row == 1)
     {
         return 55;
-    }else if (indexPath.row == 2)
-    {
-        return 70;
     }else
     {
         return 50;
@@ -386,25 +383,7 @@
         make.bottom.equalTo(self.view).offset(-49);
     }];
 }
-//- (UITableView *)tableView
-//{
-//    if (!_tableView)
-//    {
-//        _tableView = [[UITableView alloc]init];
-//        _tableView.backgroundColor = [UIColor clearColor];
-//        _tableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-//        _tableView.dataSource = self;
-//        _tableView.delegate = self;
-//        [self.view addSubview:_tableView];
-//        [_tableView mas_updateConstraints:^(MASConstraintMaker *make) {
-//            make.top.equalTo(self.view.mas_top).offset(64);
-//            make.right.left.equalTo(self.view);
-//            make.bottom.equalTo(self.view).offset(-49);
-//        }];
-//        
-//    }
-//    return _tableView;
-//}
+
 /**
  *  计算字体的长和宽
  *

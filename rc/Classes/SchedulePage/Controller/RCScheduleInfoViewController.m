@@ -172,16 +172,34 @@
 
     if ([self.model.plAlarmOne isEqualToString:@"1"])
     {
-        beforeOneHour = @"提前一小时,";
+        beforeOneHour = @"提前一小时";
     }
     if ([self.model.plAlarmTwo isEqualToString:@"1"])
     {
-        beforeTwoDay = @"提前两天,";
+        beforeTwoDay = @"提前两天";
     }
     if ([self.model.plAlarmThree isEqualToString:@"1"])
     {
         beforeThreeDay = @"提前三天";
     }
+    NSArray *reminderTime = @[beforeOneHour, beforeTwoDay, beforeThreeDay];
+    NSString *timeStr = [[NSString alloc]init];
+    for (NSString *time in reminderTime)
+    {
+        if (![time isEqualToString:@""])
+        {
+            NSString *temp = [NSString stringWithFormat:@"%@,",time];
+            timeStr = [NSString stringWithFormat:@"%@%@",timeStr, temp];
+        }
+
+    }
+    if ([timeStr length] != 0)
+    {
+        NSInteger len = [timeStr length] - 1;
+        timeStr = [NSString stringWithFormat:@"%@",[timeStr substringWithRange:NSMakeRange(0, len)]];
+        
+    }
+    
     if ([beforeOneHour isEqualToString:@""] &&
         [beforeTwoDay  isEqualToString:@""] &&
         [beforeThreeDay isEqualToString:@""])
@@ -189,7 +207,7 @@
         self.scRemindTime.text = @"不提醒";
     }else
     {
-        self.scRemindTime.text = [NSString stringWithFormat:@"%@ %@ %@",beforeOneHour, beforeTwoDay, beforeThreeDay];
+        self.scRemindTime.text = timeStr;
     }
 
 }
@@ -210,7 +228,7 @@
 }
 #pragma mark - 删除行程
 - (void)deleteSC{
-    UIAlertController *configureDel = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定删除该行程" preferredStyle:UIAlertControllerStyleAlert];
+    UIAlertController *configureDel = [UIAlertController alertControllerWithTitle:@"提示" message:@"确定删除该行程？" preferredStyle:UIAlertControllerStyleAlert];
     UIAlertAction *cancleAction = [UIAlertAction actionWithTitle:@"取消" style:UIAlertActionStyleCancel handler:^(UIAlertAction * _Nonnull action) {
         
     }];

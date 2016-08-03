@@ -29,34 +29,18 @@
 - (void)setConstraints
 {
     self.text_label.font = [UIFont systemFontOfSize:14];
+    [self.icon_imageView mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.left.equalTo(self.contentView.mas_left).offset(20);
+        make.centerY.equalTo(self.contentView.mas_centerY);
+        make.size.mas_equalTo(self.icon_imageView.image.size);
+    }];
+    [self.text_label mas_updateConstraints:^(MASConstraintMaker *make) {
+        make.centerY.equalTo(self.contentView.mas_centerY);
+        make.left.equalTo(self.icon_imageView.mas_right).offset(15);
+        make.height.mas_equalTo(25);
+        make.width.mas_equalTo(100);
+    }];
 
-    if ([self.text_label.text isEqualToString:@"我的报名"])
-    {
-        [self.icon_imageView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).offset(20);
-            make.top.equalTo(self.contentView.mas_top).offset(33);
-            make.size.mas_equalTo(self.icon_imageView.image.size);
-        }];
-        [self.text_label mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.top.equalTo(self.icon_imageView.mas_top);
-            make.left.equalTo(self.icon_imageView.mas_right).offset(15);
-            make.height.mas_equalTo(25);
-            make.width.mas_equalTo(100);
-        }];
-    }else
-    {
-        [self.icon_imageView mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.left.equalTo(self.contentView.mas_left).offset(20);
-            make.centerY.equalTo(self.contentView.mas_centerY);
-            make.size.mas_equalTo(self.icon_imageView.image.size);
-        }];
-        [self.text_label mas_updateConstraints:^(MASConstraintMaker *make) {
-            make.centerY.equalTo(self.contentView.mas_centerY);
-            make.left.equalTo(self.icon_imageView.mas_right).offset(15);
-            make.height.mas_equalTo(25);
-            make.width.mas_equalTo(100);
-        }];
-    }
     self.other_imageView.image = [UIImage imageNamed:@"nextIcon"];
     self.other_imageView.alpha = 0.7;
     [self.other_imageView mas_updateConstraints:^(MASConstraintMaker *make) {

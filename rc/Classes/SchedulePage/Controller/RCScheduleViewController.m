@@ -115,7 +115,7 @@
             make.height.mas_equalTo(labelSize.height+1);
         }];
         [_heartBrokenView mas_makeConstraints:^(MASConstraintMaker *make) {
-            make.centerX.equalTo(self.view).offset(20);
+            make.centerX.equalTo(self.view).offset(40);
             make.centerY.equalTo(self.view).offset(-20);
             make.height.mas_equalTo(imgeView.image.size.height+labelSize.height+1+10);
             make.width.mas_equalTo(imgeView.image.size.width>labelSize.width?imgeView.image.size.width:labelSize.width+1);

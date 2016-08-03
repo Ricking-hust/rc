@@ -61,7 +61,7 @@
         make.height.mas_equalTo(150);
     }];
 
-    self.tittleLabel.font = [UIFont systemFontOfSize:16];
+    self.tittleLabel.font = [UIFont boldSystemFontOfSize:16];
     self.tittleLabel.alpha = 0.8;
     
 //    CGSize tittleSize = [self sizeWithText:self.tittleLabel.text maxSize:CGSizeMake(kScreenWidth - 30, 20) fontSize:16];
@@ -76,7 +76,8 @@
         make.height.mas_equalTo((int)_ablumInfomodel.tittleSize.height + 1);
     }];
     self.timeLabel.font = [UIFont systemFontOfSize:14];
-    self.timeLabel.alpha = 0.8;
+//    self.timeLabel.alpha = 0.8;
+    [self.timeLabel setTextColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.8]];
 
     [self.timeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.tittleLabel.mas_left);
@@ -85,8 +86,9 @@
         make.height.mas_equalTo((int)_ablumInfomodel.timeSize.height+1);
     }];
     self.desLabel.font = [UIFont systemFontOfSize:14];
-    self.desLabel.alpha = 0.8;
     self.desLabel.numberOfLines = 0;
+    //    self.desLabel.alpha = 0.8;
+    [self.desLabel setTextColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.8]];
 
     [self.desLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.tittleLabel.mas_left);
@@ -95,9 +97,9 @@
         make.height.mas_equalTo((int)_ablumInfomodel.desSize.height+1);
     }];
     self.placeLabel.font = [UIFont systemFontOfSize:14];
-    self.placeLabel.alpha = 0.8;
     self.placeLabel.numberOfLines = 0;
-
+//    self.placeLabel.alpha = 0.8;
+    [self.placeLabel setTextColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:0.8]];
     [self.placeLabel mas_updateConstraints:^(MASConstraintMaker *make) {
         make.left.equalTo(self.tittleLabel.mas_left);
         make.top.equalTo(self.desLabel.mas_bottom).offset(5);

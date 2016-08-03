@@ -17,6 +17,9 @@
 @interface CZMoreRemindTimeViewController ()
 @property (nonatomic, strong) UIPickerView *pickView;
 @property (nonatomic, strong) PlanModel *model;
+@property (nonatomic, strong) NSString *alarmOne;
+@property (nonatomic, strong) NSString *alarmTwo;
+@property (nonatomic, strong) NSString *alarmThree;
 @end
 
 @implementation CZMoreRemindTimeViewController
@@ -24,6 +27,10 @@
 - (void)passModifySchedule:(id)schedule
 {
     self.model = schedule;
+    self.alarmOne = [NSString stringWithFormat:@"%@",self.model.plAlarmOne];
+    self.alarmTwo = [NSString stringWithFormat:@"%@",self.model.plAlarmTwo];
+    self.alarmThree = [NSString stringWithFormat:@"%@",self.model.plAlarmThree];
+
 }
 - (PlanModel *)model
 {
@@ -83,42 +90,9 @@
 - (void)didSetRemindTime:(UITapGestureRecognizer *)gesture
 {
     
-//    CZTimeSelectView *selectView = [CZTimeSelectView selectView];
-//    selectView.pickView.dataSource = self;
-//    selectView.pickView.delegate = self;
-//    [selectView.OKbtn addTarget:self action:@selector(selectTime:) forControlEvents:UIControlEventTouchUpInside];
-//    
-//    LewPopupViewAnimationSlide *animation = [[LewPopupViewAnimationSlide alloc]init];
-//    animation.type = LewPopupViewAnimationSlideTypeBottomBottom;
-//    [self lew_presentPopupView:selectView animation:animation dismissed:^{
-//        NSLog(@"时间选择视图已弹出");
-//    }];
-}
-#pragma mark - PickView代理
 
-// UIPickerViewDataSource中定义的方法，该方法的返回值决定该控件包含多少列
-- (NSInteger)numberOfComponentsInPickerView:(UIPickerView*)pickerView
-{
-    return 1;
-}
-// UIPickerViewDataSource中定义的方法，该方法的返回值决定该控件指定列包含多少个列表项
-- (NSInteger)pickerView:(UIPickerView *)pickerView numberOfRowsInComponent:(NSInteger)component
-{
-
-    return 1;
-}
-// UIPickerViewDelegate中定义的方法，该方法返回的NSString将作为
-// UIPickerView中指定列和列表项上显示的标题
-- (NSString *)pickerView:(UIPickerView *)pickerView titleForRow:(NSInteger)row forComponent:(NSInteger)component
-{
-    return @"d";
 }
 
-- (void)pickerView:(UIPickerView *)pickerView didSelectRow:(NSInteger)row inComponent:(NSInteger)component
-{
-    
- 
-}
 - (void)didSelectDay:(UITapGestureRecognizer *)gesture
 {
     CZRemindView *view = (CZRemindView *)gesture.view;
@@ -127,25 +101,25 @@
     {
         if (view.tag == 1)
         {
-            self.model.plAlarmOne = @"0";
+            self.alarmOne = @"0";
         }else if (view.tag == 2)
         {
-            self.model.plAlarmTwo = @"0";
+            self.alarmTwo = @"0";
         }else
         {
-            self.model.plAlarmThree = @"0";
+            self.alarmThree = @"0";
         }
     }else
     {
         if (view.tag == 1)
         {
-            self.model.plAlarmOne = @"1";
+            self.alarmOne = @"1";
         }else if (view.tag == 2)
         {
-            self.model.plAlarmTwo = @"1";
+            self.alarmTwo = @"1";
         }else
         {
-            self.model.plAlarmThree = @"1";
+            self.alarmThree = @"1";
         }
         CZRemindView *view = [self.view viewWithTag:10];
         view.img.hidden = YES;
@@ -170,6 +144,9 @@
     self.beforeOneDay.img.hidden = YES;
     self.beforeTwoDay.img.hidden = YES;
     self.beforeThreeDay.img.hidden = YES;
+    self.alarmOne = @"0";
+    self.alarmTwo = @"0";
+    self.alarmThree = @"0";
     [view setValue:@"NO" forKey:@"isSelected"];
 }
 - (void)observeValueForKeyPath:(NSString *)keyPath ofObject:(id)object change:(NSDictionary<NSString *,id> *)change context:(void *)context
@@ -177,7 +154,6 @@
     CZRemindView *notRemind = (CZRemindView *)object;
     if ([notRemind valueForKey:@"isSelected"] == [[NSNumber alloc]initWithBool:YES])
     {
-        NSLog(@"yes");
         self.timeView.label.alpha = 1.0;
         self.timeView.time.alpha = 1.0;
         self.timeView.img.alpha = 1.0;
@@ -192,7 +168,6 @@
         {
             [self.timeView removeGestureRecognizer:gesture];
         }
-        NSLog(@"no");
 
     }
 
@@ -204,6 +179,17 @@
     UIBarButtonItem *leftButton = [[UIBarButtonItem alloc]initWithImage:[UIImage imageNamed:@"backIcon"] style:UIBarButtonItemStylePlain target:self action:@selector(backForwardController)];
     [self.navigationItem setLeftBarButtonItem:leftButton];
     
+    UIBarButtonItem *right = [[UIBarButtonItem alloc]initWithTitle:@"确定" style:UIBarButtonItemStylePlain target:self action:@selector(didSelect)];
+    [self.navigationItem setRightBarButtonItem:right];
+    
+}
+#pragma mark - 确定选择
+- (void)didSelect
+{
+    self.model.plAlarmOne = self.alarmOne;
+    self.model.plAlarmTwo = self.alarmTwo;
+    self.model.plAlarmThree = self.alarmThree;
+    [self.navigationController popViewControllerAnimated:YES];
 }
 - (void)backForwardController
 {

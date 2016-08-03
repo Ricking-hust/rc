@@ -65,8 +65,20 @@ static NSString * const albumReuseIdentifier = @"albumCell";
     [self initScrollView];
     [self configureBlocks];
     self.getIndListBlock();
+    [[NSNotificationCenter defaultCenter] addObserver:self selector:@selector(jumpToObjectTag:) name:@"JumpToObject" object:nil];
 }
-
+- (void)jumpToObjectTag:(NSNotification *)notification
+{
+    NSString *tagName = notification.object;
+    for (UIButton *button in self.toolButtonArray)
+    {
+        if ([button.titleLabel.text isEqualToString:tagName])
+        {
+            [self onClickTooBtn:button];
+            break;
+        }
+    }
+}
 #pragma mark - 初始化，scrollView用于平移多个collectionView
 - (void)initScrollView
 {
@@ -256,7 +268,7 @@ static NSString * const albumReuseIdentifier = @"albumCell";
         acImageW = 142;
         acImageH = 142;
         
-    }else if (self.device   == IPhone6)
+    }else if (self.device == IPhone6)
     {
         acImageW = 165;
         acImageH = 165;
@@ -571,7 +583,7 @@ static NSString * const albumReuseIdentifier = @"albumCell";
 }
 - (UIEdgeInsets)edgeInsetsInWaterflowLayout:(BWaterflowLayout *)waterflowLayout
 {
-
+//CGFloat top, left, bottom, right;
     return UIEdgeInsetsMake(10, 10, 10, 10);
 }
 #pragma mark - 下拉对应的collectionView刷新数据
@@ -890,7 +902,7 @@ static NSString * const albumReuseIdentifier = @"albumCell";
     {
         return IPhone5;
         
-    }else if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 6"] )
+    }else if ([[self getCurrentDeviceModel] isEqualToString:@"iPhone 6"])
     {
         return IPhone6;
     }else

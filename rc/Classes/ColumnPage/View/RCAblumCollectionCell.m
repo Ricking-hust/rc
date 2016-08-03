@@ -60,6 +60,8 @@
 {
     self.label.text = tittle;
     self.label.font = [UIFont systemFontOfSize:15];
+    self.label.alpha = 0.8;
+//    [self.label setTextColor:[UIColor colorWithRed:38.0/255.0 green:40.0/255.0 blue:50.0/255.0 alpha:1.0] ];
 }
 /**
  *  跳转到精选详情页
