@@ -341,6 +341,94 @@ typedef NS_ENUM(NSInteger,RcRequestMethod){
     }];
 }
 
+-(NSURLSessionDataTask *) getAllCommentsWithacID:(NSString *)acId
+                                          userId:(NSString *)userId
+                                         startID:(NSString *)startId
+                                         success:(void (^)(CommentList *comList))success
+                                         failure:(void (^)(NSError *))failure{
+    NSDictionary *parameters = @{
+                                 @"ac_id":acId,
+                                 @"usr_id":userId,
+                                 @"start_id":startId,
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://appv2.myrichang.com/Home/Comment/getAllComments" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        CommentList *comList = [[CommentList alloc]initWithArray:[responseObject objectForKey:@"data"]];
+        success(comList);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *) getPopularCommentsWithAcID:(NSString *)acId
+                                               usrID:(NSString *)usrId
+                                             success:(void (^)(CommentList *))success
+                                             failure:(void (^)(NSError *))failure{
+    NSDictionary *parameters = @{
+                                 @"ac_id":acId,
+                                 @"usr_id":usrId,
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://appv2.myrichang.com/Home/Comment/getPopularComments" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        CommentList *comList = [[CommentList alloc]initWithArray:[responseObject objectForKey:@"data"]];
+        success(comList);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *) publishCommentWithUsrID:(NSString *)usrId
+                                             acID:(NSString *)acId
+                                  fatherCommentID:(NSString *)fatherCommentId
+                                   commentContent:(NSString *)commentContent
+                                          success:(void (^)(NSString *))success
+                                          failure:(void (^)(NSError *))failure{
+    NSDictionary *parameters = @{
+                                 @"usr_id":usrId,
+                                 @"ac_id":acId,
+                                 @"father_comment_id":fatherCommentId,
+                                 @"comment_content":commentContent,
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://appv2.myrichang.com/Home/Comment/publishComment" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSString *msg = [[NSString alloc] initWithString:[responseObject objectForKey:@"msg"]];
+        success(msg);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *) deleteCommentWithUsrID:(NSString *)usrId
+                                       commentID:(NSString *)commentId
+                                         success:(void (^)(NSString *))success
+                                         failure:(void (^)(NSError *))failure{
+    NSDictionary *parameters = @{
+                                 @"usr_id":usrId,
+                                 @"comment_id":commentId,
+                                 };
+    return [self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://appv2.myrichang.com/Home/Comment/deleteComment" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSString *msg = [[NSString alloc] initWithString:[responseObject objectForKey:@"msg"]];
+        success(msg);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+}
+
+-(NSURLSessionDataTask *) praiseCommentWithUsrId:(NSString *)usrId
+                                       commentId:(NSString *)commentId
+                                          opType:(NSString *)opType
+                                         success:(void (^)(NSString *msg))success
+                                         failure:(void (^)(NSError *error))failure{
+    NSDictionary *parameters = @{
+                                 @"usr_id":usrId,
+                                 @"comment_id":commentId,
+                                 @"op_type":opType
+                                 };
+    return [ self requestWithMethod:RcRequestMethodHTTPPOST URLString:@"http://appv2.myrichang.com/Home/Comment/praiseComment" parameters:parameters success:^(NSURLSessionDataTask *task, id responseObject) {
+        NSString *code = [[NSString alloc] initWithFormat:@"%@",[responseObject objectForKey:@"code"]];
+        success(code);
+    } failure:^(NSError *error) {
+        failure(error);
+    }];
+};
+
 -(NSURLSessionDataTask *) joinTripWithUserId:(NSString *)userId
                                         acId:(NSString *)acId
                                       opType:(NSString *)opType

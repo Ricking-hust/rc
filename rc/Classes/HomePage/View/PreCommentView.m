@@ -10,6 +10,10 @@
 #import "RCCommentcell.h"
 #import "Masonry.h"
 
+@interface PreCommentView ()
+
+@end
+
 @implementation PreCommentView
 
 -(id)initWithFrame:(CGRect)frame{
@@ -50,7 +54,6 @@
             tableView;
         });
         
-        [self testGet];
     }
     return self;
 }
@@ -115,39 +118,41 @@
     return 1;
 }
 
--(void)testGet{
-    NSDictionary *dic1 = @{
-                           @"comment_id":@"1",
-                           @"usr_id":@"6",
-                           @"usr_name":@"逃跑计划",
-                           @"usr_pic":@"http://img.myrichang.com/img/src/logo.png",
-                           @"father_comment_id":@"0",
-                           @"comment_time":@"2015年7月20日 15：32",
-                           @"comment_content":@"再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见",
-                           @"comment_praise_num":@"7",
-                           @"father_comment_usr_id":@"0",
-                           @"father_comment_usr_name":@"0",
-                           @"father_comment_content":@"0"
-                           };
-    
-    NSDictionary *dic2 = @{
-                           @"comment_id":@"2",
-                           @"usr_id":@"5",
-                           @"usr_name":@"水木年华",
-                           @"usr_pic":@"http://img.myrichang.com/upload/14637245657abe0d0a55a8cefc5270d29c90a6157a.png",
-                           @"father_comment_id":@"1",
-                           @"comment_time":@"2015年7月20日 22：13",
-                           @"comment_content":@"启程",
-                           @"comment_praise_num":@"89",
-                           @"father_comment_usr_id":@"6",
-                           @"father_comment_usr_name":@"逃跑计划",
-                           @"father_comment_content":@"再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见"
-                           };
-    
-    NSArray *commentAry = [NSArray arrayWithObjects:dic1,dic2, nil];
-    
-    self.commentList = [[CommentList alloc]initWithArray:commentAry];;
-}
+//-(void)testGet{
+//    NSDictionary *dic1 = @{
+//                           @"comment_id":@"1",
+//                           @"usr_id":@"6",
+//                           @"usr_name":@"逃跑计划",
+//                           @"usr_pic":@"http://img.myrichang.com/img/src/logo.png",
+//                           @"father_comment_id":@"0",
+//                           @"comment_time":@"2015年7月20日 15：32",
+//                           @"comment_content":@"再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见",
+//                           @"comment_praise_num":@"7",
+//                           @"father_comment_usr_id":@"0",
+//                           @"father_comment_usr_name":@"0",
+//                           @"father_comment_content":@"0",
+//                           @"praised":@"1"
+//                           };
+//    
+//    NSDictionary *dic2 = @{
+//                           @"comment_id":@"2",
+//                           @"usr_id":@"5",
+//                           @"usr_name":@"水木年华",
+//                           @"usr_pic":@"http://img.myrichang.com/upload/14637245657abe0d0a55a8cefc5270d29c90a6157a.png",
+//                           @"father_comment_id":@"1",
+//                           @"comment_time":@"2015年7月20日 22：13",
+//                           @"comment_content":@"启程",
+//                           @"comment_praise_num":@"89",
+//                           @"father_comment_usr_id":@"6",
+//                           @"father_comment_usr_name":@"逃跑计划",
+//                           @"father_comment_content":@"再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见",
+//                           @"praised":@"0"
+//                           };
+//    
+//    NSArray *commentAry = [NSArray arrayWithObjects:dic1,dic2, nil];
+//    
+//    self.commentList = [[CommentList alloc]initWithArray:commentAry];;
+//}
 
 -(UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath{
     RCCommentcell *cell = [tableView dequeueReusableCellWithIdentifier:kCellIdentifier_CommentCell forIndexPath:indexPath];

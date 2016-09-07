@@ -8,10 +8,13 @@
 
 #import <UIKit/UIKit.h>
 #import "CommentModel.h"
+#import "MBProgressHUD.h"
 
 @interface RCCommentViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) CommentList *commentList;
-@property (nonatomic,strong) UITableView *commetnTableView;
+@property (nonatomic,strong) ActivityModel *acModel;
+@property (nonatomic,strong) UITableView *commentTableView;
+@property (nonatomic, strong) MBProgressHUD *HUD;
 
 @end

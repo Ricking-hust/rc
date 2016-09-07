@@ -8,6 +8,7 @@
 
 #import "CZActivityInfoViewController.h"
 #import "ActivityModel.h"
+#import "CommentModel.h"
 #import "Masonry.h"
 #import "CZTimeCell.h"
 #import "AcPublisherCell.h"
@@ -22,7 +23,6 @@
 #import "UINavigationBar+Awesome.h"
 #import "UIImageView+LBBlurredImage.h"
 #import "UIColor+YDAddition.h"
-#import "MBProgressHUD.h"
 #import "RCBarButton.h"
 #import "RCBarButtonView.h"
 #import "RCReleaseCell.h"
@@ -51,14 +51,15 @@
 @property (nonatomic, strong) RCBarButtonView *barButtonView;
 @property (nonatomic, strong) PreCommentView *prePreCommentView;
 
-@property (nonatomic, strong) MBProgressHUD    *HUD;
 @property (nonatomic, strong) NSString *isCollect;
 @property (nonatomic, strong) NSString *isFollwed;
 @property (nonatomic, strong) NSString *planId;
 @property (nonatomic, strong) NSMutableArray *plAlarm;
 @property (nonatomic, strong) ActivityModel *activitymodel;
+@property (nonatomic,strong) CommentList *hotComList;
 @property (nonatomic, assign) CGFloat acHtmlHeight;
 @property (nonatomic, copy) NSURLSessionDataTask* (^getActivityBlock)();
+@property (nonatomic, copy) NSURLSessionDataTask* (^getHotCommentBlock)();
 @property (nonatomic, strong) UIWebView *webView;
 @property (nonatomic, strong) UIBarButtonItem *collectionItem;
 
@@ -102,6 +103,7 @@
     self.signUp.hidden = YES;
     [self configureBlocks];
     self.getActivityBlock();
+    self.getHotCommentBlock();
     //设置导航栏
     [self setNavigation];
     
@@ -171,6 +173,21 @@
             NSLog(@"Error:%@",error);
         }];
     };
+    
+    self.getHotCommentBlock = ^(){
+        @strongify(self);
+        NSString *userId = [[NSString alloc]init];
+        if ([userDefaults objectForKey:@"userId"]) {
+            userId = [userDefaults objectForKey:@"userId"];
+        } else {
+            userId = @"-1";
+        }
+        return [[DataManager manager] getPopularCommentsWithAcID:self.activityModelPre.acID usrID:userId success:^(CommentList *comList) {
+            self.hotComList = comList;
+        } failure:^(NSError *error) {
+            NSLog(@"Error:%@",error);
+        }];
+    };
 }
 
 -(void)setActivityModelPre:(ActivityModel *)activityModelPre{
@@ -185,6 +202,12 @@
     {
         [[NSNotificationCenter defaultCenter]postNotificationName:@"getActivityInfo" object:_activitymodel];
     }
+}
+
+-(void)setHotComList:(CommentList *)hotComList{
+    
+    _hotComList = hotComList;
+    [self.prePreCommentView.preCommentView reloadData];
 }
 
 -(NSString *)isCollect{
@@ -356,6 +379,7 @@
                 [cell.contentView addSubview:self.webView];
                 self.isShowComment = NO;
                 self.prePreCommentView = [[PreCommentView alloc]init];
+                self.prePreCommentView.commentList = _hotComList;
                 [self.prePreCommentView.showCommentBtn addTarget:self action:@selector(onClickShowCommment) forControlEvents:UIControlEventTouchUpInside];
                 [cell.contentView addSubview:self.prePreCommentView];
                 [self.prePreCommentView setSubViewsValue];
@@ -1196,6 +1220,7 @@
 
 -(void)checkMorCommment{
     RCCommentViewController *commentViewController = [[RCCommentViewController alloc]init];
+    commentViewController.acModel = self.activitymodel;
     commentViewController.title = @"评论详情";
     [self.navigationController pushViewController:commentViewController animated:YES];
 }

@@ -7,6 +7,8 @@
 //
 
 #import "RCCommentcell.h"
+#import "RCCommentViewController.h"
+#import "CZActivityInfoViewController.h"
 #import "Masonry.h"
 #import "RCUtils.h"
 
@@ -27,7 +29,7 @@ static const CGFloat praiseSzie = 15;
             _user.layer.masksToBounds = YES;
             _user.layer.cornerRadius = 20;
             _user.userInteractionEnabled = YES;
-            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(turnToUsererView)];
+            UITapGestureRecognizer *tap = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(turnToUserView)];
             [_user addGestureRecognizer:tap];
             [self.contentView addSubview:_user];
         }
@@ -65,6 +67,7 @@ static const CGFloat praiseSzie = 15;
         
         if (!_praiseBtn) {
             _praiseBtn = [[UIButton alloc]init];
+            [_praiseBtn addTarget:self action:@selector(praise:) forControlEvents:UIControlEventTouchUpInside];
             [self.contentView addSubview:_praiseBtn];
         }
         
@@ -139,12 +142,72 @@ static const CGFloat praiseSzie = 15;
     [self.nameLab setText:self.commentModel.commentUser.userName];
     [self.commentLab setText:self.commentModel.comment_content];
     [self.praiseNum setText:self.commentModel.comment_praise_num];
-    [self.praiseBtn setImage:[UIImage imageNamed:@"zan_done icon"] forState:UIControlStateNormal];
+    if ([self.commentModel.isPraised isEqualToString:@"1"]) {
+        [self.praiseBtn setImage:[UIImage imageNamed:@"zan_done icon"] forState:UIControlStateNormal];
+    } else {
+        [self.praiseBtn setImage:[UIImage imageNamed:@"zan_icon"] forState:UIControlStateNormal];
+    }
     
 }
 
--(void)turnToUsererView{
-    NSLog(@"turnToUsererView");
+-(void)praise:(UIButton *)btn{
+    RCCommentViewController *fatherVC = [[RCCommentViewController alloc]init];
+    for (UIView* next = [self superview]; next; next = next.superview) {
+        UIResponder* nextResponder = [next nextResponder];
+        if ([nextResponder isKindOfClass:[RCCommentViewController class]]) {
+            fatherVC = (RCCommentViewController *)nextResponder;
+        }
+    }
+    if ([DataManager manager].user.isLogin){
+        if ([self.commentModel.isPraised isEqualToString:@"1"]) {
+            [[DataManager manager] praiseCommentWithUsrId:[userDefaults objectForKey:@"userId"] commentId:self.commentModel.comment_id opType:@"2" success:^(NSString *msg) {
+                if ([msg isEqualToString:@"200"]) {
+                    [btn setImage:[UIImage imageNamed:@"zan_icon"] forState:UIControlStateNormal];
+                    fatherVC.HUD.mode = MBProgressHUDModeCustomView;
+                    fatherVC.HUD.label.text = @"取消点赞成功";
+                    self.commentModel.isPraised = @"0";
+                    [fatherVC.HUD hideAnimated:YES afterDelay:0.6];
+                } else {
+                    fatherVC.HUD.mode = MBProgressHUDModeCustomView;
+                    fatherVC.HUD.label.text = @"取消点赞失败";
+                    [fatherVC.HUD hideAnimated:YES afterDelay:0.6];
+                }
+            } failure:^(NSError *error) {
+                fatherVC.HUD.mode = MBProgressHUDModeCustomView;
+                fatherVC.HUD.label.text = @"操作失败";
+                [fatherVC.HUD hideAnimated:YES afterDelay:0.6];
+                NSLog(@"Error:%@",error);
+            }];
+        } else {
+            [[DataManager manager] praiseCommentWithUsrId:[userDefaults objectForKey:@"userId"] commentId:self.commentModel.comment_id opType:@"1" success:^(NSString *msg) {
+                if ([msg isEqualToString:@"200"]) {
+                    [btn setImage:[UIImage imageNamed:@"zan_done icon"] forState:UIControlStateNormal];
+                    fatherVC.HUD.mode = MBProgressHUDModeCustomView;
+                    fatherVC.HUD.label.text = @"点赞成功";
+                    self.commentModel.isPraised = @"1";
+                    [fatherVC.HUD hideAnimated:YES afterDelay:0.6];
+                } else {
+                    fatherVC.HUD.mode = MBProgressHUDModeCustomView;
+                    fatherVC.HUD.label.text = @"点赞失败";
+                    [fatherVC.HUD hideAnimated:YES afterDelay:0.6];
+                }
+            } failure:^(NSError *error) {
+                fatherVC.HUD.mode = MBProgressHUDModeCustomView;
+                fatherVC.HUD.label.text = @"操作失败";
+                [fatherVC.HUD hideAnimated:YES afterDelay:0.6];
+                NSLog(@"Error:%@",error);
+            }];
+        }
+    } else
+    {
+        fatherVC.HUD.mode = MBProgressHUDModeCustomView;
+        fatherVC.HUD.label.text = @"请登录";
+        [fatherVC.HUD hideAnimated:YES afterDelay:0.6];
+    }
+}
+
+-(void)turnToUserView{
+    NSLog(@"turnToUserView");
 }
 
 @end

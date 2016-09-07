@@ -19,6 +19,7 @@
 @property (nonatomic,copy) NSString *father_comment_usr_id;
 @property (nonatomic,copy) NSString *father_comment_usr_name;
 @property (nonatomic,copy) NSString *father_comment_content;
+@property (nonatomic,copy) NSString *isPraised;
 
 @property (nonatomic,strong) UserModel *commentUser;
 

@@ -214,17 +214,33 @@
     self.HUD.removeFromSuperViewOnHide = YES;
     [self.view addSubview:self.HUD];
     [self.HUD showAnimated:YES];
-    [[DataManager manager] putFeedBackWithUserId:[userDefaults objectForKey:@"userId"] fbMail:[userDefaults objectForKey:@"userMail"] fbPhone:[userDefaults objectForKey:@"userPhone"] fbContent:self.commmentTextView.text success:^(NSString *msg) {
+    
+    if ([self.commmentTextView.text isEqualToString:@""] || [self.commmentTextView.text isEqualToString:@"请输入评论"]) {
         self.HUD.mode = MBProgressHUDModeCustomView;
-        self.HUD.label.text = @"评论成功";
+        self.HUD.label.text = @"请输入评论";
         [self.HUD hideAnimated:YES afterDelay:0.6];
-        [self.navigationController popViewControllerAnimated:YES];
-    } failure:^(NSError *error) {
-        self.HUD.mode = MBProgressHUDModeCustomView;
-        self.HUD.label.text = @"网络出现了点小问题。。。";
-        [self.HUD hideAnimated:YES afterDelay:0.6];
-        NSLog(@"Error:%@",error);
-    }];
+    } else {
+        if ([DataManager manager].user.isLogin)
+        {
+            [[DataManager manager] publishCommentWithUsrID:[userDefaults objectForKey:@"userId"] acID:self.acModel.acID fatherCommentID:@"" commentContent:self.commmentTextView.text success:^(NSString *msg) {
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"评论成功";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+                [[self navigationController] popViewControllerAnimated:true];
+            } failure:^(NSError *error) {
+                self.HUD.mode = MBProgressHUDModeCustomView;
+                self.HUD.label.text = @"因未知原因评论失败";
+                [self.HUD hideAnimated:YES afterDelay:0.6];
+                NSLog(@"Error:%@",error);
+            }];
+        } else
+        {
+            self.HUD.mode = MBProgressHUDModeCustomView;
+            self.HUD.label.text = @"请登录";
+            [self.HUD hideAnimated:YES afterDelay:0.6];
+        }
+
+    }
     [self.commmentTextView resignFirstResponder];
 }
 

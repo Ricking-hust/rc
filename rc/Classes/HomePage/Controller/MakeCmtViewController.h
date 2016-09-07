@@ -7,7 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "ActivityModel.h"
 
 @interface MakeCmtViewController : UIViewController
+
+
+@property (nonatomic,strong) ActivityModel *acModel;
 
 @end

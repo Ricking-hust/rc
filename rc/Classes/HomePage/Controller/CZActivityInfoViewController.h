@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "MBProgressHUD.h"
 @class ActivityModel;
 
 @interface CZActivityInfoViewController : UIViewController<UITableViewDelegate, UITableViewDataSource,UIWebViewDelegate>
 @property (nonatomic, strong) UITableView *tableView;
 @property (nonatomic, strong) ActivityModel *activityModelPre;
+@property (nonatomic, strong) MBProgressHUD *HUD;
 @end

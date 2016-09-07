@@ -24,6 +24,8 @@ static const CGFloat praiseSzie = 15;
 
 @interface RCCommentViewController ()
 
+@property (nonatomic, copy) NSURLSessionDataTask* (^getCommentBlock)();
+
 @end
 
 @implementation RCCommentViewController
@@ -31,11 +33,12 @@ static const CGFloat praiseSzie = 15;
 - (void)viewDidLoad {
     [super viewDidLoad];
     [self setNavigation];
-    [self testGet];
+    [self configureBlocks];
+    self.getCommentBlock();
     [self initTableView];
     
-    self.commetnTableView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
-    self.commetnTableView.mj_footer= [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
+    self.commentTableView.mj_header = [RCHomeRefreshHeader headerWithRefreshingTarget:self refreshingAction:@selector(loadNewData)];
+    self.commentTableView.mj_footer= [MJRefreshAutoNormalFooter footerWithRefreshingTarget:self refreshingAction:@selector(getMoreData)];
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
 }
 
@@ -49,14 +52,14 @@ static const CGFloat praiseSzie = 15;
     self.view.backgroundColor = [UIColor colorWithRed:245.0/255.0 green:245.0/255.0 blue:245.0/255.0 alpha:1.0];
     UIView *temp = [[UIView alloc]initWithFrame:CGRectZero];
     [self.view addSubview:temp];//用于消除导航栏对tableView布局的影响
-    self.commetnTableView = [[UITableView alloc]init];
-    [self.view addSubview:self.commetnTableView];
-    self.commetnTableView.delegate = self;
-    self.commetnTableView.dataSource = self;
-    [self.commetnTableView registerClass:[RCCommentcell class] forCellReuseIdentifier:kCellIdentifier_CommentCell];
-    self.commetnTableView.backgroundColor = [UIColor clearColor];
-    self.commetnTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
-    [self.commetnTableView mas_updateConstraints:^(MASConstraintMaker *make) {
+    self.commentTableView = [[UITableView alloc]init];
+    [self.view addSubview:self.commentTableView];
+    self.commentTableView.delegate = self;
+    self.commentTableView.dataSource = self;
+    [self.commentTableView registerClass:[RCCommentcell class] forCellReuseIdentifier:kCellIdentifier_CommentCell];
+    self.commentTableView.backgroundColor = [UIColor clearColor];
+    self.commentTableView.separatorStyle = UITableViewCellSeparatorStyleNone;
+    [self.commentTableView mas_updateConstraints:^(MASConstraintMaker *make) {
         make.top.equalTo(self.view.mas_top).offset(64);
         make.right.left.bottom.equalTo(self.view);
     }];
@@ -85,53 +88,36 @@ static const CGFloat praiseSzie = 15;
     
 }
 
-#pragma mark - get date
--(void)testGet{
-    NSDictionary *dic1 = @{
-                           @"comment_id":@"1",
-                           @"usr_id":@"6",
-                           @"usr_name":@"逃跑计划",
-                           @"usr_pic":@"http://img.myrichang.com/img/src/logo.png",
-                           @"father_comment_id":@"0",
-                           @"comment_time":@"2015年7月20日 15：32",
-                           @"comment_content":@"再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见",
-                           @"comment_praise_num":@"7",
-                           @"father_comment_usr_id":@"0",
-                           @"father_comment_usr_name":@"0",
-                           @"father_comment_content":@"0"
-                              };
-    
-    NSDictionary *dic2 = @{
-                           @"comment_id":@"2",
-                           @"usr_id":@"5",
-                           @"usr_name":@"水木年华",
-                           @"usr_pic":@"http://img.myrichang.com/upload/14637245657abe0d0a55a8cefc5270d29c90a6157a.png",
-                           @"father_comment_id":@"1",
-                           @"comment_time":@"2015年7月20日 22：13",
-                           @"comment_content":@"启程",
-                           @"comment_praise_num":@"89",
-                           @"father_comment_usr_id":@"6",
-                           @"father_comment_usr_name":@"逃跑计划",
-                           @"father_comment_content":@"再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见再见"
-                              };
-    
-    NSArray *commentAry = [NSArray arrayWithObjects:dic1,dic2, nil];
-    
-    self.commentList = [[CommentList alloc]initWithArray:commentAry];;
+#pragma mark - Data
+- (void)configureBlocks{
+    @weakify(self);
+    self.getCommentBlock = ^(){
+        @strongify(self);
+        NSString *userId = [[NSString alloc]init];
+        if ([userDefaults objectForKey:@"userId"]) {
+            userId = [userDefaults objectForKey:@"userId"];
+        } else {
+            userId = @"-1";
+        }
+        return [[DataManager manager] getAllCommentsWithacID:self.acModel.acID userId:[userDefaults objectForKey:@"userId"] startID:@"0" success:^(CommentList *comList) {
+            self.commentList = comList;
+        } failure:^(NSError *error) {
+            NSLog(@"Error:%@",error);
+        }];
+    };
+}
+
+-(void)setCommentList:(CommentList *)commentList{
+    _commentList = commentList;
+    [self.commentTableView reloadData];
 }
 
 -(void)refreshComment{
+    self.getCommentBlock();
 }
 
 -(void)getMoreComment{
-}
-
-#pragma mark - Lazy Load
--(CommentList *)commentList{
-    if (!_commentList) {
-        _commentList = [[CommentList alloc]init];
-    }
-    return _commentList;
+    self.getCommentBlock();
 }
 
 #pragma mark - TableView 数据源
@@ -181,7 +167,9 @@ static const CGFloat praiseSzie = 15;
 //}
 
 -(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath{
-    
+    MakeCmtViewController *makeCmtViewController = [[MakeCmtViewController alloc]init];
+    makeCmtViewController.acModel = self.acModel;
+    [self.navigationController pushViewController:makeCmtViewController animated:YES];
 }
 
 -(CGFloat)heightForCellWithIndex:(NSIndexPath *)indexPath{
@@ -195,12 +183,12 @@ static const CGFloat praiseSzie = 15;
 - (void)loadNewData
 {
     [self refreshComment];
-    [self.commetnTableView.mj_header endRefreshing];
-    [self.commetnTableView.mj_footer endRefreshing];
+    [self.commentTableView.mj_header endRefreshing];
 }
 
 -(void)getMoreData{
     [self getMoreComment];
+    [self.commentTableView.mj_footer endRefreshing];
 }
 
 - (void)backToForwardViewController
@@ -210,6 +198,7 @@ static const CGFloat praiseSzie = 15;
 
 -(void)turnToCommentPage{
     MakeCmtViewController *makeCmtViewController = [[MakeCmtViewController alloc]init];
+    makeCmtViewController.acModel = self.acModel;
     [self.navigationController pushViewController:makeCmtViewController animated:YES];
 }
 

@@ -14,6 +14,7 @@
 #import "IndustryModel.h"
 #import "planModel.h"
 #import "TagModel.h"
+#import "CommentModel.h"
 
 typedef NS_ENUM(NSInteger,RcErrorType) {
     RcErrorTypeLoginFailure           = 701,
@@ -98,6 +99,88 @@ typedef NS_ENUM(NSInteger,RcErrorType) {
                                            opType:(NSString *)opType
                                           success:(void (^)(NSString *msg))success
                                           failure:(void (^)(NSError *error))failure;
+
+/**
+ *  获取活动所有评论
+ *
+ *  @param acId    活动编号
+ *  @param startId 起始评论id（ 0 表示第一次获取）
+ *  @param success 评论List处理
+ *  @param failure 返回NSError
+ *
+ *  @return 网络请求任务
+ */
+-(NSURLSessionDataTask *) getAllCommentsWithacID:(NSString *)acId
+                                          userId:(NSString *)userId
+                                         startID:(NSString *)startId
+                                         success:(void (^)(CommentList *comList))success
+                                         failure:(void (^)(NSError *))failure;
+
+/**
+ *  获取热门评论
+ *
+ *  @param acId    活动编号
+ *  @param usrId   用户编号
+ *  @param success 评论model处理
+ *  @param failure 返回NSError
+ *
+ *  @return 网络请求任务
+ */
+-(NSURLSessionDataTask *) getPopularCommentsWithAcID:(NSString *)acId
+                                               usrID:(NSString *)usrId
+                                             success:(void (^)(CommentList *comList))success
+                                             failure:(void (^)(NSError *error))failure;
+
+/**
+ *  用户发布评论
+ *
+ *  @param usrId           用户编号
+ *  @param acId            活动编号
+ *  @param fatherCommentId 父评论编号
+ *  @param commentContent  评论内容
+ *  @param success code 200操作成功，210操作失败
+ *  @param failure 返回NSError
+ *
+ *  @return 网络请求任务
+ */
+-(NSURLSessionDataTask *) publishCommentWithUsrID:(NSString *)usrId
+                                             acID:(NSString *)acId
+                                  fatherCommentID:(NSString *)fatherCommentId
+                                   commentContent:(NSString *)commentContent
+                                          success:(void (^)(NSString *msg))success
+                                          failure:(void (^)(NSError *error))failure;
+
+/**
+ *  用户删除评论
+ *
+ *  @param usrId     用户编号
+ *  @param commentId 评论编号
+ *  @param success code 200操作成功，210操作失败
+ *  @param failure 返回NSError
+ *
+ *  @return 网络请求任务
+ */
+-(NSURLSessionDataTask *) deleteCommentWithUsrID:(NSString *)usrId
+                                       commentID:(NSString *)commentId
+                                         success:(void (^)(NSString *msg))success
+                                         failure:(void (^)(NSError *error))failure;
+
+/**
+ *  评论点赞与取消赞
+ *
+ *  @param usrId     用户编号
+ *  @param commentId 评论编号
+ *  @param opType    操作类型，1是点赞，2是取消点赞
+ *  @param success   code 200操作成功，210操作失败,220点赞失败，230取赞失败
+ *  @param failure 返回NSError
+ *
+ *  @return 网络请求任务
+ */
+-(NSURLSessionDataTask *) praiseCommentWithUsrId:(NSString *)usrId
+                                       commentId:(NSString *)commentId
+                                          opType:(NSString *)opType
+                                         success:(void (^)(NSString *msg))success
+                                         failure:(void (^)(NSError *error))failure;
 
 -(NSURLSessionDataTask *) joinTripWithUserId:(NSString *)userId
                                         acId:(NSString *)acId

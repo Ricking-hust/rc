@@ -7,9 +7,11 @@
 //
 
 #import <UIKit/UIKit.h>
+#import "PublisherModel.h"
 
 @interface PublisherViewController : UIViewController<UITableViewDelegate,UITableViewDataSource>
 
 @property (nonatomic,strong) UITableView *pubInfoView;
+@property (nonatomic,strong) PublisherModel *pubModel;
 
 @end

@@ -168,9 +168,11 @@
 }
 
 -(void)setSubViewsValue{
-    [self.publisherPic setImage:[UIImage imageNamed:@"Beijing_Icon"]];
-    [self.pubName setText:@"嘟嘟"];
-    [self.pubSign setText:@"常在河边走，哪有不日狗"];
+    [self.publisherPic sd_setImageWithURL:[NSURL URLWithString:self.pubModel.pubPic] placeholderImage:[UIImage imageNamed:@"beijing"] completed:^(UIImage *image, NSError *error, SDImageCacheType cacheType, NSURL *imageURL) {
+        
+    }];
+    [self.pubName setText:self.pubModel.pubName];
+    [self.pubSign setText:self.pubModel.pubSign];
     [self.follow setImage:[UIImage imageNamed:@"user"] forState:UIControlStateNormal];
     [self.follow setTitle:@"+关注" forState:UIControlStateNormal];
     // the space between the image and text
